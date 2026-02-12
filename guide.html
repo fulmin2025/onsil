@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장례 가이드 - On-sil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { DEFAULT: "#1B2B48" },
+                        secondary: { DEFAULT: "#FAFAFA" },
+                        accent: { DEFAULT: "#C5A065" },
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="index.html" class="font-bold text-xl text-[#1B2B48]">On-sil</a>
+            <nav class="hidden md:flex gap-6">
+                <a href="search.html" class="font-medium text-gray-600 hover:text-[#1B2B48]">장례식장 찾기</a>
+                <a href="guide.html" class="font-medium text-[#1B2B48]">장례 가이드</a>
+                <a href="community.html" class="font-medium text-gray-600 hover:text-[#1B2B48]">후기</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-12">
+        <div class="text-center mb-16">
+            <h1 class="text-3xl md:text-4xl font-bold text-[#1B2B48] mb-4">이별 준비, 무엇부터 해야 할까요?</h1>
+            <p class="text-gray-600">당황하지 마세요. 온실이 차근차근 알려드립니다.</p>
+        </div>
+
+        <!-- Checklist -->
+        <section class="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-sm mb-16">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                <i class="fas fa-clipboard-check text-[#C5A065]"></i> 필수 체크리스트
+            </h2>
+            <div class="space-y-4">
+                <label
+                    class="flex items-start gap-4 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                    <input type="checkbox" class="mt-1 w-5 h-5 accent-[#1B2B48]">
+                    <div>
+                        <span class="font-bold block text-lg">아이의 상태 확인하기</span>
+                        <span class="text-gray-500 text-sm">숨을 쉬지 않는지, 체온이 떨어지는지 확인해주세요.</span>
+                    </div>
+                </label>
+                <label
+                    class="flex items-start gap-4 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                    <input type="checkbox" class="mt-1 w-5 h-5 accent-[#1B2B48]">
+                    <div>
+                        <span class="font-bold block text-lg">가장 예쁜 사진 준비하기</span>
+                        <span class="text-gray-500 text-sm">영정 사진으로 쓸 고해상도 원본 사진을 핸드폰에 준비해주세요.</span>
+                    </div>
+                </label>
+                <label
+                    class="flex items-start gap-4 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                    <input type="checkbox" class="mt-1 w-5 h-5 accent-[#1B2B48]">
+                    <div>
+                        <span class="font-bold block text-lg">이동장 및 담요 준비</span>
+                        <span class="text-gray-500 text-sm">평소 좋아하던 담요로 아이를 감싸주세요.</span>
+                    </div>
+                </label>
+            </div>
+        </section>
+
+        <!-- Process Timeline -->
+        <section class="max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold mb-8 text-center">장례 절차 안내</h2>
+            <div class="relative">
+                <div class="absolute left-1/2 -ml-0.5 w-0.5 h-full bg-gray-200 hidden md:block"></div>
+
+                <!-- Step 1 -->
+                <div class="flex flex-col md:flex-row items-center justify-between mb-12 relative">
+                    <div class="w-full md:w-5/12 text-center md:text-right p-4 order-2 md:order-1">
+                        <h3 class="text-xl font-bold text-[#1B2B48]">1. 예약 및 방문</h3>
+                        <p class="text-gray-600 mt-2">전화 또는 온라인으로 예약 후 장례식장에 방문합니다.</p>
+                    </div>
+                    <div
+                        class="w-8 h-8 bg-[#1B2B48] rounded-full flex items-center justify-center text-white z-10 order-1 md:order-2 mb-4 md:mb-0">
+                        1</div>
+                    <div class="w-full md:w-5/12 p-4 order-3"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flex flex-col md:flex-row items-center justify-between mb-12 relative">
+                    <div class="w-full md:w-5/12 p-4 order-3 md:order-1"></div>
+                    <div
+                        class="w-8 h-8 bg-[#1B2B48] rounded-full flex items-center justify-center text-white z-10 order-1 md:order-2 mb-4 md:mb-0">
+                        2</div>
+                    <div class="w-full md:w-5/12 text-center md:text-left p-4 order-2 md:order-3">
+                        <h3 class="text-xl font-bold text-[#1B2B48]">2. 염습 및 추모</h3>
+                        <p class="text-gray-600 mt-2">아이의 마지막 모습을 깨끗하게 단장하고 충분한 추모 시간을 갖습니다.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="flex flex-col md:flex-row items-center justify-between relative">
+                    <div class="w-full md:w-5/12 text-center md:text-right p-4 order-2 md:order-1">
+                        <h3 class="text-xl font-bold text-[#1B2B48]">3. 화장 및 수골</h3>
+                        <p class="text-gray-600 mt-2">보호자 참관 하에 화장이 진행되며, 유골을 수습합니다.</p>
+                    </div>
+                    <div
+                        class="w-8 h-8 bg-[#1B2B48] rounded-full flex items-center justify-center text-white z-10 order-1 md:order-2 mb-4 md:mb-0">
+                        3</div>
+                    <div class="w-full md:w-5/12 p-4 order-3"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-gray-50 border-t py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4 grid gap-8 md:grid-cols-4">
+            <div class="col-span-1 md:col-span-2">
+                <span class="font-bold text-xl text-[#1B2B48] mb-4 block">On-sil</span>
+                <p class="text-sm text-gray-500 mb-4">(주)더온실 | 대표: 조영호<br>문의: 1668-5165</p>
+            </div>
+            <div>
+                <h3 class="font-semibold mb-4 text-sm">서비스</h3>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="search.html">장례식장 찾기</a></li>
+                    <li><a href="guide.html">가이드</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-semibold mb-4 text-sm">고객지원</h3>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="contact.html">문의하기</a></li>
+                    <li><a href="terms.html">이용약관</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
