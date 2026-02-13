@@ -1,0 +1,628 @@
+﻿{
+    "business":  [
+                     {
+                         "uuid":  "43cfcb80-5aab-4750-b4e5-8d84198f83f5",
+                         "name":  "씨엘로펫",
+                         "enName":  "cielopet",
+                         "latitude":  "37.170072",
+                         "longitude":  "127.374925",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "4499ed8b-5718-46f5-9216-b1845177052a",
+                         "name":  "어게인",
+                         "enName":  "again",
+                         "latitude":  "37.586996",
+                         "longitude":  "126.627931",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "675e9343-d1e0-4e34-8ae7-e2b32c9e061d",
+                         "name":  "페어웰",
+                         "enName":  "farewell",
+                         "latitude":  "37.765663",
+                         "longitude":  "126.847072",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "53a131c0-10ff-4e5c-a60b-ebd256306d6b",
+                         "name":  "펫포레스트 남양주점",
+                         "enName":  "petforest-namyangju",
+                         "latitude":  "37.619511",
+                         "longitude":  "127.276363",
+                         "isAlliance":  true
+                     },
+                     {
+                         "uuid":  "c2a2c542-9daf-4ceb-b22a-fbb5e9f9d564",
+                         "name":  "리틀포즈",
+                         "enName":  "littlepaws",
+                         "latitude":  "36.106320",
+                         "longitude":  "128.672492",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "94a030a0-6784-463a-8208-12f60b1ecf2b",
+                         "name":  "포이리스",
+                         "enName":  "poiris",
+                         "latitude":  "37.154818",
+                         "longitude":  "126.741459",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "b9f8049b-b1a0-44a3-ac3d-9a99e01739f1",
+                         "name":  "메리온",
+                         "enName":  "merion",
+                         "latitude":  "35.453300",
+                         "longitude":  "129.040706",
+                         "isAlliance":  true
+                     },
+                     {
+                         "uuid":  "2fd74923-2297-46c4-bfd2-b600c45723c0",
+                         "name":  "21그램 경기광주점",
+                         "enName":  "21gram-kyungigwangju",
+                         "latitude":  "37.349329",
+                         "longitude":  "127.264295",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "0da03ecb-e64c-4a65-9a46-6f5b03ead393",
+                         "name":  "펫오케스트라",
+                         "enName":  "petorchestra",
+                         "latitude":  "37.219265",
+                         "longitude":  "126.868530",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "2c976d69-7e6d-4808-9291-cbfb09e05a45",
+                         "name":  "별다만",
+                         "enName":  "byeoldaman",
+                         "latitude":  "34.938294",
+                         "longitude":  "126.827072",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "eb5e7372-51e5-489a-a435-f1be017f4f3b",
+                         "name":  "한별소울펫",
+                         "enName":  "hanbyeolsoulpet",
+                         "latitude":  "36.316454",
+                         "longitude":  "128.273893",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "6c13bed6-7010-457b-bd10-732dfe477c01",
+                         "name":  "경북",
+                         "enName":  "kyungbook",
+                         "latitude":  "36.178284",
+                         "longitude":  "128.015457",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "a195a375-18e8-4327-96a3-48b7b32b3963",
+                         "name":  "펫포유",
+                         "enName":  "petforyou",
+                         "latitude":  "36.458846",
+                         "longitude":  "127.225348",
+                         "isAlliance":  true
+                     },
+                     {
+                         "uuid":  "1df3c830-7115-410d-9950-bc563663aa6b",
+                         "name":  "마스꼬따휴",
+                         "enName":  "mascottaheu",
+                         "latitude":  "37.726780",
+                         "longitude":  "126.613964",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "9d94d595-4559-4a66-9af6-d75b2724212e",
+                         "name":  "21그램 남양주점",
+                         "enName":  "21gram-namyangju",
+                         "latitude":  "37.625937",
+                         "longitude":  "127.290314",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "420a06c9-ced6-4250-87b6-304663b28f33",
+                         "name":  "한별리멤버파크",
+                         "enName":  "hanbyeolrememberpark",
+                         "latitude":  "35.335916",
+                         "longitude":  "128.355755",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "162b810e-e2d8-4152-adbb-e8cb168969bf",
+                         "name":  "해피펫",
+                         "enName":  "happypet",
+                         "latitude":  "35.801666",
+                         "longitude":  "127.019936",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "791fc3c0-6397-4bc9-92c9-6efff1f92a5f",
+                         "name":  "펫바라기 남원점",
+                         "enName":  "petbaragi-namwon",
+                         "latitude":  "35.520158",
+                         "longitude":  "127.416803",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "ff162879-a49d-4696-96a1-18bd62e0da66",
+                         "name":  "포포즈 세종점",
+                         "enName":  "pofos-sejong",
+                         "latitude":  "36.520018",
+                         "longitude":  "127.377969",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "010beb8d-17b9-4356-b97e-a63431bdcc4e",
+                         "name":  "스윗드림펫",
+                         "enName":  "sweetdreampet",
+                         "latitude":  "36.036270",
+                         "longitude":  "128.523081",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "98a50ab7-beaf-4af4-880c-c3d12a16bba2",
+                         "name":  "포포즈 양주점",
+                         "enName":  "pofos-yangju",
+                         "latitude":  "37.809289",
+                         "longitude":  "126.921621",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "9e91ec0e-d107-4ca5-8d27-6f81043dfc86",
+                         "name":  "백꽃사랑하이빛",
+                         "enName":  "baekkkotsaranghaibit",
+                         "latitude":  "37.353902",
+                         "longitude":  "127.394516",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "b5603349-2f6c-46c6-a292-eba55345296c",
+                         "name":  "포포즈 경기광주점",
+                         "enName":  "pofos-kyungigwangju",
+                         "latitude":  "37.397186",
+                         "longitude":  "127.309886",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "8191d37c-f15d-4fe8-983e-42a0d5f3ba1a",
+                         "name":  "하늘별",
+                         "enName":  "haneulbyeol",
+                         "latitude":  "34.885471",
+                         "longitude":  "127.376882",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "a141345d-32b2-450d-b50f-875b45291742",
+                         "name":  "강릉펫사랑",
+                         "enName":  "gangneungpetsarang",
+                         "latitude":  "37.832405",
+                         "longitude":  "128.812164",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "8896ad53-ffb8-41d2-a380-638862c37e9b",
+                         "name":  "패투헤븐",
+                         "enName":  "pettoheaven",
+                         "latitude":  "37.425719",
+                         "longitude":  "127.996211",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "71777841-fa58-4804-9634-508ee3e712c4",
+                         "name":  "별이되다",
+                         "enName":  "byeolidweda",
+                         "latitude":  "35.298045",
+                         "longitude":  "128.873332",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "fd7fae09-3cf1-4ddf-90eb-d9722bebf350",
+                         "name":  "좋은친구들",
+                         "enName":  "joeunchingudeul",
+                         "latitude":  "36.446503",
+                         "longitude":  "127.030425",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "35fe3f4d-353a-459e-9c48-c93e532a5e22",
+                         "name":  "위드엔젤",
+                         "enName":  "withangel",
+                         "latitude":  "36.698461",
+                         "longitude":  "126.917193",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "5d00dfde-c123-4c00-95e2-8f46099f35a8",
+                         "name":  "굿바이펫",
+                         "enName":  "goodbyepet",
+                         "latitude":  "37.141999",
+                         "longitude":  "128.154529",
+                         "isAlliance":  true
+                     },
+                     {
+                         "uuid":  "e33d25f5-1bd7-4260-b84a-71b673304de9",
+                         "name":  "더포에버",
+                         "enName":  "theforever",
+                         "latitude":  "37.625829",
+                         "longitude":  "126.674645",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "64c0cd99-5498-405d-8e80-23e62c0dc6e2",
+                         "name":  "러브펫 경기광주점",
+                         "enName":  "lovepet-kyungigwangju",
+                         "latitude":  "37.416776",
+                         "longitude":  "127.284567",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "6e7f5682-7eb2-48b6-b2dd-aa3b18a6aa55",
+                         "name":  "펫포레스트 김포점",
+                         "enName":  "petforest-kyungigimpo",
+                         "latitude":  "37.724790",
+                         "longitude":  "126.601194",
+                         "isAlliance":  true
+                     },
+                     {
+                         "uuid":  "8f0bc2e6-366c-42f4-9995-07567fde8a13",
+                         "name":  "몽몽이엠파크",
+                         "enName":  "mongmongiempark",
+                         "latitude":  "37.681374",
+                         "longitude":  "127.364687",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "12d8ec79-3f8b-46cf-964e-14574d6ebe15",
+                         "name":  "펫바라기 일산점",
+                         "enName":  "petbaragi-ilsan",
+                         "latitude":  "37.713769",
+                         "longitude":  "126.805841",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "e776b6fe-fd0e-46db-9a61-a97c25421446",
+                         "name":  "전주아리움",
+                         "enName":  "jeonjuarium",
+                         "latitude":  "35.825331",
+                         "longitude":  "127.085944",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "336af154-e22e-4f9b-93fe-ccfca8aaeb03",
+                         "name":  "젠틀펫스타",
+                         "enName":  "gentlepetstar",
+                         "latitude":  "36.742319",
+                         "longitude":  "128.082064",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "550ffd96-4f1d-475e-abc9-9ed8010c1de6",
+                         "name":  "하늘강아지",
+                         "enName":  "haneulgangaji",
+                         "latitude":  "37.388998",
+                         "longitude":  "127.318316",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "1fd21bc6-e59b-47db-bde6-993c3f2759d2",
+                         "name":  "포포즈 화성점",
+                         "enName":  "pofos-kyungihwaseong",
+                         "latitude":  "37.175044",
+                         "longitude":  "126.894743",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "1ba2c293-609e-40e5-bf88-9306d82f9cb6",
+                         "name":  "해늘마루",
+                         "enName":  "haeneulmaru",
+                         "latitude":  "34.840466",
+                         "longitude":  "126.402786",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "220f5f97-0508-46bb-91b0-7f7b97c99898",
+                         "name":  "전주하늘",
+                         "enName":  "jeonjuhaneul",
+                         "latitude":  "35.856257",
+                         "longitude":  "127.323119",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "a132d16b-128c-4a37-bc72-6e4630da9a5a",
+                         "name":  "펫노블레스",
+                         "enName":  "petnoblesse",
+                         "latitude":  "35.421816",
+                         "longitude":  "129.040660",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "e8d3b0bd-6b54-40ce-a735-7d4161b43b02",
+                         "name":  "서래안펫타운",
+                         "enName":  "seraeanpettown",
+                         "latitude":  "35.981889",
+                         "longitude":  "126.725144",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "183c504e-2dfa-480f-81a8-ff241d38b19d",
+                         "name":  "펫콤",
+                         "enName":  "petcom",
+                         "latitude":  "37.295418",
+                         "longitude":  "126.773480",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "aa887def-4961-406d-9c28-5624d616e24a",
+                         "name":  "한별",
+                         "enName":  "hanbyeol",
+                         "latitude":  "35.102666",
+                         "longitude":  "128.831315",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "eb8d1f19-195d-4233-abb7-dd1c37fb1b63",
+                         "name":  "포포즈 부산점",
+                         "enName":  "pofos-busan",
+                         "latitude":  "35.308677",
+                         "longitude":  "128.824654",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "3227ad64-8238-4f03-afd6-dae00824c5e0",
+                         "name":  "스타티스",
+                         "enName":  "statice",
+                         "latitude":  "35.294614",
+                         "longitude":  "129.248735",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "08274376-7714-4d12-8e48-a68ab7946740",
+                         "name":  "아이별",
+                         "enName":  "aibyeol",
+                         "latitude":  "35.352122",
+                         "longitude":  "129.254313",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "9ac79289-ea10-4cc2-a8cf-03d32bb627af",
+                         "name":  "러브펫 대구점",
+                         "enName":  "lovepet-daegu",
+                         "latitude":  "36.040980",
+                         "longitude":  "128.521257",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "84584caf-9222-48ab-8c25-2079d6a6e3e0",
+                         "name":  "강아지펫헤븐",
+                         "enName":  "gangajipetheaven",
+                         "latitude":  "35.927257",
+                         "longitude":  "128.364478",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "9dfe0305-77bb-4803-9b16-dad549c47068",
+                         "name":  "푸른솔",
+                         "enName":  "pureunsol",
+                         "latitude":  "34.865348",
+                         "longitude":  "127.589953",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "4c3f0bc2-6534-4543-973e-3ca6650903ad",
+                         "name":  "리멤버",
+                         "enName":  "remember",
+                         "latitude":  "37.107323",
+                         "longitude":  "127.172242",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "8c645ceb-60cb-4141-bc85-ebc4e2cb07b2",
+                         "name":  "하늘소풍",
+                         "enName":  "haneulsopoong",
+                         "latitude":  "35.079283",
+                         "longitude":  "128.394801",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "157701e8-8ee1-4275-85a7-f0bdc7cf58d1",
+                         "name":  "펫로스케어",
+                         "enName":  "petlosscare",
+                         "latitude":  "35.299067",
+                         "longitude":  "128.911597",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "000da276-9ede-497f-9872-1d3dcfc37e4a",
+                         "name":  "펫메모리얼",
+                         "enName":  "petmemorial",
+                         "latitude":  "37.519670",
+                         "longitude":  "127.928449",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "2a34e141-dea6-46d0-a6b9-b554c204e495",
+                         "name":  "파트라슈",
+                         "enName":  "patrasche",
+                         "latitude":  "35.329775",
+                         "longitude":  "129.243435",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "838180b4-d09c-4809-b42b-75b47a45d277",
+                         "name":  "대전스카이펫",
+                         "enName":  "daejeonskypet",
+                         "latitude":  "36.182978",
+                         "longitude":  "127.628568",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "b77f7a0c-cf43-4290-8aaa-85ecb892cb8d",
+                         "name":  "우바스",
+                         "enName":  "ubas",
+                         "latitude":  "36.565239",
+                         "longitude":  "127.482064",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "80c9e92f-489e-4690-9543-88300415c17a",
+                         "name":  "리멤버파크",
+                         "enName":  "rememberpark",
+                         "latitude":  "36.209948",
+                         "longitude":  "127.213664",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "80b78215-e4f5-4583-afb4-ae486311a918",
+                         "name":  "스토리펫",
+                         "enName":  "storypet",
+                         "latitude":  "37.152429",
+                         "longitude":  "126.953532",
+                         "isAlliance":  true
+                     },
+                     {
+                         "uuid":  "3acc5b49-3671-4fca-b0f7-c4ca0556a699",
+                         "name":  "아이들랜드",
+                         "enName":  "idleand",
+                         "latitude":  "35.952969",
+                         "longitude":  "128.785879",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "c1b84ee0-a664-43a5-a39e-95b05ca032b4",
+                         "name":  "펫포레스트 경기광주점",
+                         "enName":  "petforest-kyungigwangju",
+                         "latitude":  "37.352536",
+                         "longitude":  "127.198150",
+                         "isAlliance":  true
+                     },
+                     {
+                         "uuid":  "73d33ebf-c2ba-45c2-ba25-eec02968681b",
+                         "name":  "이별공간",
+                         "enName":  "ibyeolgonggan",
+                         "latitude":  "35.498459",
+                         "longitude":  "129.105915",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "91c6c670-6462-4b7f-b646-74ea255bf285",
+                         "name":  "로이힐즈",
+                         "enName":  "royhills",
+                         "latitude":  "37.414512",
+                         "longitude":  "127.783366",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "165ee96c-e9d0-461e-a531-544b5ca10e57",
+                         "name":  "스타펫",
+                         "enName":  "stapet",
+                         "latitude":  "37.815489",
+                         "longitude":  "127.212602",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "9cd45e66-8739-4b94-ad94-55a09ed1a80e",
+                         "name":  "퍼스트펫",
+                         "enName":  "firstpet",
+                         "latitude":  "35.019640",
+                         "longitude":  "126.678502",
+                         "isAlliance":  true
+                     },
+                     {
+                         "uuid":  "67f4dce0-b14f-43f1-aadc-bb9af7dae38a",
+                         "name":  "아이헤븐",
+                         "enName":  "aiheaven",
+                         "latitude":  "35.340718",
+                         "longitude":  "128.848138",
+                         "isAlliance":  true
+                     },
+                     {
+                         "uuid":  "c34da087-fc94-4eb9-96c5-4d6ce7bac45d",
+                         "name":  "스마일어게인",
+                         "enName":  "smileagain",
+                         "latitude":  "36.203884",
+                         "longitude":  "128.042957",
+                         "isAlliance":  true
+                     },
+                     {
+                         "uuid":  "5c54a7df-4e24-48ff-a579-74c26e5a8e11",
+                         "name":  "엔젤스톤",
+                         "enName":  "angelstone",
+                         "latitude":  "37.736497",
+                         "longitude":  "126.629763",
+                         "isAlliance":  true
+                     },
+                     {
+                         "uuid":  "d68e0266-2d4c-42e7-8547-76fd2e095660",
+                         "name":  "타임투",
+                         "enName":  "timetoo",
+                         "latitude":  "35.049700",
+                         "longitude":  "126.544862",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "c24eb9af-6106-45bb-8d81-58f10d5900a7",
+                         "name":  "하얀민들레",
+                         "enName":  "hayanmindulle",
+                         "latitude":  "35.718096",
+                         "longitude":  "128.726014",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "55f30cd4-93e2-477a-8335-ea902f0c374f",
+                         "name":  "러블리엔젤",
+                         "enName":  "lovelyangel",
+                         "latitude":  "36.566835",
+                         "longitude":  "127.382915",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "2d4a9d3f-3ba8-4cb2-aadd-ff22b146b0d2",
+                         "name":  "해피엔딩",
+                         "enName":  "happyending",
+                         "latitude":  "37.412717",
+                         "longitude":  "127.300531",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "5e7fd308-144c-4820-907f-fe58839906f1",
+                         "name":  "아이드림펫",
+                         "enName":  "idreampet",
+                         "latitude":  "37.730796",
+                         "longitude":  "126.627620",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "d121236c-c071-4b4e-9969-b93fccb51f51",
+                         "name":  "오수펫추모공원",
+                         "enName":  "osupetmemorypark",
+                         "latitude":  "35.539481",
+                         "longitude":  "127.348529",
+                         "isAlliance":  true
+                     },
+                     {
+                         "uuid":  "92214225-1ebc-4ae9-b9d9-8542fa57f8f6",
+                         "name":  "21그램 천안아산점",
+                         "enName":  "21gram-cheonanasan",
+                         "latitude":  "36.767385",
+                         "longitude":  "127.143840",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "60d0c960-2978-4227-8dcd-874dff22cadd",
+                         "name":  "아리아펫",
+                         "enName":  "ariapet",
+                         "latitude":  "37.279416",
+                         "longitude":  "127.390312",
+                         "isAlliance":  false
+                     },
+                     {
+                         "uuid":  "86a8ce3d-69dd-4bcf-b393-eb377c5f2f26",
+                         "name":  "포포즈 김포점",
+                         "enName":  "pofos-kyungigimpo",
+                         "latitude":  "37.730195",
+                         "longitude":  "126.575600",
+                         "isAlliance":  false
+                     }
+                 ]
+}
