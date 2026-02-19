@@ -35,35 +35,82 @@
 
 <body class="bg-gray-50 font-sans flex items-center justify-center min-h-screen">
 
+    <!-- Debug Console -->
+    <div id="debug-console"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 150px; background: rgba(0,0,0,0.8); color: lime; overflow-y: scroll; z-index: 9999; padding: 10px; font-family: monospace; font-size: 12px; pointer-events: none;">
+        <div>DEBUG MODE STARTED...</div>
+    </div>
+
+    <script>
+            // Override console.log to print to screen
+            (function () {
+                var oldLog = console.log;
+                var debugConsole = document.getElementById('debug-console');
+
+                function printToScreen(msg, color) {
+                    var div = document.createElement('div');
+                    div.textContent = msg;
+                    if (color) div.style.color = color;
+                    debugConsole.appendChild(div);
+                    debugConsole.scrollTop = debugConsole.scrollHeight;
+                }
+
+                console.log = function (msg) {
+                    try {
+                        printToScreen("[LOG] " + msg);
+                        oldLog.apply(console, arguments);
+                    } catch (e) { }
+                };
+
+                console.error = function (msg) {
+                    try {
+                        printToScreen("[ERROR] " + msg, 'red');
+                        oldLog.apply(console, arguments);
+                    } catch (e) { }
+                };
+
+                window.onerror = function (msg, url, line) {
+                    printToScreen("[FATAL ERROR] " + msg + " (Line: " + line + ")", 'red');
+                    return false;
+                };
+
+                window.addEventListener('unhandledrejection', function (event) {
+                    printToScreen("[ASYNC ERROR] " + event.reason, 'red');
+                });
+
+                printToScreen("Logger initialized.");
+            })();
+    </script>
+
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden p-8">
         <div class="text-center mb-8">
             <a href="index.html" class="text-3xl font-bold text-[#1B2B48] block mb-2">On-sil</a>
             <p class="text-gray-500 text-sm">회원가입하고 온실의 서비스를 이용해보세요.</p>
         </div>
 
-        <form id="signup-form" class="space-y-6">
+        <form id="signup-form" class="space-y-6" onsubmit="return false;">
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-700 mb-1">이름</label>
                 <input type="text" id="name" required
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all"
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
                     placeholder="홍길동">
             </div>
 
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700 mb-1">이메일</label>
                 <input type="email" id="email" required
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all"
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
                     placeholder="example@email.com">
             </div>
 
             <div>
                 <label for="password" class="block text-sm font-medium text-gray-700 mb-1">비밀번호</label>
                 <input type="password" id="password" required
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all"
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
                     placeholder="••••••••">
             </div>
 
-            <button type="submit"
+            <button type="button" id="signup-btn" onclick="handleSignup()"
                 class="w-full bg-[#1B2B48] text-white py-3 rounded-lg font-bold hover:bg-[#2a4269] transition-colors shadow-md">
                 가입하기
             </button>
@@ -75,27 +122,123 @@
         </div>
     </div>
 
-    <script src="js/auth.js"></script>
-    <script>
-        document.getElementById('signup-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+    <script src="js/supabase-lib.js" onload="console.log('Supabase Loaded (Local)');"
+        onerror="console.error('Supabase Local Script Load Failed');">
+        </script>
 
-            const result = Auth.signup(email, password, name);
-            if (result.success) {
-                alert(result.message);
-                window.location.href = 'login.html';
+    <script>
+        // Check if library loaded
+        window.addEventListener('load', function () {
+            // Safety check: ensure window.supabase is not null/undefined before accessing properties
+            if (window.supabase && window.supabase.createClient) {
+                var statusDiv = document.createElement('div');
+                statusDiv.style.cssText = 'position:fixed;top:0;left:0;right:0;background:green;color:white;padding:10px;z-index:9999;text-align:center;font-weight:bold;';
+                statusDiv.innerText = '시스템 준비 완료 (Supabase Loaded)';
+                document.body.appendChild(statusDiv);
+                setTimeout(function () { statusDiv.remove(); }, 3000);
             } else {
-                alert(result.message);
+                var typeInfo = (window.supabase === null) ? "null" : typeof window.supabase;
+                alert("오류: Supabase 로드 실패.\nwindow.supabase 상태: " + typeInfo);
             }
         });
+
+        const SUPABASE_URL = 'https://fkmcanwlcigofjhbfkzs.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_9OyB7n3foIalMmDxq1-_PA_s3xYfcJS';
+        let authClient = null; // Renamed to avoid conflict
+
+        function getSupabase() {
+            if (authClient) return authClient;
+
+            try {
+                if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+                    authClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                    console.log('Supabase Client Initialized');
+                    return authClient;
+                } else {
+                    console.error('window.supabase is not available');
+                    alert('시스템 오류: Supabase 인증 모듈을 불러올 수 없습니다.');
+                    return null;
+                }
+            } catch (e) {
+                console.error('Supabase Initialization Error:', e);
+                alert('초기화 오류: ' + e.message);
+                return null;
+            }
+        }
+
+        async function handleSignup() {
+            // Check button click
+            if (typeof window.alert === 'function') {
+                // Remove annoying alert after confirmation
+                // alert("가입 버튼이 클릭되었습니다."); 
+            }
+
+            const submitBtn = document.getElementById('signup-btn');
+            const originalBtnText = submitBtn.innerText;
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerText = '처리 중...';
+
+                // Get form values and trim whitespace
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const name = document.getElementById('name').value.trim();
+                // const phone = document.getElementById('phone').value.trim(); 
+
+                console.log("Attempting signup with:", { email, name }); // Log sanitized values
+
+                if (!email || !password || !name) { // Removed phone from validation as it's not in HTML
+                    throw new Error('모든 필드를 입력해주세요.');
+                }
+
+                const sb = getSupabase();
+                if (!sb) throw new Error('인증 서비스 연결 실패');
+
+                // Sign up
+                const { data, error } = await sb.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            full_name: name,
+                            // phone: phone, // This field is not in the HTML
+                            role: 'director' // Default role
+                        }
+                    }
+                });
+
+                if (error) throw error;
+
+                if (data?.user) {
+                    alert('회원가입 완료! 로그인 페이지로 이동합니다.');
+                    window.location.href = 'login.html';
+                } else {
+                    throw new Error('가입 요청은 전송되었으나 응답이 올바르지 않습니다.');
+                }
+
+            } catch (error) {
+                console.error('Signup Error:', error);
+                let msg = error.message || error.error_description || JSON.stringify(error);
+
+                // Translate common errors
+                if (msg.includes('rate limit') || msg.includes('Too many requests')) {
+                    msg = "너무 많은 시도를 하셨습니다. 잠시 후 다시 시도하거나 다른 이메일 주소를 사용해주세요.";
+                } else if (msg.includes('already registered')) {
+                    msg = "이미 가입된 이메일입니다. 로그인해주세요.";
+                }
+
+                alert('오류 발생: ' + msg);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText;
+            }
+        }
     </script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js');
+                // navigator.serviceWorker.register('./sw.js'); // Temporarily disabled for debugging
             });
         }
     </script>

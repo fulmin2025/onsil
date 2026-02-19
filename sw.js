@@ -1,4 +1,4 @@
-const CACHE_NAME = 'onsil-v1';
+const CACHE_NAME = 'onsil-v3';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -25,16 +25,12 @@ self.addEventListener('install', (event) => {
     );
 });
 
-// Fetch Event
+// Fetch Event - Network First Strategy
 self.addEventListener('fetch', (event) => {
     event.respondWith(
-        caches.match(event.request)
-            .then((response) => {
-                // Cache hit - return response
-                if (response) {
-                    return response;
-                }
-                return fetch(event.request);
+        fetch(event.request)
+            .catch(() => {
+                return caches.match(event.request);
             })
     );
 });
