@@ -168,9 +168,91 @@
         </div>
     </footer>
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/pwa.js"></script>
+    <!-- Supabase Local SDK -->
+    <script src="js/supabase-lib.js"></script>
+
+    <script>
+        // Global Error Handler
+        window.onerror = function (msg, url, line, col, error) {
+            console.error("JS Error:", msg);
+            return false;
+        };
+
+        const SUPABASE_URL = 'https://fkmcanwlcigofjhbfkzs.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_9OyB7n3foIalMmDxq1-_PA_s3xYfcJS';
+        let authClient = null;
+
+        // Initialize Supabase
+        function getSupabase() {
+            if (authClient) return authClient;
+            try {
+                if (window.supabase && window.supabase.createClient) {
+                    authClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                    return authClient;
+                }
+                return null;
+            } catch (e) {
+                console.error("Supabase Init Error:", e);
+                return null;
+            }
+        }
+
+        // Update Auth UI
+        async function updateAuthUI() {
+            const authContainer = document.getElementById('auth-container');
+            if (!authContainer) return;
+
+            const sb = getSupabase();
+            if (!sb) {
+                // Fallback UI if SDK fails
+                renderLoggedOutState(authContainer);
+                return;
+            }
+
+            const { data: { session } } = await sb.auth.getSession();
+
+            if (session) {
+                renderLoggedInState(authContainer, session.user);
+            } else {
+                renderLoggedOutState(authContainer);
+            }
+
+            // Listen for auth changes
+            sb.auth.onAuthStateChange((event, session) => {
+                if (session) {
+                    renderLoggedInState(authContainer, session.user);
+                } else {
+                    renderLoggedOutState(authContainer);
+                }
+            });
+        }
+
+        function renderLoggedOutState(container) {
+            container.innerHTML = `
+                <a href="login.html" class="text-sm font-medium text-gray-600 hover:text-[#1B2B48] mr-4">로그인</a>
+                <a href="signup.html" class="bg-[#1B2B48] text-white hover:bg-[#2a4269] px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-md">회원가입</a>
+            `;
+        }
+
+        function renderLoggedInState(container, user) {
+            const userName = user.user_metadata?.full_name || '사용자';
+            container.innerHTML = `
+                <span class="text-sm font-medium text-gray-600 mr-4">${userName}님</span>
+                <button onclick="handleLogout()" class="text-sm font-medium text-gray-500 hover:text-red-500">로그아웃</button>
+            `;
+        }
+
+        async function handleLogout() {
+            const sb = getSupabase();
+            if (sb) {
+                await sb.auth.signOut();
+                window.location.reload();
+            }
+        }
+
+        // Run on load
+        window.addEventListener('load', updateAuthUI);
+    </script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
