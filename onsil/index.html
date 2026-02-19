@@ -4,10 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>On-sil - 반려동물 안심 장례 (Preview)</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1B2B48">
-    <link rel="apple-touch-icon" href="icons/icon.svg">
+    <title>On-sil - 반려동물 안심 장례식장 (Preview)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -44,13 +41,10 @@
             <nav class="hidden md:flex gap-6">
                 <a href="search.html" class="text-sm font-medium text-gray-600 hover:text-[#1B2B48]">장례식장 찾기</a>
                 <a href="guide.html" class="text-sm font-medium text-gray-600 hover:text-[#1B2B48]">장례 가이드</a>
-                <a href="memory.html" class="text-sm font-medium text-gray-600 hover:text-[#1B2B48]">추억 가이드</a>
+                <a href="#" class="text-sm font-medium text-gray-600 hover:text-[#1B2B48]">추억 가이드</a>
                 <a href="community.html" class="text-sm font-medium text-gray-600 hover:text-[#1B2B48]">후기</a>
             </nav>
             <div class="hidden md:flex items-center gap-4">
-                <div id="auth-container" class="flex items-center">
-                    <!-- Auth UI injected by JS -->
-                </div>
                 <button
                     class="bg-[#C5A065] text-white hover:bg-[#B08D55] px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-md flex items-center gap-2">
                     <i class="fas fa-phone"></i> 상담하기
@@ -84,14 +78,14 @@
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 mt-8">
-                <a href="search.html"
-                    class="bg-[#1B2B48] text-white hover:bg-[#1B2B48]/90 px-8 py-4 rounded-md text-lg font-medium transition-colors shadow-lg inline-block text-center">
+                <button
+                    class="bg-[#1B2B48] text-white hover:bg-[#1B2B48]/90 px-8 py-4 rounded-md text-lg font-medium transition-colors shadow-lg">
                     안심 장례식장 찾아보기
-                </a>
-                <a href="guide.html"
-                    class="border border-gray-300 bg-white hover:bg-gray-50 px-8 py-4 rounded-md text-lg font-medium transition-colors inline-block text-center">
+                </button>
+                <button
+                    class="border border-gray-300 bg-white hover:bg-gray-50 px-8 py-4 rounded-md text-lg font-medium transition-colors">
                     이별 준비 가이드
-                </a>
+                </button>
             </div>
         </div>
     </section>
@@ -149,9 +143,8 @@
             <div>
                 <h3 class="font-semibold mb-4 text-sm">서비스</h3>
                 <ul class="space-y-2 text-sm text-gray-600">
-                    <li><a href="search.html">장례식장 찾기</a></li>
-                    <li><a href="guide.html">장례 가이드</a></li>
-                    <li><a href="memory.html">추억 가이드</a></li>
+                    <li><a href="#">장례식장 찾기</a></li>
+                    <li><a href="#">가이드</a></li>
                 </ul>
             </div>
             <div>
@@ -163,15 +156,6 @@
             </div>
         </div>
     </footer>
-    <!-- Scripts -->
-    <script src="js/auth.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js');
-            });
-        }
-    </script>
 </body>
 
 </html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문의하기 - On-sil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { DEFAULT: "#1B2B48" },
+                        secondary: { DEFAULT: "#FAFAFA" },
+                        accent: { DEFAULT: "#C5A065" },
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="index.html" class="font-bold text-xl text-[#1B2B48]">On-sil</a>
+            <nav class="hidden md:flex gap-6">
+                <a href="search.html" class="font-medium text-gray-600 hover:text-[#1B2B48]">장례식장 찾기</a>
+                <a href="guide.html" class="font-medium text-gray-600 hover:text-[#1B2B48]">장례 가이드</a>
+                <a href="community.html" class="font-medium text-gray-600 hover:text-[#1B2B48]">후기</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 py-12">
+        <h1 class="text-3xl font-bold mb-8 text-[#1B2B48] text-center">1:1 문의하기</h1>
+        <div class="bg-white p-8 rounded-xl shadow-sm">
+            <form class="space-y-6">
+                <div>
+                    <label class="block font-medium mb-2">이름</label>
+                    <input type="text" class="w-full border rounded-md p-3" placeholder="보호자님 성함을 입력해주세요">
+                </div>
+                <div>
+                    <label class="block font-medium mb-2">연락처</label>
+                    <input type="tel" class="w-full border rounded-md p-3" placeholder="010-0000-0000">
+                </div>
+                <div>
+                    <label class="block font-medium mb-2">문의 내용</label>
+                    <textarea class="w-full border rounded-md p-3 h-40" placeholder="궁금하신 점을 남겨주세요."></textarea>
+                </div>
+                <button type="button" onclick="alert('문의가 접수되었습니다. (데모)')"
+                    class="w-full bg-[#1B2B48] text-white py-4 rounded-md font-bold text-lg hover:bg-[#1B2B48]/90 transition-colors">
+                    문의 접수하기
+                </button>
+            </form>
+        </div>
+    </main>
+    <footer class="bg-gray-50 border-t py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4 grid gap-8 md:grid-cols-4">
+            <div class="col-span-1 md:col-span-2">
+                <span class="font-bold text-xl text-[#1B2B48] mb-4 block">On-sil</span>
+                <p class="text-sm text-gray-500 mb-4">(주)더온실 | 대표: 조영호<br>문의: 1668-5165</p>
+            </div>
+            <div>
+                <h3 class="font-semibold mb-4 text-sm">서비스</h3>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="search.html">장례식장 찾기</a></li>
+                    <li><a href="guide.html">가이드</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-semibold mb-4 text-sm">고객지원</h3>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="contact.html">문의하기</a></li>
+                    <li><a href="terms.html">이용약관</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>추억 가이드 - On-sil</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1B2B48">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { DEFAULT: "#1B2B48" },
+                        secondary: { DEFAULT: "#FAFAFA" },
+                        accent: { DEFAULT: "#C5A065" },
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                        serif: ['Nanum Myeongjo', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="index.html" class="font-bold text-xl text-[#1B2B48]">On-sil</a>
+            <nav class="hidden md:flex gap-6">
+                <a href="search.html" class="font-medium text-gray-600 hover:text-[#1B2B48]">장례식장 찾기</a>
+                <a href="guide.html" class="font-medium text-gray-600 hover:text-[#1B2B48]">장례 가이드</a>
+                <a href="memory.html" class="font-medium text-[#1B2B48]">추억 가이드</a>
+                <a href="community.html" class="font-medium text-gray-600 hover:text-[#1B2B48]">후기</a>
+            </nav>
+            <div id="auth-container" class="hidden md:flex items-center">
+                <!-- Auth UI injected by JS -->
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative py-24 bg-[#1B2B48] text-white overflow-hidden">
+            <div
+                class="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=2669&auto=format&fit=crop')] bg-cover bg-center">
+            </div>
+            <div class="relative max-w-7xl mx-auto px-4 text-center">
+                <h1 class="text-3xl md:text-5xl font-serif font-bold mb-6">소중한 추억을 영원히</h1>
+                <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
+                    이별이 슬픔으로만 남지 않도록,<br>함께했던 아름다운 순간들을 기록하고 기억해주세요.
+                </p>
+            </div>
+        </section>
+
+        <div class="max-w-7xl mx-auto px-4 py-16 space-y-24">
+
+            <!-- Section 1: Bucket List -->
+            <section class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <span class="text-[#C5A065] font-bold tracking-wider text-sm">MEMORY 01</span>
+                    <h2 class="text-3xl font-bold text-[#1B2B48]">함께하는 버킷리스트</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        아직 시간이 남아있다면, 아이와 함께 꼭 해보고 싶었던 일들을 하나씩 실천해보세요.
+                        거창하지 않아도 좋아요. 익숙한 공원 산책, 좋아하는 간식 실컷 먹기 등 소소한 행복이 가장 큰 추억이 됩니다.
+                    </p>
+                    <ul class="space-y-3 mt-4">
+                        <li class="flex items-center gap-3 text-gray-700">
+                            <i class="fas fa-check-circle text-[#C5A065]"></i> 가족사진 남기기
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-700">
+                            <i class="fas fa-check-circle text-[#C5A065]"></i> 좋아하는 장소 산책하기
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-700">
+                            <i class="fas fa-check-circle text-[#C5A065]"></i> 특별한 간식 파티
+                        </li>
+                    </ul>
+                </div>
+                <div class="rounded-2xl overflow-hidden shadow-lg h-80 bg-gray-200 relative group">
+                    <img src="https://images.unsplash.com/photo-1535930749574-1399327ce78f?q=80&w=2536&auto=format&fit=crop"
+                        alt="Bucket List"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                </div>
+            </section>
+
+            <!-- Section 2: Recording -->
+            <section class="grid md:grid-cols-2 gap-12 items-center md:flex-row-reverse">
+                <div class="order-2 md:order-1 rounded-2xl overflow-hidden shadow-lg h-80 bg-gray-200 relative group">
+                    <img src="https://images.unsplash.com/photo-1544568100-847a948585b9?q=80&w=2574&auto=format&fit=crop"
+                        alt="Recording"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                </div>
+                <div class="space-y-6 order-1 md:order-2">
+                    <span class="text-[#C5A065] font-bold tracking-wider text-sm">MEMORY 02</span>
+                    <h2 class="text-3xl font-bold text-[#1B2B48]">기록으로 남기기</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        아이의 흔적을 모아두세요. 털, 발도장, 평소 좋아하던 장난감.
+                        그리고 건강했을 때의 모습뿐만 아니라, 지금의 모습도 사진과 영상으로 많이 남겨주세요.
+                        나중에 이 기록들이 큰 위로가 될 거예요.
+                    </p>
+                    <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                        <h3 class="font-bold text-[#1B2B48] mb-2 flex items-center gap-2">
+                            <i class="fas fa-camera text-gray-400"></i> 기록 팁
+                        </h3>
+                        <p class="text-sm text-gray-500">
+                            "아이의 눈을 바라보며 이름을 불러주는 영상을 찍어보세요. 목소리에 반응하는 아이의 모습은 언제 봐도 따뜻한 기억이 될 것입니다."
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Pet Loss Care -->
+            <section class="max-w-3xl mx-auto text-center bg-white p-10 rounded-3xl shadow-sm border border-gray-100">
+                <div
+                    class="w-16 h-16 bg-[#F5F5F0] rounded-full flex items-center justify-center mx-auto mb-6 text-[#1B2B48]">
+                    <i class="fas fa-heart text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-[#1B2B48] mb-4">펫로스 증후군, 혼자 아파하지 마세요</h2>
+                <p class="text-gray-600 mb-8 leading-relaxed">
+                    반려동물을 떠나보낸 후 겪는 상실감과 우울감은 자연스러운 감정입니다.<br>
+                    충분히 슬퍼하고, 아이와의 추억을 이야기하며 감정을 표현하는 것이 치유의 첫걸음입니다.
+                </p>
+                <a href="community.html"
+                    class="inline-flex items-center gap-2 text-[#C5A065] font-bold hover:underline">
+                    따뜻한 위로 나누러 가기 <i class="fas fa-arrow-right"></i>
+                </a>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="bg-gray-50 border-t py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4 grid gap-8 md:grid-cols-4">
+            <div class="col-span-1 md:col-span-2">
+                <span class="font-bold text-xl text-[#1B2B48] mb-4 block">On-sil</span>
+                <p class="text-sm text-gray-500 mb-4">(주)더온실 | 대표: 조영호<br>문의: 1668-5165</p>
+            </div>
+            <div>
+                <h3 class="font-semibold mb-4 text-sm">서비스</h3>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="search.html">장례식장 찾기</a></li>
+                    <li><a href="guide.html">장례 가이드</a></li>
+                    <li><a href="memory.html">추억 가이드</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-semibold mb-4 text-sm">고객지원</h3>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="contact.html">문의하기</a></li>
+                    <li><a href="terms.html">이용약관</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <script src="js/auth.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js');
+            });
+        }
+    </script>
+</body>
+
+</html>

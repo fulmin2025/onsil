@@ -1,0 +1,16 @@
+{
+    "name": "On-sil: 반려동물 안심 장례",
+    "short_name": "On-sil",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#FAFAFA",
+    "theme_color": "#1B2B48",
+    "description": "반려동물 장례식장 찾기 및 추억 기록 서비스",
+    "icons": [
+        {
+            "src": "icons/icon.svg",
+            "sizes": "192x192 512x512",
+            "type": "image/svg+xml"
+        }
+    ]
+}
