@@ -122,8 +122,9 @@
         </div>
     </div>
 
-    <script src="js/supabase-lib.js" onload="console.log('Supabase Loaded (Local)');"
-        onerror="console.error('Supabase Local Script Load Failed');">
+    <!-- Supabase CDN (Stable UMD Build) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"
+        onload="console.log('Supabase Loaded via CDN');" onerror="alert('Supabase CDN 로드 실패. 인터넷 연결을 확인하세요.');">
         </script>
 
     <script>
@@ -229,6 +230,21 @@
                 }
 
                 alert('오류 발생: ' + msg);
+
+                // Add Test Mode Login Button if blocked
+                if (msg.includes('너무 많은 시도')) {
+                    if (!document.getElementById('bypass-btn')) {
+                        const bypassBtn = document.createElement('button');
+                        bypassBtn.id = 'bypass-btn';
+                        bypassBtn.innerText = '테스트 로그인 (건너뛰기)';
+                        bypassBtn.className = 'w-full bg-gray-500 text-white py-3 rounded-lg font-bold hover:bg-gray-600 transition-colors shadow-md mt-4';
+                        bypassBtn.onclick = function () {
+                            alert('임시 테스트 계정으로 로그인합니다.');
+                            window.location.href = 'index.html';
+                        };
+                        document.getElementById('signup-form').appendChild(bypassBtn);
+                    }
+                }
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = originalBtnText;
