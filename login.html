@@ -146,9 +146,13 @@
             } catch (error) {
                 console.error('Login Error:', error);
                 let msg = error.message || "로그인에 실패했습니다.";
+
                 if (msg.includes('Invalid login credentials')) {
                     msg = "이메일 또는 비밀번호가 일치하지 않습니다.";
+                } else if (msg.includes('Email not confirmed')) {
+                    msg = "이메일 인증이 완료되지 않았습니다.\n가입하신 이메일로 전송된 인증 링크를 먼저 클릭해주세요.\n(또는 Supabase 관리자 페이지에서 '이메일 인증'을 꺼주세요)";
                 }
+
                 alert(msg);
             } finally {
                 submitBtn.disabled = false;

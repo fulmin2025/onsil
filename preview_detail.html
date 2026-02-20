@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장례식장 상세 (Preview) - On-sil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { DEFAULT: "#8D7B68" },
+                        secondary: { DEFAULT: "#FAFAFA" },
+                        accent: { DEFAULT: "#C5A065" },
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Hide scrollbar for horizontal scroll elements */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 text-gray-900 pb-24">
+
+    <!-- Mobile-App Style Container -->
+    <div class="max-w-md mx-auto bg-white min-h-screen shadow-2xl overflow-hidden relative">
+
+        <!-- Header / Hero Image -->
+        <div class="relative h-72 bg-gray-200">
+            <img src="https://images.unsplash.com/photo-1596272875729-ed2ff7d6d9c5?q=80&w=2574&auto=format&fit=crop"
+                alt="Detail Image" class="w-full h-full object-cover">
+
+            <!-- Top Gradient Overlay for Controls -->
+            <div
+                class="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-black/50 to-transparent pointer-events-none">
+            </div>
+
+            <!-- Back Button -->
+            <button onclick="history.back()"
+                class="absolute top-4 left-4 text-white z-10 w-10 h-10 flex items-center justify-center rounded-full active:bg-white/20">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </button>
+
+            <!-- Share/Like Buttons (Visual Only) -->
+            <div class="absolute top-4 right-4 flex gap-2 z-10">
+                <button class="text-white w-10 h-10 flex items-center justify-center rounded-full active:bg-white/20">
+                    <i class="far fa-heart text-xl"></i>
+                </button>
+                <button class="text-white w-10 h-10 flex items-center justify-center rounded-full active:bg-white/20">
+                    <i class="fas fa-share-alt text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Title Section -->
+        <div class="px-5 py-6 bg-white">
+            <div class="flex flex-wrap gap-2 mb-3">
+                <span class="bg-[#8D7B68] text-white text-[10px] px-2 py-1 rounded-sm font-bold tracking-wider">안심
+                    장례식장</span>
+                <span class="bg-gray-100 text-gray-600 text-[10px] px-2 py-1 rounded-sm font-medium">단독 추모실</span>
+            </div>
+            <h1 class="text-2xl font-bold mb-2 leading-tight">펫포레스트 남양주점</h1>
+            <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+                <i class="fas fa-map-marker-alt text-gray-400"></i>
+                <span>경기 남양주시 화도읍</span>
+            </div>
+
+            <div class="flex items-center justify-between border-t border-gray-100 pt-4">
+                <div class="flex items-center gap-1">
+                    <i class="fas fa-star text-[#C5A065]"></i>
+                    <span class="font-bold text-lg">4.9</span>
+                    <span class="text-gray-400 text-sm">(124개 리뷰)</span>
+                </div>
+                <a href="#" class="text-sm text-blue-500 font-medium flex items-center gap-1">
+                    리뷰 보러가기 <i class="fas fa-chevron-right text-xs"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="h-2 bg-gray-100"></div>
+
+        <!-- Quick Info Tabs/Anchors -->
+        <div class="sticky top-0 bg-white z-40 border-b border-gray-100 flex text-center">
+            <a href="#info" class="flex-1 py-3 text-sm font-bold text-[#8D7B68] border-b-2 border-[#8D7B68]">시설 정보</a>
+            <a href="#price" class="flex-1 py-3 text-sm font-medium text-gray-500 hover:text-gray-800">요금 안내</a>
+            <a href="#location" class="flex-1 py-3 text-sm font-medium text-gray-500 hover:text-gray-800">위치</a>
+        </div>
+
+        <!-- Facility Info -->
+        <div id="info" class="px-5 py-8">
+            <h3 class="font-bold text-lg mb-4">시설 소개</h3>
+            <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                국내 최고 수준의 프리미엄 반려동물 장례식장입니다. 넓고 쾌적한 추모 공간과 개별 화장로를 보유하고 있으며,
+                전 과정을 참관하실 수 있습니다. 보호자님의 슬픔을 위로하고 아이의 마지막을 품격 있게 배웅합니다.
+            </p>
+
+            <div class="grid grid-cols-4 gap-4 text-center">
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-12 h-12 bg-[#F9F5F0] rounded-full flex items-center justify-center text-[#8D7B68]">
+                        <i class="fas fa-parking"></i>
+                    </div>
+                    <span class="text-xs text-gray-500">주차가능</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-12 h-12 bg-[#F9F5F0] rounded-full flex items-center justify-center text-[#8D7B68]">
+                        <i class="fas fa-coffee"></i>
+                    </div>
+                    <span class="text-xs text-gray-500">대기실</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-12 h-12 bg-[#F9F5F0] rounded-full flex items-center justify-center text-[#8D7B68]">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <span class="text-xs text-gray-500">식당</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-12 h-12 bg-[#F9F5F0] rounded-full flex items-center justify-center text-[#8D7B68]">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <span class="text-xs text-gray-500">와이파이</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="h-2 bg-gray-100"></div>
+
+        <!-- Price Info -->
+        <div id="price" class="px-5 py-8">
+            <h3 class="font-bold text-lg mb-4">기본 장례 비용</h3>
+            <div class="border rounded-lg overflow-hidden">
+                <div class="flex justify-between items-center p-4 border-b bg-gray-50">
+                    <span class="font-medium text-gray-700">기본 장례 (5kg 미만)</span>
+                    <span class="font-bold text-[#8D7B68]">250,000원</span>
+                </div>
+                <div class="p-4 bg-white text-sm text-gray-600 space-y-2">
+                    <div class="flex items-start gap-2">
+                        <i class="fas fa-check text-[#8D7B68] mt-1"></i>
+                        <span>염습 및 수의 제공</span>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <i class="fas fa-check text-[#8D7B68] mt-1"></i>
+                        <span>개별 추모실 이용 (1시간)</span>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <i class="fas fa-check text-[#8D7B68] mt-1"></i>
+                        <span>개별 화장 진행</span>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <i class="fas fa-check text-[#8D7B68] mt-1"></i>
+                        <span>기본 유골함 제공</span>
+                    </div>
+                </div>
+            </div>
+            <button
+                class="w-full mt-4 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+                요금 자세히 보기 <i class="fas fa-chevron-down ml-1"></i>
+            </button>
+        </div>
+
+        <!-- Divider -->
+        <div class="h-2 bg-gray-100"></div>
+
+        <!-- Location Info -->
+        <div id="location" class="px-5 py-8">
+            <h3 class="font-bold text-lg mb-4">위치</h3>
+            <p class="text-gray-600 text-sm mb-4">경기도 남양주시 화도읍 북한강로 1528-12</p>
+            <div class="h-48 bg-gray-200 rounded-lg overflow-hidden relative mb-4">
+                <!-- Static Map Placeholder -->
+                <img src="https://via.placeholder.com/600x300/e5e7eb/9ca3af?text=Map+View"
+                    class="w-full h-full object-cover opacity-80" alt="Map">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <span class="bg-white/90 px-3 py-1 rounded-full text-xs font-bold shadow-sm text-gray-600">지도
+                        보기</span>
+                </div>
+            </div>
+
+            <div class="flex gap-4 text-sm">
+                <div
+                    class="flex-1 bg-gray-50 p-3 rounded-lg flex items-center justify-center gap-2 cursor-pointer hover:bg-gray-100">
+                    <i class="far fa-copy"></i> 주소 복사
+                </div>
+                <div
+                    class="flex-1 bg-gray-50 p-3 rounded-lg flex items-center justify-center gap-2 cursor-pointer hover:bg-gray-100">
+                    <i class="fas fa-location-arrow"></i> 길찾기
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Disclaimer -->
+        <div class="bg-gray-50 px-5 py-8 text-xs text-gray-400 text-center leading-relaxed">
+            온실은 통신판매중개자로서 장례 서비스의 주거래 당사자가 아니며,<br>
+            각 장례식장의 서비스 정보 및 거래에 대한 책임은<br>
+            각 제공자에게 있습니다.
+        </div>
+
+        <!-- Sticky Bottom CTA -->
+        <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t p-4 z-50 safe-area-bottom">
+            <div class="flex gap-3">
+                <button
+                    class="flex-1 py-3.5 border border-[#8D7B68] text-[#8D7B68] rounded-lg font-bold text-base hover:bg-[#F9F5F0] transition-colors">
+                    문의하기
+                </button>
+                <button
+                    class="flex-[2] py-3.5 bg-[#8D7B68] text-white rounded-lg font-bold text-base shadow-lg hover:bg-[#7A6A59] transition-colors flex items-center justify-center gap-2">
+                    <i class="fas fa-phone-alt animate-pulse"></i> 전화 상담
+                </button>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
