@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>고양이 건강 가이드 - 온실(Onsil)</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1B2B48">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#1B2B48',
+                            light: '#2A3F64',
+                            sage: '#87A08B',
+                            warm: '#D4A373',
+                            cream: '#FAFAFA'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .accordion-active .accordion-content {
+            max-height: 500px;
+        }
+
+        .timeline-step::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 2rem;
+            bottom: -2rem;
+            width: 2px;
+            background: #E5E7EB;
+            z-index: 0;
+        }
+
+        .timeline-step:last-child::before {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-step::before {
+                left: 1.25rem;
+            }
+        }
+
+        .mobile-nav-open {
+            transform: translateX(0) !important;
+        }
+    </style>
+</head>
+
+<body class="bg-brand-cream text-brand overflow-x-hidden">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <div
+                    class="w-8 h-8 rounded-lg bg-[#2C3E50] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <span class="text-white text-xs font-bold">온</span>
+                </div>
+                <span class="font-bold text-lg text-[#2C3E50] tracking-tight">온실(Onsil)</span>
+            </a>
+            <nav class="hidden md:flex gap-8">
+                <a href="search.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">장례식장
+                    찾기</a>
+                <a href="guide.html" class="text-sm font-bold text-brand border-b-2 border-brand-warm pb-1">이별 가이드</a>
+                <a href="self-diagnosis.html"
+                    class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">건강자가진단</a>
+                <a href="memory.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">추억
+                    가이드</a>
+                <a href="community.html"
+                    class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">보호자 후기</a>
+            </nav>
+            <div id="auth-container" class="hidden md:flex items-center gap-2">
+                <a href="search.html?quote=true"
+                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2 rounded-md text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-calculator"></i> 바로 견적받기
+                </a>
+                <div class="flex items-center ml-2">
+                    <!-- Auth UI injected by JS -->
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <button id="mobile-menu-btn"
+                class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors"
+                onclick="toggleMobileNav()">
+                <i class="fas fa-bars text-brand text-lg" id="menu-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-12 pb-32">
+
+        <!-- Section: Farewell Guide (Original Content) -->
+        <div id="guide-farewell-content">
+            <!-- Hero Section -->
+            <section class="text-center mb-20 fade-up">
+                <div
+                    class="inline-flex items-center gap-2 bg-brand-warm/10 text-brand-warm px-4 py-1.5 rounded-full text-xs font-bold mb-6">
+                    <i class="fas fa-heart"></i> ONSIL CARE GUIDE
+                </div>
+                <h2 class="text-2xl md:text-4xl font-bold leading-tight mb-6">
+                    소중한 아이와의 이별,<br>
+                    <span class="text-brand-sage">당황하지 않도록 함께할게요.</span>
+                </h2>
+                <p class="text-gray-500 text-lg font-light max-w-lg mx-auto leading-relaxed">
+                    슬픔에 잠겨있는 보호자님을 위해,<br>
+                    반드시 확인해야 할 일들을 정리했습니다.
+                </p>
+            </section>
+
+
+            <!-- Section 1: Post-mortem Home Care -->
+            <section class="mb-24 fade-up">
+                <div class="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-sm border border-gray-50">
+                    <div class="flex items-center gap-4 mb-10">
+                        <div
+                            class="w-12 h-12 bg-brand-sage/10 rounded-2xl flex items-center justify-center text-brand-sage">
+                            <i class="fas fa-home text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">집에서 할 수 있는 마지막 정돈</h2>
+                    </div>
+
+                    <div class="grid gap-8 md:grid-cols-2">
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-brand-sage text-white flex items-center justify-center font-bold text-sm flex-shrink-0">1</span>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-2">편안한 자세 잡아주기</h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">시간이 지나면 몸이 굳어질 수 있습니다. 다리를 배 쪽으로
+                                        부드럽게
+                                        당겨 웅크린 자세로 눕혀주세요.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-brand-sage text-white flex items-center justify-center font-bold text-sm flex-shrink-0">2</span>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-2">체온 유지 및 배변 조치</h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">근육이 이완되면 분비물이 나올 수 있습니다. 아래에 깨끗한
+                                        패드나
+                                        담요를 갈아주시고 입 주변을 닦아주세요.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-brand-sage text-white flex items-center justify-center font-bold text-sm flex-shrink-0">3</span>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-2">시원한 온도 유지</h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">부패를 늦추기 위해 실내 온도를 낮게 유지해주세요. 배 아래나
+                                        등에
+                                        아이스팩을 수건에 감싸 두시면 좋습니다.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-brand-sage text-white flex items-center justify-center font-bold text-sm flex-shrink-0">4</span>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-2">충분한 인사 나누기</h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">서둘러 보내지 않으셔도 괜찮습니다. 아이가 가장 사랑했던
+                                        가족들과
+                                        마지막 시간을 차분히 보내주세요.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Preparation Checklist -->
+            <section class="mb-24 fade-up">
+                <div class="flex items-center justify-between mb-10">
+                    <h2 class="text-2xl font-bold flex items-center gap-3">
+                        <i class="fas fa-clipboard-check text-brand-warm"></i>
+                        준비물 체크리스트
+                    </h2>
+                    <span class="text-xs text-gray-400">장례식장 방문 전 꼭 챙겨주세요</span>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Photo -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 flex items-center gap-4 group cursor-pointer hover:border-brand-warm transition-all"
+                        onclick="this.classList.toggle('checked')">
+                        <div
+                            class="w-6 h-6 rounded-md border-2 border-gray-200 flex items-center justify-center text-white bg-white group-hover:border-brand-warm group-[.checked]:bg-brand-warm group-[.checked]:border-brand-warm transition-all">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold">가장 예쁜 사진 (영정용)</h4>
+                            <p class="text-xs text-gray-400 mt-1">핸드폰에 담긴 고화질 원본 사진이면 충분합니다.</p>
+                        </div>
+                        <i class="fas fa-image text-brand-warm/20 text-2xl"></i>
+                    </div>
+
+                    <!-- Blanket -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 flex items-center gap-4 group cursor-pointer hover:border-brand-warm transition-all"
+                        onclick="this.classList.toggle('checked')">
+                        <div
+                            class="w-6 h-6 rounded-md border-2 border-gray-200 flex items-center justify-center text-white bg-white group-hover:border-brand-warm group-[.checked]:bg-brand-warm group-[.checked]:border-brand-warm transition-all">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold">좋아하던 담요나 타올</h4>
+                            <p class="text-xs text-gray-400 mt-1">아이를 감싸거나 이동 시 체온을 보호하기 위해 필요합니다.</p>
+                        </div>
+                        <i class="fas fa-soap text-brand-warm/20 text-2xl"></i>
+                    </div>
+
+                    <!-- Snacks -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 flex items-center gap-4 group cursor-pointer hover:border-brand-warm transition-all"
+                        onclick="this.classList.toggle('checked')">
+                        <div
+                            class="w-6 h-6 rounded-md border-2 border-gray-200 flex items-center justify-center text-white bg-white group-hover:border-brand-warm group-[.checked]:bg-brand-warm group-[.checked]:border-brand-warm transition-all">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold">마지막 간식과 꽃</h4>
+                            <p class="text-xs text-gray-400 mt-1">추모 시 제단에 올려줄 간식이나 작은 꽃 한 송이를 준비해보세요.</p>
+                        </div>
+                        <i class="fas fa-egg text-brand-warm/20 text-2xl"></i>
+                    </div>
+
+                    <!-- Booking -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 flex items-center gap-4 group cursor-pointer hover:border-brand-warm transition-all"
+                        onclick="this.classList.toggle('checked')">
+                        <div
+                            class="w-6 h-6 rounded-md border-2 border-gray-200 flex items-center justify-center text-white bg-white group-hover:border-brand-warm group-[.checked]:bg-brand-warm group-[.checked]:border-brand-warm transition-all">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold">온실 안심 예약 확정</h4>
+                            <p class="text-xs text-gray-400 mt-1">대기 시간 없이 바로 이용할 수 있도록 예약을 확인해주세요.</p>
+                        </div>
+                        <i class="fas fa-calendar-check text-brand-warm/20 text-2xl"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Timeline Process -->
+            <section class="mb-24 fade-up">
+                <h2 class="text-2xl font-bold mb-12 text-center">장례 진행 절차</h2>
+
+                <div class="relative space-y-12">
+                    <!-- Step 1 -->
+                    <div class="relative flex items-start gap-6 md:gap-12 timeline-step">
+                        <div
+                            class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-brand text-white flex items-center justify-center font-bold z-10 shrink-0">
+                            1</div>
+                        <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-brand">운구 및 방문</h3>
+                                <span
+                                    class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Arrival</span>
+                            </div>
+                            <p class="text-sm text-gray-500 leading-relaxed font-light">
+                                예약 시간에 맞춰 장례식장에 도착합니다. 이동이 어려운 경우 장례식장 전용 차량 서비스를 이용하실 수 있습니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative flex items-start gap-6 md:gap-12 timeline-step">
+                        <div
+                            class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-brand text-white flex items-center justify-center font-bold z-10 shrink-0">
+                            2</div>
+                        <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-brand">염습 및 입관</h3>
+                                <span
+                                    class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Preparation</span>
+                            </div>
+                            <p class="text-sm text-gray-500 leading-relaxed font-light">
+                                전문 장례 지도사가 정성스럽게 아이의 몸을 닦고 단장(수의/관 선택 시 진행)하여 마지막 잠을 준비합니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative flex items-start gap-6 md:gap-12 timeline-step">
+                        <div
+                            class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-brand text-white flex items-center justify-center font-bold z-10 shrink-0">
+                            3</div>
+                        <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-brand">추모 예식</h3>
+                                <span
+                                    class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Memorial</span>
+                            </div>
+                            <p class="text-sm text-gray-500 leading-relaxed font-light">
+                                단독 추모실에서 가족들만의 시간을 갖습니다. 아이와의 추억이 담긴 영상이나 편지를 나누며 작별 인사를 나눕니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="relative flex items-start gap-6 md:gap-12 timeline-step">
+                        <div
+                            class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-brand text-white flex items-center justify-center font-bold z-10 shrink-0">
+                            4</div>
+                        <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-brand">개별 화장 및 수골</h3>
+                                <span
+                                    class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Cremation</span>
+                            </div>
+                            <p class="text-sm text-gray-500 leading-relaxed font-light">
+                                철저한 개별 화장을 진행하며 전 과정을 참관실에서 확인하실 수 있습니다. 화장 종료 후 유골을 정갈하게 수습합니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="relative flex items-start gap-6 md:gap-12 timeline-step">
+                        <div
+                            class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-brand text-white flex items-center justify-center font-bold z-10 shrink-0">
+                            5</div>
+                        <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-brand">봉안 및 안치</h3>
+                                <span
+                                    class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Enshrinement</span>
+                            </div>
+                            <p class="text-sm text-gray-500 leading-relaxed font-light">
+                                수습된 유골을 유골함에 담아 인도해 드립니다. 봉안당 안치, 산골, 또는 메모리얼 스톤 제작 중 선택하실 수 있습니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: FAQ -->
+            <section class="mb-24 fade-up">
+                <h2 class="text-2xl font-bold mb-10">자주 묻는 질문</h2>
+
+                <div class="space-y-4">
+                    <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden accordion-item group">
+                        <button
+                            class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                            onclick="toggleAccordion(this)">
+                            <span class="font-bold">장례 진행 시간은 얼마나 걸리나요?</span>
+                            <i
+                                class="fas fa-chevron-down text-gray-300 group-[.accordion-active]:rotate-180 transition-transform"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="px-6 pb-6 text-sm text-gray-500 leading-relaxed">
+                                아이의 몸무게와 선택하신 옵션에 따라 다르지만, 평균적으로 1시간 30분에서 2시간 정도 소요됩니다. 충분한 추모 시간을 원하실 경우 조금 더 여유 있게
+                                계획하시는
+                                것이 좋습니다.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden accordion-item group">
+                        <button
+                            class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                            onclick="toggleAccordion(this)">
+                            <span class="font-bold">다른 아이들과 같이 화장하는 경우도 있나요?</span>
+                            <i
+                                class="fas fa-chevron-down text-gray-300 group-[.accordion-active]:rotate-180 transition-transform"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="px-6 pb-6 text-sm text-gray-500 leading-relaxed">
+                                온실이 안내하는 모든 제휴 장례식장은 **'100% 개별 화장'** 원칙을 준수합니다. 전 과정을 투명하게 참관하실 수 있으니 안심하셔도 됩니다.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden accordion-item group">
+                        <button
+                            class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                            onclick="toggleAccordion(this)">
+                            <span class="font-bold">비용은 언제 결제하나요?</span>
+                            <i
+                                class="fas fa-chevron-down text-gray-300 group-[.accordion-active]:rotate-180 transition-transform"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="px-6 pb-6 text-sm text-gray-500 leading-relaxed">
+                                온실에서 안내드린 견적 금액을 **온라인으로 즉시 결제**하게 되며, 이 경우 **장례식장 현장 결제 금액은 0원**입니다. 추가 옵션을 선택하지 않는 한
+                                현장에서의
+                                추가 비용 발생은 없습니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+        <!-- CTA Section -->
+        <section class="fade-up">
+            <div class="bg-brand py-12 px-8 rounded-[3rem] text-center text-white relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
+                <div class="relative z-10">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6">아이의 상태를 미리 체크해 보세요.</h2>
+                    <p class="text-white/60 mb-10 text-sm font-light">온실은 보호자님의 슬픔을 미리 이해하고 함께 준비하겠습니다.</p>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <a href="self-diagnosis.html?tab=aging"
+                            class="inline-flex items-center gap-3 bg-brand-warm hover:bg-brand-warm/90 text-white px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105">
+                            노화 자가 진단하기
+                        </a>
+                        <a href="self-diagnosis.html?tab=qol"
+                            class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105">
+                            삶의 질 평가하기
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-brand-cream border-t border-brand/5 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+                <div class="col-span-2 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-[#2C3E50] flex items-center justify-center">
+                            <span class="text-white text-xs font-bold font-sans">온</span>
+                        </div>
+                        <span class="font-bold text-lg text-[#2C3E50]">온실(Onsil)</span>
+                    </div>
+                    <p class="text-sm text-[#2C3E50]/40 mb-4 leading-relaxed max-w-sm">
+                        반려동물 장례식장 비교부터 예약까지.<br>어려운 결정에 늘 온실이 함께합니다.
+                    </p>
+                    <p class="text-xs text-[#2C3E50]/30">(주)더온실 | 대표: 조영호 | 문의: 1668-5165</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">서비스</h3>
+                    <ul class="space-y-3 text-sm text-[#2C3E50]/50">
+                        <li><a href="search.html" class="hover:text-[#2C3E50] transition-colors">장례식장 찾기</a></li>
+                        <li><a href="guide.html" class="hover:text-[#2C3E50] transition-colors">이별 가이드</a></li>
+                        <li><a href="self-diagnosis.html" class="hover:text-[#2C3E50] transition-colors">건강자가진단</a></li>
+                        <li><a href="memory.html" class="hover:text-[#2C3E50] transition-colors">추억 가이드</a></li>
+                        <li><a href="community.html" class="hover:text-[#2C3E50] transition-colors">보호자 후기</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">고객지원</h3>
+                    <ul class="space-y-3 text-sm text-[#2C3E50]/50">
+                        <li><a href="contact.html" class="hover:text-[#2C3E50] transition-colors">문의하기</a></li>
+                        <li><a href="partnership.html"
+                                class="hover:text-[#2C3E50] transition-colors font-bold text-brand-warm">제휴문의</a></li>
+                        <li><a href="terms.html" class="hover:text-[#2C3E50] transition-colors">이용약관</a></li>
+                        <li><a href="privacy.html" class="hover:text-[#2C3E50] transition-colors">개인정보처리방침</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="border-t border-[#2C3E50]/5 mt-10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-[#2C3E50]/30">&copy; 2026 온실(Onsil). All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
+                        <i class="fab fa-instagram text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
+                        <i class="fab fa-youtube text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
+                        <i class="fas fa-comment text-sm"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Scroll Animation
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+
+        // Accordion Toggle
+        function toggleAccordion(btn) {
+            const item = btn.closest('.accordion-item');
+            const isActive = item.classList.contains('accordion-active');
+
+            // Close all
+            document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('accordion-active'));
+
+            // Toggle current
+            if (!isActive) item.classList.add('accordion-active');
+        }
+
+        // PWA Service Worker
+        if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js');
+            });
+        }
+
+        // Mobile Nav
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            const panel = document.getElementById('mobile-nav-panel');
+            if (nav.classList.contains('hidden')) {
+                nav.classList.remove('hidden');
+                requestAnimationFrame(() => panel.classList.add('mobile-nav-open'));
+                document.body.style.overflow = 'hidden';
+            } else {
+                panel.classList.remove('mobile-nav-open');
+                document.body.style.overflow = '';
+                setTimeout(() => nav.classList.add('hidden'), 300);
+            }
+        }
+    </script>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
+            id="mobile-nav-panel">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <span class="font-bold text-lg text-brand">메뉴</span>
+                    <button onclick="toggleMobileNav()"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+                <nav class="space-y-1">
+                    <a href="search.html?quote=true"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors bg-brand-cream/50">
+                        <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
+                        <span class="font-bold text-brand">바로 견적받기</span>
+                    </a>
+                    <a href="search.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-search text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">장례식장 찾기</span>
+                    </a>
+                    <a href="guide.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-book-open text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">이별 가이드</span>
+                    </a>
+                    <a href="self-diagnosis.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-heartbeat text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">건강자가진단</span>
+                    </a>
+                    <a href="memory.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-paw text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">추억 가이드</span>
+                    </a>
+                    <a href="community.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-comment-dots text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">보호자 후기</span>
+                    </a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>우리아이 삶의 질(QOL) 평가 - 온실(Onsil)</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1B2B48">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#1B2B48',
+                            light: '#2A3F64',
+                            sage: '#87A08B',
+                            warm: '#D4A373',
+                            cream: '#FAFAFA'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .score-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #D4A373;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .expand-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+        }
+
+        .expand-active .expand-content {
+            max-height: 2000px;
+        }
+    </style>
+</head>
+
+<body class="bg-brand-cream text-brand overflow-x-hidden">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2">
+                <span class="font-bold text-xl tracking-tighter text-brand">온실<span
+                        class="text-brand-warm font-light">Onsil</span></span>
+            </a>
+            <nav class="hidden md:flex gap-8">
+                <a href="search.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">장례식장
+                    찾기</a>
+                <a href="guide.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">이별
+                    가이드</a>
+                <a href="memory.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">추억
+                    가이드</a>
+                <a href="community.html"
+                    class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">보호자 후기</a>
+            </nav>
+            <div id="auth-container" class="hidden md:flex items-center gap-4"></div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-12 pb-32">
+        <!-- Hero -->
+        <section class="text-center mb-16 fade-up">
+            <h1 class="text-3xl md:text-5xl font-bold mb-6">우리아이 삶의 질(QOL) 평가</h1>
+            <p class="text-gray-500 text-lg font-light leading-relaxed">
+                HHHHHMM 척도는 반려견의 호스피스 관리 상태를 평가하는 도구입니다.<br>
+                아이의 현재 상태에 가장 가까운 점수를 부여해 주세요. (총합 35점 이상 권장)
+            </p>
+        </section>
+
+        <!-- QOL Scale -->
+        <section class="mb-24 fade-up">
+            <div class="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-sm border border-gray-50">
+                <div class="space-y-6" id="h-scale-list">
+                    <!-- Hurt, Hunger, Hydration, Hygiene, Happiness, Mobility, More Good Days -->
+                    <div class="qol-item">
+                        <div class="flex justify-between items-center mb-4">
+                            <label class="font-bold text-lg">Hurt (통증)</label>
+                            <span class="text-brand-warm font-bold text-xl score-display">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" step="1" value="5"
+                            class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer score-slider"
+                            oninput="updateScore(this)">
+                        <div class="flex justify-between mt-3 text-[10px] text-gray-400">
+                            <span>지속적 통증/비명</span>
+                            <span>간헐적 통증</span>
+                            <span>통증 없음/정상</span>
+                        </div>
+                    </div>
+                    <hr class="border-gray-50">
+                    <div class="qol-item">
+                        <div class="flex justify-between items-center mb-4">
+                            <label class="font-bold text-lg">Hunger (배고픔)</label>
+                            <span class="text-brand-warm font-bold text-xl score-display">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" step="1" value="5"
+                            class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer score-slider"
+                            oninput="updateScore(this)">
+                        <div class="flex justify-between mt-3 text-[10px] text-gray-400">
+                            <span>식욕 전무</span>
+                            <span>지원 시 섭취</span>
+                            <span>식욕 매우 양호</span>
+                        </div>
+                    </div>
+                    <hr class="border-gray-50">
+                    <div class="qol-item">
+                        <div class="flex justify-between items-center mb-4">
+                            <label class="font-bold text-lg">Hydration (물 먹기)</label>
+                            <span class="text-brand-warm font-bold text-xl score-display">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" step="1" value="5"
+                            class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer score-slider"
+                            oninput="updateScore(this)">
+                        <div class="flex justify-between mt-3 text-[10px] text-gray-400">
+                            <span>음수 불가</span>
+                            <span>배뇨/탄력 저조</span>
+                            <span>충분한 음수</span>
+                        </div>
+                    </div>
+                    <hr class="border-gray-50">
+                    <div class="qol-item">
+                        <div class="flex justify-between items-center mb-4">
+                            <label class="font-bold text-lg">Hygiene (위생)</label>
+                            <span class="text-brand-warm font-bold text-xl score-display">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" step="1" value="5"
+                            class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer score-slider"
+                            oninput="updateScore(this)">
+                        <div class="flex justify-between mt-3 text-[10px] text-gray-400">
+                            <span>괴로움/오염</span>
+                            <span>위생 불량/냄새</span>
+                            <span>매우 깨끗함</span>
+                        </div>
+                    </div>
+                    <hr class="border-gray-50">
+                    <div class="qol-item">
+                        <div class="flex justify-between items-center mb-4">
+                            <label class="font-bold text-lg">Happiness (행복감)</label>
+                            <span class="text-brand-warm font-bold text-xl score-display">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" step="1" value="5"
+                            class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer score-slider"
+                            oninput="updateScore(this)">
+                        <div class="flex justify-between mt-3 text-[10px] text-gray-400">
+                            <span>반응 전무/침울</span>
+                            <span>간혹 우울/일부 반응</span>
+                            <span>즐겁고 사교적</span>
+                        </div>
+                    </div>
+                    <hr class="border-gray-50">
+                    <div class="qol-item">
+                        <div class="flex justify-between items-center mb-4">
+                            <label class="font-bold text-lg">Mobility (운동성)</label>
+                            <span class="text-brand-warm font-bold text-xl score-display">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" step="1" value="5"
+                            class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer score-slider"
+                            oninput="updateScore(this)">
+                        <div class="flex justify-between mt-3 text-[10px] text-gray-400">
+                            <span>거동 불가/발작</span>
+                            <span>도움 필요</span>
+                            <span>자유로운 활동</span>
+                        </div>
+                    </div>
+                    <hr class="border-gray-50">
+                    <div class="qol-item">
+                        <div class="flex justify-between items-center mb-4">
+                            <label class="font-bold text-lg">Good Days (기력)</label>
+                            <span class="text-brand-warm font-bold text-xl score-display">5</span>
+                        </div>
+                        <input type="range" min="0" max="10" step="1" value="5"
+                            class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer score-slider"
+                            oninput="updateScore(this)">
+                        <div class="flex justify-between mt-3 text-[10px] text-gray-400">
+                            <span>기력 매우 저조</span>
+                            <span>주 절반 지침</span>
+                            <span>정상적/양호</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 p-8 bg-brand rounded-3xl text-white">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm font-bold opacity-50">Total QOL Score</span>
+                        <div class="text-4xl font-black text-brand-warm"><span id="total-val">35</span>/70</div>
+                    </div>
+                    <p id="total-feedback" class="text-sm font-light leading-relaxed"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advice Buttons -->
+        <section class="fade-up space-y-4">
+            <!-- Button 1 -->
+            <div class="accordion-item bg-white border border-gray-100 rounded-[2rem] overflow-hidden group">
+                <button class="w-full p-6 text-left flex items-start gap-4" onclick="toggleAccordion(this)">
+                    <div
+                        class="w-12 h-12 bg-brand-warm/10 rounded-2xl flex items-center justify-center text-brand-warm shrink-0">
+                        <i class="fas fa-question"></i></div>
+                    <div class="flex-1">
+                        <h3 class="font-bold">합산 점수가 35점 미만인 경우 어떻게 대처해야 하나요?</h3>
+                    </div>
+                </button>
+                <div class="expand-content">
+                    <div class="px-8 pb-8 text-sm text-gray-500 space-y-4">
+                        <p class="font-medium text-brand">합산 점수가 35점 미만일 경우, 일반적으로 삶의 질을 크게 떨어뜨리는 요인(통증, 식욕 부진 등)이 있음을
+                            의미하며, 호스피스 치료 방향의 재조정이 필요할 수 있습니다.</p>
+                        <p>수의사님과 상담하여 통증 완화 등의 추가적인 의학적 조치를 논의하는 것이 중요합니다. (이 정보는 일반적인 지침이므로 반드시 전문가의 진단을 따르시길 바랍니다.)
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Button 2 -->
+            <div class="accordion-item bg-white border border-gray-100 rounded-[2rem] overflow-hidden group">
+                <button class="w-full p-6 text-left flex items-start gap-4" onclick="toggleAccordion(this)">
+                    <div
+                        class="w-12 h-12 bg-brand-sage/10 rounded-2xl flex items-center justify-center text-brand-sage shrink-0">
+                        <i class="fas fa-brain"></i></div>
+                    <div class="flex-1">
+                        <h3 class="font-bold">노령견의 인지 기능을 자극하는 놀이나 마사지 방법</h3>
+                    </div>
+                </button>
+                <div class="expand-content">
+                    <div class="px-8 pb-8 text-sm text-gray-500 space-y-8 mt-4">
+                        <div>
+                            <h4 class="font-bold text-brand mb-3"># 감각과 판단력을 깨우는 실내 놀이</h4>
+                            <ul class="space-y-3 list-disc list-inside">
+                                <li><strong>퍼즐 장난감</strong>: 간식을 찾아 먹게 하여 감각과 판단력을 자극합니다.</li>
+                                <li><strong>숨바꼭질 게임</strong>: 뇌에 긍정적인 자극을 주어 인지 기능을 유지합니다.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-brand mb-3"># 불안을 줄여주는 마사지와 터치</h4>
+                            <ul class="space-y-3 list-disc list-inside">
+                                <li><strong>고유 수용성 터치 마사지</strong>: 스스로 몸의 움직임을 인지하게 하여 치매 예방을 돕습니다.</li>
+                                <li><strong>목·앞가슴 마사지</strong>: 고개를 들기 수월하게 하여 시야를 넓히고 주변 인지력을 높입니다.</li>
+                                <li><strong>부드러운 스킨십</strong>: 시·청각 저하에서 오는 불안감을 줄여주고 유대감을 강화합니다.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a href="guide.html"
+                class="w-full bg-white border border-gray-100 py-6 rounded-[2rem] flex items-center justify-center gap-3 font-bold text-brand mt-8">
+                <i class="fas fa-arrow-left"></i> 이별 가이드로 돌아가기
+            </a>
+        </section>
+    </main>
+
+    <script>
+        function updateScore(input) {
+            input.parentElement.querySelector('.score-display').textContent = input.value;
+            let sum = 0;
+            document.querySelectorAll('.score-slider').forEach(s => sum += parseInt(s.value));
+            document.getElementById('total-val').textContent = sum;
+
+            const feedback = document.getElementById('total-feedback');
+            if (sum >= 35) {
+                feedback.innerHTML = "<span class='text-brand-warm font-bold'>양호:</span> 현재 반려동물의 삶의 질이 양호하게 관리되고 있습니다.";
+            } else {
+                feedback.innerHTML = "<span class='text-brand-warm font-bold'>주의:</span> 삶의 질을 떨어뜨리는 요인이 관찰됩니다. 전문가와의 상담을 추천합니다.";
+            }
+        }
+
+        function toggleAccordion(btn) {
+            const item = btn.closest('.accordion-item');
+            const isActive = item.classList.contains('expand-active');
+            document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('expand-active'));
+            if (!isActive) item.classList.add('expand-active');
+        }
+
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, observerOptions);
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        window.onload = () => document.querySelectorAll('.score-slider').forEach(s => updateScore(s));
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 - 온실(Onsil)</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1B2B48">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { DEFAULT: "#1B2B48" },
+                        secondary: { DEFAULT: "#FAFAFA" },
+                        accent: { DEFAULT: "#C5A065" },
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                        serif: ['Nanum Myeongjo', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans flex items-center justify-center min-h-screen">
+
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden p-8">
+        <div class="text-center mb-8">
+            <a href="index.html" class="text-3xl font-bold text-[#1B2B48] block mb-2">온실(Onsil)</a>
+            <p class="text-gray-500 text-sm">반려동물과의 따뜻한 이별, 온실이 함께합니다.</p>
+        </div>
+
+        <form id="login-form" class="space-y-6" onsubmit="return false;">
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">이메일</label>
+                <input type="email" id="email" required
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all"
+                    placeholder="example@email.com">
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">비밀번호</label>
+                <input type="password" id="password" required
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all"
+                    placeholder="••••••••">
+            </div>
+
+            <button type="button" id="login-btn" onclick="handleLogin()"
+                class="w-full bg-[#1B2B48] text-white py-3 rounded-lg font-bold hover:bg-[#2a4269] transition-colors shadow-md">
+                로그인
+            </button>
+        </form>
+
+        <div class="mt-6 text-center text-sm text-gray-600">
+            아직 계정이 없으신가요?
+            <a href="signup.html" class="text-[#C5A065] font-bold hover:underline">회원가입</a>
+        </div>
+    </div>
+
+    <!-- Supabase CDN (Stable UMD Build) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+    <script>
+        // Global Error Handler
+        window.onerror = function (msg, url, line, col, error) {
+            alert("자바스크립트 오류: " + msg + "\nLine: " + line);
+            return false;
+        };
+
+        const SUPABASE_URL = 'https://fkmcanwlcigofjhbfkzs.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_9OyB7n3foIalMmDxq1-_PA_s3xYfcJS';
+        let authClient = null;
+
+        // Initialization Check
+        window.addEventListener('load', function () {
+            if (window.supabase && window.supabase.createClient) {
+                console.log('Login Page: Supabase Loaded Successfully');
+            } else {
+                alert("심각한 오류: Supabase 라이브러리를 불러올 수 없습니다. (Login Page)");
+            }
+        });
+
+        function getSupabase() {
+            if (authClient) return authClient;
+            try {
+                if (window.supabase && window.supabase.createClient) {
+                    authClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                    return authClient;
+                }
+                return null;
+            } catch (e) {
+                console.error(e);
+                return null;
+            }
+        }
+
+        async function handleLogin() {
+            const submitBtn = document.getElementById('login-btn');
+            const originalBtnText = submitBtn.innerText;
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerText = '로그인 중...';
+
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value.trim();
+
+                if (!email || !password) {
+                    throw new Error('이메일과 비밀번호를 모두 입력해주세요.');
+                }
+
+                const sb = getSupabase();
+                if (!sb) throw new Error('인증 서비스를 연결할 수 없습니다.');
+
+                const { data, error } = await sb.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (error) throw error;
+
+                if (data?.session) {
+                    // Login Success
+                    // alert('로그인 성공!'); 
+                    window.location.href = 'index.html';
+                } else {
+                    throw new Error('로그인 정보를 확인할 수 없습니다.');
+                }
+
+            } catch (error) {
+                console.error('Login Error:', error);
+                let msg = error.message || "로그인에 실패했습니다.";
+
+                if (msg.includes('Invalid login credentials')) {
+                    msg = "이메일 또는 비밀번호가 일치하지 않습니다.";
+                } else if (msg.includes('Email not confirmed')) {
+                    msg = "이메일 인증이 완료되지 않았습니다.\n가입하신 이메일로 전송된 인증 링크를 먼저 클릭해주세요.\n(또는 Supabase 관리자 페이지에서 '이메일 인증'을 꺼주세요)";
+                }
+
+                alert(msg);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText;
+            }
+        }
+    </script>
+    <script>
+        if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js');
+            });
+        } else if (window.location.protocol === 'file:') {
+            console.warn('Onsil: PWA features (Service Worker) are disabled on file:// protocol.');
+        }
+    </script>
+</body>
+
+</html>

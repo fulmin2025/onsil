@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>온실(Onsil) | 반려동물 안심 장례, 비교부터 예약까지</title>
+    <meta name="description" content="반려동물 장례식장 비교, 투명한 가격, 안심 인증까지. 온실이 어려운 결정에 함께합니다.">
+    <meta property="og:title" content="온실(Onsil) | 반려동물 안심 장례">
+    <meta property="og:description" content="장례식장 비교부터 예약까지, 온실과 함께하세요.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#2C3E50">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#2C3E50',
+                            light: '#34495E',
+                            dark: '#1A252F',
+                            cream: '#F8F6F3',
+                            warm: '#D4A574',
+                            warmDark: '#B8894E',
+                            sage: '#87A08B',
+                            mist: '#E8ECE9'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
+                        serif: ['Nanum Myeongjo', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(180deg,
+                    rgba(44, 62, 80, 0.1) 0%,
+                    rgba(44, 62, 80, 0.05) 30%,
+                    rgba(248, 246, 243, 0.6) 70%,
+                    rgba(248, 246, 243, 1) 100%);
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(44, 62, 80, 0.12);
+        }
+
+        .stat-number {
+            background: linear-gradient(135deg, #2C3E50, #D4A574);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mobile-nav-open {
+            transform: translateX(0) !important;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .float-anim {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .process-line {
+            background: linear-gradient(180deg, #D4A574 0%, #87A08B 100%);
+            width: 2px;
+        }
+
+        .compare-badge {
+            background: linear-gradient(135deg, #D4A574, #B8894E);
+        }
+
+        .floating-bar {
+            background: rgba(44, 62, 80, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .floating-bar.active {
+            transform: translateY(0);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 2.25rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .floating-bar {
+                padding: 1rem !important;
+            }
+
+            .floating-bar a {
+                padding: 0.85rem 1rem !important;
+                font-size: 0.875rem !important;
+            }
+
+            .floating-bar i {
+                font-size: 0.9rem !important;
+            }
+
+            .floating-bar .w-10 {
+                width: 2rem !important;
+                height: 2rem !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-brand-cream font-sans text-brand antialiased">
+
+    <!-- Header -->
+    <header id="main-header" class="fixed top-0 z-50 w-full transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
+                    <span class="text-white text-xs font-bold">온</span>
+                </div>
+                <span class="font-bold text-lg text-brand tracking-tight">온실(Onsil)</span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden lg:flex items-center gap-1">
+                <a href="search.html"
+                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">장례식장
+                    찾기</a>
+                <a href="guide.html"
+                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">이별
+                    가이드</a>
+                <a href="self-diagnosis.html"
+                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">건강자가진단</a>
+                <a href="memory.html"
+                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">추억
+                    가이드</a>
+                <a href="community.html"
+                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">보호자
+                    후기</a>
+            </nav>
+
+            <div class="hidden lg:flex items-center gap-3">
+                <div id="auth-container"></div>
+                <a href="search.html?quote=true"
+                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-2">
+                    <i class="fas fa-calculator"></i> 바로 견적받기
+                </a>
+                <button id="install-pwa-btn"
+                    class="hidden bg-brand text-white hover:bg-brand-light px-4 py-2.5 rounded-xl text-sm font-medium transition-colors shadow-md flex items-center gap-2">
+                    <i class="fas fa-download"></i> 앱 설치
+                </button>
+                <button
+                    onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                    class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-2">
+                    <i class="fas fa-calendar-check"></i> 예약하기
+                </button>
+                <a href="tel:1668-5165"
+                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-brand-warm/20 flex items-center gap-2">
+                    <i class="fas fa-phone-alt text-xs"></i> 1668-5165
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn"
+                class="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors"
+                onclick="toggleMobileNav()">
+                <i class="fas fa-bars text-brand text-lg" id="menu-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
+            id="mobile-nav-panel">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <span class="font-bold text-lg text-brand">메뉴</span>
+                    <button onclick="toggleMobileNav()"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+                <nav class="space-y-1">
+                    <a href="search.html?quote=true"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors bg-brand-cream/50">
+                        <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
+                        <span class="font-bold text-brand">바로 견적받기</span>
+                    </a>
+                    <a href="search.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-search text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">장례식장 찾기</span>
+                    </a>
+                    <a href="guide.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-book-open text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">이별 가이드</span>
+                    </a>
+                    <a href="self-diagnosis.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-stethoscope text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">건강자가진단</span>
+                    </a>
+                    <a href="memory.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-heart text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">추억 가이드</span>
+                    </a>
+                    <a href="community.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-comments text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">보호자 후기</span>
+                    </a>
+                    <a href="contact.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-envelope text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">문의하기</span>
+                    </a>
+                </nav>
+                <div class="mt-8 pt-6 border-t">
+                    <button
+                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                        class="w-full flex items-center justify-center gap-2 bg-brand-sage text-white py-3.5 rounded-xl font-bold shadow-lg mb-3 hover:bg-[#87A08B]/90 transition-colors">
+                        <i class="fas fa-calendar-check"></i> 예약하기
+                    </button>
+                    <a href="tel:1668-5165"
+                        class="flex items-center justify-center gap-2 bg-brand-warm text-white py-3.5 rounded-xl font-bold shadow-lg">
+                        <i class="fas fa-phone-alt"></i> 상담전화 1668-5165
+                    </a>
+                    <div class="flex gap-2 mt-3">
+                        <a href="login.html"
+                            class="flex-1 text-center py-3 border border-brand/20 rounded-xl text-sm font-medium text-brand hover:bg-brand/5 transition-colors">로그인</a>
+                        <a href="signup.html"
+                            class="flex-1 text-center py-3 bg-brand text-white rounded-xl text-sm font-bold hover:bg-brand-light transition-colors">회원가입</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[90vh] sm:min-h-screen flex items-center overflow-hidden pt-16">
+        <div class="absolute inset-0 bg-brand-cream z-0"></div>
+        <img src="./images/hero_dog.jpg"
+            class="absolute inset-0 w-full h-full object-cover opacity-20 sm:opacity-10 mix-blend-multiply z-0"
+            alt="Hero Background" onerror="this.style.display='none';" />
+
+        <!-- Decorative elements -->
+        <div class="absolute top-20 right-10 w-72 h-72 bg-brand-sage/10 rounded-full blur-3xl z-0"></div>
+        <div class="absolute bottom-20 left-10 w-96 h-96 bg-brand-warm/8 rounded-full blur-3xl z-0"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 w-full z-10">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <!-- Text -->
+                <div class="space-y-6 md:space-y-8 fade-up">
+                    <div
+                        class="inline-flex items-center gap-2 bg-brand-sage/15 text-brand-sage px-4 py-2 rounded-full text-sm font-medium">
+                        <span class="w-2 h-2 bg-brand-sage rounded-full animate-pulse"></span>
+                        전국 50+ 안심 인증 장례식장
+                    </div>
+
+                    <h1 class="text-4xl md:text-5xl lg:text-7xl font-black text-brand leading-[1.1] hero-title">
+                        반려동물 장례식장,<br class="hidden md:block">비교부터 예약까지
+                    </h1>
+                    <p class="text-lg md:text-xl text-brand/60 font-light leading-relaxed max-w-xl">
+                        50여 곳의 정식 등록 장례식장을 한눈에 비교하고<br class="hidden sm:block">
+                        투명한 가격으로 안심하고 예약하세요.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                        <a href="search.html"
+                            class="bg-brand hover:bg-brand-light text-white px-8 py-4 rounded-2xl text-base font-bold transition-all shadow-xl shadow-brand/15 flex items-center justify-center gap-2 group">
+                            안심 장례식장 찾기
+                            <i class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                        <a href="guide.html"
+                            class="bg-white hover:bg-gray-50 text-brand border border-brand/10 px-8 py-4 rounded-2xl text-base font-bold transition-all flex items-center justify-center gap-2">
+                            <i class="fas fa-book-open text-brand-warm"></i>
+                            이별 준비 가이드
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Visual Card -->
+                <div class="relative fade-up block lg:block mt-8 lg:mt-0 max-w-md mx-auto lg:max-w-none"
+                    style="animation-delay: 0.2s;">
+                    <div
+                        class="relative bg-white rounded-3xl shadow-2xl shadow-brand/8 p-5 sm:p-8 border border-brand/5">
+                        <!-- Mock comparison card -->
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 bg-brand-sage/15 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-balance-scale text-brand-sage"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-brand text-sm">장례식장 비교</p>
+                                <p class="text-xs text-brand/40">내 위치 기반 추천</p>
+                            </div>
+                        </div>
+
+                        <!-- Mock items -->
+                        <div class="space-y-2.5">
+                            <div
+                                class="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-4 bg-brand-cream rounded-2xl border border-brand/5">
+                                <div
+                                    class="w-12 h-12 sm:w-16 sm:h-16 bg-brand-warm/10 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fas fa-building text-brand-warm text-lg sm:text-xl"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="text-[10px] px-1.5 py-0.5 bg-brand-warm/15 text-brand-warm rounded font-bold">안심인증</span>
+                                        <p class="font-bold text-brand text-sm truncate">펫포레스트 남양주점</p>
+                                    </div>
+                                    <p class="text-xs text-brand/40 mt-0.5">경기 남양주 · 4.8★</p>
+                                </div>
+                                <p class="font-bold text-brand text-sm whitespace-nowrap">25만원~</p>
+                            </div>
+
+                            <div
+                                class="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-4 bg-white rounded-2xl border border-brand/5">
+                                <div
+                                    class="w-12 h-12 sm:w-16 sm:h-16 bg-brand/5 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fas fa-building text-brand/40 text-lg sm:text-xl"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <p class="font-bold text-brand text-sm truncate">21그램 경기광주점</p>
+                                    </div>
+                                    <p class="text-xs text-brand/40 mt-0.5">경기 광주 · 4.9★</p>
+                                </div>
+                                <p class="font-bold text-brand text-sm whitespace-nowrap">25만원~</p>
+                            </div>
+
+                            <div
+                                class="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-4 bg-white rounded-2xl border border-brand/5">
+                                <div
+                                    class="w-12 h-12 sm:w-16 sm:h-16 bg-brand/5 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fas fa-building text-brand/40 text-lg sm:text-xl"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="text-[10px] px-1.5 py-0.5 bg-brand-sage/15 text-brand-sage rounded font-bold">제휴</span>
+                                        <p class="font-bold text-brand text-sm truncate">굿바이펫</p>
+                                    </div>
+                                    <p class="text-xs text-brand/40 mt-0.5">충북 제천 · 4.7★</p>
+                                </div>
+                                <p class="font-bold text-brand text-sm whitespace-nowrap">20만원~</p>
+                            </div>
+                        </div>
+
+                        <a href="search.html"
+                            class="block text-center w-full mt-4 py-3 bg-brand text-white rounded-xl text-sm font-bold hover:bg-brand-light transition-colors">
+                            비교하기
+                        </a>
+                    </div>
+
+                    <!-- Floating badges -->
+                    <div
+                        class="absolute -top-4 -right-4 bg-white px-4 py-2 rounded-full shadow-lg border border-brand/5 flex items-center gap-2 float-anim">
+                        <i class="fas fa-shield-alt text-brand-sage text-sm"></i>
+                        <span class="text-xs font-bold text-brand">안심 보장</span>
+                    </div>
+                    <div class="absolute -bottom-3 -left-3 bg-white px-4 py-2 rounded-full shadow-lg border border-brand/5 flex items-center gap-2 float-anim"
+                        style="animation-delay: 1.5s;">
+                        <i class="fas fa-won-sign text-brand-warm text-sm"></i>
+                        <span class="text-xs font-bold text-brand">투명 가격</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="py-12 bg-white border-y border-brand/5 fade-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <p class="stat-number text-3xl sm:text-4xl font-bold">50+</p>
+                    <p class="text-sm text-brand/50 mt-1 font-medium">전국 등록 장례식장</p>
+                </div>
+                <div>
+                    <p class="stat-number text-3xl sm:text-4xl font-bold">100%</p>
+                    <p class="text-sm text-brand/50 mt-1 font-medium">참관 보장 시설</p>
+                </div>
+                <div>
+                    <p class="stat-number text-3xl sm:text-4xl font-bold">24h</p>
+                    <p class="text-sm text-brand/50 mt-1 font-medium">상담 가능</p>
+                </div>
+                <div>
+                    <p class="stat-number text-3xl sm:text-4xl font-bold">50만</p>
+                    <p class="text-sm text-brand/50 mt-1 font-medium">피해 보상 한도</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 온실(Onsil) Promise -->
+    <section class="py-20 sm:py-28 bg-brand-cream fade-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-16">
+                <span class="text-brand-warm font-bold text-sm tracking-widest uppercase">온실(Onsil) Promise</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-brand mt-4 leading-tight">보호자님이 장례에만 집중할 수 있도록</h2>
+                <p class="text-brand/50 font-serif text-lg mt-4">온실이 약속합니다</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="card-hover bg-white p-8 sm:p-10 rounded-3xl border border-brand/5 group">
+                    <div
+                        class="w-14 h-14 bg-brand/5 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand group-hover:text-white transition-all duration-300 text-brand">
+                        <i class="fas fa-eye text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand mb-3">참관 보장</h3>
+                    <p class="text-brand/55 leading-relaxed">모든 장례 과정을 보호자가 직접 참관할 수 있는 장례식장만 소개합니다. 불투명한 과정은 없습니다.</p>
+                </div>
+
+                <div class="card-hover bg-white p-8 sm:p-10 rounded-3xl border border-brand/5 group">
+                    <div
+                        class="w-14 h-14 bg-brand-warm/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-warm group-hover:text-white transition-all duration-300 text-brand-warm">
+                        <i class="fas fa-won-sign text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand mb-3">투명한 가격</h3>
+                    <p class="text-brand/55 leading-relaxed">불필요한 용품 강매를 금지합니다. 모든 비용이 사전에 공개되어 안심할 수 있습니다.</p>
+                </div>
+
+                <div class="card-hover bg-white p-8 sm:p-10 rounded-3xl border border-brand/5 group">
+                    <div
+                        class="w-14 h-14 bg-brand-sage/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-sage group-hover:text-white transition-all duration-300 text-brand-sage">
+                        <i class="fas fa-shield-alt text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand mb-3">피해 보상제</h3>
+                    <p class="text-brand/55 leading-relaxed">안심 정책 위반 시 최대 50만 원 보상. 온실의 약속을 지키지 못하면 책임집니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-20 sm:py-28 bg-white fade-up overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="flex flex-col lg:flex-row gap-16 items-center">
+                <!-- Left: Content Container -->
+                <div class="lg:w-7/12">
+                    <div class="mb-12">
+                        <span class="text-brand-sage font-bold text-sm tracking-widest uppercase">How It Works</span>
+                        <h2 class="text-3xl sm:text-4xl font-bold text-brand mt-4">처음이라도 괜찮아요</h2>
+                        <p class="text-brand/50 font-serif text-lg mt-4">온실이 차근차근 함께합니다</p>
+                    </div>
+
+                    <!-- Mobile Image (visible only on mobile/tablet) -->
+                    <div class="lg:hidden mb-12 relative">
+                        <div class="absolute -inset-4 bg-brand-cream/50 rounded-[2.5rem] -rotate-2"></div>
+                        <img src="./images/comforting_guidance.png"
+                            class="relative rounded-3xl shadow-xl w-full object-cover aspect-[4/3]" alt="Guidance">
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-x-8 gap-y-10">
+                        <div class="group">
+                            <div
+                                class="w-12 h-12 bg-brand-cream rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-warm/10 transition-colors">
+                                <span class="text-xl font-bold text-brand-warm">1</span>
+                            </div>
+                            <h3 class="font-bold text-brand mb-2">장례식장 비교</h3>
+                            <p class="text-sm text-brand/50 leading-relaxed">위치, 가격, 시설을 한눈에 비교하세요</p>
+                        </div>
+
+                        <div class="group">
+                            <div
+                                class="w-12 h-12 bg-brand-cream rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-warm/10 transition-colors">
+                                <span class="text-xl font-bold text-brand-warm">2</span>
+                            </div>
+                            <h3 class="font-bold text-brand mb-2">상담 및 예약</h3>
+                            <p class="text-sm text-brand/50 leading-relaxed">전화 또는 카카오톡으로 간편하게 상담하세요</p>
+                        </div>
+
+                        <div class="group">
+                            <div
+                                class="w-12 h-12 bg-brand-cream rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-warm/10 transition-colors">
+                                <span class="text-xl font-bold text-brand-warm">3</span>
+                            </div>
+                            <h3 class="font-bold text-brand mb-2">장례 진행</h3>
+                            <p class="text-sm text-brand/50 leading-relaxed">전문 장례지도사가 처음부터 끝까지 함께합니다</p>
+                        </div>
+
+                        <div class="group">
+                            <div
+                                class="w-12 h-12 bg-brand-cream rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-sage/10 transition-colors">
+                                <span class="text-xl font-bold text-brand-sage">4</span>
+                            </div>
+                            <h3 class="font-bold text-brand mb-2">추모 기록</h3>
+                            <p class="text-sm text-brand/50 leading-relaxed">소중한 추억을 영원히 간직하세요</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-12">
+                        <a href="guide.html"
+                            class="inline-flex items-center gap-2 text-brand-warm font-bold hover:gap-3 transition-all">
+                            장례 절차 자세히 알아보기 <i class="fas fa-arrow-right text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right: Desktop Image (hidden on mobile/tablet) -->
+                <div class="hidden lg:block lg:w-5/12 relative">
+                    <div class="absolute -inset-6 bg-brand-cream/50 rounded-[3rem] rotate-3 translate-x-2"></div>
+                    <div class="relative">
+                        <img src="./images/comforting_guidance.png"
+                            class="rounded-[2.5rem] shadow-2xl w-full object-cover aspect-[4/5]" alt="Guidance">
+                        <!-- Decorative tag -->
+                        <div
+                            class="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl flex items-center gap-4 animate-bounce-subtle">
+                            <div class="w-12 h-12 bg-brand-warm/15 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-heart text-brand-warm text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-brand/40 font-bold uppercase tracking-wider">Onsil Care</p>
+                                <p class="text-brand font-bold">끝까지 함께해요</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cinematic Banner 1 -->
+    <section class="relative h-[60vh] sm:h-[70vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="./images/warm_pet_companion.png"
+                class="w-full h-full object-cover transform scale-110 motion-safe:animate-[pulse_8s_infinite]"
+                alt="Companion">
+            <div class="absolute inset-0 bg-black/30"></div>
+        </div>
+        <div class="relative z-10 text-center px-4 fade-up">
+            <h2 class="text-3xl sm:text-5xl font-bold text-white mb-4 leading-tight">언제나 곁에 있을게요</h2>
+            <p class="text-lg sm:text-xl text-white/80 font-serif">함께한 소중한 시간, 온실이 함께 기억합니다</p>
+        </div>
+    </section>
+
+    <!-- Why 온실(Onsil) -->
+    <section class="py-20 sm:py-28 bg-brand fade-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-16">
+                <span class="text-brand-warm font-bold text-sm tracking-widest uppercase">Why 온실(Onsil)</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mt-4">왜 온실인가요?</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div
+                    class="bg-white/5 backdrop-blur border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 bg-brand-warm/20 rounded-2xl flex items-center justify-center shrink-0">
+                            <i class="fas fa-balance-scale text-brand-warm"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">중립적 비교 플랫폼</h3>
+                            <p class="text-white/50 leading-relaxed text-sm">온실은 특정 장례식장을 운영하지 않습니다. 중립적 입장에서 보호자님에게 최적의
+                                선택지를 제공합니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white/5 backdrop-blur border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 bg-brand-sage/20 rounded-2xl flex items-center justify-center shrink-0">
+                            <i class="fas fa-check-double text-brand-sage"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">안심 인증 시스템</h3>
+                            <p class="text-white/50 leading-relaxed text-sm">참관 보장, 투명 가격, 강매 금지 정책을 준수하는 장례식장만 '안심 인증'
+                                마크를 부여합니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white/5 backdrop-blur border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 bg-brand-warm/20 rounded-2xl flex items-center justify-center shrink-0">
+                            <i class="fas fa-map-marked-alt text-brand-warm"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">내 위치 기반 추천</h3>
+                            <p class="text-white/50 leading-relaxed text-sm">급한 상황에서도 가장 가까운 장례식장을 즉시 찾을 수 있습니다. 거리, 가격,
+                                시설을 한번에 비교하세요.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white/5 backdrop-blur border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 bg-brand-sage/20 rounded-2xl flex items-center justify-center shrink-0">
+                            <i class="fas fa-hands-holding-heart text-brand-sage"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">장례 후 케어</h3>
+                            <p class="text-white/50 leading-relaxed text-sm">장례 가이드, 추억 기록, 펫로스 정보까지. 이별 전후 모든 과정에서 온실이
+                                함께합니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cinematic Banner 2 -->
+    <section class="relative h-[50vh] sm:h-[60vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="./images/calm_memorial_scene.png" class="w-full h-full object-cover" alt="Memorial">
+            <div class="absolute inset-0 bg-brand-warm/20 mix-blend-multiply"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/40"></div>
+        </div>
+        <div class="relative z-10 text-center px-4 fade-up">
+            <p class="text-brand-warm font-bold text-sm tracking-widest uppercase mb-4">Memory & Honor</p>
+            <h2 class="text-2xl sm:text-4xl font-bold text-white leading-tight">소중한 기억을 간직하는<br>가장 아름다운 방법</h2>
+        </div>
+    </section>
+
+    <!-- Reviews -->
+    <section class="py-20 sm:py-28 bg-brand-cream fade-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-16">
+                <span class="text-brand-sage font-bold text-sm tracking-widest uppercase">Reviews</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-brand mt-4">보호자님의 소중한 후기</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white p-8 rounded-3xl border border-brand/5 card-hover">
+                    <div class="flex gap-1 mb-4">
+                        <i class="fas fa-star text-brand-warm text-sm"></i>
+                        <i class="fas fa-star text-brand-warm text-sm"></i>
+                        <i class="fas fa-star text-brand-warm text-sm"></i>
+                        <i class="fas fa-star text-brand-warm text-sm"></i>
+                        <i class="fas fa-star text-brand-warm text-sm"></i>
+                    </div>
+                    <p class="text-brand/70 leading-relaxed mb-6">"경황이 없었는데 친절하게 안내해주셔서 잘 보낼 수 있었습니다. 시설도 깨끗하고 조용해서
+                        좋았어요."</p>
+                    <div class="flex items-center gap-3 pt-4 border-t border-brand/5">
+                        <div class="w-10 h-10 bg-brand-cream rounded-full flex items-center justify-center">
+                            <span class="text-sm font-bold text-brand/40">김</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-brand text-sm">김*수 님</p>
+                            <p class="text-xs text-brand/40">포포즈 김포점</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-3xl border border-brand/5 card-hover">
+                    <div class="flex gap-1 mb-4">
+                        <i class="fas fa-star text-brand-warm text-sm"></i>
+                        <i class="fas fa-star text-brand-warm text-sm"></i>
+                        <i class="fas fa-star text-brand-warm text-sm"></i>
+                        <i class="fas fa-star text-brand-warm text-sm"></i>
+                        <i class="fas fa-star text-brand-warm text-sm"></i>
+                    </div>
+                    <p class="text-brand/70 leading-relaxed mb-6">"우리 강아지 마지막 가는 길, 후회 없이 보내준 것 같아 마음이 놓입니다. 정말
+                        감사합니다."
+                    </p>
+                    <div class="flex items-center gap-3 pt-4 border-t border-brand/5">
+                        <div class="w-10 h-10 bg-brand-cream rounded-full flex items-center justify-center">
+                            <span class="text-sm font-bold text-brand/40">이</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-brand text-sm">이*영 님</p>
+                            <p class="text-xs text-brand/40">21그램 경기광주점</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-3xl border border-brand/5 card-hover">
+                    <div class="flex gap-1 mb-4">
+                        <i class="fas fa-star text-brand-warm text-sm"></i>
+                        <i class="fas fa-star text-brand-warm text-sm"></i>
+                        <i class="fas fa-star text-brand-warm text-sm"></i>
+                        <i class="fas fa-star text-brand-warm text-sm"></i>
+                        <i class="fas fa-star text-brand-warm text-sm"></i>
+                    </div>
+                    <p class="text-brand/70 leading-relaxed mb-6">"비용도 투명하고 강매도 없어서 믿음이 갔습니다. 편안하게 아이를 보낼 수 있었습니다."
+                    </p>
+                    <div class="flex items-center gap-3 pt-4 border-t border-brand/5">
+                        <div class="w-10 h-10 bg-brand-cream rounded-full flex items-center justify-center">
+                            <span class="text-sm font-bold text-brand/40">박</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-brand text-sm">박*준 님</p>
+                            <p class="text-xs text-brand/40">펫포레스트 남양주점</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-10">
+                <a href="community.html"
+                    class="inline-flex items-center gap-2 text-brand-warm font-bold hover:gap-3 transition-all">
+                    더 많은 후기 보기 <i class="fas fa-arrow-right text-sm"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 sm:py-28 bg-white fade-up">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+            <div
+                class="bg-gradient-to-br from-brand to-brand-light rounded-[2rem] p-10 sm:p-16 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2">
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 w-48 h-48 bg-brand-warm/10 rounded-full translate-y-1/2 -translate-x-1/2">
+                </div>
+
+                <div class="relative">
+                    <h2 class="text-2xl sm:text-4xl font-bold text-white mb-4 leading-tight">
+                        지금 가장 가까운<br>안심 장례식장을 찾아보세요
+                    </h2>
+                    <p class="text-white/60 mb-8 font-serif">급하지 않아도 괜찮아요. 미리 알아두면 마음이 편해집니다.</p>
+
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                        <a href="search.html"
+                            class="bg-white text-brand hover:bg-brand-cream px-8 py-4 rounded-2xl font-bold transition-all shadow-lg inline-flex items-center justify-center gap-2">
+                            <i class="fas fa-search"></i> 장례식장 찾기
+                        </a>
+                        <a href="tel:1668-5165"
+                            class="bg-brand-warm hover:bg-brand-warmDark text-white px-8 py-4 rounded-2xl font-bold transition-all shadow-lg inline-flex items-center justify-center gap-2">
+                            <i class="fas fa-phone-alt"></i> 1668-5165
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-cream border-t border-brand/5 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+                <div class="col-span-2 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
+                            <span class="text-white text-xs font-bold">온</span>
+                        </div>
+                        <span class="font-bold text-lg text-brand">온실(Onsil)</span>
+                    </div>
+                    <p class="text-sm text-brand/40 mb-4 leading-relaxed max-w-sm">
+                        반려동물 장례식장 비교부터 예약까지.<br>어려운 결정에 늘 온실이 함께합니다.
+                    </p>
+                    <p class="text-xs text-brand/30">(주)더온실 | 대표: 조영호 | 문의: 1668-5165</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-brand mb-4">서비스</h3>
+                    <ul class="space-y-3 text-sm text-brand/50">
+                        <li><a href="search.html" class="hover:text-brand transition-colors">장례식장 찾기</a></li>
+                        <li><a href="guide.html" class="hover:text-brand transition-colors">장례 가이드</a></li>
+                        <li><a href="memory.html" class="hover:text-brand transition-colors">추억 가이드</a></li>
+                        <li><a href="community.html" class="hover:text-brand transition-colors">보호자 후기</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-brand mb-4">고객지원</h3>
+                    <ul class="space-y-3 text-sm text-brand/50">
+                        <li><a href="contact.html" class="hover:text-brand transition-colors">문의하기</a></li>
+                        <li><a href="partnership.html"
+                                class="hover:text-brand transition-colors font-bold text-brand-warm">제휴문의</a></li>
+                        <li><a href="terms.html" class="hover:text-brand transition-colors">이용약관</a></li>
+                        <li><a href="terms.html" class="hover:text-brand transition-colors">개인정보처리방침</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="border-t border-brand/5 mt-10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-brand/30">&copy; 2026 온실(Onsil). All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-9 h-9 bg-brand/5 rounded-full flex items-center justify-center text-brand/30 hover:text-brand hover:bg-brand/10 transition-all">
+                        <i class="fab fa-instagram text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 bg-brand/5 rounded-full flex items-center justify-center text-brand/30 hover:text-brand hover:bg-brand/10 transition-all">
+                        <i class="fab fa-youtube text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 bg-brand/5 rounded-full flex items-center justify-center text-brand/30 hover:text-brand hover:bg-brand/10 transition-all">
+                        <i class="fas fa-comment text-sm"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Bar -->
+    <div id="floating-action-bar" class="floating-bar fixed bottom-0 left-0 right-0 z-50 p-4 sm:p-6 safe-area-bottom">
+        <div class="max-w-xl mx-auto flex flex-col sm:flex-row gap-3">
+            <a href="guide.html"
+                class="flex-1 bg-white hover:bg-brand-cream text-brand py-4 px-6 rounded-2xl font-bold flex items-center justify-between group transition-all shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 bg-brand-sage/10 rounded-xl flex items-center justify-center text-brand-sage group-hover:bg-brand-sage group-hover:text-white transition-all">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <span>장례를 준비하고 계신가요?</span>
+                </div>
+                <i class="fas fa-chevron-right text-brand/20 group-hover:text-brand-sage transition-colors"></i>
+            </a>
+            <a href="search.html"
+                class="flex-1 bg-brand-warm hover:bg-brand-warmDark text-white py-4 px-6 rounded-2xl font-bold flex items-center justify-between group transition-all shadow-lg shadow-brand-warm/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center text-white">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <span>지금 아이가 무지개다리를 건넜나요?</span>
+                </div>
+                <i class="fas fa-chevron-right text-white/50 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Floating Buttons (Mobile/Adjusted) -->
+    <div class="fixed bottom-32 sm:bottom-40 right-6 z-40 flex flex-col gap-3">
+        <a href="tel:1668-5165"
+            class="lg:hidden w-14 h-14 bg-brand text-white rounded-full shadow-xl shadow-brand/30 flex items-center justify-center hover:scale-110 transition-transform">
+            <i class="fas fa-phone-alt text-lg"></i>
+        </a>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile Nav
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            const panel = document.getElementById('mobile-nav-panel');
+            if (nav.classList.contains('hidden')) {
+                nav.classList.remove('hidden');
+                requestAnimationFrame(() => panel.classList.add('mobile-nav-open'));
+                document.body.style.overflow = 'hidden';
+            } else {
+                panel.classList.remove('mobile-nav-open');
+                document.body.style.overflow = '';
+                setTimeout(() => nav.classList.add('hidden'), 300);
+            }
+        }
+
+        // Header scroll effect
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('bg-white/95', 'backdrop-blur-lg', 'shadow-sm', 'border-b', 'border-brand/5');
+            } else {
+                header.classList.remove('bg-white/95', 'backdrop-blur-lg', 'shadow-sm', 'border-b', 'border-brand/5');
+            }
+        });
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    </script>
+
+    <!-- Supabase Auth -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Global Error Handler
+        window.onerror = function (msg, url, line, col, error) {
+            console.error("JS Error:", msg);
+            return false;
+        };
+
+        // Use Global Auth Methods if needed for landing page specific logic
+        window.addEventListener('load', () => {
+            if (window.Auth && window.Auth.updateHeaderUI) {
+                window.Auth.updateHeaderUI();
+            }
+        });
+    </script>
+    <script>
+        // Floating Bar Toggle
+        const floatingBar = document.getElementById('floating-action-bar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                floatingBar.classList.add('active');
+            } else {
+                floatingBar.classList.remove('active');
+            }
+        });
+
+        if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .catch(err => console.log('SW registration skipped or failed:', err));
+            });
+        } else if (window.location.protocol === 'file:') {
+            console.warn('Onsil: PWA features (Service Worker) are disabled on file:// protocol for security reasons.');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,7 @@
+# GitHub Ignore
+backups/
+.gemini/
+*.tmp
+*.log
+.DS_Store
+Thumbs.db

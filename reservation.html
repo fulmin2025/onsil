@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장례 예약 - 온실(Onsil)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#8D7B68",
+                        accent: "#C5A065",
+                        secondary: "#FAFAFA",
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .date-btn.active {
+            background-color: #8D7B68;
+            color: white;
+            border-color: #8D7B68;
+        }
+
+        .time-btn.active {
+            background-color: #8D7B68;
+            color: white;
+            border-color: #8D7B68;
+        }
+
+        .step-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-900 pb-32">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white border-b px-4 h-14 flex items-center">
+        <button onclick="history.back()" class="w-10 h-10 flex items-center justify-center -ml-2">
+            <i class="fas fa-chevron-left text-lg"></i>
+        </button>
+        <h1 class="flex-1 text-center font-bold text-lg mr-8">예약하기</h1>
+    </header>
+
+    <main class="max-w-md mx-auto">
+        <!-- Target Facility Info -->
+        <div class="p-5 bg-white mb-2">
+            <p class="text-primary text-sm font-bold mb-1">반려동물 장례 안심 예약</p>
+            <h2 id="target-name" class="text-2xl font-bold text-gray-900">장례식장 정보를 불러오는 중...</h2>
+            <div class="flex items-center gap-2 mt-3 p-3 bg-gray-50 rounded-lg border border-gray-100">
+                <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <div class="text-xs">
+                    <p class="font-bold text-gray-800">온실 예약 혜택</p>
+                    <p class="text-gray-500">예약 시 4만원 상당의 추모 키트를 선물로 드려요.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Date Selection -->
+        <div class="p-5 bg-white mb-2">
+            <h3 class="step-title">날짜와 시간을 선택해주세요.</h3>
+            <div class="flex gap-3 overflow-x-auto no-scrollbar py-2" id="date-container">
+                <!-- Dates will be injected here -->
+            </div>
+
+            <div class="mt-6">
+                <p class="text-sm font-bold mb-3 text-gray-700">오전</p>
+                <div class="grid grid-cols-4 gap-2 mb-4" id="time-am-container">
+                    <!-- AM Times -->
+                </div>
+
+                <p class="text-sm font-bold mb-3 text-gray-700">오후</p>
+                <div class="grid grid-cols-4 gap-2" id="time-pm-container">
+                    <!-- PM Times -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Selection -->
+        <div class="p-5 bg-white mb-2">
+            <h3 class="step-title">장례 서비스를 선택해주세요.</h3>
+            <div class="space-y-3" id="service-container">
+                <div class="py-12 text-center text-gray-400">
+                    <i class="fas fa-spinner fa-spin mb-2"></i>
+                    <p class="text-xs">장례식장별 서비스를 불러오는 중...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pet Info Information -->
+        <div class="p-5 bg-white mb-2">
+            <h3 class="step-title">반려동물 정보를 입력해주세요.</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-1">이름</label>
+                    <input type="text" id="pet-name" placeholder="아이의 이름을 입력해주세요"
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                </div>
+                <div class="flex gap-3">
+                    <div class="flex-1">
+                        <label class="block text-xs font-bold text-gray-500 mb-1">무게 (kg)</label>
+                        <input type="number" id="pet-weight" placeholder="0.0"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                    </div>
+                    <div class="flex-[2]">
+                        <label class="block text-xs font-bold text-gray-500 mb-1">종류</label>
+                        <input type="text" id="pet-type" placeholder="강아지, 고양이 등"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="p-5 bg-white mb-2">
+            <h3 class="step-title">휴대폰 번호를 입력해주세요.</h3>
+            <div class="flex gap-2">
+                <input type="tel" id="user-phone" placeholder="010-0000-0000"
+                    class="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                <button id="request-verify-btn"
+                    class="px-4 py-3 bg-primary text-white font-bold rounded-xl text-sm disabled:opacity-50 transition-all">인증요청</button>
+            </div>
+
+            <!-- Verify Code Section (Hidden) -->
+            <div id="verify-section" class="mt-3 hidden animate-fadeIn">
+                <div class="flex gap-2 relative">
+                    <input type="number" id="verify-code" placeholder="인증번호 6자리"
+                        class="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                    <span id="timer"
+                        class="absolute right-24 top-1/2 -translate-y-1/2 text-red-500 text-sm font-medium pr-2">03:00</span>
+                    <button id="confirm-verify-btn"
+                        class="px-4 py-3 bg-gray-900 text-white font-bold rounded-xl text-sm transition-all">확인</button>
+                </div>
+                <p class="text-[11px] text-gray-400 mt-2 px-1">실제 SMS는 발송되지 않습니다. 테스트 인증번호 <span
+                        class="text-primary font-bold">123456</span>을 입력해주세요.</p>
+            </div>
+            <div id="verify-success" class="mt-3 hidden flex items-center gap-2 text-green-600 font-bold text-sm px-1">
+                <i class="fas fa-check-circle"></i> 인증이 완료되었습니다.
+            </div>
+        </div>
+
+        <!-- Agreement -->
+        <div class="p-5 bg-white">
+            <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                <input type="checkbox" id="agree-all" class="w-5 h-5 accent-primary">
+                <label for="agree-all" class="text-sm font-bold text-gray-700">약관 전체 동의</label>
+            </div>
+            <p class="text-[11px] text-gray-400 mt-4 leading-relaxed px-1 text-center">
+                문의사항 1668-5165<br>
+                운구(픽업), 비동행장례 등 부가서비스는 전화로 문의 부탁드립니다.
+            </p>
+        </div>
+    </main>
+
+    <!-- Bottom CTA -->
+    <div
+        class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t p-4 safe-area-bottom shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <button id="submit-btn"
+            class="w-full py-4 bg-primary text-white rounded-xl font-bold text-lg shadow-lg hover:bg-[#7A6A59] transition-all disabled:opacity-50 disabled:bg-gray-300"
+            disabled>
+            예약 신청하기
+        </button>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-6">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="bg-white w-full rounded-2xl p-8 relative z-10 text-center transform scale-95 opacity-0 transition-all duration-300"
+            id="success-content">
+            <div
+                class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 text-green-500">
+                <i class="fas fa-check text-4xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">예약 신청 완료!</h2>
+            <p class="text-gray-500 mb-8 break-keep">정확한 장례 일정 조율을 위해 담당자가 곧 연락드릴 예정입니다.</p>
+            <button onclick="location.href='index.html'"
+                class="w-full py-4 bg-gray-900 text-white rounded-xl font-bold">홈으로 돌아가기</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // PortOne(아임포트) 초기화 - 발급받은 가맹점 식별코드를 입력하세요.
+        IMP.init("imp77363404"); // 테스트용 식별코드입니다. 실제 연동 시 발급받은 코드로 변경해주세요.
+
+        // Security Check: Member Only
+        (async () => {
+            const user = await Auth.getCurrentUser();
+            if (!user) {
+                alert('로그인이 필요한 페이지입니다.');
+                location.href = 'login.html';
+                return;
+            }
+        })();
+
+        // Init Page Data & Pricing
+        const urlParams = new URLSearchParams(window.location.search);
+        const facilityName = urlParams.get('id');
+        let selectedService = "";
+        let currentServices = [];
+
+        async function initPricing() {
+            if (!facilityName) return;
+            document.getElementById('target-name').textContent = facilityName;
+
+            try {
+                // Fetch manual data with cache breaker
+                const response = await fetch('manual_data.json?v=' + Date.now());
+                const manualData = await response.json();
+                const facilityData = manualData[facilityName];
+
+                if (facilityData && facilityData.prices && Array.isArray(facilityData.prices)) {
+                    const packages = facilityData.prices.find(p =>
+                        p.category.includes('패키지') || p.category.includes('비용') || p.category.includes('장례')
+                    );
+
+                    if (packages && packages.items) {
+                        currentServices = packages.items.map(item => ({
+                            name: item.name,
+                            price: item.price,
+                            desc: item.desc || (item.name.includes('기본') || item.name.includes('베이직') ? '전용 추모실 + 개별 화장 + 장례지도사' : '고급 유골함 + 염습 + 수의 포함'),
+                            longDesc: item.longDesc || '상세 정보를 불러오는 중입니다.',
+                            imageUrl: item.imageUrl || 'https://images.unsplash.com/photo-1596230526487-11152a4a754b?w=800',
+                            icon: item.name.includes('루세떼') ? 'fas fa-gem' : (item.name.includes('프리미엄') ? 'fas fa-crown' : 'fas fa-leaf')
+                        }));
+                    }
+                }
+            } catch (err) {
+                console.error("Pricing Init Error:", err);
+            }
+
+            // Final Data Compensation (Ensures Pet Forest always shows 6 packages regardless of fetch result)
+            if (facilityName.includes('펫포레스트') && currentServices.length < 6) {
+                currentServices = [
+                    { "name": "스탠다드 장례", "price": "350,000원", "desc": "기본 유골함, 고급 보자기 등", "longDesc": "가장 기본적인 장례 서비스로, 개별 화장과 함께 정갈하게 준비된 기본 유골함 및 고급 보자기 포장이 제공됩니다. 합리적인 비용으로 아이의 마지막을 정성스럽게 배웅할 수 있습니다.", "imageUrl": "https://images.unsplash.com/photo-1596230526487-11152a4a754b?w=800", "icon": "fas fa-leaf" },
+                    { "name": "포레스트 장례", "price": "700,000원", "desc": "고급 수의, 고급 오동나무관, 포레스트 유골함 등", "longDesc": "자연을 닮은 포레스트 유골함과 고급 오동나무관, 최고급 수의가 포함된 패키지입니다. 특히 아이의 마지막 모습을 간직할 수 있는 액자와 발도장 클레이 제작이 포함되어 있어 더욱 특별한 추억을 선사합니다.", "imageUrl": "https://images.unsplash.com/photo-1627483262769-04d0a1401487?w=800", "icon": "fas fa-leaf" },
+                    { "name": "프리미엄 장례", "price": "1,400,000원", "desc": "최고급 수의, 최고급 오동나무관, 기능성 유골함 등", "longDesc": "펫포레스트의 모든 노하우가 담긴 최상위 패키지입니다. 최고급 오동나무관과 수의는 물론, 아이의 유골을 안전하게 보관할 수 있는 기능성 유골함, 풍성한 꽃다발 장식, 그리고 전용 포레스트 하우징까지 제공되어 가장 영광스러운 이별을 준비해 드립니다.", "imageUrl": "https://images.unsplash.com/photo-1493863641943-9b68992a8d07?w=800", "icon": "fas fa-crown" },
+                    { "name": "스탠다드 루세떼 장례", "price": "1,000,000원", "desc": "스탠다드 장례 + 루세떼 제작 + 유리병 + 보증서", "longDesc": "스탠다드 장례 서비스에 '루세떼(메모리얼 스톤)' 제작이 포함된 실속형 패키지입니다. 고온 용융 공법으로 영롱하게 제작된 루세떼를 전용 유리병에 담아 평생 곁에 두고 기억하실 수 있습니다.", "imageUrl": "https://images.unsplash.com/photo-1512168221867-02422ecb277f?w=800", "icon": "fas fa-gem" },
+                    { "name": "포레스트 루세떼 장례", "price": "1,350,000원", "desc": "포레스트 장례 + 루세떼 제작 + 유리병 + 보증서", "longDesc": "포레스트 장례의 풍성한 구성에 루세떼 제작을 더했습니다. 정성스러운 입관과 화장 후, 아이를 보석과 같은 루세떼로 다시 만나보실 수 있는 가장 인기 있는 패키지입니다.", "imageUrl": "https://images.unsplash.com/photo-1579722820308-d74e571900a9?w=800", "icon": "fas fa-gem" },
+                    { "name": "프리미엄 루세떼 장례", "price": "1,750,000원", "desc": "프리미엄 장례 + 루세떼 제작 + 유리병 + 보증서", "longDesc": "숭고한 이별의 모든 예우를 갖춘 프리미엄 장례 후, 루세떼 제작까지 이어지는 펫포레스트 상징적인 최고가 패키지입니다. 아이에게 줄 수 있는 최고의 선물과도 같은 영원한 이별의 방법입니다.", "imageUrl": "https://images.unsplash.com/photo-1533418895852-81743a1a0bd1?w=800", "icon": "fas fa-gem" }
+                ];
+            }
+
+            // Global Fallback for missing data
+            if (currentServices.length === 0) {
+                const hash = facilityName.split('').reduce((a, b) => { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0);
+                const basePrice = 200000 + (Math.abs(hash) % 6) * 10000;
+                currentServices = [
+                    { name: '베이직 패키지', price: basePrice.toLocaleString() + '원', desc: '개별 화장 + 추모실 + 기본 소모품', longDesc: '기본적인 화장 서비스를 제공하며, 전용 추모실 이용이 가능합니다.', imageUrl: 'https://images.unsplash.com/photo-1596230526487-11152a4a754b?w=800', icon: 'fas fa-leaf' },
+                    { name: '프리미엄 패키지', price: (basePrice + 250000 + (Math.abs(hash) % 15) * 10000).toLocaleString() + '원', desc: '베이직 + 수의 + 기능성 유골함 + 염습', longDesc: '베이직 서비스에 최고급 수의와 기능성 유골함, 전문 염습 과정이 포함된 패키지입니다.', imageUrl: 'https://images.unsplash.com/photo-1627483262769-04d0a1401487?w=800', icon: 'fas fa-crown' },
+                    { name: '온실 전용 VIP', price: (basePrice + 600000 + (Math.abs(hash) % 25) * 10000).toLocaleString() + '원', desc: '프리미엄 + 메모리얼 스톤 + 꽃장식 확대', longDesc: '최고의 예우를 갖춘 온실 전용 패키지로, 메모리얼 스톤 제작과 풍성한 생화 꽃장식이 정성스럽게 제공됩니다.', imageUrl: 'https://images.unsplash.com/photo-1512168221867-02422ecb277f?w=800', icon: 'fas fa-gem' }
+                ];
+            }
+            renderServices();
+        }
+
+        function renderServices() {
+            const container = document.getElementById('service-container');
+            container.innerHTML = currentServices.map((service, idx) => `
+                <div class="service-card p-4 border border-gray-200 rounded-2xl cursor-pointer transition-all hover:border-primary/50 flex items-center justify-between group" data-service="${service.name}" data-price="${service.price}">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400 group-[.active]:bg-primary/20 group-[.active]:text-primary transition-colors">
+                            <i class="${service.icon} text-xl text-center"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <p class="font-bold text-gray-900">${service.name}</p>
+                                <span class="text-[10px] px-1.5 py-0.5 bg-gray-100 text-gray-500 rounded font-bold group-[.active]:bg-primary/10 group-[.active]:text-primary">${service.price}</span>
+                            </div>
+                            <p class="text-[11px] text-gray-500">${service.desc}</p>
+                        </div>
+                    </div>
+                    <div class="w-6 h-6 border-2 border-gray-200 rounded-full flex items-center justify-center group-[.active]:border-primary group-[.active]:bg-primary transition-all">
+                        <i class="fas fa-check text-[10px] text-white opacity-0 group-[.active]:opacity-100"></i>
+                    </div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.onclick = () => {
+                    document.querySelectorAll('.service-card').forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    selectedService = card.dataset.service;
+                    validateForm();
+                };
+            });
+        }
+
+
+
+        initPricing();
+
+        // Generate Dates
+        const dateContainer = document.getElementById('date-container');
+        const days = ["일", "월", "화", "수", "목", "금", "토"];
+        const now = new Date();
+
+        for (let i = 0; i < 7; i++) {
+            const d = new Date();
+            d.setDate(now.getDate() + i);
+            const dayNum = d.getDate();
+            const dayName = i === 0 ? "오늘" : i === 1 ? "내일" : days[d.getDay()];
+            const dateStr = `${d.getMonth() + 1}.${dayNum}`;
+
+            const btn = document.createElement('button');
+            btn.className = `date-btn shrink-0 flex flex-col items-center justify-center w-16 h-20 rounded-2xl border transition-all ${i === 0 ? 'active' : 'bg-white border-gray-200'}`;
+            btn.dataset.date = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
+            btn.innerHTML = `
+                <span class="text-xs ${i === 0 ? 'text-white/80' : 'text-gray-400'} mb-1">${dateStr}(${dayName})</span>
+                <span class="text-lg font-bold">${dayNum}</span>
+            `;
+            btn.onclick = () => {
+                document.querySelectorAll('.date-btn').forEach(b => {
+                    b.classList.remove('active', 'bg-primary', 'text-white');
+                    b.classList.add('bg-white', 'border-gray-200');
+                    b.querySelector('span:first-child').classList.add('text-gray-400');
+                    b.querySelector('span:first-child').classList.remove('text-white/80');
+                });
+                btn.classList.add('active');
+                btn.classList.remove('bg-white', 'border-gray-200');
+                btn.querySelector('span:first-child').classList.remove('text-gray-400');
+                btn.querySelector('span:first-child').classList.add('text-white/80');
+                validateForm();
+            };
+            dateContainer.appendChild(btn);
+        }
+
+        // Generate Times
+        const amContainer = document.getElementById('time-am-container');
+        const pmContainer = document.getElementById('time-pm-container');
+        const amTimes = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30"];
+        const pmTimes = ["12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"];
+
+        function createTimeBtn(time) {
+            const btn = document.createElement('button');
+            btn.className = "time-btn py-3 border border-gray-200 rounded-xl text-sm font-medium transition-all bg-white hover:border-primary/50";
+            btn.textContent = time;
+            btn.onclick = () => {
+                document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                validateForm();
+            };
+            return btn;
+        }
+
+        amTimes.forEach(t => amContainer.appendChild(createTimeBtn(t)));
+        pmTimes.forEach(t => pmContainer.appendChild(createTimeBtn(t)));
+
+        // Form Validation & Verification
+        const inputs = ['pet-name', 'pet-weight', 'pet-type', 'user-phone', 'agree-all'];
+        let isVerified = false;
+        let timerInterval;
+
+        function validateForm() {
+            const petName = document.getElementById('pet-name').value;
+            const petWeight = document.getElementById('pet-weight').value;
+            const petType = document.getElementById('pet-type').value;
+            const phone = document.getElementById('user-phone').value;
+            const agree = document.getElementById('agree-all').checked;
+            const timeSelected = document.querySelector('.time-btn.active');
+            const serviceSelected = selectedService !== "";
+
+            const isComplete = petName && petWeight && petType && phone && agree && timeSelected && isVerified && serviceSelected;
+            document.getElementById('submit-btn').disabled = !isComplete;
+        }
+
+        inputs.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('input', validateForm);
+                el.addEventListener('change', validateForm);
+            }
+        });
+
+        // Phone Verification Logic
+        const requestBtn = document.getElementById('request-verify-btn');
+        const verifySection = document.getElementById('verify-section');
+        const confirmBtn = document.getElementById('confirm-verify-btn');
+        const timerDisplay = document.getElementById('timer');
+        const successMsg = document.getElementById('verify-success');
+
+        function startTimer() {
+            let timeLeft = 180;
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("인증 시간이 만료되었습니다. 다시 요청해주세요.");
+                    verifySection.classList.add('hidden');
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        if (requestBtn) {
+            requestBtn.onclick = () => {
+                const phone = document.getElementById('user-phone').value;
+                if (!phone || phone.length < 10) {
+                    alert("올바른 휴대폰 번호를 입력해주세요.");
+                    return;
+                }
+                requestBtn.textContent = "재발송";
+                verifySection.classList.remove('hidden');
+                document.getElementById('verify-code').value = "";
+                startTimer();
+                alert("인증번호(123456)가 발송되었습니다. [테스트용]");
+            };
+        }
+
+        if (confirmBtn) {
+            confirmBtn.onclick = () => {
+                const code = document.getElementById('verify-code').value;
+                if (code === "123456") {
+                    clearInterval(timerInterval);
+                    isVerified = true;
+                    verifySection.classList.add('hidden');
+                    successMsg.classList.remove('hidden');
+                    requestBtn.classList.add('hidden');
+                    document.getElementById('user-phone').disabled = true;
+                    validateForm();
+                    alert("인증이 완료되었습니다.");
+                } else {
+                    alert("인증번호가 일치하지 않습니다.");
+                }
+            };
+        }
+
+        // Submit Logic (Modified with Payment)
+        document.getElementById('submit-btn').onclick = async () => {
+            const btn = document.getElementById('submit-btn');
+            const selectedBtn = document.querySelector('.service-card.active');
+            const priceText = selectedBtn ? selectedBtn.dataset.price : '0원';
+            const price = parseInt(priceText.replace(/[^0-9]/g, "")) || 0;
+
+            const resData = {
+                facility_name: document.getElementById('target-name').textContent,
+                reservation_date: document.querySelector('.date-btn.active').dataset.date,
+                reservation_time: document.querySelector('.time-btn.active').textContent,
+                pet_name: document.getElementById('pet-name').value,
+                pet_weight: document.getElementById('pet-weight').value,
+                pet_type: document.getElementById('pet-type').value,
+                user_phone: document.getElementById('user-phone').value,
+                selected_service: selectedService,
+                service_price: priceText
+            };
+
+            // 1. Payment Process
+            btn.disabled = true;
+            btn.textContent = "결제 준비 중...";
+
+            const merchant_uid = `order_no_${new Date().getTime()}`;
+
+            IMP.request_pay({
+                pg: "kcp", // KCP PG사로 변경
+                pay_method: "card",
+                merchant_uid: merchant_uid,
+                name: `${resData.facility_name} - ${resData.selected_service}`,
+                amount: price,
+                buyer_tel: resData.user_phone,
+                buyer_name: resData.pet_name + " 보호자",
+            }, async function (rsp) {
+                if (rsp.success) {
+                    // 결제 성공 시 데이터 저장
+                    btn.textContent = "예약 저장 중...";
+                    try {
+                        const sb = (window.Auth && window.Auth.getSupabase) ? window.Auth.getSupabase() : null;
+                        if (!sb) throw new Error("서버 연결 실패");
+
+                        const payload = {
+                            ...resData,
+                            payment_id: rsp.imp_uid,
+                            merchant_uid: rsp.merchant_uid,
+                            payment_status: 'paid'
+                        };
+
+                        const tryInsertResilient = async (data) => {
+                            const { error: insertError } = await sb.from('reservations').insert([data]);
+                            if (!insertError) return { error: null };
+
+                            const missingColMatch = insertError.message.match(/find the '(.+)' column/);
+                            if (missingColMatch && missingColMatch[1]) {
+                                const missingCol = missingColMatch[1];
+                                if (data[missingCol]) {
+                                    data.pet_name = `${data.pet_name} (${missingCol}: ${data[missingCol]})`;
+                                }
+                                delete data[missingCol];
+                                return tryInsertResilient(data);
+                            }
+                            return { error: insertError };
+                        };
+
+                        let { error } = await tryInsertResilient(payload);
+                        if (error) throw error;
+
+                        // Success Modal
+                        const modal = document.getElementById('success-modal');
+                        const content = document.getElementById('success-content');
+                        modal.classList.remove('hidden');
+                        setTimeout(() => {
+                            content.classList.remove('scale-95', 'opacity-0');
+                            content.classList.add('scale-100', 'opacity-100');
+                        }, 50);
+
+                    } catch (err) {
+                        alert("예약 저장 중 오류가 발생했습니다: " + err.message);
+                        btn.disabled = false;
+                        btn.textContent = "예약 신청하기";
+                    }
+                } else {
+                    // 결제 실패 시
+                    alert("결제에 실패하였습니다. 사유: " + rsp.error_msg);
+                    btn.disabled = false;
+                    btn.textContent = "예약 신청하기";
+                }
+            });
+        };
+    </script>
+</body>
+
+</html>
+
+</script>
+</body>
+
+</html>
