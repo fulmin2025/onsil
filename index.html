@@ -931,14 +931,12 @@
         });
     </script>
     <script>
-        // Floating Bar Toggle
+        // Floating Bar Toggle (Show on load)
         const floatingBar = document.getElementById('floating-action-bar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
+        window.addEventListener('load', () => {
+            setTimeout(() => {
                 floatingBar.classList.add('active');
-            } else {
-                floatingBar.classList.remove('active');
-            }
+            }, 500); // 0.5초 후 부드럽게 올라오도록 설정
         });
 
         if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
