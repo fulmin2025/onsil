@@ -841,28 +841,38 @@
 
     <!-- Floating Action Bar -->
     <div id="floating-action-bar" class="floating-bar fixed bottom-0 left-0 right-0 z-50 p-4 sm:p-6 safe-area-bottom">
-        <div class="max-w-xl mx-auto flex flex-col sm:flex-row gap-3">
-            <a href="guide.html"
-                class="flex-1 bg-white hover:bg-brand-cream text-brand py-4 px-6 rounded-2xl font-bold flex items-center justify-between group transition-all shadow-sm">
-                <div class="flex items-center gap-3">
-                    <div
-                        class="w-10 h-10 bg-brand-sage/10 rounded-xl flex items-center justify-center text-brand-sage group-hover:bg-brand-sage group-hover:text-white transition-all">
-                        <i class="fas fa-book-open"></i>
+        <div class="max-w-xl mx-auto">
+            <div class="flex justify-between items-center mb-2 px-1">
+                <button onclick="hideFloatingBarToday()"
+                    class="text-[11px] text-white/50 hover:text-white transition-colors">오늘 하루 보지 않기</button>
+                <button onclick="closeFloatingBar()"
+                    class="text-white/50 hover:text-white transition-colors w-6 h-6 flex items-center justify-center rounded-full hover:bg-white/10">
+                    <i class="fas fa-times text-xs"></i>
+                </button>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <a href="guide.html"
+                    class="flex-1 bg-white hover:bg-brand-cream text-brand py-4 px-6 rounded-2xl font-bold flex items-center justify-between group transition-all shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 bg-brand-sage/10 rounded-xl flex items-center justify-center text-brand-sage group-hover:bg-brand-sage group-hover:text-white transition-all">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <span>장례를 준비하고 계신가요?</span>
                     </div>
-                    <span>장례를 준비하고 계신가요?</span>
-                </div>
-                <i class="fas fa-chevron-right text-brand/20 group-hover:text-brand-sage transition-colors"></i>
-            </a>
-            <a href="search.html"
-                class="flex-1 bg-brand-warm hover:bg-brand-warmDark text-white py-4 px-6 rounded-2xl font-bold flex items-center justify-between group transition-all shadow-lg shadow-brand-warm/20">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center text-white">
-                        <i class="fas fa-bolt"></i>
+                    <i class="fas fa-chevron-right text-brand/20 group-hover:text-brand-sage transition-colors"></i>
+                </a>
+                <a href="search.html"
+                    class="flex-1 bg-brand-warm hover:bg-brand-warmDark text-white py-4 px-6 rounded-2xl font-bold flex items-center justify-between group transition-all shadow-lg shadow-brand-warm/20">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center text-white">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <span>지금 아이가 무지개다리를 건넜나요?</span>
                     </div>
-                    <span>지금 아이가 무지개다리를 건넜나요?</span>
-                </div>
-                <i class="fas fa-chevron-right text-white/50 group-hover:translate-x-1 transition-transform"></i>
-            </a>
+                    <i class="fas fa-chevron-right text-white/50 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -931,9 +941,25 @@
         });
     </script>
     <script>
-        // Floating Bar Toggle (Show on load)
+        // Floating Bar Toggle (Show on load with logic)
         const floatingBar = document.getElementById('floating-action-bar');
+
+        function closeFloatingBar() {
+            floatingBar.classList.remove('active');
+        }
+
+        function hideFloatingBarToday() {
+            const now = new Date();
+            const expiry = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0); // 내일 자정
+            localStorage.setItem('hideOnsilFloatingBar', expiry.getTime());
+            closeFloatingBar();
+        }
+
         window.addEventListener('load', () => {
+            const hideUntil = localStorage.getItem('hideOnsilFloatingBar');
+            if (hideUntil && new Date().getTime() < parseInt(hideUntil)) {
+                return;
+            }
             setTimeout(() => {
                 floatingBar.classList.add('active');
             }, 500); // 0.5초 후 부드럽게 올라오도록 설정
