@@ -181,6 +181,7 @@
                 </div>
             </div>
         </div>
+
         <div class="flex flex-col md:flex-row gap-8">
             <aside class="w-full md:w-1/4 space-y-6">
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-24">
@@ -207,25 +208,11 @@
                         <h3 class="font-bold text-sm mb-4 text-[#8D7B68]">지역 선택</h3>
                         <div class="space-y-3">
                             <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" value="seoul"
+                                <input type="checkbox" value="metropolitan"
                                     class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
                                 <span
-                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">서울
-                                    <span id="count-seoul" class="text-xs text-gray-400">0</span></span>
-                            </label>
-                            <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" value="gyeonggi"
-                                    class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
-                                <span
-                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">경기
-                                    <span id="count-gyeonggi" class="text-xs text-gray-400">0</span></span>
-                            </label>
-                            <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" value="incheon"
-                                    class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
-                                <span
-                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">인천
-                                    <span id="count-incheon" class="text-xs text-gray-400">0</span></span>
+                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">서울/경기/인천
+                                    <span id="count-metropolitan" class="text-xs text-gray-400">0</span></span>
                             </label>
                             <label class="flex items-center gap-3 cursor-pointer group">
                                 <input type="checkbox" value="chungcheong"
@@ -486,23 +473,11 @@
                 <div>
                     <h3 class="font-bold text-sm text-gray-400 mb-4 uppercase tracking-wider text-center">지역 선택</h3>
                     <div class="grid grid-cols-3 gap-2">
-                        <label class="cursor-pointer">
-                            <input type="radio" name="quote-region" value="seoul" class="hidden quote-input" checked>
+                        <label class="cursor-pointer col-span-3">
+                            <input type="radio" name="quote-region" value="metropolitan" class="hidden quote-input" checked>
                             <div
                                 class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">
-                                서울</div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="quote-region" value="gyeonggi" class="hidden quote-input">
-                            <div
-                                class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">
-                                경기</div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="quote-region" value="incheon" class="hidden quote-input">
-                            <div
-                                class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">
-                                인천</div>
+                                서울/경기/인천</div>
                         </label>
                         <label class="cursor-pointer">
                             <input type="radio" name="quote-region" value="others" class="hidden quote-input">
@@ -1288,9 +1263,7 @@
         const MAP_INITIAL_ZOOM = 7.3;
 
         const REGION_CONFIG = {
-            'seoul': { name: '서울', coords: [37.5665, 126.9780], zoom: 11 },
-            'gyeonggi': { name: '경기도', coords: [37.5500, 127.2500], zoom: 10 },
-            'incheon': { name: '인천', coords: [37.4563, 126.6052], zoom: 11 },
+            'metropolitan': { name: '서울/경기/인천', coords: [37.5200, 126.9000], zoom: 10 },
             'gangwon': { name: '강원도', coords: [37.7500, 128.3000], zoom: 9 },
             'chungcheong': { name: '충청도', coords: [36.5500, 127.2000], zoom: 9 },
             'jeolla': { name: '전라도', coords: [35.4000, 127.0000], zoom: 9 },
@@ -1431,9 +1404,7 @@
             const lat = parseFloat(item.latitude);
             const lng = parseFloat(item.longitude);
 
-            if (addr.includes('서울')) return 'seoul';
-            if (addr.includes('경기')) return 'gyeonggi';
-            if (addr.includes('인천')) return 'incheon';
+            if (addr.includes('서울') || addr.includes('경기') || addr.includes('인천')) return 'metropolitan';
             if (addr.includes('강원')) return 'gangwon';
             if (addr.includes('충남') || addr.includes('충북') || addr.includes('대전') || addr.includes('세종') || addr.includes('충청')) return 'chungcheong';
             if (addr.includes('경남') || addr.includes('경북') || addr.includes('부산') || addr.includes('대구') || addr.includes('울산') || addr.includes('경상')) return 'gyeongsang';
@@ -1443,15 +1414,13 @@
             if (lat < 37.0 && lng > 127.6) return 'gyeongsang';
             if (lat < 36.1 && lng < 127.6) return 'jeolla';
             if (lat < 37.1 && lng < 127.6) return 'chungcheong';
-            if (lat > 37.4 && lat < 37.7 && lng > 126.8 && lng < 127.2) return 'seoul';
-            if (lat > 37.3 && lat < 37.6 && lng > 126.3 && lng < 126.8) return 'incheon';
-            if (lat > 36.9 && lat < 38.3 && lng > 126.1 && lng < 127.9) return 'gyeonggi';
+            if (lat > 36.9 && lat < 38.3 && lng > 126.1 && lng < 127.9) return 'metropolitan';
             return 'other';
         }
 
         function updateFilterCounts() {
             const counts = {
-                'seoul': 0, 'gyeonggi': 0, 'incheon': 0, 'gangwon': 0,
+                'metropolitan': 0, 'gangwon': 0,
                 'chungcheong': 0, 'jeolla': 0, 'gyeongsang': 0
             };
 
