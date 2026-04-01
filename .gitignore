@@ -5,3 +5,7 @@ backups/
 *.log
 .DS_Store
 Thumbs.db
+
+onsil_backup*
+
+onsil_mess*

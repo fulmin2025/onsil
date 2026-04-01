@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>異붿뼲 媛?대뱶 - ?⑥떎(Onsil)</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1B2B48">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { DEFAULT: "#1B2B48" },
+                        secondary: { DEFAULT: "#FAFAFA" },
+                        accent: { DEFAULT: "#C5A065" },
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                        serif: ['Nanum Myeongjo', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .serif {
+            font-family: 'Nanum Myeongjo', serif;
+        }
+
+        @keyframes pulse-slow {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.9;
+                transform: scale(1.02);
+            }
+        }
+
+        .animate-pulse-slow {
+            animation: pulse-slow 3s infinite ease-in-out;
+        }
+
+        .mobile-nav-open {
+            transform: translateX(0) !important;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900 font-sans overflow-x-hidden">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <div
+                    class="w-8 h-8 rounded-lg bg-[#2C3E50] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <span class="text-white text-xs font-bold font-sans">??/span>
+                </div>
+                <span class="font-bold text-lg text-[#2C3E50] tracking-tight">?⑥떎(Onsil)</span>
+            </a>
+            <nav class="hidden md:flex gap-8">
+                <a href="search.html"
+                    class="text-sm font-medium text-gray-500 hover:text-[#1B2B48] transition-colors">?λ??앹옣 李얘린</a>
+                <a href="guide.html" class="text-sm font-medium text-gray-500 hover:text-[#1B2B48] transition-colors">?대퀎
+                    媛?대뱶</a>
+                <a href="self-diagnosis.html"
+                    class="text-sm font-medium text-gray-500 hover:text-[#1B2B48] transition-colors">嫄닿컯?먭?吏꾨떒</a>
+                <a href="memory.html" class="text-sm font-bold text-[#1B2B48] border-b-2 border-[#C5A065] pb-1">異붿뼲
+                    媛?대뱶</a>
+                <a href="community.html"
+                    class="text-sm font-medium text-gray-500 hover:text-[#1B2B48] transition-colors">蹂댄샇???꾧린</a>
+            </nav>
+            <div id="auth-container" class="hidden md:flex items-center gap-2">
+                <a href="search.html?quote=true"
+                    class="bg-[#C5A065] text-white hover:bg-[#B08D55] px-4 py-2 rounded-md text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-calculator"></i> 諛붾줈 寃ъ쟻諛쏄린
+                </a>
+                <div class="flex items-center ml-2">
+                    <!-- Auth UI injected by JS -->
+                </div>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn"
+                class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
+                onclick="toggleMobileNav()">
+                <i class="fas fa-bars text-[#1B2B48] text-lg" id="menu-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative py-32 bg-[#1B2B48] text-white overflow-hidden">
+            <div
+                class="absolute inset-0 opacity-25 bg-[url('https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=2669&auto=format&fit=crop')] bg-cover bg-center scale-110">
+            </div>
+            <div class="relative max-w-7xl mx-auto px-4 text-center">
+                <span
+                    class="inline-block py-1.5 px-4 bg-white/10 backdrop-blur-md rounded-full text-xs font-bold tracking-[0.2em] mb-8 fade-up">MEMORIAL
+                    GUIDE</span>
+                <h1 class="text-4xl md:text-6xl serif font-bold mb-8 fade-up text-white/95">?뚯쨷??異붿뼲???곸썝??/h1>
+                <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed font-light fade-up">
+                    ?대퀎???ы뵒?쇰줈留??⑥? ?딅룄濡?<br>?④퍡?덈뜕 ?꾨쫫?ㅼ슫 ?쒓컙?ㅼ쓣 湲곕줉?섍퀬 湲곗뼲?댁＜?몄슂.
+                </p>
+            </div>
+        </section>
+
+        <div class="max-w-5xl mx-auto px-4 py-24 space-y-32">
+
+            <!-- Section 1: Bucket List -->
+            <section class="grid md:grid-cols-2 gap-16 items-center fade-up">
+                <div class="space-y-8">
+                    <div class="space-y-3">
+                        <span class="text-[#C5A065] font-bold tracking-widest text-xs uppercase">Memory 01</span>
+                        <h2 class="text-3xl md:text-4xl font-bold text-[#1B2B48] serif leading-tight">?④퍡?섎뒗<br>留덉?留?踰꾪궥由ъ뒪??                        </h2>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-lg font-light">
+                        ?꾩쭅 ?쒓컙???⑥븘?덈떎硫? ?꾩씠? ?④퍡 瑗??대낫怨??띠뿀???쇰뱾???섎굹???ㅼ쿇?대낫?몄슂.
+                        嫄곗갹?섏? ?딆븘??醫뗭븘?? ?듭닕??怨듭썝 ?곗콉, 醫뗭븘?섎뒗 媛꾩떇 ?ㅼ뻔 癒밴린 ???뚯냼???됰났??媛????異붿뼲???⑸땲??
+                    </p>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+                            <div
+                                class="w-10 h-10 bg-[#C5A065]/10 rounded-xl flex items-center justify-center text-[#C5A065]">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <span class="font-medium text-gray-700">?딆? 紐삵븷 媛議깆궗吏??④린湲?/span>
+                        </div>
+                        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+                            <div
+                                class="w-10 h-10 bg-[#C5A065]/10 rounded-xl flex items-center justify-center text-[#C5A065]">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <span class="font-medium text-gray-700">媛??醫뗭븘?섎뜕 ?곗콉湲??앷퉴吏 嫄룰린</span>
+                        </div>
+                        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+                            <div
+                                class="w-10 h-10 bg-[#C5A065]/10 rounded-xl flex items-center justify-center text-[#C5A065]">
+                                <i class="fas fa-cookie-bite"></i>
+                            </div>
+                            <span class="font-medium text-gray-700">?몄긽?먯꽌 媛??留쏆엳??媛꾩떇 ?뚰떚</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="rounded-[2.5rem] overflow-hidden shadow-2xl h-[450px] bg-gray-200 relative group">
+                    <img src="https://images.unsplash.com/photo-1535930749574-1399327ce78f?q=80&w=2536&auto=format&fit=crop"
+                        alt="Bucket List"
+                        class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+                </div>
+            </section>
+
+            <!-- Section 2: Traces (NEW) -->
+            <section class="grid md:grid-cols-2 gap-16 items-center md:flex-row-reverse fade-up">
+                <div
+                    class="order-2 md:order-1 rounded-[2.5rem] overflow-hidden shadow-2xl h-[450px] bg-gray-200 relative group">
+                    <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80&w=1000"
+                        alt="諛섎젮?숇Ъ怨쇱쓽 ?곕쑜??異붿뼲"
+                        class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+                </div>
+                <div class="space-y-8 order-1 md:order-2">
+                    <div class="space-y-3 text-right">
+                        <span class="text-[#C5A065] font-bold tracking-widest text-xs uppercase">Memory 02</span>
+                        <h2 class="text-3xl md:text-4xl font-bold text-[#1B2B48] serif leading-tight">?꾩씠???묒? ?붿쟻<br>?뚯쨷??                            媛꾩쭅?섍린</h2>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-lg font-light text-right">
+                        ?먯뿉 ?용뜕 蹂대뱶?쇱슫 ????以? ?⑹뵫?섍쾶 ?먮옄???섏뿼 ?섎굹源뚯?.<br>
+                        ?꾩씠??泥댁랬媛 諛??붿쟻?ㅼ쓣 ?덉걶 ?곸옄???댁븘蹂댁꽭??<br>
+                        ???묒? 議곌컖?ㅼ씠 ???곸떎媛??띿뿉???곕쑜???꾩븞???섏뼱以?寃껋엯?덈떎.
+                    </p>
+                    <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+                        <h4 class="font-bold text-[#1B2B48] flex items-center gap-2">
+                            <i class="fas fa-box-open text-[#C5A065]"></i> 蹂댁〈 ?꾩씠?붿뼱
+                        </h4>
+                        <ul class="space-y-2 text-sm text-gray-500">
+                            <li>??遺?쒕윭??鍮쀬쭏 ???섏삩 ?몄쓣 ?ㅽ겕 由щ낯?쇰줈 臾띠뼱 蹂닿?</li>
+                            <li>???먯뿰?ㅻ읇寃?鍮좎쭊 ?섏뿼?대굹 ?대묠???묎퀬 ?щ챸???좊━蹂묒뿉 ?닿린</li>
+                            <li>???꾩씠媛 媛???꾨겮???≪? ?λ궃媛먯씠???좎갑 ?댁슂</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Recording (Enhanced) -->
+            <section class="fade-up">
+                <div class="bg-white rounded-[3rem] p-12 md:p-20 shadow-sm border border-gray-100">
+                    <div class="max-w-2xl mx-auto text-center space-y-8">
+                        <span class="text-[#C5A065] font-bold tracking-widest text-xs uppercase">Memory 03</span>
+                        <h2 class="text-3xl md:text-4xl font-bold text-[#1B2B48] serif">吏湲????쒓컙??湲곕줉</h2>
+                        <p class="text-gray-600 leading-relaxed text-lg font-light">
+                            嫄닿컯?덉쓣 ?뚯쓽 ?쒓린李?紐⑥뒿肉먮쭔 ?꾨땲?? 議곌툑? ?먮젮吏?吏湲덉쓽 ?됱삩??紐⑥뒿???뚯쨷?⑸땲??<br>
+                            ?섏쨷??媛??洹몃━??寃?媛숈? ?λ㈃?ㅼ쓣 ?곸긽?쇰줈 ?댁븘?먯꽭??
+                        </p>
+                        <div class="grid md:grid-cols-2 gap-6 pt-6">
+                            <div
+                                class="text-left p-6 bg-gray-50 rounded-2xl border border-gray-100 transition-hover hover:shadow-md">
+                                <i class="fas fa-video text-[#C5A065] mb-4 text-xl"></i>
+                                <h4 class="font-bold text-[#1B2B48] mb-2 uppercase text-sm tracking-tighter">Voice &
+                                    Sound</h4>
+                                <p class="text-xs text-gray-500 leading-relaxed">?대쫫??遺덈?????洹瑜?已묎툔?섍굅?? 蹂댄샇?먮떂??紐⑹냼由ъ뿉 諛섏쓳?섎뒗 ?꾩씠??                                    紐⑥뒿???뚮━源뚯? ?좊챸?섍쾶 湲곕줉?대몢?몄슂.</p>
+                            </div>
+                            <div
+                                class="text-left p-6 bg-gray-50 rounded-2xl border border-gray-100 transition-hover hover:shadow-md">
+                                <i class="fas fa-magic text-[#C5A065] mb-4 text-xl"></i>
+                                <h4 class="font-bold text-[#1B2B48] mb-2 uppercase text-sm tracking-tighter">Last Walk
+                                    Flowers</h4>
+                                <p class="text-xs text-gray-500 leading-relaxed">留덉?留??곗콉?먯꽌 留뚮궃 ?묒? 苑껋씠???롮궗洹瑜??뺤꽦猿?留먮젮 ?뺥솕濡?                                    蹂닿??대낫?몄슂. 洹?怨듦린? ?띻꼍???④퍡 湲곗뼲??嫄곗삁??</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Memorial Services (NEW) -->
+            <section class="grid md:grid-cols-2 gap-16 items-center fade-up">
+                <div class="space-y-8">
+                    <div class="space-y-3">
+                        <span class="text-[#C5A065] font-bold tracking-widest text-xs uppercase">Memory 04</span>
+                        <h2 class="text-3xl md:text-4xl font-bold text-[#1B2B48] serif leading-tight">?곸썝???④퍡?섎뒗<br>?꾨Ц?곸씤
+                            異붿뼲踰?/h2>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed text-lg font-light">
+                        ?꾩씠???臾쇰━??嫄곕━??硫?댁?吏留? ?곕━ 怨곸뿉 ?ㅻⅨ 紐⑥뒿?쇰줈 ?곸썝??癒몃Т瑜????덈뒗 諛⑸쾿?ㅼ씠 ?덉뒿?덈떎.
+                        ?붿쬁? ?꾨??곸씤 湲곕뀗 ?쒕퉬?ㅻ? ?듯빐 ?꾩씠瑜??쇱긽 ?띿뿉??湲곗뼲?섍린???⑸땲??
+                    </p>
+                    <div class="space-y-4">
+                        <details class="group bg-white rounded-2xl border border-gray-100">
+                            <summary
+                                class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-[#1B2B48]">
+                                硫붾え由ъ뼹 ?ㅽ넠 & 二쇱뼹由?                                <i
+                                    class="fas fa-plus text-xs text-[#C5A065] group-open:rotate-45 transition-transform"></i>
+                            </summary>
+                            <div class="p-6 pt-0 text-sm text-gray-500 leading-relaxed border-t border-gray-50">
+                                ?꾩씠???좉낏???꾨쫫?ㅼ슫 蹂댁꽍 ?뺥깭濡??쒖옉?섏뿬 媛꾩쭅?섍굅?? 紐⑷구??諛섏? ?깆쓽 二쇱뼹由ъ뿉 ?댁븘 留ㅼ씪 洹??④린瑜??먮굜 ???덉뒿?덈떎.
+                            </div>
+                        </details>
+                        <details class="group bg-white rounded-2xl border border-gray-100">
+                            <summary
+                                class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-[#1B2B48]">
+                                留욎땄??珥덉긽??& ?쇨퇋??                                <i
+                                    class="fas fa-plus text-xs text-[#C5A065] group-open:rotate-45 transition-transform"></i>
+                            </summary>
+                            <div class="p-6 pt-0 text-sm text-gray-500 leading-relaxed border-t border-gray-50">
+                                ?ъ쭊??諛뷀깢?쇰줈 ???ъ꽭??珥덉긽?붾굹 ?쇨퇋?대? ?쒖옉?섏뿬 移⑤? ?놁씠??嫄곗떎 ???몄뿉 ?꾩씠???먮━瑜?留뚮뱾?댁＜?몄슂.
+                            </div>
+                        </details>
+                    </div>
+                </div>
+                <div class="rounded-[2.5rem] overflow-hidden shadow-2xl h-[450px] bg-gray-200 relative group">
+                    <img src="https://images.unsplash.com/photo-1596704017254-9b121068fb31?q=80&w=2670&auto=format&fit=crop"
+                        alt="Memorial Jewel"
+                        class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+                </div>
+            </section>
+
+            <!-- Section 5: Letter to My Pet (NEW) -->
+            <section
+                class="max-w-3xl mx-auto text-center bg-[#FDFBF9] p-12 md:p-20 rounded-[3rem] border border-[#EBE3D5] fade-up relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-[#C5A065]/5 rounded-full blur-3xl"></div>
+                <div class="relative z-10 space-y-8">
+                    <i class="fas fa-feather-alt text-3xl text-[#C5A065]"></i>
+                    <h2 class="text-3xl font-bold text-[#1B2B48] serif">紐삳떎 ??吏꾩떖???곸뼱蹂댁꽭??/h2>
+                    <p class="text-gray-600 leading-relaxed text-lg font-light">
+                        ?꾩씠?먭쾶 留먰빐二쇨퀬 ?띠뿀??吏꾩떖, ?됰났?덈뜕 湲곗뼲?ㅼ쓣 湲濡???꺼蹂댁꽭??<br>
+                        ?섍퀬 ?띠뿀??留먮뱾????湲????湲???곸뼱 ?대젮媛??蹂대㈃,<br>
+                        臾닿굅?좊뜕 留덉쓬??議곌툑? 媛踰쇱썙吏??寃껋쓣 ?먮굜 ???덉뒿?덈떎.
+                    </p>
+                    <div class="pt-6">
+                        <p class="text-[#C5A065] font-serif italic text-lg opacity-80 italic">"?щ옉?쒕떎, 怨좊쭏?좊떎. ?곕━ ?ㅼ떆 留뚮궇 洹몃궇源뚯?
+                            ??吏?닿퀬 ?덉쑝??"</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 6: Comforting Message Board (NEW) -->
+            <section class="max-w-3xl mx-auto fade-up">
+                <div class="text-center mb-12 space-y-4">
+                    <div
+                        class="w-16 h-16 bg-[#F5F5F0] rounded-full flex items-center justify-center mx-auto mb-6 text-[#1B2B48]">
+                        <i class="fas fa-comments text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-[#1B2B48] serif">?곕쑜???꾨줈 ?섎늻湲?/h2>
+                    <p class="text-gray-500 font-light">?쒕줈???ы뵒???대（留뚯?怨? ?뚯쨷???꾩씠瑜??④퍡 湲곗뼲?섎뒗 怨듦컙?낅땲??</p>
+                </div>
+
+                <!-- Message Board (Speech Bubbles) -->
+                <div id="comfort-board" class="space-y-6 mb-8 min-h-[400px]">
+                    <!-- Messages will be rendered here by JS -->
+                </div>
+
+                <!-- Pagination -->
+                <div id="pagination" class="flex justify-center flex-wrap gap-2 mb-12">
+                    <!-- Pagination buttons will be rendered here by JS -->
+                </div>
+
+                <!-- Message Input -->
+                <div
+                    class="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm relative overflow-hidden group">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-[#1B2B48]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div class="relative z-10 space-y-4">
+                        <h4 class="font-bold text-[#1B2B48] flex items-center gap-2 text-sm">
+                            <i class="fas fa-feather-alt text-[#C5A065]"></i> ?곗뒪??留덉쓬???꾪빐蹂쇨퉴??
+                        </h4>
+                        <div class="flex flex-col gap-3">
+                            <input type="text" id="comfort-nickname"
+                                class="w-full sm:w-1/3 p-3 rounded-xl bg-gray-50 border border-gray-100 focus:outline-none focus:ring-2 focus:ring-[#C5A065]/20 text-sm font-light transition-all placeholder:text-gray-300"
+                                placeholder="蹂댄샇???됰꽕??(?? 蹂꾩씠留?">
+                            <textarea id="comfort-input"
+                                class="w-full p-5 rounded-2xl bg-gray-50 border border-gray-100 focus:outline-none focus:ring-2 focus:ring-[#C5A065]/20 text-sm font-light resize-none h-32 transition-all placeholder:text-gray-300"
+                                placeholder="?뚯쨷???꾩씠?먭쾶 ?꾪븯怨??띠? 留먯씠?? ?ㅻⅨ 蹂댄샇?먮텇?ㅺ퍡 ?섏씠 ?섎뒗 ?쒕쭏?붾? ?④꺼二쇱꽭??"></textarea>
+                        </div>
+                        <div class="flex justify-between items-center sm:flex-row flex-col gap-4">
+                            <p class="text-xs text-gray-400 font-light text-center sm:text-left">?쒕줈???ы뵒???섎늻硫?留덉쓬??吏먯씠 議곌툑?
+                                媛踰쇱썙吏?嫄곗삁??</p>
+                            <button onclick="addComfortMessage()"
+                                class="w-full sm:w-auto bg-[#1B2B48] hover:bg-[#2A3F64] text-white px-8 py-3.5 rounded-2xl font-bold text-sm transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-[#1B2B48]/10 animate-pulse-slow">
+                                ?꾨줈 ?④린湲?                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="bg-brand-cream border-t border-brand/5 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+                <div class="col-span-2 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-[#2C3E50] flex items-center justify-center">
+                            <span class="text-white text-xs font-bold">??/span>
+                        </div>
+                        <span class="font-bold text-lg text-[#2C3E50]">?⑥떎(Onsil)</span>
+                    </div>
+                    <p class="text-sm text-[#2C3E50]/40 mb-4 leading-relaxed max-w-sm">
+                        諛섎젮?숇Ъ ?λ??앹옣 鍮꾧탳遺???덉빟源뚯?.<br>?대젮??寃곗젙?????⑥떎???④퍡?⑸땲??
+                    </p>
+                    <p class="text-xs text-[#2C3E50]/30">(二??붿삩??| ??? 議곗쁺??| 臾몄쓽: 010-2292-1918</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">?쒕퉬??/h3>
+                    <ul class="space-y-3 text-sm text-[#2C3E50]/50">
+                        <li><a href="search.html" class="hover:text-[#2C3E50] transition-colors">?λ??앹옣 李얘린</a></li>
+                        <li><a href="guide.html" class="hover:text-[#2C3E50] transition-colors">?대퀎 媛?대뱶</a></li>
+                        <li><a href="self-diagnosis.html" class="hover:text-[#2C3E50] transition-colors">嫄닿컯?먭?吏꾨떒</a></li>
+                        <li><a href="memory.html" class="hover:text-[#2C3E50] transition-colors">異붿뼲 媛?대뱶</a></li>
+                        <li><a href="community.html" class="hover:text-[#2C3E50] transition-colors">蹂댄샇???꾧린</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">怨좉컼吏??/h3>
+                    <ul class="space-y-3 text-sm text-[#2C3E50]/50">
+                        <li><a href="contact.html" class="hover:text-[#2C3E50] transition-colors">臾몄쓽?섍린</a></li>
+                        <li><a href="partnership.html"
+                                class="hover:text-[#2C3E50] transition-colors font-bold text-accent">?쒗쑕臾몄쓽</a></li>
+                        <li><a href="terms.html" class="hover:text-[#2C3E50] transition-colors">?댁슜?쎄?</a></li>
+                        <li><a href="privacy.html" class="hover:text-[#2C3E50] transition-colors">媛쒖씤?뺣낫泥섎━諛⑹묠</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="border-t border-[#2C3E50]/5 mt-10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-[#2C3E50]/30">&copy; 2026 ?⑥떎(Onsil). All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
+                        <i class="fab fa-instagram text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
+                        <i class="fab fa-youtube text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
+                        <i class="fas fa-comment text-sm"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Scroll Animation Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // Comfort Board Logic
+        let comfortMessages = [
+            { nickname: '?듬챸蹂댄샇??, content: '?곕━ 珥덉퐫媛 臾댁?媛??ㅻ━瑜?嫄대꼳 吏 踰뚯뜥 ???ъ씠 ?섏뿀?ㅼ슂. ?ъ쟾??蹂닿퀬 ?띠?留? ?ш린??留롮? ?꾨줈瑜??산퀬 媛묐땲??', time: '2?쒓컙 ??, type: 'left' },
+            { nickname: '蹂꾩씠留?, content: '湲몄뿉??留뚮궃 苑????≪씠???섎퉬 ?앷컖???몄빳?덈꽕?? 洹몃옒???섎퉬?? 洹멸납?먯꽑 留덉쓬猿??곗뼱?怨??덉쑝??', time: '5?쒓컙 ??, type: 'right' },
+            { nickname: '?됰났?댁븘鍮?, content: '?④퍡 蹂대궦 15?꾩씠 ?덈Т ?됰났?덉뼱?? ?몄젨媛 ?ㅼ떆 留뚮궇 ???덈떎??誘우쓬?쇰줈 ?섎（?섎（ 寃щ럩遊낅땲??', time: '1????, type: 'left' },
+            { nickname: '珥덈”?대늻??, content: '踰뚯뜥 蹂닿퀬 ?띕떎 珥덈”?? ?꾨굹媛 留롮씠 ?щ옉??', time: '1????, type: 'right' },
+            { nickname: '紐쎌씠?꾨쭏', content: '?곕쑜???꾨줈 媛먯궗?댁슂. 紐쎌씠???섎뒛?먯꽌 醫뗭븘??寃?媛숈븘??', time: '2????, type: 'left' },
+            { nickname: '?щ옉?대꽕', content: '?쒓컙???쎌씠?쇰뒗 留먯씠 留욎쓣源뚯슂? ?꾩쭅? ?덈Т ?꾪봽?ㅼ슂.', time: '2????, type: 'left' },
+            { nickname: '援щ쫫?댁븘鍮?, content: '援щ쫫?? ?덉? ?④퍡??援щ쫫 ???곗콉 ?딆? ?딆쓣寃?', time: '3????, type: 'right' },
+            { nickname: '珥덉퐫荑좏궎', content: '珥덉퐫??荑좏궎?? ?섏씠???ъ씠醫뗪쾶 吏?닿퀬 ?덉??', time: '3????, type: 'left' },
+            { nickname: '?숇꽕蹂댄샇??, content: '紐⑤뱺 ?꾩씠?ㅼ씠 ?꾪봽吏 ?딆? 怨녹뿉???됰났?섍린瑜?諛붾엻?덈떎.', time: '4????, type: 'left' },
+            { nickname: '媛?꾪븯??, content: '?섎뒛?? 嫄곌린??移쒓뎄?ㅼ씠???좊굹寃??곌퀬 ?덉뼱.', time: '4????, type: 'right' },
+            { nickname: '遊꾩씠?숈깮', content: '遊꾩씠?? ?곕━ 媛議깆씠 ?섏뼱以섏꽌 ?뺣쭚 怨좊쭏?좎뼱.', time: '5????, type: 'left' },
+            { nickname: '源뚮???, content: '寃? 蹂댁꽍 媛숇뜕 源뚮????덈룞?먭? 洹몃┰?ㅼ슂.', time: '5????, type: 'right' },
+            { nickname: '?먮??щ옉', content: '?먮??? ?ㅼ쓬 ?앹뿉??瑗??곕━ ?꾨쭏 ?몃줈 ?쒖뼱?섏쨾.', time: '6????, type: 'left' },
+            { nickname: '珥덈줉留?, content: '?꾩씠瑜?蹂대궡怨??쒖갭???몄뿀吏留? ?댁젣???껋쑝硫?湲곗뼲?섎젮 ?⑸땲??', time: '6????, type: 'left' },
+            { nickname: '?쇳듉??, content: '?쇳듉?섍쾶 ??吏?대떎 媛以섏꽌 怨좊쭏???щ옉??', time: '1二쇱씪 ??, type: 'right' },
+            { nickname: '臾댁?媛쒕쭣', content: '臾댁?媛??ㅻ━ ?덈㉧?먯꽌 ?곕━瑜?湲곕떎?ㅼ쨪 嫄곗삁??', time: '1二쇱씪 ??, type: 'left' },
+            { nickname: '?뉗궡??, content: '?뉗궡泥섎읆 諛앷쾶 ?껊뜕 洹?紐⑥뒿 ?딆? ?딆쓣寃?', time: '1二쇱씪 ??, type: 'left' },
+            { nickname: '諛⑹슱?대늻??, content: '諛⑹슱???곗콉 媛?? ?섍퀬 遺瑜대㈃ ?щ젮??寃껊쭔 媛숈븘??', time: '2二쇱씪 ??, type: 'right' },
+            { nickname: '誘쇰뱾??, content: '諛붾엺???좊━??誘쇰뱾?덉뵪泥섎읆 ?먯쑀濡?쾶 ?좎븘媛??', time: '2二쇱씪 ??, type: 'left' },
+            { nickname: '留덉?留됱씤??, content: '?덈뀞?대씪??留먯? ?좎떆留??꾧뺨?섍쾶. ?섏쨷??瑗?留뚮굹??', time: '2二쇱씪 ??, type: 'left' }
+        ];
+
+        const messagesPerPage = 5;
+        let currentPage = 1;
+
+        function renderMessages(page) {
+            const board = document.getElementById('comfort-board');
+            board.innerHTML = '';
+
+            const start = (page - 1) * messagesPerPage;
+            const end = start + messagesPerPage;
+            const pageMessages = comfortMessages.slice(start, end);
+
+            pageMessages.forEach(msg => {
+                const isRight = msg.type === 'right';
+                const div = document.createElement('div');
+                div.className = `flex items-start gap-4 ${isRight ? 'flex-row-reverse' : ''} fade-up visible`;
+
+                div.innerHTML = `
+                    <div class="w-10 h-10 rounded-full ${isRight ? 'bg-[#C5A065]/10 text-[#C5A065]' : 'bg-gray-200 text-gray-400'} flex-shrink-0 flex items-center justify-center">
+                        <i class="fas ${isRight ? 'fa-paw' : 'fa-user'} text-sm"></i>
+                    </div>
+                    <div class="relative ${isRight ? 'bg-[#FDFBF9] border-[#EBE3D5] rounded-tr-none text-right' : 'bg-white border-gray-100 rounded-tl-none'} p-5 rounded-2xl shadow-sm border max-w-sm">
+                        <p class="text-sm text-gray-700 leading-relaxed font-light font-sans italic">
+                            "${msg.content}"
+                        </p>
+                        <div class="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between ${isRight ? 'flex-row-reverse' : ''}">
+                            <span class="text-[10px] text-gray-400 font-medium">${msg.nickname} ??${msg.time}</span>
+                            <div class="flex items-center gap-2 text-[10px] text-[#C5A065]">
+                                <i class="fas fa-heart"></i>
+                                <span>?꾨줈?댁슂</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                board.appendChild(div);
+            });
+
+            renderPagination();
+        }
+
+        function renderPagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            const totalPages = Math.ceil(comfortMessages.length / messagesPerPage);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.className = `w-8 h-8 rounded-lg text-sm font-bold transition-all ${i === currentPage ? 'bg-[#1B2B48] text-white shadow-md' : 'bg-white text-gray-400 hover:bg-gray-50 border border-gray-100'}`;
+                btn.textContent = i;
+                btn.onclick = () => {
+                    currentPage = i;
+                    renderMessages(i);
+                };
+                pagination.appendChild(btn);
+            }
+        }
+
+        function addComfortMessage() {
+            const nicknameInput = document.getElementById('comfort-nickname');
+            const contentInput = document.getElementById('comfort-input');
+
+            if (!contentInput.value.trim()) {
+                alert('?댁슜???낅젰?댁＜?몄슂.');
+                return;
+            }
+
+            const nickname = nicknameInput.value.trim() || '?듬챸蹂댄샇??;
+
+            comfortMessages.unshift({
+                nickname: nickname,
+                content: contentInput.value,
+                time: '諛⑷툑 ??,
+                type: 'left'
+            });
+
+            currentPage = 1;
+            renderMessages(1);
+
+            // Clear inputs
+            contentInput.value = '';
+            nicknameInput.value = '';
+
+            // Interaction effect
+            const btn = document.querySelector('button[onclick="addComfortMessage()"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> ?깅줉??;
+            btn.classList.add('bg-brand-sage');
+
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('bg-brand-sage');
+            }, 2000);
+        }
+
+        // Initialize board
+        renderMessages(1);
+
+        if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js');
+            });
+        }
+
+        // Mobile Nav
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            const panel = document.getElementById('mobile-nav-panel');
+            if (nav.classList.contains('hidden')) {
+                nav.classList.remove('hidden');
+                requestAnimationFrame(() => panel.classList.add('mobile-nav-open'));
+                document.body.style.overflow = 'hidden';
+            } else {
+                panel.classList.remove('mobile-nav-open');
+                document.body.style.overflow = '';
+                setTimeout(() => nav.classList.add('hidden'), 300);
+            }
+        }
+    </script>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
+            id="mobile-nav-panel">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <span class="font-bold text-lg text-[#1B2B48]">硫붾돱</span>
+                    <button onclick="toggleMobileNav()"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+                <nav class="space-y-1">
+                    <a href="search.html?quote=true"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-gray-50 transition-colors bg-gray-50">
+                        <i class="fas fa-calculator text-[#C5A065] w-5 text-center"></i>
+                        <span class="font-bold text-[#1B2B48]">諛붾줈 寃ъ쟻諛쏄린</span>
+                    </a>
+                    <a href="search.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-search text-[#C5A065] w-5 text-center"></i>
+                        <span class="font-medium text-[#1B2B48]">?λ??앹옣 李얘린</span>
+                    </a>
+                    <a href="guide.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-book-open text-[#C5A065] w-5 text-center"></i>
+                        <span class="font-medium text-[#1B2B48]">?대퀎 媛?대뱶</span>
+                    </a>
+                    <a href="self-diagnosis.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-heartbeat text-[#C5A065] w-5 text-center"></i>
+                        <span class="font-medium text-[#1B2B48]">嫄닿컯?먭?吏꾨떒</span>
+                    </a>
+                    <a href="memory.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-paw text-[#C5A065] w-5 text-center"></i>
+                        <span class="font-medium text-[#1B2B48]">異붿뼲 媛?대뱶</span>
+                    </a>
+                    <a href="community.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-comment-dots text-[#C5A065] w-5 text-center"></i>
+                        <span class="font-medium text-[#1B2B48]">蹂댄샇???꾧린</span>
+                    </a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
