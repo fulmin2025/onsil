@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
@@ -9,9 +9,8 @@
     <meta name="theme-color" content="#8D7B68">
     <link rel="apple-touch-icon" href="icons/icon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Leaflet Infrastructure -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Naver Maps Infrastructure -->
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=5tiwbscjvi"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -644,10 +643,10 @@
     </div>
 
     <script>
-        // --- Leaflet Map State ---
-        let leafletMap = null;
-        let markerLayer = null;
-        let regionLayer = null;
+        // --- Naver Map State ---
+        let naverMap = null;
+        let naverMarkers = [];
+        let regionMarkers = [];
         let enrichedHomesData = null;
         let currentSortMode = 'recommend';
         let userLocation = { lat: 37.5665, lng: 126.9780 };
@@ -1309,9 +1308,9 @@
             });
         }
 
-        // --- Leaflet Map Tools ---
+        // --- Naver Map Tools ---
         const MAP_INITIAL_VIEW = [36.5, 127.8];
-        const MAP_INITIAL_ZOOM = 7.3;
+        const MAP_INITIAL_ZOOM = 7;
 
         const REGION_CONFIG = {
             'seoul': { name: '서울', coords: [37.5665, 126.9780], zoom: 11 },
@@ -1323,26 +1322,20 @@
             'gyeongsang': { name: '경상도', coords: [35.7000, 128.7000], zoom: 9 }
         };
 
-        function initLeafletMap() {
-            if (leafletMap) return;
+        function initNaverMap() {
+            if (naverMap) return;
             console.log('INIT: Map starting...');
             try {
-                leafletMap = L.map('map', {
+                naverMap = new naver.maps.Map('map', {
+                    center: new naver.maps.LatLng(MAP_INITIAL_VIEW[0], MAP_INITIAL_VIEW[1]),
+                    zoom: MAP_INITIAL_ZOOM,
                     zoomControl: false,
-                    attributionControl: false,
-                    scrollWheelZoom: true,
-                    doubleClickZoom: true
-                }).setView(MAP_INITIAL_VIEW, MAP_INITIAL_ZOOM);
+                    scaleControl: true,
+                    mapDataControl: false,
+                    logoControl: true, 
+                });
 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19,
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://www.naver.com">Naver Maps</a>'
-                }).addTo(leafletMap);
-
-                markerLayer = L.layerGroup().addTo(leafletMap);
-                regionLayer = L.layerGroup().addTo(leafletMap);
-
-                leafletMap.on('zoomend', () => {
+                naver.maps.Event.addListener(naverMap, 'zoom_changed', () => {
                     filterItems();
                 });
 
@@ -1360,13 +1353,16 @@
         }
 
         function renderMapPins(items) {
-            if (!leafletMap || !markerLayer) {
-                console.warn('MAP: Map or MarkerLayer not initialized');
+            if (!naverMap) {
+                console.warn('MAP: Map not initialized');
                 return;
             }
-            markerLayer.clearLayers();
+            
+            // 등록된 이전 마커 모두 지우기
+            naverMarkers.forEach(m => m.setMap(null));
+            naverMarkers = [];
 
-            const currentZoom = leafletMap.getZoom();
+            const currentZoom = naverMap.getZoom();
             if (currentZoom < 9) return; // 줌이 9 미만일 때는 개별 마커를 표시하지 않음
 
             console.log(`MAP: Rendering ${items.length} items`);
@@ -1376,37 +1372,41 @@
                 const lng = parseFloat(item.longitude);
                 if (isNaN(lat) || isNaN(lng)) return;
 
-                const marker = L.circleMarker([lat, lng], {
-                    radius: 8,
-                    fillColor: (ON_CONFIG.showPartnership && item.isAlliance) ? '#C5A065' : '#8D7B68',
-                    color: '#fff',
-                    weight: 2,
-                    opacity: 1,
-                    fillOpacity: 0.9,
-                    className: 'map-pulse'
+                const fillColor = (ON_CONFIG.showPartnership && item.isAlliance) ? '#C5A065' : '#8D7B68';
+                
+                const iconHtml = `<div class="relative group cursor-pointer map-pulse-wrapper">
+                    <div class="map-pulse" style="width:16px;height:16px;border-radius:50%;background-color:${fillColor};border:2px solid #fff;box-shadow:0 0 10px rgba(0,0,0,0.3)"></div>
+                    <div class="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 hidden group-hover:block bg-white text-gray-800 text-xs px-2 py-1 rounded shadow-md whitespace-nowrap z-50">${item.name}</div>
+                </div>`;
+
+                const marker = new naver.maps.Marker({
+                    position: new naver.maps.LatLng(lat, lng),
+                    map: naverMap,
+                    icon: {
+                        content: iconHtml,
+                        size: new naver.maps.Size(16, 16),
+                        anchor: new naver.maps.Point(8, 8)
+                    }
                 });
 
-                marker.bindTooltip(item.name, {
-                    permanent: false,
-                    direction: 'top',
-                    className: 'custom-tooltip'
-                });
-
-                marker.on('click', (e) => {
-                    L.DomEvent.stopPropagation(e);
+                naver.maps.Event.addListener(marker, 'click', (e) => {
                     openDetailModal(item);
-                    leafletMap.setView([lat, lng], 13);
+                    naverMap.setCenter(new naver.maps.LatLng(lat, lng));
+                    naverMap.setZoom(13);
                 });
 
-                marker.addTo(markerLayer);
+                naverMarkers.push(marker);
             });
         }
 
         function renderRegionLabels(items) {
-            if (!leafletMap || !regionLayer) return;
-            regionLayer.clearLayers();
+            if (!naverMap) return;
+            
+            // 기존 권역 배지 초기화
+            regionMarkers.forEach(m => m.setMap(null));
+            regionMarkers = [];
 
-            const currentZoom = leafletMap.getZoom();
+            const currentZoom = naverMap.getZoom();
             if (currentZoom >= 9) return; // 줌이 일정 수준 이상일 때는 권역별 배지를 숨김
 
             const regionCounts = {
@@ -1422,20 +1422,27 @@
             Object.entries(REGION_CONFIG).forEach(([key, config]) => {
                 const count = regionCounts[key];
                 if (count > 0) {
-                    const icon = L.divIcon({
-                        className: 'region-badge-marker',
-                        html: `<div class="region-badge-inner flex flex-col items-center justify-center bg-[#8D7B68] text-white rounded-full border-2 border-white cursor-pointer shadow-lg transform transition-all" style="width: 52px; height: 52px;">
+                    const badgeHtml = `<div class="region-badge-inner flex flex-col items-center justify-center bg-[#8D7B68] text-white rounded-full border-2 border-white cursor-pointer shadow-lg transform transition-all" style="width: 52px; height: 52px;">
                                 <span class="text-[10px] font-medium opacity-80">${config.name}</span>
                                 <span class="text-base font-bold">${count}</span>
-                               </div>`,
-                        iconSize: [52, 52],
-                        iconAnchor: [26, 26]
+                               </div>`;
+
+                    const marker = new naver.maps.Marker({
+                        position: new naver.maps.LatLng(config.coords[0], config.coords[1]),
+                        map: naverMap,
+                        icon: {
+                            content: badgeHtml,
+                            size: new naver.maps.Size(52, 52),
+                            anchor: new naver.maps.Point(26, 26)
+                        }
                     });
 
-                    L.marker(config.coords, { icon: icon }).on('click', (e) => {
-                        L.DomEvent.stopPropagation(e);
-                        leafletMap.setView(config.coords, config.zoom);
-                    }).addTo(regionLayer);
+                    naver.maps.Event.addListener(marker, 'click', (e) => {
+                        naverMap.setCenter(new naver.maps.LatLng(config.coords[0], config.coords[1]));
+                        naverMap.setZoom(config.zoom);
+                    });
+
+                    regionMarkers.push(marker);
                 }
             });
         }
@@ -1576,9 +1583,9 @@
                 btnList.classList.replace('bg-[#8D7B68]', 'bg-white');
                 btnList.classList.replace('text-white', 'text-gray-600');
 
-                initLeafletMap();
+                initNaverMap();
                 filterItems();
-                setTimeout(() => { if (leafletMap) leafletMap.invalidateSize(); }, 200);
+                setTimeout(() => { if (naverMap) window.dispatchEvent(new Event('resize')); }, 200);
             } else {
                 btnList.classList.replace('bg-white', 'bg-[#8D7B68]');
                 btnList.classList.replace('text-white', 'text-white');
@@ -1590,10 +1597,15 @@
         document.getElementById('btn-list-view').onclick = () => showView('list');
         document.getElementById('btn-map-view').onclick = () => showView('map');
 
-        // --- Leaflet Zoom Controls ---
-        document.getElementById('btn-zoom-in').onclick = () => leafletMap && leafletMap.zoomIn();
-        document.getElementById('btn-zoom-out').onclick = () => leafletMap && leafletMap.zoomOut();
-        document.getElementById('btn-zoom-reset').onclick = () => leafletMap && leafletMap.setView(MAP_INITIAL_VIEW, MAP_INITIAL_ZOOM);
+        // --- Naver Map Zoom Controls ---
+        document.getElementById('btn-zoom-in').onclick = () => naverMap && naverMap.setZoom(naverMap.getZoom() + 1);
+        document.getElementById('btn-zoom-out').onclick = () => naverMap && naverMap.setZoom(naverMap.getZoom() - 1);
+        document.getElementById('btn-zoom-reset').onclick = () => {
+            if (naverMap) {
+                naverMap.setCenter(new naver.maps.LatLng(MAP_INITIAL_VIEW[0], MAP_INITIAL_VIEW[1]));
+                naverMap.setZoom(MAP_INITIAL_ZOOM);
+            }
+        };
 
         // --- Real Data Map ---
         // --- 포포즈 서울경기 통합 요금표 ---
