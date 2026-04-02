@@ -3,6 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
+    <script>
+        // Naver Map Domain Fix: Force non-www to match Naver Console registration
+        if (window.location.hostname === 'www.theonsil.co.kr') {
+            window.location.replace('https://theonsil.co.kr' + window.location.pathname + window.location.search);
+        }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>장례식장 찾기 - 온실(Onsil)</title>
     <link rel="manifest" href="manifest.json">
@@ -1324,18 +1330,19 @@
             console.log('INIT: Map starting...');
             try {
                 // Naver Map 초기화
-                naverMap = new naver.maps.Map('map', {
+                const mapOptions = {
                     center: new naver.maps.LatLng(MAP_INITIAL_VIEW[0], MAP_INITIAL_VIEW[1]),
                     zoom: MAP_INITIAL_ZOOM,
                     zoomControl: false,
                     scaleControl: true,
                     mapDataControl: false,
                     logoControl: true, 
-                });
+                };
+                
+                naverMap = new naver.maps.Map('map', mapOptions);
 
-                // 인증 실패 감지 (네이버 API 자체 에러와 별개로 체크)
-                if (!naverMap || !naver.maps.Map) {
-                    throw new Error('Naver Maps Library not loaded correctly');
+                if (!naverMap) {
+                    throw new Error('네이버 지도 객체 생성 실패');
                 }
 
                 naver.maps.Event.addListener(naverMap, 'zoom_changed', () => {
