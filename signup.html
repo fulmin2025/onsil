@@ -98,6 +98,21 @@
                 class="w-full bg-[#1B2B48] text-white py-3 rounded-lg font-bold hover:bg-[#2a4269] transition-colors shadow-md">
                 가입하기
             </button>
+
+            <div class="relative py-4">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-200"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-gray-400 font-medium whitespace-nowrap">또는 간편 회원가입</span>
+                </div>
+            </div>
+
+            <button type="button" onclick="handleKakaoLogin()"
+                class="w-full bg-[#FEE500] text-[#191919] py-3 rounded-lg font-bold hover:bg-[#FADA0A] transition-colors shadow-sm flex items-center justify-center gap-2">
+                <img src="https://developers.kakao.com/assets/img/lib/logos/kakaolink/kakaolink_help_icon.png" alt="Kakao" class="w-5 h-5">
+                카카오로 시작하기
+            </button>
         </form>
 
         <div class="mt-6 text-center text-sm text-gray-600">
@@ -225,6 +240,25 @@
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = originalBtnText;
+            }
+        }
+
+        async function handleKakaoLogin() {
+            try {
+                const client = getSupabase();
+                if (!client) throw new Error('인증 서비스 연결 실패');
+
+                const { data, error } = await client.auth.signInWithOAuth({
+                    provider: 'kakao',
+                    options: {
+                        redirectTo: window.location.origin + '/index.html'
+                    }
+                });
+
+                if (error) throw error;
+            } catch (error) {
+                console.error('Kakao Login Error:', error);
+                alert('카카오 가입 시도 중 오류가 발생했습니다: ' + error.message);
             }
         }
     </script>
