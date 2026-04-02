@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
@@ -1323,6 +1323,7 @@
             if (naverMap) return;
             console.log('INIT: Map starting...');
             try {
+                // Naver Map 초기화
                 naverMap = new naver.maps.Map('map', {
                     center: new naver.maps.LatLng(MAP_INITIAL_VIEW[0], MAP_INITIAL_VIEW[1]),
                     zoom: MAP_INITIAL_ZOOM,
@@ -1331,6 +1332,11 @@
                     mapDataControl: false,
                     logoControl: true, 
                 });
+
+                // 인증 실패 감지 (네이버 API 자체 에러와 별개로 체크)
+                if (!naverMap || !naver.maps.Map) {
+                    throw new Error('Naver Maps Library not loaded correctly');
+                }
 
                 naver.maps.Event.addListener(naverMap, 'zoom_changed', () => {
                     filterItems();
@@ -3486,8 +3492,8 @@
         </div>
     </div>
     <!-- Scripts -->
-    <!-- Naver Maps API: Moved to bottom to prevent blocking the top navigation execution -->
-    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=5tiwbscjvi" defer></script>
+    <!-- Naver Maps API: ncpClientId=5tiwbscjvi -->
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=5tiwbscjvi"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/auth.js"></script>
     <script src="js/pwa.js"></script>
