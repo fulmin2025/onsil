@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
@@ -96,9 +96,13 @@
                 const sb = Auth.getSupabase();
                 if (!sb) throw new Error("서버 연결 실패");
 
+                const user = await Auth.getCurrentUser();
+                if (!user) throw new Error("로그인이 필요합니다.");
+
                 const { data, error } = await sb
                     .from('reservations')
                     .select('*')
+                    .eq('user_id', user.id) // 본인의 데이터만 필터링 (보안 강화)
                     .order('created_at', { ascending: false });
 
                 if (error) throw error;

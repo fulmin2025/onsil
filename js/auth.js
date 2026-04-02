@@ -111,6 +111,7 @@ const Auth = {
         const { data: { session } } = await client.auth.getSession();
         if (session && session.user) {
             return {
+                id: session.user.id,
                 email: session.user.email,
                 name: session.user.user_metadata.name || session.user.email.split('@')[0]
             };

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
@@ -204,11 +204,11 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <!-- <script src="https://cdn.iamport.kr/v1/iamport.js"></script> -->
     <script src="js/auth.js"></script>
     <script>
-        // PortOne(아임포트) 초기화 - 발급받은 가맹점 식별코드를 입력하세요.
-        IMP.init("imp77363404"); // 테스트용 식별코드입니다. 실제 연동 시 발급받은 코드로 변경해주세요.
+        // PortOne(아임포트) 초기화 - 결제 단계 건너뛰기 위해 주석 처리
+        // IMP.init("imp77363404"); 
 
         // Security Check: Member Only
         (async () => {
@@ -455,13 +455,20 @@
             };
         }
 
-        // Submit Logic (Modified with Payment)
+        // Submit Logic (Direct Reservation without Payment)
         document.getElementById('submit-btn').onclick = async () => {
             const btn = document.getElementById('submit-btn');
+            const user = await Auth.getCurrentUser();
+            
+            if (!user) {
+                alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+                location.href = 'login.html';
+                return;
+            }
+
             const selectedBtn = document.querySelector('.service-card.active');
             const priceText = selectedBtn ? selectedBtn.dataset.price : '0원';
-            const price = parseInt(priceText.replace(/[^0-9]/g, "")) || 0;
-
+            
             const resData = {
                 facility_name: document.getElementById('target-name').textContent,
                 reservation_date: document.querySelector('.date-btn.active').dataset.date,
@@ -471,85 +478,57 @@
                 pet_type: document.getElementById('pet-type').value,
                 user_phone: document.getElementById('user-phone').value,
                 selected_service: selectedService,
-                service_price: priceText
+                service_price: priceText,
+                user_id: user.id
             };
 
-            // 1. Payment Process
             btn.disabled = true;
-            btn.textContent = "결제 준비 중...";
+            btn.textContent = "예약 신청 중...";
 
-            const merchant_uid = `order_no_${new Date().getTime()}`;
+            try {
+                const sb = (window.Auth && window.Auth.getSupabase) ? window.Auth.getSupabase() : null;
+                if (!sb) throw new Error("서버 연결 실패");
 
-            IMP.request_pay({
-                pg: "kcp", // KCP PG사로 변경
-                pay_method: "card",
-                merchant_uid: merchant_uid,
-                name: `${resData.facility_name} - ${resData.selected_service}`,
-                amount: price,
-                buyer_tel: resData.user_phone,
-                buyer_name: resData.pet_name + " 보호자",
-            }, async function (rsp) {
-                if (rsp.success) {
-                    // 결제 성공 시 데이터 저장
-                    btn.textContent = "예약 저장 중...";
-                    try {
-                        const sb = (window.Auth && window.Auth.getSupabase) ? window.Auth.getSupabase() : null;
-                        if (!sb) throw new Error("서버 연결 실패");
+                const payload = {
+                    ...resData,
+                    payment_status: 'manual_pending' // 결제 전 상태로 기록
+                };
 
-                        const payload = {
-                            ...resData,
-                            payment_id: rsp.imp_uid,
-                            merchant_uid: rsp.merchant_uid,
-                            payment_status: 'paid'
-                        };
+                const tryInsertResilient = async (data) => {
+                    const { error: insertError } = await sb.from('reservations').insert([data]);
+                    if (!insertError) return { error: null };
 
-                        const tryInsertResilient = async (data) => {
-                            const { error: insertError } = await sb.from('reservations').insert([data]);
-                            if (!insertError) return { error: null };
-
-                            const missingColMatch = insertError.message.match(/find the '(.+)' column/);
-                            if (missingColMatch && missingColMatch[1]) {
-                                const missingCol = missingColMatch[1];
-                                if (data[missingCol]) {
-                                    data.pet_name = `${data.pet_name} (${missingCol}: ${data[missingCol]})`;
-                                }
-                                delete data[missingCol];
-                                return tryInsertResilient(data);
-                            }
-                            return { error: insertError };
-                        };
-
-                        let { error } = await tryInsertResilient(payload);
-                        if (error) throw error;
-
-                        // Success Modal
-                        const modal = document.getElementById('success-modal');
-                        const content = document.getElementById('success-content');
-                        modal.classList.remove('hidden');
-                        setTimeout(() => {
-                            content.classList.remove('scale-95', 'opacity-0');
-                            content.classList.add('scale-100', 'opacity-100');
-                        }, 50);
-
-                    } catch (err) {
-                        alert("예약 저장 중 오류가 발생했습니다: " + err.message);
-                        btn.disabled = false;
-                        btn.textContent = "예약 신청하기";
+                    const missingColMatch = insertError.message.match(/find the '(.+)' column/);
+                    if (missingColMatch && missingColMatch[1]) {
+                        const missingCol = missingColMatch[1];
+                        if (data[missingCol]) {
+                            data.pet_name = `${data.pet_name} (${missingCol}: ${data[missingCol]})`;
+                        }
+                        delete data[missingCol];
+                        return tryInsertResilient(data);
                     }
-                } else {
-                    // 결제 실패 시
-                    alert("결제에 실패하였습니다. 사유: " + rsp.error_msg);
-                    btn.disabled = false;
-                    btn.textContent = "예약 신청하기";
-                }
-            });
+                    return { error: insertError };
+                };
+
+                let { error } = await tryInsertResilient(payload);
+                if (error) throw error;
+
+                // Success Modal
+                const modal = document.getElementById('success-modal');
+                const content = document.getElementById('success-content');
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    content.classList.remove('scale-95', 'opacity-0');
+                    content.classList.add('scale-100', 'opacity-100');
+                }, 50);
+
+            } catch (err) {
+                alert("예약 신청 중 오류가 발생했습니다: " + err.message);
+                btn.disabled = false;
+                btn.textContent = "예약 신청하기";
+            }
         };
     </script>
-</body>
-
-</html>
-
-</script>
 </body>
 
 </html>
