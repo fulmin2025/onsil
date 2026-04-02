@@ -1,9 +1,16 @@
-﻿<!-- Onsil Web v1.0.1 - Emergency Restoration -->
+<!-- Onsil Web v1.0.1 - Emergency Restoration -->
 <!DOCTYPE html>
 <html lang="ko">
 
 <head>
     <meta charset="UTF-8">
+    <script>
+        // Naver Map Domain Fix: Force non-www to match Naver Console registration
+        if (window.location.hostname === 'www.theonsil.co.kr') {
+            window.location.replace('https://theonsil.co.kr' + window.location.pathname + window.location.search);
+        }
+    </script>
+    <meta name="referrer" content="origin">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>온실(Onsil) | 반려동물 안심 장례, 비교부터 예약까지</title>
     <meta name="description" content="반려동물 장례식장 비교, 투명한 가격, 안심 인증까지. 온실이 어려운 결정에 함께합니다.">
