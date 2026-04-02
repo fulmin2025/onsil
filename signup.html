@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
@@ -64,6 +64,36 @@
                     placeholder="••••••••">
             </div>
 
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">성별</label>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="setGender('male')" id="gender-male"
+                            class="flex-1 py-3 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all font-medium gender-btn">
+                            남
+                        </button>
+                        <button type="button" onclick="setGender('female')" id="gender-female"
+                            class="flex-1 py-3 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all font-medium gender-btn">
+                            여
+                        </button>
+                    </div>
+                    <input type="hidden" id="gender" required>
+                </div>
+                <div>
+                    <label for="birth-year" class="block text-sm font-medium text-gray-700 mb-1">출생년도</label>
+                    <input type="number" id="birth-year" required min="1900" max="2026"
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
+                        placeholder="예: 1990">
+                </div>
+            </div>
+
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">전화번호</label>
+                <input type="tel" id="phone" required
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
+                    placeholder="010-0000-0000">
+            </div>
+
             <button type="button" id="signup-btn" onclick="handleSignup()"
                 class="w-full bg-[#1B2B48] text-white py-3 rounded-lg font-bold hover:bg-[#2a4269] transition-colors shadow-md">
                 가입하기
@@ -93,6 +123,17 @@
         const SUPABASE_URL = 'https://fkmcanwlcigofjhbfkzs.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_9OyB7n3foIalMmDxq1-_PA_s3xYfcJS';
         let authClient = null; // Renamed to avoid conflict
+
+        function setGender(gender) {
+            document.getElementById('gender').value = gender;
+            document.querySelectorAll('.gender-btn').forEach(btn => {
+                btn.classList.remove('bg-[#1B2B48]', 'text-white', 'border-[#1B2B48]');
+                btn.classList.add('border-gray-300', 'text-gray-600');
+            });
+            const selected = document.getElementById('gender-' + gender);
+            selected.classList.remove('border-gray-300', 'text-gray-600');
+            selected.classList.add('bg-[#1B2B48]', 'text-white', 'border-[#1B2B48]');
+        }
 
         function getSupabase() {
             if (authClient) return authClient;
@@ -132,25 +173,29 @@
                 const email = document.getElementById('email').value.trim();
                 const password = document.getElementById('password').value.trim();
                 const name = document.getElementById('name').value.trim();
-                // const phone = document.getElementById('phone').value.trim(); 
+                const gender = document.getElementById('gender').value;
+                const birthYear = document.getElementById('birth-year').value;
+                const phone = document.getElementById('phone').value.trim();
 
-                console.log("Attempting signup with:", { email, name }); // Log sanitized values
+                console.log("Attempting signup with:", { email, name, gender, birthYear, phone });
 
-                if (!email || !password || !name) { // Removed phone from validation as it's not in HTML
-                    throw new Error('모든 필드를 입력해주세요.');
+                if (!email || !password || !name || !gender || !birthYear || !phone) {
+                    throw new Error('모든 필드를 입력해 주세요.');
                 }
 
-                const sb = getSupabase();
-                if (!sb) throw new Error('인증 서비스 연결 실패');
+                const client = getSupabase();
+                if (!client) throw new Error('인증 서비스 연결 실패');
 
-                // Sign up
-                const { data, error } = await sb.auth.signUp({
+                // Sign up using Auth.js (which we updated)
+                const { data, error } = await client.auth.signUp({
                     email: email,
                     password: password,
                     options: {
                         data: {
-                            full_name: name,
-                            // phone: phone, // This field is not in the HTML
+                            name: name,
+                            gender: gender,
+                            birth_year: birthYear,
+                            phone: phone,
                             role: 'director' // Default role
                         }
                     }

@@ -36,7 +36,7 @@ const Auth = {
     /**
      * Signup a new user
      */
-    signup: async (email, password, name) => {
+    signup: async (email, password, name, gender, birthYear, phone) => {
         try {
             const client = getSupabase();
             if (!client) throw new Error('시스템 오류: 서버 연결에 실패했습니다. (SDK 로드 실패)');
@@ -46,7 +46,10 @@ const Auth = {
                 password: password,
                 options: {
                     data: {
-                        name: name
+                        name: name,
+                        gender: gender,
+                        birth_year: birthYear,
+                        phone: phone
                     }
                 }
             });
