@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>장례 예약 - 온실(Onsil)</title>
+    <title>장례 예약 - The 온실</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin
@@ -75,7 +75,7 @@
                     <i class="fas fa-gift"></i>
                 </div>
                 <div class="text-xs">
-                    <p class="font-bold text-gray-800">온실 예약 혜택</p>
+                    <p class="font-bold text-gray-800">The 온실 예약 혜택</p>
                     <p class="text-gray-500">예약 시 4만원 상당의 추모 키트를 선물로 드려요.</p>
                 </div>
             </div>
@@ -275,7 +275,7 @@
                 currentServices = [
                     { name: '베이직 패키지', price: basePrice.toLocaleString() + '원', desc: '개별 화장 + 추모실 + 기본 소모품', longDesc: '기본적인 화장 서비스를 제공하며, 전용 추모실 이용이 가능합니다.', imageUrl: 'https://images.unsplash.com/photo-1596230526487-11152a4a754b?w=800', icon: 'fas fa-leaf' },
                     { name: '프리미엄 패키지', price: (basePrice + 250000 + (Math.abs(hash) % 15) * 10000).toLocaleString() + '원', desc: '베이직 + 수의 + 기능성 유골함 + 염습', longDesc: '베이직 서비스에 최고급 수의와 기능성 유골함, 전문 염습 과정이 포함된 패키지입니다.', imageUrl: 'https://images.unsplash.com/photo-1627483262769-04d0a1401487?w=800', icon: 'fas fa-crown' },
-                    { name: '온실 전용 VIP', price: (basePrice + 600000 + (Math.abs(hash) % 25) * 10000).toLocaleString() + '원', desc: '프리미엄 + 메모리얼 스톤 + 꽃장식 확대', longDesc: '최고의 예우를 갖춘 온실 전용 패키지로, 메모리얼 스톤 제작과 풍성한 생화 꽃장식이 정성스럽게 제공됩니다.', imageUrl: 'https://images.unsplash.com/photo-1512168221867-02422ecb277f?w=800', icon: 'fas fa-gem' }
+                    { name: 'The 온실 전용 VIP', price: (basePrice + 600000 + (Math.abs(hash) % 25) * 10000).toLocaleString() + '원', desc: '프리미엄 + 메모리얼 스톤 + 꽃장식 확대', longDesc: '최고의 예우를 갖춘 The 온실 전용 패키지로, 메모리얼 스톤 제작과 풍성한 생화 꽃장식이 정성스럽게 제공됩니다.', imageUrl: 'https://images.unsplash.com/photo-1512168221867-02422ecb277f?w=800', icon: 'fas fa-gem' }
                 ];
             }
             renderServices();
