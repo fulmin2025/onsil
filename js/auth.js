@@ -139,17 +139,20 @@ const Auth = {
             const client = getSupabase();
             if (!client) throw new Error('서버 연결 실패');
 
-            // 1. Update Auth Metadata
-            const { data: authData, error: authError } = await client.auth.updateUser({
-                data: updates
-            });
+            const { password, ...metadata } = updates;
+
+            // 1. Update Auth Metadata (and Password if provided)
+            const updatePayload = { data: metadata };
+            if (password) updatePayload.password = password;
+
+            const { data: authData, error: authError } = await client.auth.updateUser(updatePayload);
             if (authError) throw authError;
 
-            // 2. Update profiles table
+            // 2. Update profiles table (Exclude password from public table)
             const { error: dbError } = await client
                 .from('profiles')
                 .update({
-                    ...updates,
+                    ...metadata,
                     updated_at: new Date().toISOString()
                 })
                 .eq('id', authData.user.id);
@@ -249,11 +252,6 @@ const Auth = {
             
             authContainer.innerHTML = `
                 <div class="flex items-center gap-2">
-                    <!-- 마이페이지 직접 링크 추가 -->
-                    <a href="mypage.html" class="hidden md:flex items-center gap-2 bg-brand/5 hover:bg-brand/10 text-brand px-4 py-2 rounded-xl text-sm font-bold transition-all border border-brand/5">
-                        <i class="fas fa-id-card text-brand-warm/80"></i> 마이페이지
-                    </a>
-
                     <div class="relative group">
                         <button class="flex items-center gap-2 text-brand font-bold hover:text-brand-warm transition-colors py-2">
                             <div class="w-8 h-8 rounded-full bg-brand-sage/10 flex items-center justify-center text-brand-sage text-xs">

@@ -120,6 +120,21 @@
                         <input type="hidden" id="p-gender">
                     </div>
 
+                    <div class="pt-4 border-t border-brand/5 mt-8">
+                        <h3 class="text-lg font-bold text-brand mb-4">비밀번호 변경</h3>
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-bold text-brand/70 mb-2">새 비밀번호</label>
+                                <input type="password" id="p-pass" class="w-full px-4 py-3 rounded-xl bg-brand-cream border-none focus:ring-2 focus:ring-brand/10 outline-none transition-all" placeholder="••••••••">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-brand/70 mb-2">새 비밀번호 확인</label>
+                                <input type="password" id="p-pass-confirm" class="w-full px-4 py-3 rounded-xl bg-brand-cream border-none focus:ring-2 focus:ring-brand/10 outline-none transition-all" placeholder="••••••••">
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-brand/40 mt-2">* 비밀번호 변경을 원하실 때만 입력해주세요.</p>
+                    </div>
+
                     <div class="pt-4">
                         <button type="submit" id="save-btn" class="w-full bg-brand text-white py-4 rounded-2xl font-bold hover:bg-brand-light transition-all shadow-lg active:scale-[0.98]">
                             수정 내용 저장하기
@@ -276,16 +291,27 @@
                 btn.disabled = true;
                 btn.innerText = '저장 중...';
 
-                const updates = {
-                    name: document.getElementById('p-name').value,
-                    phone: document.getElementById('p-phone').value,
-                    birth_year: document.getElementById('p-birth').value,
-                    gender: document.getElementById('p-gender').value
-                };
+                const name = document.getElementById('p-name').value;
+                const phone = document.getElementById('p-phone').value;
+                const birth_year = document.getElementById('p-birth').value;
+                const gender = document.getElementById('p-gender').value;
+                const password = document.getElementById('p-pass').value;
+                const confirmPassword = document.getElementById('p-pass-confirm').value;
+
+                if (password && password !== confirmPassword) {
+                    throw new Error('새 비밀번호가 서로 일치하지 않습니다.');
+                }
+
+                const updates = { name, phone, birth_year, gender };
+                if (password) updates.password = password;
 
                 const res = await Auth.updateProfile(updates);
                 if (res.success) {
                     alert('회원 정보가 성공적으로 수정되었습니다.');
+                    if (password) {
+                        document.getElementById('p-pass').value = '';
+                        document.getElementById('p-pass-confirm').value = '';
+                    }
                     Auth.updateHeaderUI();
                 } else {
                     throw new Error(res.message);
