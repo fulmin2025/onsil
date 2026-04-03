@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지 - 온실(Onsil)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#2C3E50',
+                            light: '#34495E',
+                            dark: '#1A252F',
+                            cream: '#F8F6F3',
+                            warm: '#D4A574',
+                            sage: '#87A08B',
+                            mist: '#E8ECE9'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        
+        .tab-btn.active {
+            color: #2C3E50;
+            border-bottom: 2px solid #2C3E50;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body class="bg-brand-cream font-sans text-brand antialiased min-h-screen">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-brand/5">
+        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
+                    <span class="text-white text-xs font-bold">온실</span>
+                </div>
+                <span class="font-bold text-lg text-brand tracking-tight">온실(Onsil)</span>
+            </a>
+            <div id="auth-container"></div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-8 sm:py-12">
+        <div class="mb-8">
+            <h1 class="text-2xl sm:text-3xl font-bold text-brand mb-2">마이페이지</h1>
+            <p class="text-brand/60 text-sm">내 활동 내역과 개인정보를 관리할 수 있습니다.</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex border-b border-brand/10 mb-8 overflow-x-auto no-scrollbar">
+            <button onclick="switchTab('reservations')" id="tab-reservations" class="tab-btn active px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">내 예약 내역</button>
+            <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">내 정보 수정</button>
+            <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">계정 설정</button>
+        </div>
+
+        <!-- Section: Reservations -->
+        <section id="sec-reservations" class="tab-content fade-in">
+            <div class="grid gap-4" id="reservation-list">
+                <div class="bg-white p-12 rounded-3xl border border-brand/5 text-center">
+                    <div class="w-16 h-16 bg-brand-mist rounded-full flex items-center justify-center mx-auto mb-4 text-brand/20">
+                        <i class="fas fa-calendar-alt text-2xl"></i>
+                    </div>
+                    <p class="text-brand/40 font-medium">예약 데이터를 불러오는 중...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Profile Update -->
+        <section id="sec-profile" class="tab-content hidden fade-in">
+            <div class="bg-white rounded-3xl border border-brand/5 p-6 sm:p-8 shadow-sm">
+                <form id="profile-form" class="space-y-6" onsubmit="handleProfileUpdate(event)">
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold text-brand/70 mb-2">이름</label>
+                            <input type="text" id="p-name" required class="w-full px-4 py-3 rounded-xl bg-brand-cream border-none focus:ring-2 focus:ring-brand/10 outline-none transition-all" placeholder="이름을 입력하세요">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-brand/70 mb-2">이메일 (수정 불가)</label>
+                            <input type="email" id="p-email" disabled class="w-full px-4 py-3 rounded-xl bg-gray-100 border-none text-brand/40 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-brand/70 mb-2">전화번호</label>
+                            <input type="tel" id="p-phone" required class="w-full px-4 py-3 rounded-xl bg-brand-cream border-none focus:ring-2 focus:ring-brand/10 outline-none transition-all" placeholder="010-0000-0000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-brand/70 mb-2">출생년도</label>
+                            <input type="number" id="p-birth" class="w-full px-4 py-3 rounded-xl bg-brand-cream border-none focus:ring-2 focus:ring-brand/10 outline-none transition-all" placeholder="예: 1990">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold text-brand/70 mb-3">성별</label>
+                        <div class="flex gap-3">
+                            <button type="button" onclick="setGender('male')" id="btn-male" class="gender-btn flex-1 py-3.5 rounded-xl border border-brand/10 text-brand/60 font-bold hover:bg-brand-mist/30 transition-all">남성</button>
+                            <button type="button" onclick="setGender('female')" id="btn-female" class="gender-btn flex-1 py-3.5 rounded-xl border border-brand/10 text-brand/60 font-bold hover:bg-brand-mist/30 transition-all">여성</button>
+                        </div>
+                        <input type="hidden" id="p-gender">
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" id="save-btn" class="w-full bg-brand text-white py-4 rounded-2xl font-bold hover:bg-brand-light transition-all shadow-lg active:scale-[0.98]">
+                            수정 내용 저장하기
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Section: Settings -->
+        <section id="sec-settings" class="tab-content hidden fade-in">
+            <div class="bg-white rounded-3xl border border-brand/5 p-6 sm:p-8 shadow-sm">
+                <div class="flex items-center justify-between gap-4 p-4 rounded-2xl bg-red-50/50 border border-red-100">
+                    <div>
+                        <h3 class="text-red-600 font-bold mb-1">회원 탈퇴</h3>
+                        <p class="text-red-600/60 text-xs">탈퇴 시 모든 예약 내역과 개인정보가 삭제됩니다.</p>
+                    </div>
+                    <button onclick="handleWithdrawal()" class="px-4 py-2 bg-white border border-red-200 text-red-500 rounded-lg text-sm font-bold hover:bg-red-50 transition-all">탈퇴하기</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let currentUser = null;
+
+        /**
+         * Tab Switching
+         */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('sec-' + tabId).classList.remove('hidden');
+            document.getElementById('tab-' + tabId).classList.add('active');
+            
+            if (tabId === 'reservations') loadReservations();
+            if (tabId === 'profile') loadProfileData();
+        }
+
+        /**
+         * Set Gender UI
+         */
+        function setGender(gender) {
+            document.getElementById('p-gender').value = gender;
+            document.querySelectorAll('.gender-btn').forEach(btn => {
+                btn.classList.remove('bg-brand', 'text-white', 'border-brand');
+                btn.classList.add('border-brand/10', 'text-brand/60');
+            });
+            const activeBtn = gender === 'male' ? document.getElementById('btn-male') : document.getElementById('btn-female');
+            activeBtn.classList.remove('border-brand/10', 'text-brand/60');
+            activeBtn.classList.add('bg-brand', 'text-white', 'border-brand');
+        }
+
+        /**
+         * Load Reservation Data
+         */
+        async function loadReservations() {
+            const list = document.getElementById('reservation-list');
+            try {
+                const sb = Auth.getSupabase();
+                if (!sb) return;
+                
+                const user = await Auth.getCurrentUser();
+                if (!user) {
+                    location.href = 'login.html';
+                    return;
+                }
+
+                const { data, error } = await sb
+                    .from('reservations')
+                    .select('*')
+                    .eq('user_id', user.id)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    list.innerHTML = `
+                        <div class="bg-white p-12 rounded-3xl border border-brand/5 text-center">
+                            <p class="text-brand/40 font-medium">아직 예약 내역이 없습니다.</p>
+                            <a href="search.html" class="inline-block mt-4 text-brand-sage font-bold hover:underline">장례식장 둘러보기</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                list.innerHTML = data.map(res => `
+                    <div class="bg-white p-6 rounded-3xl border border-brand/5 shadow-sm">
+                        <div class="flex flex-wrap justify-between items-start gap-4 mb-4">
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-[10px] px-2 py-0.5 bg-brand-sage/10 text-brand-sage rounded-full font-bold">장례 접수됨</span>
+                                    <span class="text-xs text-brand/40">${new Date(res.created_at).toLocaleDateString()}</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-brand">${res.facility_name}</h3>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-brand/60 mb-1">예약 확정일</p>
+                                <p class="font-bold text-brand-warm">${res.reservation_date} ${res.reservation_time}</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-2xl bg-brand-cream/50 text-sm">
+                            <div>
+                                <p class="text-brand/40 text-[11px] mb-1">반려동물 명</p>
+                                <p class="font-bold">${res.pet_name}</p>
+                            </div>
+                            <div>
+                                <p class="text-brand/40 text-[11px] mb-1">무게/종류</p>
+                                <p class="font-bold">${res.pet_weight}kg / ${res.pet_type}</p>
+                            </div>
+                            <div>
+                                <p class="text-brand/40 text-[11px] mb-1">선택 서비스</p>
+                                <p class="font-bold">${res.selected_service || '기본형'}</p>
+                            </div>
+                            <div>
+                                <p class="text-brand/40 text-[11px] mb-1">결제 상태</p>
+                                <p class="font-bold">${res.payment_status === 'paid' ? '결제완료' : '결제대기'}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+                list.innerHTML = `<p class="p-8 text-center text-red-500">오류가 발생했습니다: ${err.message}</p>`;
+            }
+        }
+
+        /**
+         * Load Profile Data
+         */
+        async function loadProfileData() {
+            const user = await Auth.getCurrentUser();
+            if (!user) return;
+
+            document.getElementById('p-name').value = user.name || '';
+            document.getElementById('p-email').value = user.email || '';
+            document.getElementById('p-phone').value = user.phone || '';
+            document.getElementById('p-birth').value = user.birth_year || '';
+            if (user.gender) setGender(user.gender);
+        }
+
+        /**
+         * Handle Profile Update
+         */
+        async function handleProfileUpdate(e) {
+            e.preventDefault();
+            const btn = document.getElementById('save-btn');
+            const originalText = btn.innerText;
+            
+            try {
+                btn.disabled = true;
+                btn.innerText = '저장 중...';
+
+                const updates = {
+                    name: document.getElementById('p-name').value,
+                    phone: document.getElementById('p-phone').value,
+                    birth_year: document.getElementById('p-birth').value,
+                    gender: document.getElementById('p-gender').value
+                };
+
+                const res = await Auth.updateProfile(updates);
+                if (res.success) {
+                    alert('회원 정보가 성공적으로 수정되었습니다.');
+                    Auth.updateHeaderUI();
+                } else {
+                    throw new Error(res.message);
+                }
+            } catch (err) {
+                alert('수정 실패: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = originalText;
+            }
+        }
+
+        /**
+         * Handle Account Withdrawal
+         */
+        async function handleWithdrawal() {
+            if (!confirm('정말로 탈퇴하시겠습니까?\n작성하신 모든 데이터가 복구 불가능하게 삭제됩니다.')) return;
+            
+            try {
+                const res = await Auth.withdrawAccount();
+                if (res.success) {
+                    alert(res.message);
+                    location.href = 'index.html';
+                } else {
+                    throw new Error(res.message);
+                }
+            } catch (err) {
+                alert('탈퇴 처리 실패: ' + err.message);
+            }
+        }
+
+        // Init on load
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await Auth.getCurrentUser();
+            if (!user) {
+                alert('로그인이 필요한 서비스입니다.');
+                location.href = 'login.html';
+                return;
+            }
+
+            // URL 파라미터 체크 (?tab=profile 처리)
+            const urlParams = new URLSearchParams(window.location.search);
+            const tab = urlParams.get('tab');
+            if (tab === 'profile') {
+                switchTab('profile');
+            } else if (tab === 'settings') {
+                switchTab('settings');
+            } else {
+                loadReservations();
+            }
+        });
+    </script>
+</body>
+
+</html>
