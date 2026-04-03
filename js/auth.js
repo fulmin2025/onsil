@@ -167,7 +167,7 @@ const Auth = {
     },
 
     /**
-     * Withdraw/Delete Account (Simulated)
+     * Withdraw/Delete Account (Permanent Deletion via RPC)
      */
     withdrawAccount: async () => {
         try {
@@ -177,17 +177,25 @@ const Auth = {
             const user = await Auth.getCurrentUser();
             if (!user) throw new Error('로그인 정보가 없습니다.');
 
-            // Delete from profiles table first
+            // 1. Delete associated data first
             await client.from('profiles').delete().eq('id', user.id);
-            
-            // Delete reservations (optional but good for cleanup)
             await client.from('reservations').delete().eq('user_id', user.id);
 
-            // Supabase client can't delete auth user.
-            // We just sign out and inform user or use a specific RPC if available.
+            // 2. Call RPC to delete the actual Auth user record
+            // IMPORTANT: SQL function 'delete_own_user' must be created in Supabase first.
+            const { error: rpcError } = await client.rpc('delete_own_user');
+            
+            if (rpcError) {
+                console.error('RPC Error:', rpcError);
+                // If RPC fails (e.g. not created), fallback to signout
+                await client.auth.signOut();
+                throw new Error('완전 삭제 실패: 서버 함수가 설정되지 않았습니다. 관리자에게 문의하세요.');
+            }
+
+            // 3. Clear session and sign out
             await client.auth.signOut();
             
-            return { success: true, message: '회원 탈퇴 요청이 처리되었습니다. 이용해 주셔서 감사합니다.' };
+            return { success: true, message: '회원 탈퇴가 완료되었습니다. 이용해 주셔서 감사합니다.' };
         } catch (error) {
             console.error('withdrawAccount error:', error);
             return { success: false, message: error.message };
