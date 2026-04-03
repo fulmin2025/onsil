@@ -1,6 +1,6 @@
 {
-    "name": "온실(Onsil): 반려동물 안심 장례",
-    "short_name": "온실(Onsil)",
+    "name": "The 온실: 반려동물 안심 장례",
+    "short_name": "The 온실",
     "start_url": "./index.html",
     "scope": "/",
     "display": "standalone",
