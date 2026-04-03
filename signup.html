@@ -37,9 +37,12 @@
 
 
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden p-8">
-        <div class="text-center mb-8">
-            <a href="index.html" class="text-3xl font-bold text-[#1B2B48] block mb-2">온실(Onsil)</a>
-            <p class="text-gray-500 text-sm">회원가입하고 온실의 서비스를 이용해보세요.</p>
+        <div class="text-center mb-10">
+            <a href="index.html" class="inline-flex flex-col items-center gap-3 group">
+                <img src="./images/onsil_logo_final.png" width="80" height="80" class="w-20 h-20 object-contain transition-transform group-hover:scale-105" alt="온실 캐릭터 로고">
+                <span class="text-3xl font-bold text-[#1B2B48]">온실(Onsil)</span>
+            </a>
+            <p class="text-gray-500 text-sm mt-4">회원가입하고 온실의 서비스를 이용해보세요.</p>
         </div>
 
         <form id="signup-form" class="space-y-6" onsubmit="return false;">
@@ -123,24 +126,11 @@
         </div>
     </div>
 
-    <!-- Supabase CDN (Stable UMD Build) -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"
-        onload="console.log('Supabase Loaded via CDN');" onerror="alert('Supabase CDN 로드 실패. 인터넷 연결을 확인하세요.');">
-        </script>
+    <!-- Supabase & Auth Logic -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/auth.js"></script>
 
     <script>
-        // Check if library loaded
-        window.addEventListener('load', function () {
-            if (!(window.supabase && window.supabase.createClient)) {
-                var typeInfo = (window.supabase === null) ? "null" : typeof window.supabase;
-                alert("오류: Supabase 로드 실패.\nwindow.supabase 상태: " + typeInfo);
-            }
-        });
-
-        const SUPABASE_URL = 'https://fkmcanwlcigofjhbfkzs.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_9OyB7n3foIalMmDxq1-_PA_s3xYfcJS';
-        let authClient = null; // Renamed to avoid conflict
-
         function setGender(gender) {
             document.getElementById('gender').value = gender;
             document.querySelectorAll('.gender-btn').forEach(btn => {
@@ -152,33 +142,7 @@
             selected.classList.add('bg-[#1B2B48]', 'text-white', 'border-[#1B2B48]');
         }
 
-        function getSupabase() {
-            if (authClient) return authClient;
-
-            try {
-                if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
-                    authClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                    console.log('Supabase Client Initialized');
-                    return authClient;
-                } else {
-                    console.error('window.supabase is not available');
-                    alert('시스템 오류: Supabase 인증 모듈을 불러올 수 없습니다.');
-                    return null;
-                }
-            } catch (e) {
-                console.error('Supabase Initialization Error:', e);
-                alert('초기화 오류: ' + e.message);
-                return null;
-            }
-        }
-
         async function handleSignup() {
-            // Check button click
-            if (typeof window.alert === 'function') {
-                // Remove annoying alert after confirmation
-                // alert("가입 버튼이 클릭되었습니다."); 
-            }
-
             const submitBtn = document.getElementById('signup-btn');
             const originalBtnText = submitBtn.innerText;
 
@@ -186,7 +150,6 @@
                 submitBtn.disabled = true;
                 submitBtn.innerText = '처리 중...';
 
-                // Get form values and trim whitespace
                 const email = document.getElementById('email').value.trim();
                 const password = document.getElementById('password').value.trim();
                 const name = document.getElementById('name').value.trim();
@@ -194,50 +157,25 @@
                 const birthYear = document.getElementById('birth-year').value;
                 const phone = document.getElementById('phone').value.trim();
 
-                console.log("Attempting signup with:", { email, name, gender, birthYear, phone });
-
                 if (!email || !password || !name || !gender || !birthYear || !phone) {
                     throw new Error('모든 필드를 입력해 주세요.');
                 }
 
-                const client = getSupabase();
-                if (!client) throw new Error('인증 서비스 연결 실패');
+                // Use centralized Auth logic
+                const res = await Auth.signup(email, password, name, gender, birthYear, phone);
 
-                // Sign up using Auth.js (which we updated)
-                const { data, error } = await client.auth.signUp({
-                    email: email,
-                    password: password,
-                    options: {
-                        data: {
-                            name: name,
-                            gender: gender,
-                            birth_year: birthYear,
-                            phone: phone,
-                            role: 'director' // Default role
-                        }
-                    }
-                });
-
-                if (error) throw error;
-
-                if (data?.user) {
-                    alert('회원가입 완료! 로그인 페이지로 이동합니다.');
+                if (res.success) {
+                    alert('회원가입이 완료되었습니다. 이메일 인증이 필요할 수 있습니다.\n확인 후 로그인해 주세요.');
                     window.location.href = 'login.html';
                 } else {
-                    throw new Error('가입 요청은 전송되었으나 응답이 올바르지 않습니다.');
+                    throw new Error(res.message);
                 }
 
             } catch (error) {
                 console.error('Signup Error:', error);
-                let msg = error.message || error.error_description || JSON.stringify(error);
-
-                // Translate common errors
-                if (msg.includes('rate limit') || msg.includes('Too many requests')) {
-                    msg = "보안 경고: 너무 많은 가입 시도로 인해 서버가 이 IP를 일시적으로 차단했습니다.\n(1시간 뒤에 다시 시도하시거나, 다른 인터넷 환경에서 시도해주세요.)";
-                } else if (msg.includes('already registered')) {
-                    msg = "이미 가입된 이메일입니다. 로그인해주세요.";
-                }
-
+                let msg = error.message;
+                if (msg.includes('rate limit')) msg = "너무 많은 가입 시도로 인해 일시적으로 차단되었습니다.";
+                else if (msg.includes('already registered')) msg = "이미 가입된 이메일입니다.";
                 alert('오류 발생: ' + msg);
             } finally {
                 submitBtn.disabled = false;
@@ -247,7 +185,7 @@
 
         async function handleKakaoLogin() {
             try {
-                const client = getSupabase();
+                const client = Auth.getSupabase();
                 if (!client) throw new Error('인증 서비스 연결 실패');
 
                 const { data, error } = await client.auth.signInWithOAuth({
@@ -256,11 +194,10 @@
                         redirectTo: window.location.origin + '/index.html'
                     }
                 });
-
                 if (error) throw error;
             } catch (error) {
                 console.error('Kakao Login Error:', error);
-                alert('카카오 가입 시도 중 오류가 발생했습니다: ' + error.message);
+                alert('카카오 로그인 중 오류가 발생했습니다.');
             }
         }
     </script>

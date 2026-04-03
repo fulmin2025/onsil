@@ -83,20 +83,21 @@ const Auth = {
                     data: {
                         name: name,
                         gender: gender,
-                        birth_year: birthYear,
-                        phone: phone
+                        birth_year: String(birthYear), // 서버 트리거가 읽을 필드
+                        phone: phone,
+                        role: 'member' // 기본 권한
                     }
                 }
             });
 
             if (error) throw error;
 
-            // Trigger sync if user created (though session might not be present yet)
+            // Trigger sync as fallback (mostly handled by DB trigger now)
             if (data.user) {
                 await Auth.syncProfile(data.user);
             }
 
-            return { success: true, message: '회원가입이 완료되었습니다. 로그인해주세요.' };
+            return { success: true, message: '회원가입 요청이 완료되었습니다.' };
         } catch (error) {
             console.error('Signup error:', error);
             return { success: false, message: error.message || '회원가입 실패' };
