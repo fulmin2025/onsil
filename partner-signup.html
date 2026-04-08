@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>입점 신청 - The 온실 Partner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: "#2C3E50",
+                        onsil: "#8D7B68",
+                        partner: "#1B2B48",
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .step-inactive { opacity: 0.3; filter: grayscale(1); }
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(3deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(3deg); }
+        }
+        .float-icon { animation: float 4s ease-in-out infinite; }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-900 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="p-6">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="온실 로고">
+                <span class="font-bold text-lg text-brand tracking-tight">The 온실 <span class="text-xs font-normal text-gray-400 ml-1">Partner Apply</span></span>
+            </a>
+            <a href="partner-login.html" class="text-sm font-bold text-partner hover:underline transition-colors">기존 파트너 로그인</a>
+        </div>
+    </header>
+
+    <main class="flex-1 flex items-center justify-center p-6 py-12">
+        <div class="w-full max-w-2xl">
+            <!-- Progress Steps -->
+            <div class="flex items-center justify-center gap-4 mb-12">
+                <div class="flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-full bg-partner text-white flex items-center justify-center font-bold text-sm">1</span>
+                    <span class="text-xs font-bold text-partner">입점 신청</span>
+                </div>
+                <div class="w-8 h-px bg-gray-200"></div>
+                <div class="flex items-center gap-2 step-inactive">
+                    <span class="w-8 h-8 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold text-sm">2</span>
+                    <span class="text-xs font-bold text-gray-400">서류 검토</span>
+                </div>
+                <div class="w-8 h-px bg-gray-200"></div>
+                <div class="flex items-center gap-2 step-inactive">
+                    <span class="w-8 h-8 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold text-sm">3</span>
+                    <span class="text-xs font-bold text-gray-400">승인 완료</span>
+                </div>
+            </div>
+
+            <div class="text-center mb-10">
+                <div class="w-20 h-20 bg-partner text-white rounded-3xl flex items-center justify-center mx-auto mb-6 float-icon shadow-xl shadow-partner/20">
+                    <i class="fas fa-file-signature text-3xl"></i>
+                </div>
+                <h1 class="text-3xl font-black text-gray-900 mb-3 tracking-tight">The 온실 파트너 입점 신청</h1>
+                <p class="text-gray-500 font-medium">슬픔을 위로하는 따뜻한 동행에 함께해주세요.</p>
+            </div>
+
+            <div class="bg-white rounded-[2.5rem] shadow-2xl p-8 sm:p-12 border border-gray-100">
+                <form id="signup-form" class="space-y-8">
+                    <!-- 기본 정보 -->
+                    <div class="space-y-4">
+                        <h3 class="text-sm font-black text-partner uppercase tracking-widest border-l-4 border-partner pl-3 mb-6">기본 계정 정보</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 mb-2 ml-1">아이디 (이메일)</label>
+                                <input type="email" id="email" required placeholder="admin@facility.com"
+                                    class="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-partner/5 focus:border-partner transition-all text-sm font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 mb-2 ml-1">비밀번호</label>
+                                <input type="password" id="password" required placeholder="8자리 이상 입력"
+                                    class="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-partner/5 focus:border-partner transition-all text-sm font-medium">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 업체 정보 -->
+                    <div class="space-y-4 pt-4">
+                        <h3 class="text-sm font-black text-partner uppercase tracking-widest border-l-4 border-partner pl-3 mb-6">업체 및 담당자 정보</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 mb-2 ml-1">장례식장 명칭</label>
+                                <input type="text" id="facility" required placeholder="정확한 업체명 입력"
+                                    class="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-partner/5 focus:border-partner transition-all text-sm font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 mb-2 ml-1">대표자 또는 담당자 성함</label>
+                                <input type="text" id="name" required placeholder="실명 입력"
+                                    class="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-partner/5 focus:border-partner transition-all text-sm font-medium">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 mb-2 ml-1">연락처</label>
+                            <input type="tel" id="phone" required placeholder="예: 010-1234-5678"
+                                class="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-partner/5 focus:border-partner transition-all text-sm font-medium">
+                        </div>
+                    </div>
+
+                    <div class="pt-6">
+                        <button type="submit" id="submit-btn"
+                            class="w-full py-5 bg-partner text-white rounded-2xl font-bold text-lg shadow-xl shadow-partner/20 hover:bg-black transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+                            <span>입점 신청하기</span>
+                            <i class="fas fa-paper-plane text-sm"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Success Message (Hidden by default) -->
+                <div id="success-message" class="hidden text-center py-10 space-y-6">
+                    <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-check text-3xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-black text-gray-900">신청이 완료되었습니다!</h2>
+                    <p class="text-gray-500 leading-relaxed">
+                        관리자가 정보를 검토한 후 승인 처리를 진행합니다.<br>
+                        승인이 완료되면 등록하신 이메일로 안내해 드립니다.<br>
+                        <span class="text-xs mt-4 block font-bold text-partner">(문의: 010-2292-1918)</span>
+                    </p>
+                    <a href="index.html" class="inline-block mt-8 text-partner font-bold hover:underline">홈으로 돌아가기</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="p-8 text-center text-gray-300 font-bold uppercase tracking-[0.2em] text-[10px]">
+        &copy; 2026 THE ONSIL PARTNER SYSTEM
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.getElementById('signup-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            const form = document.getElementById('signup-form');
+            const successMsg = document.getElementById('success-message');
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const facility = document.getElementById('facility').value;
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+
+            if (password.length < 8) {
+                alert('비밀번호는 8자리 이상이어야 합니다.');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>처리 중...';
+
+            try {
+                const res = await Auth.signupPartner(email, password, name, facility, phone);
+                if (res.success) {
+                    form.classList.add('hidden');
+                    successMsg.classList.remove('hidden');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    alert('신청 실패: ' + res.message);
+                }
+            } catch (err) {
+                alert('처리 중 오류가 발생했습니다: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span>입점 신청하기</span><i class="fas fa-paper-plane text-sm ml-2"></i>';
+            }
+        };
+    </script>
+</body>
+
+</html>

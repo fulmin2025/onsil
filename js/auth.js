@@ -105,6 +105,40 @@ const Auth = {
     },
 
     /**
+     * Signup a new partner (Pending Approval)
+     */
+    signupPartner: async (email, password, name, facility, phone) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('시스템 오류: 서버 연결에 실패했습니다.');
+
+            const { data, error } = await client.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        name: name,
+                        facility: facility,
+                        phone: phone,
+                        role: 'pending_partner' // 승인 대기 권한
+                    }
+                }
+            });
+
+            if (error) throw error;
+
+            if (data.user) {
+                await Auth.syncProfile(data.user);
+            }
+
+            return { success: true, message: '입점 신청이 완료되었습니다. 관리자 승인 후 이용 가능합니다.' };
+        } catch (error) {
+            console.error('signupPartner error:', error);
+            return { success: false, message: error.message };
+        }
+    },
+
+    /**
      * Login a user
      */
     login: async (email, password) => {
@@ -241,7 +275,7 @@ const Auth = {
                 phone: metadata.phone || '',
                 gender: metadata.gender || '',
                 birth_year: metadata.birth_year || '',
-                role: isSystemAdmin ? 'admin' : (isPartner ? 'partner' : 'member'),
+                role: isSystemAdmin ? 'admin' : (isPartner ? 'partner' : (metadata.role === 'pending_partner' ? 'pending_partner' : 'member')),
                 facility: metadata.facility || null
             };
         }

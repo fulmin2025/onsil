@@ -74,6 +74,13 @@
                         <span>로그인</span>
                         <i class="fas fa-arrow-right text-sm"></i>
                     </button>
+                    
+                    <div class="mt-6 text-center">
+                        <p class="text-sm text-gray-400">
+                            아직 파트너가 아니신가요? 
+                            <a href="partner-signup.html" class="text-partner font-bold hover:underline ml-1">입점 신청하기</a>
+                        </p>
+                    </div>
                 </form>
 
                 <div class="mt-8 pt-8 border-t border-gray-50 text-center">
@@ -107,6 +114,11 @@
                     const user = await Auth.getCurrentUser();
                     if (user && (user.role === 'admin' || user.role === 'partner')) {
                         location.href = 'admin_reservations.html';
+                    } else if (user && user.role === 'pending_partner') {
+                        // Pending approval
+                        await Auth.logout();
+                        alert('아직 승인되지 않은 계정입니다. 관리자의 승인을 기다려주세요.\n(문의: 010-2292-1918)');
+                        location.reload();
                     } else {
                         // Not an admin or partner
                         await Auth.logout();
