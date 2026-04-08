@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">The 온실</string>
+    <string name="title_activity_main">The 온실</string>
+    <string name="package_name">com.theonsil.onsil</string>
+    <string name="custom_url_scheme">com.theonsil.onsil</string>
+</resources>
