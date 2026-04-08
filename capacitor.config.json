@@ -1,0 +1,9 @@
+{
+  "appId": "com.theonsil.onsil",
+  "appName": "The 온실",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}
