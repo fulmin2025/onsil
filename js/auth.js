@@ -47,8 +47,8 @@ const Auth = {
                 id: user.id,
                 email: user.email,
                 name: metadata.name || user.email.split('@')[0],
-                gender: metadata.gender || null,
-                birth_year: metadata.birth_year || null,
+                role: metadata.role || 'member', // 권한 명시적 저장
+                facility: metadata.facility || null, // 업체명 명시적 저장
                 phone: metadata.phone || null,
                 updated_at: new Date().toISOString()
             };
@@ -319,7 +319,10 @@ const Auth = {
                                 ${isAdmin ? `
                                     <div class="border-t border-brand/5 my-1"></div>
                                     <a href="admin_reservations.html" class="w-full text-left px-4 py-2.5 bg-red-50 hover:bg-red-100 rounded-xl text-red-600 text-sm font-bold transition-all flex items-center gap-3">
-                                        <i class="fas fa-tasks"></i> 관리자 대시보드
+                                        <i class="fas fa-tasks"></i> 예약 현황 관리
+                                    </a>
+                                    <a href="admin_partners.html" class="w-full text-left px-4 py-2.5 bg-partner/5 hover:bg-partner/10 rounded-xl text-partner text-sm font-bold transition-all flex items-center gap-3">
+                                        <i class="fas fa-user-check"></i> 업체 승인 관리
                                     </a>
                                 ` : ''}
 
@@ -358,6 +361,46 @@ const Auth = {
             // 로그아웃 시 모바일 링크 제거
             const mpLink = document.getElementById('mobile-mypage-link');
             if (mpLink) mpLink.remove();
+        }
+    },
+
+    /**
+     * Get Pending Partners List (Admin Only)
+     */
+    getPendingPartners: async () => {
+        try {
+            const client = getSupabase();
+            if (!client) return [];
+
+            const { data, error } = await client
+                .from('profiles')
+                .select('*')
+                .eq('role', 'pending_partner')
+                .order('updated_at', { ascending: false });
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error('getPendingPartners error:', error);
+            return [];
+        }
+    },
+
+    /**
+     * Approve Partner via RPC (Admin Only)
+     */
+    approvePartner: async (userId) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('서버 연결 실패');
+
+            const { error } = await client.rpc('approve_partner_request', { target_user_id: userId });
+            if (error) throw error;
+
+            return { success: true, message: '승인이 완료되었습니다.' };
+        } catch (error) {
+            console.error('approvePartner error:', error);
+            return { success: false, message: error.message };
         }
     },
 
