@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>?대퀎 媛?대뱶 - The ?⑥떎</title>
+    <title>이별 가이드 - The 온실</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1B2B48">
     <link rel="apple-touch-icon" href="icons/icon.svg">
@@ -92,27 +92,27 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
             <!-- Logo -->
             <a href="index.html" class="flex items-center gap-2 group flex-shrink-0">
-                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="?⑥떎 罹먮┃??濡쒓퀬">
-                <span class="font-bold text-lg text-brand tracking-tight">The ?⑥떎</span>
+                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="온실 캐릭터 로고">
+                <span class="font-bold text-lg text-brand tracking-tight">The 온실</span>
             </a>
 
             <!-- Desktop Nav -->
             <nav class="hidden lg:flex items-center gap-1">
-                <a href="search.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">?λ??앹옣 李얘린</a>
-                <a href="guide.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg">?대퀎 媛?대뱶</a>
-                <a href="self-diagnosis.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">嫄닿컯?먭?吏꾨떒</a>
-                <a href="memory.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">異붿뼲 媛?대뱶</a>
-                <a href="community.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">而ㅻ??덊떚</a>
+                <a href="search.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">장례식장 찾기</a>
+                <a href="guide.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg">이별 가이드</a>
+                <a href="self-diagnosis.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">건강자가진단</a>
+                <a href="memory.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">추억 가이드</a>
+                <a href="community.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">커뮤니티</a>
             </nav>
 
             <!-- Desktop Actions -->
             <div class="hidden lg:flex items-center gap-2">
                 <div id="auth-container"></div>
                 <a href="search.html?quote=true" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
-                    <i class="fas fa-calculator"></i> 寃ъ쟻
+                    <i class="fas fa-calculator"></i> 견적
                 </a>
-                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?덉빟? 濡쒓렇?????댁슜 媛?ν빀?덈떎.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
-                    <i class="fas fa-calendar-check text-sm"></i> ?덉빟
+                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-calendar-check text-sm"></i> 예약
                 </button>
                 <a href="tel:010-2292-1918" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2">
                     <i class="fas fa-phone-alt text-xs"></i> 010-2292-1918
@@ -121,10 +121,10 @@
 
             <!-- Mobile Header Actions -->
             <div class="flex lg:hidden items-center gap-2">
-                <a href="tel:010-2292-1918" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand/5 text-brand hover:bg-brand/10 transition-colors" title="?꾪솕 ?곷떞">
+                <a href="tel:010-2292-1918" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand/5 text-brand hover:bg-brand/10 transition-colors" title="전화 상담">
                     <i class="fas fa-phone-alt text-sm"></i>
                 </a>
-                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?덉빟? 濡쒓렇?????댁슜 媛?ν빀?덈떎.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand-sage/10 text-brand-sage hover:bg-brand-sage/20 transition-colors" title="?덉빟?섍린">
+                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand-sage/10 text-brand-sage hover:bg-brand-sage/20 transition-colors" title="예약하기">
                     <i class="fas fa-calendar-check text-sm"></i>
                 </button>
                 <button id="mobile-menu-btn" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors" onclick="toggleMobileNav()">
@@ -145,12 +145,12 @@
                     <i class="fas fa-heart"></i> ONSIL CARE GUIDE
                 </div>
                 <h2 class="text-2xl md:text-4xl font-bold leading-tight mb-6">
-                    ?뚯쨷???꾩씠????대퀎,<br>
-                    <span class="text-brand-sage">?뱁솴?섏? ?딅룄濡??④퍡?좉쾶??</span>
+                    소중한 아이와의 이별,<br>
+                    <span class="text-brand-sage">당황하지 않도록 함께할게요.</span>
                 </h2>
                 <p class="text-gray-500 text-lg font-light max-w-lg mx-auto leading-relaxed">
-                    ?ы뵒???좉꺼?덈뒗 蹂댄샇?먮떂???꾪빐,<br>
-                    諛섎뱶???뺤씤?댁빞 ???쇰뱾???뺣━?덉뒿?덈떎.
+                    슬픔에 잠겨있는 보호자님을 위해,<br>
+                    반드시 확인해야 할 일들을 정리했습니다.
                 </p>
             </section>
 
@@ -163,7 +163,7 @@
                             class="w-12 h-12 bg-brand-sage/10 rounded-2xl flex items-center justify-center text-brand-sage">
                             <i class="fas fa-home text-xl"></i>
                         </div>
-                        <h2 class="text-2xl font-bold">吏묒뿉???????덈뒗 留덉?留??뺣룉</h2>
+                        <h2 class="text-2xl font-bold">집에서 할 수 있는 마지막 정돈</h2>
                     </div>
 
                     <div class="grid gap-8 md:grid-cols-2">
@@ -172,20 +172,20 @@
                                 <span
                                     class="w-8 h-8 rounded-full bg-brand-sage text-white flex items-center justify-center font-bold text-sm flex-shrink-0">1</span>
                                 <div>
-                                    <h3 class="font-bold text-lg mb-2">?몄븞???먯꽭 ?≪븘二쇨린</h3>
-                                    <p class="text-gray-500 text-sm leading-relaxed">?쒓컙??吏?섎㈃ 紐몄씠 援녹뼱吏????덉뒿?덈떎. ?ㅻ━瑜?諛?履쎌쑝濡?
-                                        遺?쒕읇寃?
-                                        ?밴꺼 ?낇겕由??먯꽭濡??뺥?二쇱꽭??</p>
+                                    <h3 class="font-bold text-lg mb-2">편안한 자세 잡아주기</h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">시간이 지나면 몸이 굳어질 수 있습니다. 다리를 배 쪽으로
+                                        부드럽게
+                                        당겨 웅크린 자세로 눕혀주세요.</p>
                                 </div>
                             </div>
                             <div class="flex gap-4">
                                 <span
                                     class="w-8 h-8 rounded-full bg-brand-sage text-white flex items-center justify-center font-bold text-sm flex-shrink-0">2</span>
                                 <div>
-                                    <h3 class="font-bold text-lg mb-2">泥댁삩 ?좎? 諛?諛곕? 議곗튂</h3>
-                                    <p class="text-gray-500 text-sm leading-relaxed">洹쇱쑁???댁셿?섎㈃ 遺꾨퉬臾쇱씠 ?섏삱 ???덉뒿?덈떎. ?꾨옒??源⑤걮??
-                                        ?⑤뱶??
-                                        ?댁슂瑜?媛덉븘二쇱떆怨???二쇰?????븘二쇱꽭??</p>
+                                    <h3 class="font-bold text-lg mb-2">체온 유지 및 배변 조치</h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">근육이 이완되면 분비물이 나올 수 있습니다. 아래에 깨끗한
+                                        패드나
+                                        담요를 갈아주시고 입 주변을 닦아주세요.</p>
                                 </div>
                             </div>
                         </div>
@@ -194,20 +194,20 @@
                                 <span
                                     class="w-8 h-8 rounded-full bg-brand-sage text-white flex items-center justify-center font-bold text-sm flex-shrink-0">3</span>
                                 <div>
-                                    <h3 class="font-bold text-lg mb-2">?쒖썝???⑤룄 ?좎?</h3>
-                                    <p class="text-gray-500 text-sm leading-relaxed">遺?⑤? ??텛湲??꾪빐 ?ㅻ궡 ?⑤룄瑜???쾶 ?좎??댁＜?몄슂. 諛??꾨옒??
-                                        ?깆뿉
-                                        ?꾩씠?ㅽ뙥???섍굔??媛먯떥 ?먯떆硫?醫뗭뒿?덈떎.</p>
+                                    <h3 class="font-bold text-lg mb-2">시원한 온도 유지</h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">부패를 늦추기 위해 실내 온도를 낮게 유지해주세요. 배 아래나
+                                        등에
+                                        아이스팩을 수건에 감싸 두시면 좋습니다.</p>
                                 </div>
                             </div>
                             <div class="flex gap-4">
                                 <span
                                     class="w-8 h-8 rounded-full bg-brand-sage text-white flex items-center justify-center font-bold text-sm flex-shrink-0">4</span>
                                 <div>
-                                    <h3 class="font-bold text-lg mb-2">異⑸텇???몄궗 ?섎늻湲?/h3>
-                                    <p class="text-gray-500 text-sm leading-relaxed">?쒕몮??蹂대궡吏 ?딆쑝?붾룄 愿쒖갖?듬땲?? ?꾩씠媛 媛???щ옉?덈뜕
-                                        媛議깅뱾怨?
-                                        留덉?留??쒓컙??李⑤텇??蹂대궡二쇱꽭??</p>
+                                    <h3 class="font-bold text-lg mb-2">충분한 인사 나누기</h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">서둘러 보내지 않으셔도 괜찮습니다. 아이가 가장 사랑했던
+                                        가족들과
+                                        마지막 시간을 차분히 보내주세요.</p>
                                 </div>
                             </div>
                         </div>
@@ -220,9 +220,9 @@
                 <div class="flex items-center justify-between mb-10">
                     <h2 class="text-2xl font-bold flex items-center gap-3">
                         <i class="fas fa-clipboard-check text-brand-warm"></i>
-                        以鍮꾨Ъ 泥댄겕由ъ뒪??
+                        준비물 체크리스트
                     </h2>
-                    <span class="text-xs text-gray-400">?λ??앹옣 諛⑸Ц ??瑗?梨숆꺼二쇱꽭??/span>
+                    <span class="text-xs text-gray-400">장례식장 방문 전 꼭 챙겨주세요</span>
                 </div>
 
                 <div class="space-y-4">
@@ -234,8 +234,8 @@
                             <i class="fas fa-check text-xs"></i>
                         </div>
                         <div class="flex-1">
-                            <h4 class="font-bold">媛???덉걶 ?ъ쭊 (?곸젙??</h4>
-                            <p class="text-xs text-gray-400 mt-1">?몃뱶?곗뿉 ?닿릿 怨좏솕吏??먮낯 ?ъ쭊?대㈃ 異⑸텇?⑸땲??</p>
+                            <h4 class="font-bold">가장 예쁜 사진 (영정용)</h4>
+                            <p class="text-xs text-gray-400 mt-1">핸드폰에 담긴 고화질 원본 사진이면 충분합니다.</p>
                         </div>
                         <i class="fas fa-image text-brand-warm/20 text-2xl"></i>
                     </div>
@@ -248,8 +248,8 @@
                             <i class="fas fa-check text-xs"></i>
                         </div>
                         <div class="flex-1">
-                            <h4 class="font-bold">醫뗭븘?섎뜕 ?댁슂?????/h4>
-                            <p class="text-xs text-gray-400 mt-1">?꾩씠瑜?媛먯떥嫄곕굹 ?대룞 ??泥댁삩??蹂댄샇?섍린 ?꾪빐 ?꾩슂?⑸땲??</p>
+                            <h4 class="font-bold">좋아하던 담요나 타올</h4>
+                            <p class="text-xs text-gray-400 mt-1">아이를 감싸거나 이동 시 체온을 보호하기 위해 필요합니다.</p>
                         </div>
                         <i class="fas fa-soap text-brand-warm/20 text-2xl"></i>
                     </div>
@@ -262,8 +262,8 @@
                             <i class="fas fa-check text-xs"></i>
                         </div>
                         <div class="flex-1">
-                            <h4 class="font-bold">留덉?留?媛꾩떇怨?苑?/h4>
-                            <p class="text-xs text-gray-400 mt-1">異붾え ???쒕떒???щ젮以?媛꾩떇?대굹 ?묒? 苑????≪씠瑜?以鍮꾪빐蹂댁꽭??</p>
+                            <h4 class="font-bold">마지막 간식과 꽃</h4>
+                            <p class="text-xs text-gray-400 mt-1">추모 시 제단에 올려줄 간식이나 작은 꽃 한 송이를 준비해보세요.</p>
                         </div>
                         <i class="fas fa-egg text-brand-warm/20 text-2xl"></i>
                     </div>
@@ -276,8 +276,8 @@
                             <i class="fas fa-check text-xs"></i>
                         </div>
                         <div class="flex-1">
-                            <h4 class="font-bold">?⑥떎 ?덉떖 ?덉빟 ?뺤젙</h4>
-                            <p class="text-xs text-gray-400 mt-1">?湲??쒓컙 ?놁씠 諛붾줈 ?댁슜?????덈룄濡??덉빟???뺤씤?댁＜?몄슂.</p>
+                            <h4 class="font-bold">온실 안심 예약 확정</h4>
+                            <p class="text-xs text-gray-400 mt-1">대기 시간 없이 바로 이용할 수 있도록 예약을 확인해주세요.</p>
                         </div>
                         <i class="fas fa-calendar-check text-brand-warm/20 text-2xl"></i>
                     </div>
@@ -286,7 +286,7 @@
 
             <!-- Section 3: Timeline Process -->
             <section class="mb-24 fade-up">
-                <h2 class="text-2xl font-bold mb-12 text-center">?λ? 吏꾪뻾 ?덉감</h2>
+                <h2 class="text-2xl font-bold mb-12 text-center">장례 진행 절차</h2>
 
                 <div class="relative space-y-12">
                     <!-- Step 1 -->
@@ -296,12 +296,12 @@
                             1</div>
                         <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
                             <div class="flex justify-between items-center mb-3">
-                                <h3 class="font-bold text-lg text-brand">?닿뎄 諛?諛⑸Ц</h3>
+                                <h3 class="font-bold text-lg text-brand">운구 및 방문</h3>
                                 <span
                                     class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Arrival</span>
                             </div>
                             <p class="text-sm text-gray-500 leading-relaxed font-light">
-                                ?덉빟 ?쒓컙??留욎떠 ?λ??앹옣???꾩갑?⑸땲?? ?대룞???대젮??寃쎌슦 ?λ??앹옣 ?꾩슜 李⑤웾 ?쒕퉬?ㅻ? ?댁슜?섏떎 ???덉뒿?덈떎.
+                                예약 시간에 맞춰 장례식장에 도착합니다. 이동이 어려운 경우 장례식장 전용 차량 서비스를 이용하실 수 있습니다.
                             </p>
                         </div>
                     </div>
@@ -313,12 +313,12 @@
                             2</div>
                         <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
                             <div class="flex justify-between items-center mb-3">
-                                <h3 class="font-bold text-lg text-brand">?쇱뒿 諛??낃?</h3>
+                                <h3 class="font-bold text-lg text-brand">염습 및 입관</h3>
                                 <span
                                     class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Preparation</span>
                             </div>
                             <p class="text-sm text-gray-500 leading-relaxed font-light">
-                                ?꾨Ц ?λ? 吏?꾩궗媛 ?뺤꽦?ㅻ읇寃??꾩씠??紐몄쓣 ??퀬 ?⑥옣(?섏쓽/愿 ?좏깮 ??吏꾪뻾)?섏뿬 留덉?留??좎쓣 以鍮꾪빀?덈떎.
+                                전문 장례 지도사가 정성스럽게 아이의 몸을 닦고 단장(수의/관 선택 시 진행)하여 마지막 잠을 준비합니다.
                             </p>
                         </div>
                     </div>
@@ -330,12 +330,12 @@
                             3</div>
                         <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
                             <div class="flex justify-between items-center mb-3">
-                                <h3 class="font-bold text-lg text-brand">異붾え ?덉떇</h3>
+                                <h3 class="font-bold text-lg text-brand">추모 예식</h3>
                                 <span
                                     class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Memorial</span>
                             </div>
                             <p class="text-sm text-gray-500 leading-relaxed font-light">
-                                ?⑤룆 異붾え?ㅼ뿉??媛議깅뱾留뚯쓽 ?쒓컙??媛뽰뒿?덈떎. ?꾩씠???異붿뼲???닿릿 ?곸긽?대굹 ?몄?瑜??섎늻硫??묐퀎 ?몄궗瑜??섎닏?덈떎.
+                                단독 추모실에서 가족들만의 시간을 갖습니다. 아이와의 추억이 담긴 영상이나 편지를 나누며 작별 인사를 나눕니다.
                             </p>
                         </div>
                     </div>
@@ -347,12 +347,12 @@
                             4</div>
                         <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
                             <div class="flex justify-between items-center mb-3">
-                                <h3 class="font-bold text-lg text-brand">媛쒕퀎 ?붿옣 諛??섍낏</h3>
+                                <h3 class="font-bold text-lg text-brand">개별 화장 및 수골</h3>
                                 <span
                                     class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Cremation</span>
                             </div>
                             <p class="text-sm text-gray-500 leading-relaxed font-light">
-                                泥좎???媛쒕퀎 ?붿옣??吏꾪뻾?섎ŉ ??怨쇱젙??李멸??ㅼ뿉???뺤씤?섏떎 ???덉뒿?덈떎. ?붿옣 醫낅즺 ???좉낏???뺢컝?섍쾶 ?섏뒿?⑸땲??
+                                철저한 개별 화장을 진행하며 전 과정을 참관실에서 확인하실 수 있습니다. 화장 종료 후 유골을 정갈하게 수습합니다.
                             </p>
                         </div>
                     </div>
@@ -364,12 +364,12 @@
                             5</div>
                         <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
                             <div class="flex justify-between items-center mb-3">
-                                <h3 class="font-bold text-lg text-brand">遊됱븞 諛??덉튂</h3>
+                                <h3 class="font-bold text-lg text-brand">봉안 및 안치</h3>
                                 <span
                                     class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Enshrinement</span>
                             </div>
                             <p class="text-sm text-gray-500 leading-relaxed font-light">
-                                ?섏뒿???좉낏???좉낏?⑥뿉 ?댁븘 ?몃룄???쒕┰?덈떎. 遊됱븞???덉튂, ?곌낏, ?먮뒗 硫붾え由ъ뼹 ?ㅽ넠 ?쒖옉 以??좏깮?섏떎 ???덉뒿?덈떎.
+                                수습된 유골을 유골함에 담아 인도해 드립니다. 봉안당 안치, 산골, 또는 메모리얼 스톤 제작 중 선택하실 수 있습니다.
                             </p>
                         </div>
                     </div>
@@ -378,22 +378,22 @@
 
             <!-- Section 4: FAQ -->
             <section class="mb-24 fade-up">
-                <h2 class="text-2xl font-bold mb-10">?먯＜ 臾삳뒗 吏덈Ц</h2>
+                <h2 class="text-2xl font-bold mb-10">자주 묻는 질문</h2>
 
                 <div class="space-y-4">
                     <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden accordion-item group">
                         <button
                             class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
                             onclick="toggleAccordion(this)">
-                            <span class="font-bold">?λ? 吏꾪뻾 ?쒓컙? ?쇰쭏??嫄몃━?섏슂?</span>
+                            <span class="font-bold">장례 진행 시간은 얼마나 걸리나요?</span>
                             <i
                                 class="fas fa-chevron-down text-gray-300 group-[.accordion-active]:rotate-180 transition-transform"></i>
                         </button>
                         <div class="accordion-content">
                             <div class="px-6 pb-6 text-sm text-gray-500 leading-relaxed">
-                                ?꾩씠??紐몃Т寃뚯? ?좏깮?섏떊 ?듭뀡???곕씪 ?ㅻⅤ吏留? ?됯퇏?곸쑝濡?1?쒓컙 30遺꾩뿉??2?쒓컙 ?뺣룄 ?뚯슂?⑸땲?? 異⑸텇??異붾え ?쒓컙???먰븯??寃쎌슦 議곌툑 ???ъ쑀 ?덇쾶
-                                怨꾪쉷?섏떆??
-                                寃껋씠 醫뗭뒿?덈떎.
+                                아이의 몸무게와 선택하신 옵션에 따라 다르지만, 평균적으로 1시간 30분에서 2시간 정도 소요됩니다. 충분한 추모 시간을 원하실 경우 조금 더 여유 있게
+                                계획하시는
+                                것이 좋습니다.
                             </div>
                         </div>
                     </div>
@@ -402,13 +402,13 @@
                         <button
                             class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
                             onclick="toggleAccordion(this)">
-                            <span class="font-bold">?ㅻⅨ ?꾩씠?ㅺ낵 媛숈씠 ?붿옣?섎뒗 寃쎌슦???덈굹??</span>
+                            <span class="font-bold">다른 아이들과 같이 화장하는 경우도 있나요?</span>
                             <i
                                 class="fas fa-chevron-down text-gray-300 group-[.accordion-active]:rotate-180 transition-transform"></i>
                         </button>
                         <div class="accordion-content">
                             <div class="px-6 pb-6 text-sm text-gray-500 leading-relaxed">
-                                ?⑥떎???덈궡?섎뒗 紐⑤뱺 ?쒗쑕 ?λ??앹옣? **'100% 媛쒕퀎 ?붿옣'** ?먯튃??以?섑빀?덈떎. ??怨쇱젙???щ챸?섍쾶 李멸??섏떎 ???덉쑝???덉떖?섏뀛???⑸땲??
+                                온실이 안내하는 모든 제휴 장례식장은 **'100% 개별 화장'** 원칙을 준수합니다. 전 과정을 투명하게 참관하실 수 있으니 안심하셔도 됩니다.
                             </div>
                         </div>
                     </div>
@@ -417,15 +417,15 @@
                         <button
                             class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
                             onclick="toggleAccordion(this)">
-                            <span class="font-bold">鍮꾩슜? ?몄젣 寃곗젣?섎굹??</span>
+                            <span class="font-bold">비용은 언제 결제하나요?</span>
                             <i
                                 class="fas fa-chevron-down text-gray-300 group-[.accordion-active]:rotate-180 transition-transform"></i>
                         </button>
                         <div class="accordion-content">
                             <div class="px-6 pb-6 text-sm text-gray-500 leading-relaxed">
-                                ?⑥떎?먯꽌 ?덈궡?쒕┛ 寃ъ쟻 湲덉븸??**?⑤씪?몄쑝濡?利됱떆 寃곗젣**?섍쾶 ?섎ŉ, ??寃쎌슦 **?λ??앹옣 ?꾩옣 寃곗젣 湲덉븸? 0??*?낅땲?? 異붽? ?듭뀡???좏깮?섏? ?딅뒗 ??
-                                ?꾩옣?먯꽌??
-                                異붽? 鍮꾩슜 諛쒖깮? ?놁뒿?덈떎.
+                                온실에서 안내드린 견적 금액을 **온라인으로 즉시 결제**하게 되며, 이 경우 **장례식장 현장 결제 금액은 0원**입니다. 추가 옵션을 선택하지 않는 한
+                                현장에서의
+                                추가 비용 발생은 없습니다.
                             </div>
                         </div>
                     </div>
@@ -439,16 +439,16 @@
             <div class="bg-brand py-12 px-8 rounded-[3rem] text-center text-white relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
                 <div class="relative z-10">
-                    <h2 class="text-2xl md:text-3xl font-bold mb-6">?꾩씠???곹깭瑜?誘몃━ 泥댄겕??蹂댁꽭??</h2>
-                    <p class="text-white/60 mb-10 text-sm font-light">?⑥떎? 蹂댄샇?먮떂???ы뵒??誘몃━ ?댄빐?섍퀬 ?④퍡 以鍮꾪븯寃좎뒿?덈떎.</p>
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6">아이의 상태를 미리 체크해 보세요.</h2>
+                    <p class="text-white/60 mb-10 text-sm font-light">온실은 보호자님의 슬픔을 미리 이해하고 함께 준비하겠습니다.</p>
                     <div class="flex flex-wrap justify-center gap-4">
                         <a href="self-diagnosis.html?tab=aging"
                             class="inline-flex items-center gap-3 bg-brand-warm hover:bg-brand-warm/90 text-white px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105">
-                            ?명솕 ?먭? 吏꾨떒?섍린
+                            노화 자가 진단하기
                         </a>
                         <a href="self-diagnosis.html?tab=qol"
                             class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105">
-                            ?띠쓽 吏??됯??섍린
+                            삶의 질 평가하기
                         </a>
                     </div>
                 </div>
@@ -461,32 +461,33 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
                 <div class="col-span-2 md:col-span-2">
                     <div class="flex items-center gap-2 mb-4">
-                        <img src="./images/onsil_logo_tr.png" width="32" height="32" class="w-8 h-8 object-contain" alt="The ?⑥떎 濡쒓퀬">
-                        <span class="font-bold text-lg text-[#2C3E50]">The ?⑥떎</span>
+                        <img src="./images/onsil_logo_tr.png" width="32" height="32" class="w-8 h-8 object-contain" alt="The 온실 로고">
+                        <span class="font-bold text-lg text-[#2C3E50]">The 온실</span>
                     </div>
                     <p class="text-sm text-[#2C3E50]/40 mb-4 leading-relaxed max-w-sm">
-                        諛섎젮?숇Ъ ?λ??앹옣 鍮꾧탳遺???덉빟源뚯?.<br>?대젮??寃곗젙?????⑥떎???④퍡?⑸땲??
+                        반려동물 장례식장 비교부터 예약까지.<br>어려운 결정에 늘 온실이 함께합니다.
                     </p>
-                    <p class="text-xs text-[#2C3E50]/30">The ?⑥떎 | ???議곗쁺??| 臾몄쓽 010-2292-1918<br>?ъ뾽?먮벑濡앸쾲??: 181-18-02826<br>二쇱냼 : 遺泥쒖떆 ?쇱옉濡?280踰덇만 53-9 ?됱슦?쇳뤃由ъ? 502??/p>
+                    <p class="text-xs text-[#2C3E50]/30">The 온실 | 대표 조영호 | 문의 010-2292-1918<br>사업자등록번호 : 181-18-02826<br>주소 : 부천시 삼작로 280번길 53-9 행우라폴리움 502호</p>
                 </div>
                 <div>
-                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">?쒕퉬??/h3>
+                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">서비스</h3>
                     <ul class="space-y-3 text-sm text-[#2C3E50]/50">
-                        <li><a href="search.html" class="hover:text-[#2C3E50] transition-colors">?λ??앹옣 李얘린</a></li>
-                        <li><a href="guide.html" class="hover:text-[#2C3E50] transition-colors">?대퀎 媛?대뱶</a></li>
-                        <li><a href="self-diagnosis.html" class="hover:text-[#2C3E50] transition-colors">嫄닿컯?먭?吏꾨떒</a></li>
-                        <li><a href="memory.html" class="hover:text-[#2C3E50] transition-colors">異붿뼲 媛?대뱶</a></li>
-                        <li><a href="community.html" class="hover:text-[#2C3E50] transition-colors">而ㅻ??덊떚</a></li>
+                        <li><a href="search.html" class="hover:text-[#2C3E50] transition-colors">장례식장 찾기</a></li>
+                        <li><a href="guide.html" class="hover:text-[#2C3E50] transition-colors">이별 가이드</a></li>
+                        <li><a href="self-diagnosis.html" class="hover:text-[#2C3E50] transition-colors">건강자가진단</a></li>
+                        <li><a href="memory.html" class="hover:text-[#2C3E50] transition-colors">추억 가이드</a></li>
+                        <li><a href="community.html" class="hover:text-[#2C3E50] transition-colors">커뮤니티</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">怨좉컼吏??/h3>
+                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">고객지원</h3>
                     <ul class="space-y-3 text-sm text-[#2C3E50]/50">
-                        <li><a href="contact.html" class="hover:text-[#2C3E50] transition-colors">臾몄쓽?섍린</a></li>
+                        <li><a href="contact.html" class="hover:text-[#2C3E50] transition-colors">문의하기</a></li>
                         <li><a href="partnership.html"
-                                class="hover:text-[#2C3E50] transition-colors font-bold text-brand-warm">?쒗쑕臾몄쓽</a></li>
-                        <li><a href="terms.html" class="hover:text-[#2C3E50] transition-colors">?댁슜?쎄?</a></li>
-                        <li><a href="privacy.html" class="hover:text-[#2C3E50] transition-colors">媛쒖씤?뺣낫泥섎━諛⑹묠</a></li>
+                                class="hover:text-[#2C3E50] transition-colors font-bold text-brand-warm">제휴문의</a></li>
+                        <li><a href="terms.html" class="hover:text-[#2C3E50] transition-colors">이용약관</a></li>
+                        <li><a href="privacy.html" class="hover:text-[#2C3E50] transition-colors">개인정보처리방침</a></li>
+                        <li class="pt-2 border-t border-[#2C3E50]/5"><a href="partner-login.html" class="text-xs font-bold text-gray-400 hover:text-partner transition-colors"><i class="fas fa-lock text-[10px] mr-1"></i> 업체 로그인</a></li>
                     </ul>
                 </div>
             </div>
@@ -509,7 +510,7 @@
             id="mobile-nav-panel">
             <div class="p-6 h-full flex flex-col pt-safe">
                 <div class="flex justify-between items-center mb-8">
-                    <span class="font-bold text-lg text-brand">硫붾돱</span>
+                    <span class="font-bold text-lg text-brand">메뉴</span>
                     <button onclick="toggleMobileNav()"
                         class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
                         <i class="fas fa-times text-gray-500"></i>
@@ -519,44 +520,44 @@
                     <a href="search.html?quote=true"
                         class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all bg-brand-cream text-brand font-bold mb-4 hover:shadow-md">
                         <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
-                        <span>諛붾줈 寃ъ쟻諛쏄린</span>
+                        <span>바로 견적받기</span>
                     </a>
                     <a href="search.html"
                         class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
                         <i class="fas fa-search w-5 text-center"></i>
-                        <span>?λ??앹옣 李얘린</span>
+                        <span>장례식장 찾기</span>
                     </a>
                     <a href="guide.html"
                         class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-brand/5 text-brand font-bold transition-colors">
                         <i class="fas fa-book-open w-5 text-center"></i>
-                        <span>?대퀎 媛?대뱶</span>
+                        <span>이별 가이드</span>
                     </a>
                     <a href="self-diagnosis.html"
                         class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
                         <i class="fas fa-stethoscope w-5 text-center"></i>
-                        <span>嫄닿컯?먭?吏꾨떒</span>
+                        <span>건강자가진단</span>
                     </a>
                     <a href="memory.html"
                         class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
                         <i class="fas fa-heart w-5 text-center"></i>
-                        <span>異붿뼲 媛?대뱶</span>
+                        <span>추억 가이드</span>
                     </a>
                     <a href="community.html"
                         class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
                         <i class="fas fa-comments w-5 text-center"></i>
-                        <span>而ㅻ??덊떚</span>
+                        <span>커뮤니티</span>
                     </a>
                 </nav>
                 <!-- Mobile Bottom Actions -->
                 <div class="pt-6 border-t border-brand/5 space-y-3">
                     <button
-                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?덉빟? 濡쒓렇?????댁슜 媛?ν빀?덈떎.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
                         class="w-full bg-brand-sage text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-sage/90 transition-colors">
-                        <i class="fas fa-calendar-check text-sm"></i> ?덉빟?섍린
+                        <i class="fas fa-calendar-check text-sm"></i> 예약하기
                     </button>
                     <a href="tel:010-2292-1918"
                         class="w-full bg-brand-warm text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-warmDark transition-colors">
-                        <i class="fas fa-phone-alt text-sm"></i> 010-2292-1918 ?곷떞???곌껐
+                        <i class="fas fa-phone-alt text-sm"></i> 010-2292-1918 상담원 연결
                     </a>
                 </div>
             </div>
