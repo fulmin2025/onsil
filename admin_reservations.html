@@ -51,7 +51,7 @@
     <main class="max-w-7xl mx-auto px-4 py-8">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900">예약 통합 관리</h1>
+                <h1 id="dashboard-title" class="text-2xl font-bold text-gray-900">예약 통합 관리</h1>
                 <p class="text-gray-500 mt-1">접수된 모든 장례 예약 내역을 실시간으로 확인하고 관리할 수 있습니다.</p>
             </div>
             <div class="flex gap-2">
@@ -187,10 +187,26 @@
                 const sb = Auth.getSupabase();
                 if (!sb) throw new Error("서버 연결 실패");
 
-                const { data, error } = await sb
-                    .from('reservations')
-                    .select('*')
-                    .order('created_at', { ascending: false });
+                const user = await Auth.getCurrentUser();
+                if (!user) throw new Error("로그인이 필요합니다.");
+
+                // Dashboard Title Update
+                if (user.role === 'partner' && user.facility) {
+                    document.getElementById('dashboard-title').textContent = `${user.facility} 관리 대시보드`;
+                }
+
+                let query = sb.from('reservations').select('*');
+
+                // Role-based filtering
+                if (user.role === 'partner') {
+                    if (user.facility) {
+                        query = query.eq('facility_name', user.facility);
+                    } else {
+                        throw new Error("할당된 시설 정보가 없습니다. 관리자에게 문의하세요.");
+                    }
+                }
+
+                const { data, error } = await query.order('created_at', { ascending: false });
 
                 if (error) throw error;
 

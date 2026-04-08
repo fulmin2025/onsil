@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>업체 로그인 - The 온실 Partner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: "#2C3E50",
+                        onsil: "#8D7B68",
+                        partner: "#1B2B48",
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-900 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="p-6">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="온실 로고">
+                <span class="font-bold text-lg text-brand tracking-tight">The 온실 <span class="text-xs font-normal text-gray-400 ml-1">Partner Portal</span></span>
+            </a>
+            <a href="partnership.html" class="text-sm font-bold text-gray-400 hover:text-partner transition-colors">입점 문의</a>
+        </div>
+    </header>
+
+    <main class="flex-1 flex items-center justify-center p-6">
+        <div class="w-full max-w-md">
+            <div class="text-center mb-10">
+                <div class="w-20 h-20 bg-partner/5 rounded-3xl flex items-center justify-center mx-auto mb-6 transform rotate-3">
+                    <i class="fas fa-handshake text-3xl text-partner"></i>
+                </div>
+                <h1 class="text-3xl font-black text-gray-900 mb-3 tracking-tight">파트너 로그인</h1>
+                <p class="text-gray-500 font-medium">장례식장 전용 관리 대시보드에 접속합니다.</p>
+            </div>
+
+            <div class="bg-white rounded-[2.5rem] shadow-2xl p-8 sm:p-10 border border-gray-100">
+                <form id="login-form" class="space-y-6">
+                    <div>
+                        <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">파트너 이메일</label>
+                        <div class="relative">
+                            <i class="fas fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-gray-300"></i>
+                            <input type="email" id="email" required placeholder="example@theonsil.co.kr"
+                                class="w-full pl-12 pr-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-partner/5 focus:border-partner transition-all text-sm font-medium">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">비밀번호</label>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-gray-300"></i>
+                            <input type="password" id="password" required placeholder="••••••••"
+                                class="w-full pl-12 pr-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-partner/5 focus:border-partner transition-all text-sm font-medium">
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submit-btn"
+                        class="w-full py-5 bg-partner text-white rounded-2xl font-bold text-lg shadow-xl shadow-partner/20 hover:bg-black transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+                        <span>로그인</span>
+                        <i class="fas fa-arrow-right text-sm"></i>
+                    </button>
+                </form>
+
+                <div class="mt-8 pt-8 border-t border-gray-50 text-center">
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        계정 정보를 분실하셨거나 접근 권한이 없으신 경우<br>서포트팀(<span class="text-partner font-bold">010-2292-1918</span>)으로 문의주세요.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="p-8 text-center">
+        <p class="text-[10px] text-gray-300 font-bold uppercase tracking-[0.2em]">&copy; 2026 THE ONSIL PARTNER SYSTEM</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.getElementById('login-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>처리 중...';
+
+            try {
+                const res = await Auth.login(email, password);
+                if (res.success) {
+                    const user = await Auth.getCurrentUser();
+                    if (user && (user.role === 'admin' || user.role === 'partner')) {
+                        location.href = 'admin_reservations.html';
+                    } else {
+                        // Not an admin or partner
+                        await Auth.logout();
+                        alert('접근 권한이 없는 계정입니다. 파트너 전용 계정으로 로그인해주세요.');
+                        location.reload();
+                    }
+                } else {
+                    alert(res.message);
+                }
+            } catch (err) {
+                alert('로그인 처리 중 오류 발생: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span>로그인</span><i class="fas fa-arrow-right text-sm ml-2"></i>';
+            }
+        };
+
+        // Redirect if already logged in as partner/admin
+        window.onload = async () => {
+            const user = await Auth.getCurrentUser();
+            if (user && (user.role === 'partner' || user.role === 'admin')) {
+                location.href = 'admin_reservations.html';
+            }
+        };
+    </script>
+</body>
+
+</html>

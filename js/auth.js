@@ -232,6 +232,7 @@ const Auth = {
             // Role detection: Metadata role or hardcoded Admin List
             const adminEmails = ['theonsil@gmail.com', 'admin@theonsil.co.kr']; // Example admins
             const isSystemAdmin = adminEmails.includes(session.user.email) || metadata.role === 'admin';
+            const isPartner = metadata.role === 'partner';
 
             return {
                 id: session.user.id,
@@ -240,7 +241,8 @@ const Auth = {
                 phone: metadata.phone || '',
                 gender: metadata.gender || '',
                 birth_year: metadata.birth_year || '',
-                role: isSystemAdmin ? 'admin' : 'member'
+                role: isSystemAdmin ? 'admin' : (isPartner ? 'partner' : 'member'),
+                facility: metadata.facility || null
             };
         }
         return null;
