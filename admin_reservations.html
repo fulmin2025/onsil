@@ -291,7 +291,7 @@
                     pet_name: document.getElementById('res-pet-name').value,
                     pet_type: document.getElementById('res-pet-type').value,
                     user_phone: document.getElementById('res-phone').value,
-                    user_id: `manual_${user.id}_${Date.now()}`, // 수동 입력 식별자
+                    user_id: user.id, // 유효한 UUID 형식으로 관리자의 ID 저장
                     payment_status: 'manual'
                 };
 
