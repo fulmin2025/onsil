@@ -168,8 +168,8 @@
         async function checkAdminAccess() {
             try {
                 const user = await Auth.getCurrentUser();
-                if (!user || user.role !== 'admin') {
-                    alert('관리자 전용 대시보드입니다.');
+                if (!user || (user.role !== 'admin' && user.role !== 'partner')) {
+                    alert('관리자 혹은 파트너 전용 대시보드입니다.');
                     location.href = 'index.html';
                 }
             } catch (err) {
