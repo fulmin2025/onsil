@@ -367,19 +367,19 @@ const Auth = {
     /**
      * Get Pending Partners List (Admin Only)
      */
+    /**
+     * Get Pending Partners List (Admin Only) - Using Secure RPC
+     */
     getPendingPartners: async () => {
         try {
             const client = getSupabase();
             if (!client) return [];
 
-            const { data, error } = await client
-                .from('profiles')
-                .select('*')
-                .eq('role', 'pending_partner')
-                .order('updated_at', { ascending: false });
+            // profiles 테이블 대신 auth.users를 직접 조회하는 RPC 호출
+            const { data, error } = await client.rpc('get_pending_partners_list');
 
             if (error) throw error;
-            return data;
+            return data || [];
         } catch (error) {
             console.error('getPendingPartners error:', error);
             return [];
