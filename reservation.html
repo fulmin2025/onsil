@@ -204,11 +204,12 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <!-- <script src="https://cdn.iamport.kr/v1/iamport.js"></script> -->
+    <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
     <script src="js/auth.js"></script>
     <script>
-        // PortOne(아임포트) 초기화 - 결제 단계 건너뛰기 위해 주석 처리
-        // IMP.init("imp77363404"); 
+        // PortOne V2 식별 정보
+        const STORE_ID = "iamporttest_3";
+        const CHANNEL_KEY = "channel-key-f5a9e74f-4ef2-4fe0-89e8-8e85e65246b4";
 
         // Security Check: Member Only
         (async () => {
@@ -455,7 +456,7 @@
             };
         }
 
-        // Submit Logic (Direct Reservation without Payment)
+        // Submit Logic (With PortOne V2 Payment)
         document.getElementById('submit-btn').onclick = async () => {
             const btn = document.getElementById('submit-btn');
             const user = await Auth.getCurrentUser();
@@ -468,6 +469,7 @@
 
             const selectedBtn = document.querySelector('.service-card.active');
             const priceText = selectedBtn ? selectedBtn.dataset.price : '0원';
+            const priceInt = parseInt(priceText.replace(/[^0-9]/g, '')) || 0;
             
             const resData = {
                 facility_name: document.getElementById('target-name').textContent,
@@ -482,16 +484,43 @@
                 user_id: user.id
             };
 
-            btn.disabled = true;
-            btn.textContent = "예약 신청 중...";
-
+            // 1. PortOne V2 Payment Step
+            const paymentId = `payment-${crypto.randomUUID()}`;
+            
             try {
+                const response = await PortOne.requestPayment({
+                    storeId: STORE_ID,
+                    channelKey: CHANNEL_KEY,
+                    paymentId: paymentId,
+                    orderName: `The 온실: ${resData.selected_service}`,
+                    totalAmount: 100, // 테스트를 위해 100원 고정
+                    currency: "CURRENCY_KRW",
+                    payMethod: "CARD",
+                    customer: {
+                        fullName: user.name,
+                        phoneNumber: resData.user_phone,
+                        email: user.email,
+                    },
+                });
+
+                if (response.code !== undefined) {
+                    // 결제 실패 또는 취소
+                    alert(`결제에 실패하였습니다. 사유: ${response.message}`);
+                    return;
+                }
+
+                // 2. Payment Successful -> Proceed to DB insertion
+                btn.disabled = true;
+                btn.textContent = "예약 신청 중...";
+
                 const sb = (window.Auth && window.Auth.getSupabase) ? window.Auth.getSupabase() : null;
                 if (!sb) throw new Error("서버 연결 실패");
 
                 const payload = {
                     ...resData,
-                    payment_status: 'manual_pending' // 결제 전 상태로 기록
+                    payment_status: 'paid',
+                    imp_uid: response.txId || paymentId, // V2에서는 txId 사용
+                    merchant_uid: paymentId
                 };
 
                 const tryInsertResilient = async (data) => {
@@ -523,7 +552,7 @@
                 }, 50);
 
             } catch (err) {
-                alert("예약 신청 중 오류가 발생했습니다: " + err.message);
+                alert("결제 또는 예약 처리 중 오류가 발생했습니다: " + err.message);
                 btn.disabled = false;
                 btn.textContent = "예약 신청하기";
             }
