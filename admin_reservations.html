@@ -190,9 +190,13 @@
                 const user = await Auth.getCurrentUser();
                 if (!user) throw new Error("로그인이 필요합니다.");
 
-                // Dashboard Title Update
+                // Dashboard Title & Facility Select Fix
+                const facilitySelect = document.getElementById('res-facility');
                 if (user.role === 'partner' && user.facility) {
                     document.getElementById('dashboard-title').textContent = `${user.facility} 관리 대시보드`;
+                    // 파트너는 본인 시설만 선택 가능하도록 제한
+                    facilitySelect.innerHTML = `<option value="${user.facility}">${user.facility}</option>`;
+                    facilitySelect.value = user.facility;
                 }
 
                 let query = sb.from('reservations').select('*');
