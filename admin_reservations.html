@@ -51,34 +51,43 @@
     <main class="max-w-7xl mx-auto px-4 py-8">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900">예약 관리</h1>
-                <p class="text-gray-500 mt-1">접수된 모든 장례 예약 내역을 실시간으로 확인할 수 있습니다.</p>
+                <h1 class="text-2xl font-bold text-gray-900">예약 통합 관리</h1>
+                <p class="text-gray-500 mt-1">접수된 모든 장례 예약 내역을 실시간으로 확인하고 관리할 수 있습니다.</p>
             </div>
-            <button onclick="loadReservations()"
-                class="inline-flex items-center gap-2 bg-white border px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors shadow-sm">
-                <i class="fas fa-sync-alt"></i> 새로고침
-            </button>
+            <div class="flex gap-2">
+                <button onclick="openAddModal()"
+                    class="inline-flex items-center gap-2 bg-onsil text-white px-5 py-2.5 rounded-xl font-bold hover:bg-[#7A6A59] transition-all shadow-lg active:scale-95">
+                    <i class="fas fa-plus"></i> 신규 예약 등록
+                </button>
+                <button onclick="loadReservations()"
+                    class="inline-flex items-center gap-2 bg-white border border-gray-200 px-4 py-2.5 rounded-xl hover:bg-gray-50 transition-colors shadow-sm text-gray-600">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
         </div>
 
         <!-- Reservation List -->
-        <div class="bg-white rounded-2xl shadow-sm border overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
-                    <thead class="bg-gray-50 border-b">
+                    <thead class="bg-gray-50/50 border-b border-gray-100">
                         <tr>
-                            <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">신청일시</th>
-                            <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">장례식장</th>
-                            <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">예약 일정</th>
-                            <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">선택 서비스</th>
-                            <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">반려동물 정보</th>
-                            <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">보호자 연락처</th>
-                            <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">상태</th>
+                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">접수일</th>
+                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">장례식장</th>
+                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">예약 일정</th>
+                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">서비스/금액</th>
+                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">반려동물 정보</th>
+                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">보호자 연락처</th>
+                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">작업</th>
                         </tr>
                     </thead>
-                    <tbody id="reservation-list" class="divide-y divide-gray-100">
+                    <tbody id="reservation-list" class="divide-y divide-gray-50">
                         <!-- Items injected here -->
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center text-gray-400">데이터를 불러오는 중...</td>
+                            <td colspan="7" class="px-6 py-20 text-center">
+                                <i class="fas fa-spinner fa-spin text-onsil text-2xl mb-3"></i>
+                                <p class="text-gray-400 text-sm">데이터를 안전하게 불러오는 중입니다...</p>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -86,98 +95,205 @@
         </div>
     </main>
 
+    <!-- Add Reservation Modal -->
+    <div id="add-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeAddModal()"></div>
+        <div class="bg-white w-full max-w-xl rounded-3xl p-8 relative z-10 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-gray-900">신규 예약 수동 등록</h2>
+                <button onclick="closeAddModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="add-res-form" class="space-y-5">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">장례식장 선택</label>
+                        <select id="res-facility" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20 focus:border-onsil transition-all">
+                            <option value="">시설을 선택해주세요</option>
+                            <option value="펫포레스트 남양주점">펫포레스트 남양주점</option>
+                            <option value="21그램 경기광주점">21그램 경기광주점</option>
+                            <option value="아이헤븐">아이헤븐</option>
+                            <option value="하늘애">하늘애</option>
+                            <option value="포포즈">포포즈</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">예약 날짜</label>
+                        <input type="date" id="res-date" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">예약 시간</label>
+                        <select id="res-time" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20">
+                            <option value="09:00">09:00</option><option value="09:30">09:30</option>
+                            <option value="10:00">10:00</option><option value="10:30">10:30</option>
+                            <option value="11:00">11:00</option><option value="11:30">11:30</option>
+                            <option value="12:00">12:00</option><option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option><option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option><option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option><option value="19:00">19:00</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">아이 이름</label>
+                        <input type="text" id="res-pet-name" placeholder="이름" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">종류 (강아지/고양이 등)</label>
+                        <input type="text" id="res-pet-type" placeholder="종류" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">보호자 연락처</label>
+                    <input type="tel" id="res-phone" placeholder="010-0000-0000" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20">
+                </div>
+
+                <div class="pt-4 flex gap-3">
+                    <button type="button" onclick="closeAddModal()" class="flex-1 py-4 bg-gray-100 text-gray-600 rounded-2xl font-bold hover:bg-gray-200 transition-all">취소</button>
+                    <button type="submit" class="flex-[2] py-4 bg-onsil text-white rounded-2xl font-bold hover:bg-[#7A6A59] transition-all shadow-lg active:scale-[0.98]">예약 등록</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="js/auth.js"></script>
     <script>
-        // Role check before loading content
+        // Role check
         async function checkAdminAccess() {
             try {
                 const user = await Auth.getCurrentUser();
                 if (!user || user.role !== 'admin') {
-                    alert('관리자 권한이 필요합니다.');
+                    alert('관리자 전용 대시보드입니다.');
                     location.href = 'index.html';
                 }
             } catch (err) {
-                console.error('Access check failed:', err);
                 location.href = 'index.html';
             }
         }
         checkAdminAccess();
 
+        function openAddModal() { document.getElementById('add-modal').classList.remove('hidden'); }
+        function closeAddModal() { document.getElementById('add-modal').classList.add('hidden'); }
+
         async function loadReservations() {
             const listContainer = document.getElementById('reservation-list');
-
             try {
                 const sb = Auth.getSupabase();
                 if (!sb) throw new Error("서버 연결 실패");
 
-                const user = await Auth.getCurrentUser();
-                if (!user) throw new Error("로그인이 필요합니다.");
-
                 const { data, error } = await sb
                     .from('reservations')
                     .select('*')
-                    .eq('user_id', user.id) // 본인의 데이터만 필터링 (보안 강화)
                     .order('created_at', { ascending: false });
 
                 if (error) throw error;
 
                 if (!data || data.length === 0) {
-                    listContainer.innerHTML = '<tr><td colspan="6" class="px-6 py-12 text-center text-gray-400">접수된 예약 내역이 없습니다.</td></tr>';
+                    listContainer.innerHTML = '<tr><td colspan="7" class="px-6 py-20 text-center text-gray-400">등록된 예약 내역이 없습니다.</td></tr>';
                     return;
                 }
 
                 listContainer.innerHTML = data.map(res => {
-                    const date = new Date(res.created_at).toLocaleString();
-                    const defaultPrices = {
-                        '기본형': '250,000₩',
-                        '고급형': '450,000₩',
-                        'VIP형': '850,000₩'
-                    };
-                    const priceDisplay = res.service_price || defaultPrices[res.selected_service] || '';
+                    const createdDate = new Date(res.created_at).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                    const isManual = !res.user_id || res.user_id.length < 10; // 수동 입력 여부 판단
 
                     return `
-                        <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">${date}</td>
-                            <td class="px-6 py-4">
+                        <tr class="hover:bg-gray-50/50 transition-colors">
+                            <td class="px-6 py-5 text-xs text-gray-500 font-medium">${createdDate}</td>
+                            <td class="px-6 py-5">
                                 <span class="font-bold text-gray-900">${res.facility_name}</span>
+                                ${isManual ? '<span class="ml-2 text-[9px] bg-blue-50 text-blue-500 px-1.5 py-0.5 rounded font-black">현장분</span>' : ''}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-5">
                                 <div class="text-sm">
                                     <p class="font-bold text-primary">${res.reservation_date}</p>
-                                    <p class="text-gray-500">${res.reservation_time}</p>
+                                    <p class="text-xs text-gray-400">${res.reservation_time}</p>
                                 </div>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-5">
                                 <div class="flex flex-col gap-1">
-                                    <span class="px-3 py-1 bg-accent/10 text-accent rounded-full text-xs font-bold border border-accent/20 w-fit">
-                                        ${res.selected_service || '미선택'}
-                                    </span>
-                                    ${priceDisplay ? `<span class="text-[10px] text-gray-400 font-bold ml-1">${priceDisplay}</span>` : ''}
+                                    <span class="text-xs font-bold text-gray-700">${res.selected_service || '상담 대기'}</span>
+                                    <span class="text-[10px] text-accent font-bold">${res.service_price || '-'}</span>
                                 </div>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-5">
                                 <div class="text-sm">
-                                    <span class="px-2 py-0.5 bg-onsil/10 text-onsil rounded text-xs font-bold mr-1">${res.pet_type}</span>
-                                    <span class="font-bold">${res.pet_name}</span>
-                                    <span class="text-gray-400">(${res.pet_weight}kg)</span>
+                                    <span class="px-2 py-0.5 bg-onsil/5 text-onsil rounded text-[10px] font-bold mr-1 border border-onsil/10">${res.pet_type || '정보없음'}</span>
+                                    <span class="font-bold text-gray-800">${res.pet_name || '미입력'}</span>
+                                    <span class="text-[11px] text-gray-400">(${res.pet_weight || '0.0'}kg)</span>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 font-mono text-sm">${res.user_phone}</td>
-                            <td class="px-6 py-4">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800">
-                                    접수완료
-                                </span>
+                            <td class="px-6 py-5 font-mono text-sm text-gray-600">${res.user_phone}</td>
+                            <td class="px-6 py-5 text-center">
+                                <button onclick="deleteReservation('${res.id}')" class="w-8 h-8 rounded-full hover:bg-red-50 text-gray-300 hover:text-red-500 transition-all">
+                                    <i class="fas fa-trash-alt text-sm"></i>
+                                </button>
                             </td>
                         </tr>
                     `;
                 }).join('');
 
             } catch (err) {
-                console.error(err);
-                listContainer.innerHTML = `<tr><td colspan="6" class="px-6 py-12 text-center text-red-500">데이터 로드 실패: ${err.message}</td></tr>`;
+                listContainer.innerHTML = `<tr><td colspan="7" class="px-6 py-20 text-center text-red-500">${err.message}</td></tr>`;
             }
         }
+
+        async function deleteReservation(id) {
+            if (!confirm('해당 예약을 정말 삭제하시겠습니까? (복구 불가능)')) return;
+            try {
+                const sb = Auth.getSupabase();
+                const { error } = await sb.from('reservations').delete().eq('id', id);
+                if (error) throw error;
+                loadReservations();
+            } catch (err) { alert('삭제 실패: ' + err.message); }
+        }
+
+        document.getElementById('add-res-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>처리 중...';
+
+            try {
+                const sb = Auth.getSupabase();
+                const user = await Auth.getCurrentUser();
+                
+                const payload = {
+                    facility_name: document.getElementById('res-facility').value,
+                    reservation_date: document.getElementById('res-date').value,
+                    reservation_time: document.getElementById('res-time').value,
+                    pet_name: document.getElementById('res-pet-name').value,
+                    pet_type: document.getElementById('res-pet-type').value,
+                    user_phone: document.getElementById('res-phone').value,
+                    user_id: `manual_${user.id}_${Date.now()}`, // 수동 입력 식별자
+                    payment_status: 'manual'
+                };
+
+                if (!payload.facility_name || !payload.reservation_date) throw new Error("필수 정보를 입력해주세요.");
+
+                const { error } = await sb.from('reservations').insert([payload]);
+                if (error) throw error;
+
+                alert('신규 예약이 성공적으로 등록되었습니다.');
+                closeAddModal();
+                loadReservations();
+                e.target.reset();
+            } catch (err) {
+                alert('등록 오류: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '예약 등록';
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', loadReservations);
+    </script>
 
         // Run on load
         document.addEventListener('DOMContentLoaded', loadReservations);

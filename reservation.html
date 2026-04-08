@@ -47,6 +47,14 @@
             border-color: #8D7B68;
         }
 
+        .time-btn:disabled {
+            background-color: #f3f4f6;
+            color: #d1d5db;
+            border-color: #e5e7eb;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
         .step-title {
             font-size: 1.125rem;
             font-weight: 700;
@@ -397,6 +405,7 @@
                 btn.classList.remove('bg-white', 'border-gray-200');
                 btn.querySelector('span:first-child').classList.remove('text-gray-400');
                 btn.querySelector('span:first-child').classList.add('text-white/80');
+                checkAvailability(); // 예약 가능 여부 즉시 확인
                 validateForm();
             };
             dateContainer.appendChild(btn);
@@ -422,6 +431,48 @@
 
         amTimes.forEach(t => amContainer.appendChild(createTimeBtn(t)));
         pmTimes.forEach(t => pmContainer.appendChild(createTimeBtn(t)));
+
+        // Check Availability from DB
+        async function checkAvailability() {
+            const selectedDate = document.querySelector('.date-btn.active')?.dataset.date;
+            const facility = document.getElementById('target-name').textContent;
+            
+            if (!selectedDate || !facility) return;
+
+            // Reset all buttons first
+            document.querySelectorAll('.time-btn').forEach(btn => {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50');
+            });
+
+            try {
+                const sb = Auth.getSupabase();
+                if (!sb) return;
+
+                const { data, error } = await sb
+                    .from('reservations')
+                    .select('reservation_time')
+                    .eq('facility_name', facility)
+                    .eq('reservation_date', selectedDate);
+
+                if (error) throw error;
+
+                if (data && data.length > 0) {
+                    const bookedTimes = data.map(r => r.reservation_time);
+                    document.querySelectorAll('.time-btn').forEach(btn => {
+                        if (bookedTimes.includes(btn.textContent)) {
+                            btn.disabled = true;
+                            btn.classList.remove('active'); // Deselect if it was booked
+                        }
+                    });
+                }
+            } catch (err) {
+                console.error("Availability Check Error:", err);
+            }
+        }
+
+        // Run check on initial load
+        setTimeout(checkAvailability, 1500);
 
         // Form Validation & Verification
         const inputs = ['pet-name', 'pet-weight', 'pet-type', 'user-phone', 'agree-all'];
