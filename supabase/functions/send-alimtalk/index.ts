@@ -64,6 +64,7 @@ serve(async (req) => {
               "#{reservation_datetime}": `${resData.reservation_date} ${resData.reservation_time}`,
               "#{funeral_home}": resData.facility_name,
               "#{user_name}": resData.user_name,
+              "#{customer_name}": resData.user_name,
               "#{pet_name}": resData.pet_name,
               "#{total_amount}": resData.service_price.replace(/[^0-9]/g, ""),
             },
