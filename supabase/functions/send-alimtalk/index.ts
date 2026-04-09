@@ -57,7 +57,7 @@ serve(async (req) => {
         messages: [{
           to: resData.user_phone.replace(/-/g, ""),
           from: SENDER,
-          text: `[The 온실] 장례 예약이 완료되었습니다.\n\n안녕하세요, ${resData.user_name} 보호자님. 아이의 마지막 길을 The 온실이 함께합니다.\n\n■ 상세 예약 정보\n\n예약자 성함: ${resData.user_name}\n예약일시: ${resData.reservation_date} ${resData.reservation_time}\n장례식장: ${resData.facility_name}\n아이 이름: ${resData.pet_name}\n결제금액: ${resData.service_price}\n\n■ 안내사항\n예약 시간에 맞춰 장례식장으로 방문해 주시면 정성을 다해 모시겠습니다.`,
+          // text 필드를 제거하고 kakaoOptions만 사용하여 템플릿 일치 오류 방지
           kakaoOptions: {
             pfId: PFID,
             templateId: TEMPLATE_ID,
@@ -75,7 +75,11 @@ serve(async (req) => {
     });
 
     const result = await response.json();
-    console.log("Solapi Result:", result);
+    if (!response.ok) {
+        console.error("Solapi API Error Response:", JSON.stringify(result));
+        throw new Error(result.errorMessage || "Solapi API 전송 실패");
+    }
+    console.log("Solapi Success Result:", JSON.stringify(result));
 
     return new Response(JSON.stringify(result), {
       headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
