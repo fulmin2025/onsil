@@ -220,49 +220,22 @@
         const STORE_ID = "store-da73189c-c561-4ce0-8354-3de92abc40b9";
         const CHANNEL_KEY = "channel-key-f5a9e74f-4ef2-4fe0-89e8-8e85e65246b4";
 
-        // Solapi(알림톡) 연동 정보
-        const SOLAPI_API_KEY = "NCSD7LRTDHD3MTES";
-        const SOLAPI_API_SECRET = "RZMTJF5NTSCWC6CGXOLETNL8W6T7IW0K";
-        const SOLAPI_PFID = "KA01PF260408034734597Qg0MWoJwm6X";
-        const SOLAPI_TEMPLATE_ID = "KA01TP260408034931311qxnv1nRriN5";
-        const SOLAPI_SENDER = "01022921918"; // 발신번호 (사용자 번호로 임시 설정)
+        // Solapi(알림톡) 연동 정보 - Edge Function을 통해 보안 처리됨
+        const SOLAPI_SENDER = "01022921918"; 
 
-        // 알림톡 발송 함수
+        // 알림톡 발송 함수 (Edge Function 호출 방식)
         async function sendAlimtalk(resData) {
             try {
-                const date = new Date().toISOString();
-                const salt = Math.random().toString(36).substring(2, 12);
-                const signature = CryptoJS.HmacSHA256(date + salt, SOLAPI_API_SECRET).toString();
-                
-                const authHeader = `HMAC-SHA256 apiKey=${SOLAPI_API_KEY}, date=${date}, salt=${salt}, signature=${signature}`;
-                
-                const response = await fetch("https://api.solapi.com/messages/v4/send-many", {
-                    method: "POST",
-                    headers: {
-                        "Authorization": authHeader,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        messages: [{
-                            to: resData.user_phone.replace(/-/g, ''), // 하이픈 제거
-                            from: SOLAPI_SENDER,
-                            kakaoOptions: {
-                                pfId: SOLAPI_PFID,
-                                templateId: SOLAPI_TEMPLATE_ID,
-                                variables: {
-                                    "#{reservation_datetime}": `${resData.reservation_date} ${resData.reservation_time}`,
-                                    "#{funeral_home}": resData.facility_name,
-                                    "#{pet_name}": resData.pet_name,
-                                    "#{total_amount}": resData.service_price.replace(/[^0-9]/g, '') // 숫자만 추출
-                                }
-                            }
-                        }]
-                    })
+                const sb = Auth.getSupabase();
+                if (!sb) return;
+
+                const { data, error } = await sb.functions.invoke('send-alimtalk', {
+                    body: { resData }
                 });
                 
-                const result = await response.json();
-                console.log("Alimtalk Sent Result:", result);
-                return result;
+                if (error) throw error;
+                console.log("Alimtalk Sent Result:", data);
+                return data;
             } catch (err) {
                 console.error("Alimtalk Send Error:", err);
             }

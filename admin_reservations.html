@@ -264,6 +264,24 @@
             }
         }
 
+        // 알림톡 발송 함수 (Edge Function 호출 방식)
+        async function sendAlimtalk(resData) {
+            try {
+                const sb = Auth.getSupabase();
+                if (!sb) return;
+
+                const { data, error } = await sb.functions.invoke('send-alimtalk', {
+                    body: { resData }
+                });
+                
+                if (error) throw error;
+                console.log("Alimtalk Sent Result (Admin):", data);
+                return data;
+            } catch (err) {
+                console.error("Alimtalk Send Error (Admin):", err);
+            }
+        }
+
         async function deleteReservation(id) {
             if (!confirm('해당 예약을 정말 삭제하시겠습니까? (복구 불가능)')) return;
             try {
@@ -299,6 +317,12 @@
 
                 const { error } = await sb.from('reservations').insert([payload]);
                 if (error) throw error;
+
+                // 알림톡 발송 (수동 등록 시에도 발송)
+                await sendAlimtalk({
+                    ...payload,
+                    service_price: payload.service_price || "0원"
+                });
 
                 alert('신규 예약이 성공적으로 등록되었습니다.');
                 closeAddModal();
