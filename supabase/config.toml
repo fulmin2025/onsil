@@ -1,0 +1,11 @@
+# Supabase configuration
+project_id = "klyrxtndjg..." # 여기에 실제 프로젝트 ID가 자동으로 들어갑니다.
+
+[api]
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[functions.send-alimtalk]
+verify_jwt = false

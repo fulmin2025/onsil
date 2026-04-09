@@ -138,6 +138,10 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">고객 성함</label>
+                        <input type="text" id="res-user-name" placeholder="예약자 성함" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20">
+                    </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">아이 이름</label>
                         <input type="text" id="res-pet-name" placeholder="이름" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20">
@@ -306,6 +310,7 @@
                     facility_name: document.getElementById('res-facility').value,
                     reservation_date: document.getElementById('res-date').value,
                     reservation_time: document.getElementById('res-time').value,
+                    user_name: document.getElementById('res-user-name').value,
                     pet_name: document.getElementById('res-pet-name').value,
                     pet_type: document.getElementById('res-pet-type').value,
                     user_phone: document.getElementById('res-phone').value,
