@@ -5,18 +5,25 @@ on:
     branches: [ main ]
   workflow_dispatch: # 수동으로 빌드를 실행할 수 있는 버튼 추가
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: macos-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # 최신 노드 정책 대응
     
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 전체 히스토리를 가져와 128 에러 방지
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22' # 최신 LFS 버전으로 상향 (경고 해결)
+          node-version: '22'
 
       - name: Install Dependencies
         run: npm install --no-package-lock # 잠금 파일 없이 설치 진행
