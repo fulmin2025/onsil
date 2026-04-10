@@ -47,5 +47,13 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>장례 예약 및 추모 서비스 이용 시 사진 촬영을 위해 카메라 권한이 필요합니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>아이를 추모하기 위한 사진을 업로드하거나 저장하기 위해 사진첩 접근 권한이 필요합니다.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>추모 사진을 기기에 저장하기 위해 사진첩 저장 권한이 필요합니다.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>

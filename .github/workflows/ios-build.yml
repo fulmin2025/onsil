@@ -1,0 +1,61 @@
+name: iOS Build (Cloud)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # 수동으로 빌드를 실행할 수 있는 버튼 추가
+
+jobs:
+  build:
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Capacitor Sync
+        run: |
+          npx cap copy
+          npx cap sync ios
+
+      - name: Import Certificates
+        uses: apple-actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.IOS_P12_CERTIFICATE }}
+          p12-password: ${{ secrets.IOS_P12_PASSWORD }}
+
+      - name: Install Provisioning Profile
+        run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          echo "${{ secrets.IOS_PROVISIONING_PROFILE }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/TheOnsil_Distribution.mobileprovision
+
+      - name: Build iOS App (IPA)
+        run: |
+          xcodebuild -workspace ios/App/App.xcworkspace \
+                     -scheme App \
+                     -sdk iphoneos \
+                     -configuration Release \
+                     -archivePath $PWD/build/App.xcarchive \
+                     archive \
+                     CODE_SIGN_STYLE=Manual \
+                     PROVISIONING_PROFILE_SPECIFIER="TheOnsil_AppStore" # 실제 프로파일 이름으로 자동 매칭
+          
+          xcodebuild -exportArchive \
+                     -archivePath $PWD/build/App.xcarchive \
+                     -exportOptionsPlist ios/App/App/ExportOptions.plist \
+                     -exportPath $PWD/build/ipa
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: TheOnsil-iOS-Build
+          path: build/ipa/*.ipa
