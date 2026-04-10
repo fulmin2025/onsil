@@ -3,22 +3,21 @@ name: iOS Build (Cloud)
 on:
   push:
     branches: [ main ]
-  workflow_dispatch: # 수동으로 빌드를 실행할 수 있는 버튼 추가
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-13
     
     steps:
-      - name: Cleanup Workspace
-        run: rm -rf ./* || true # 찌꺼기 파일 강제 삭제
-
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GH_PAT }}
-          fetch-depth: 1
-          clean: true
+          filter: 'blob:none' # 대용량 파일 제외하고 코드만 빠르게 가져오기
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -26,7 +25,7 @@ jobs:
           node-version: '22'
 
       - name: Install Dependencies
-        run: npm install --no-package-lock # 잠금 파일 없이 설치 진행
+        run: npm install --no-package-lock
 
       - name: Capacitor Sync
         run: |
@@ -53,7 +52,7 @@ jobs:
                      -archivePath $PWD/build/App.xcarchive \
                      archive \
                      CODE_SIGN_STYLE=Manual \
-                     PROVISIONING_PROFILE_SPECIFIER="TheOnsil_AppStore" # 실제 프로파일 이름으로 자동 매칭
+                     PROVISIONING_PROFILE_SPECIFIER="TheOnsil_AppStore"
           
           xcodebuild -exportArchive \
                      -archivePath $PWD/build/App.xcarchive \
