@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Î¨∏Ïùò?òÍ∏∞ - The ?®Ïã§</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1B2B48">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#1B2B48',
+                            light: '#2A3F64',
+                            sage: '#87A08B',
+                            warm: '#D4A373',
+                            cream: '#FAFAFA',
+                            warmDark: '#B88B5B'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 1rem;
+            border: 1px solid #E5E7EB;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            outline: none;
+            background-color: #F9FAFB;
+        }
+
+        .form-input:focus {
+            border-color: #D4A373;
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(212, 163, 115, 0.1);
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #1B2B48;
+            margin-bottom: 0.5rem;
+            padding-left: 0.25rem;
+        }
+
+        .mobile-nav-open {
+            transform: translateX(0) !important;
+        }
+    </style>
+</head>
+
+<body class="bg-brand-cream text-brand overflow-x-hidden">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 group flex-shrink-0">
+                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="The ?®Ïã§ Î°úÍ≥†">
+                <span class="font-bold text-lg text-brand tracking-tight">The ?®Ïã§</span>
+            </a>
+            <nav class="hidden md:flex gap-8">
+                <a href="search.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?•Î??ùÏû•
+                    Ï∞æÍ∏∞</a>
+                <a href="guide.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?¥Î≥Ñ
+                    Í∞Ä?¥Îìú</a>
+                <a href="self-diagnosis.html"
+                    class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">Í±¥Í∞ï?êÍ?ÏßÑÎã®</a>
+                <a href="memory.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">Ï∂îÏñµ
+                    Í∞Ä?¥Îìú</a>
+                <a href="community.html"
+                    class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">Ïª§Î??àÌã∞</a>
+            </nav>
+            <div id="auth-container" class="hidden md:flex items-center gap-2">
+                <a href="search.html?quote=true"
+                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2 rounded-md text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-calculator"></i> Î∞îÎ°ú Í≤¨Ï†ÅÎ∞õÍ∏∞
+                </a>
+            </div>
+            <button id="mobile-menu-btn"
+                class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors"
+                onclick="toggleMobileNav()">
+                <i class="fas fa-bars text-brand text-lg" id="menu-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-20 pb-40">
+        <!-- Hero Section -->
+        <section class="text-center mb-16 fade-up">
+            <div
+                class="inline-flex items-center gap-2 bg-brand-warm/10 text-brand-warm px-4 py-1.5 rounded-full text-xs font-bold mb-6">
+                <i class="fas fa-handshake"></i> PARTNERSHIP
+            </div>
+            <h1 class="text-3xl md:text-5xl font-bold mb-6 leading-tight">
+                ?®Ïã§Í≥??®Íªò<br>
+                <span class="text-brand-sage">?àÎ°ú??Í∞ÄÏπòÎ? Í∑∏Î†§???åÌä∏?àÎ? Ï∞æÏäµ?àÎã§.</span>
+            </h1>
+            <p class="text-gray-500 text-lg font-light leading-relaxed">
+                Î∞òÎ†§?ôÎ¨º ?•Î? Î¨∏Ìôî???àÎ°ú??Í∏∞Ï???ÎßåÎìú???¨Ï†ï???®Íªò?¥Ï£º?∏Ïöî.<br>
+                Î≥¥ÎÇ¥Ï£ºÏã† ?úÏïà?Ä ?¥Î? Í≤Ä?????†ÏÜç?òÍ≤å ?∞ÎùΩ?úÎ¶¨Í≤†Ïäµ?àÎã§.
+            </p>
+        </section>
+
+        <!-- Form Section -->
+        <section class="fade-up">
+            <div class="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-sm border border-gray-50">
+                <form id="partnership-form" class="space-y-8">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Company Name -->
+                        <div>
+                            <label for="company" class="form-label">?åÏÇ¨Î™?/ ?®Ï≤¥Î™?<span
+                                    class="text-brand-warm">*</span></label>
+                            <input type="text" id="company" name="company" required class="form-input"
+                                placeholder="?ïÌôï??Î™ÖÏπ≠???ÖÎ†•?¥Ï£º?∏Ïöî">
+                        </div>
+                        <!-- Name -->
+                        <div>
+                            <label for="name" class="form-label">?¥Îãπ?êÏÑ±??<span class="text-brand-warm">*</span></label>
+                            <input type="text" id="name" name="name" required class="form-input"
+                                placeholder="?±Ìï®???ÖÎ†•?¥Ï£º?∏Ïöî">
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Contact -->
+                        <div>
+                            <label for="contact" class="form-label">?∞ÎùΩÏ≤?<span class="text-brand-warm">*</span></label>
+                            <input type="tel" id="contact" name="contact" required class="form-input"
+                                placeholder="010-0000-0000">
+                        </div>
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="form-label">?¥Î©î??<span class="text-brand-warm">*</span></label>
+                            <input type="email" id="email" name="email" required class="form-input"
+                                placeholder="example@domain.com">
+                        </div>
+                    </div>
+
+                    <!-- Inquiry Type -->
+                    <div>
+                        <label class="form-label">Î¨∏Ïùò ?†Ìòï <span class="text-brand-warm">*</span></label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="type" value="marketing" class="hidden peer" checked>
+                                <div class="p-3 border rounded-xl text-center text-sm font-medium transition-all
+                                            peer-checked:bg-brand-warm peer-checked:text-white peer-checked:border-brand-warm
+                                            hover:bg-brand-warm/5">
+                                    ÎßàÏ????úÌú¥
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="type" value="service" class="hidden peer">
+                                <div class="p-3 border rounded-xl text-center text-sm font-medium transition-all
+                                            peer-checked:bg-brand-warm peer-checked:text-white peer-checked:border-brand-warm
+                                            hover:bg-brand-warm/5">
+                                    ?úÎπÑ???ÑÏûÖ
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="type" value="funeral" class="hidden peer">
+                                <div class="p-3 border rounded-xl text-center text-sm font-medium transition-all
+                                            peer-checked:bg-brand-warm peer-checked:text-white peer-checked:border-brand-warm
+                                            hover:bg-brand-warm/5">
+                                    ?•Î??ùÏû• ?ÖÏ†ê
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="type" value="other" class="hidden peer">
+                                <div class="p-3 border rounded-xl text-center text-sm font-medium transition-all
+                                            peer-checked:bg-brand-warm peer-checked:text-white peer-checked:border-brand-warm
+                                            hover:bg-brand-warm/5">
+                                    Í∏∞Ì?
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Title -->
+                    <div>
+                        <label for="title" class="form-label">?úÎ™© <span class="text-brand-warm">*</span></label>
+                        <input type="text" id="title" name="title" required class="form-input"
+                            placeholder="?úÏïà???µÏã¨ ?¥Ïö©???îÏïΩ?¥Ï£º?∏Ïöî">
+                    </div>
+
+                    <!-- Content -->
+                    <div>
+                        <label for="content" class="form-label">?ÅÏÑ∏ ?¥Ïö© <span class="text-brand-warm">*</span></label>
+                        <textarea id="content" name="content" required class="form-input h-48 resize-none"
+                            placeholder="Íµ¨Ï≤¥?ÅÏù∏ ?úÌú¥ Î∞©Ïãù?¥ÎÇò Í∂ÅÍ∏à?òÏã† ?êÏùÑ ?êÏú†Î°?≤å ?ëÏÑ±?¥Ï£º?∏Ïöî."></textarea>
+                    </div>
+
+                    <!-- Privacy Policy -->
+                    <div class="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
+                        <input type="checkbox" id="privacy" name="privacy" required
+                            class="mt-1 w-4 h-4 text-brand-warm border-gray-300 rounded focus:ring-brand-warm">
+                        <label for="privacy" class="text-xs text-gray-500 leading-relaxed cursor-pointer">
+                            Í∞úÏù∏?ïÎ≥¥ ?òÏßë Î∞??¥Ïö©???ôÏùò?©Îãà?? (?ÑÏàò)<br>
+                            Î¨∏Ïùò ?ëÏàò Î∞?Ï≤òÎ¶¨Î•??ÑÌï¥ ?±Ìï®, ?∞ÎùΩÏ≤? ?¥Î©î??Ï£ºÏÜå ?±Ïùò ?ïÎ≥¥Î•??òÏßë?©Îãà?? ?òÏßë???ïÎ≥¥??Î¨∏Ïùò Î™©Ï†Å ?∏Ïóê ?¨Ïö©?òÏ? ?äÏúºÎ©? Í¥ÄÍ≥?Î≤ïÎ†π???∞Îùº ?àÏ†Ñ?òÍ≤å
+                            Í¥ÄÎ¶¨Îê©?àÎã§.
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-4">
+                        <button type="submit" id="submit-btn"
+                            class="w-full bg-brand hover:bg-brand-light text-white py-4 rounded-2xl font-bold transition-all transform hover:scale-[1.01] active:scale-95 shadow-lg shadow-brand/20 flex items-center justify-center gap-2">
+                            <i class="fas fa-paper-plane text-sm"></i>
+                            ?úÌú¥ ?úÏïà?òÍ∏∞
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Information Cards -->
+        <section class="mt-24 grid md:grid-cols-2 gap-8 fade-up">
+            <div class="bg-brand-sage/10 p-10 rounded-[2.5rem] border border-brand-sage/20">
+                <i class="fas fa-clock text-brand-sage text-2xl mb-6"></i>
+                <h3 class="text-xl font-bold mb-4 text-brand whitespace-nowrap">Í≤Ä??Í≤∞Í≥º ?àÎÇ¥</h3>
+                <p class="text-gray-600 text-sm leading-relaxed font-light">
+                    ?ëÏàò???úÏïà?Ä ?¥Îãπ Î∂Ä?úÏóê??ÎπÑÏ¶à?àÏä§ ?∞Í????±ÏùÑ Î©¥Î???Í≤Ä?†Ìïú ?? Î≥¥ÌÜµ ?ÅÏóÖ??Í∏∞Ï? 3~5???¥ÎÇ¥???åÏã†?úÎ¶¨Í≥??àÏäµ?àÎã§.
+                </p>
+            </div>
+            <div class="bg-brand-warm/10 p-10 rounded-[2.5rem] border border-brand-warm/20">
+                <i class="fas fa-envelope-open-text text-brand-warm text-2xl mb-6"></i>
+                <h3 class="text-xl font-bold mb-4 text-brand whitespace-nowrap">ÏßÅÏ†ë ?∞ÎùΩ?òÍ∏∞</h3>
+                <p class="text-gray-600 text-sm leading-relaxed font-light">
+                    ?úÏïà???åÏùº??Ï≤®Î??¥Ïïº ?òÍ±∞???îÏö± ?úÍ∏â???¨Ïïà??Í≤ΩÏö∞, ?ÑÎûò Í≥µÏãù Î©îÏùºÎ°?ÏßÅÏ†ë ?ÅÏÑ∏ ?¥Ïö©??Î≥¥ÎÇ¥Ï£ºÏãúÍ∏?Î∞îÎûç?àÎã§.<br>
+                    <span class="font-bold text-brand mt-2 inline-block">partnership@onsil.pet</span>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-brand-cream border-t border-brand/5 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+                <div class="col-span-2 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-[#2C3E50] flex items-center justify-center">
+                            <span class="text-white text-xs font-bold">??/span>
+                        </div>
+                        <span class="font-bold text-lg text-[#2C3E50]">The ?®Ïã§</span>
+                    </div>
+                    <p class="text-sm text-[#2C3E50]/40 mb-4 leading-relaxed max-w-sm">
+                        Î∞òÎ†§?ôÎ¨º ?•Î??ùÏû• ÎπÑÍµêÎ∂Ä???àÏïΩÍπåÏ?.<br>?¥Î†§??Í≤∞Ï†ï????The ?®Ïã§???®Íªò?©Îãà??
+                    </p>
+                    <p class="text-xs text-[#2C3E50]/30">The ?®Ïã§ | ?Ä??Ï°∞ÏòÅ??| Î¨∏Ïùò 010-2292-1918<br>?¨ÏóÖ?êÎì±Î°ùÎ≤à??: 181-18-02826<br>Ï£ºÏÜå : Î∂ÄÏ≤úÏãú ?ºÏûëÎ°?280Î≤àÍ∏∏ 53-9 ?âÏö∞?ºÌè¥Î¶¨Ï? 502??/p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">?úÎπÑ??/h3>
+                    <ul class="space-y-3 text-sm text-[#2C3E50]/50">
+                        <li><a href="search.html" class="hover:text-[#2C3E50] transition-colors">?•Î??ùÏû• Ï∞æÍ∏∞</a></li>
+                        <li><a href="guide.html" class="hover:text-[#2C3E50] transition-colors">?¥Î≥Ñ Í∞Ä?¥Îìú</a></li>
+                        <li><a href="self-diagnosis.html" class="hover:text-[#2C3E50] transition-colors">Í±¥Í∞ï?êÍ?ÏßÑÎã®</a></li>
+                        <li><a href="memory.html" class="hover:text-[#2C3E50] transition-colors">Ï∂îÏñµ Í∞Ä?¥Îìú</a></li>
+                        <li><a href="community.html" class="hover:text-[#2C3E50] transition-colors">Ïª§Î??àÌã∞</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">Í≥†Í∞ùÏßÄ??/h3>
+                    <ul class="space-y-3 text-sm text-[#2C3E50]/50">
+                        <li><a href="contact.html" class="hover:text-[#2C3E50] transition-colors">Î¨∏Ïùò?òÍ∏∞</a></li>
+                        <li><a href="partnership.html"
+                                class="hover:text-[#2C3E50] transition-colors font-bold text-brand-warm">?úÌú¥Î¨∏Ïùò</a></li>
+                        <li><a href="terms.html" class="hover:text-[#2C3E50] transition-colors">?¥Ïö©?ΩÍ?</a></li>
+                        <li><a href="privacy.html" class="hover:text-[#2C3E50] transition-colors">Í∞úÏù∏?ïÎ≥¥Ï≤òÎ¶¨Î∞©Ïπ®</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="border-t border-[#2C3E50]/5 mt-10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-[#2C3E50]/30">&copy; 2026 The ?®Ïã§. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all">
+                        <i class="fab fa-instagram text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all">
+                        <i class="fab fa-youtube text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all">
+                        <i class="fas fa-comment text-sm"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/partnership.js"></script>
+    <script>
+        // Scroll Animation
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // Mobile Nav
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            const panel = document.getElementById('mobile-nav-panel');
+            if (nav.classList.contains('hidden')) {
+                nav.classList.remove('hidden');
+                requestAnimationFrame(() => panel.classList.add('mobile-nav-open'));
+                document.body.style.overflow = 'hidden';
+            } else {
+                panel.classList.remove('mobile-nav-open');
+                document.body.style.overflow = '';
+                setTimeout(() => nav.classList.add('hidden'), 300);
+            }
+        }
+    </script>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
+            id="mobile-nav-panel">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <span class="font-bold text-lg text-brand">Î©îÎâ¥</span>
+                    <button onclick="toggleMobileNav()"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+                <nav class="space-y-1">
+                    <a href="search.html?quote=true"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors bg-brand-cream/50">
+                        <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
+                        <span class="font-bold text-brand">Î∞îÎ°ú Í≤¨Ï†ÅÎ∞õÍ∏∞</span>
+                    </a>
+                    <a href="search.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-search text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">?•Î??ùÏû• Ï∞æÍ∏∞</span>
+                    </a>
+                    <a href="guide.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-book-open text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">?¥Î≥Ñ Í∞Ä?¥Îìú</span>
+                    </a>
+                    <a href="self-diagnosis.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-heartbeat text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">Í±¥Í∞ï?êÍ?ÏßÑÎã®</span>
+                    </a>
+                    <a href="memory.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-heart text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">Ï∂îÏñµ Í∞Ä?¥Îìú</span>
+                    </a>
+                    <a href="community.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-comments text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">Ïª§Î??àÌã∞</span>
+                    </a>
+                    <a href="contact.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-envelope text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">Î¨∏Ïùò?òÍ∏∞</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

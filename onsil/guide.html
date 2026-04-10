@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>?�별 가?�드 - The ?�실</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1B2B48">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#2C3E50',
+                            light: '#34495E',
+                            dark: '#1A252F',
+                            cream: '#F8F6F3',
+                            warm: '#D4A574',
+                            warmDark: '#B8894E',
+                            sage: '#87A08B',
+                            mist: '#E8ECE9'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
+                        serif: ['Nanum Myeongjo', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .accordion-active .accordion-content {
+            max-height: 500px;
+        }
+
+        .timeline-step::before {
+            content: '';
+            position: absolute;
+            left: 1.5rem;
+            top: 2rem;
+            bottom: -2rem;
+            width: 2px;
+            background: #E5E7EB;
+            z-index: 0;
+        }
+
+        .timeline-step:last-child::before {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-step::before {
+                left: 1.25rem;
+            }
+        }
+
+        .mobile-nav-open {
+            transform: translateX(0) !important;
+        }
+    </style>
+</head>
+
+<body class="bg-brand-cream text-brand overflow-x-hidden">
+
+    <!-- Header -->
+    <header id="main-header" class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-brand/5 transition-all outline-none">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-2 group flex-shrink-0">
+                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="?�실 캐릭??로고">
+                <span class="font-bold text-lg text-brand tracking-tight">The ?�실</span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden lg:flex items-center gap-1">
+                <a href="search.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">?��??�장 찾기</a>
+                <a href="guide.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg">?�별 가?�드</a>
+                <a href="self-diagnosis.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">건강?��?진단</a>
+                <a href="memory.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">추억 가?�드</a>
+                <a href="community.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">커�??�티</a>
+            </nav>
+
+            <!-- Desktop Actions -->
+            <div class="hidden lg:flex items-center gap-2">
+                <div id="auth-container"></div>
+                <a href="search.html?quote=true" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-calculator"></i> 견적
+                </a>
+                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?�약?� 로그?????�용 가?�합?�다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-calendar-check text-sm"></i> ?�약
+                </button>
+                <a href="tel:010-2292-1918" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2">
+                    <i class="fas fa-phone-alt text-xs"></i> 010-2292-1918
+                </a>
+            </div>
+
+            <!-- Mobile Header Actions -->
+            <div class="flex lg:hidden items-center gap-2">
+                <a href="tel:010-2292-1918" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand/5 text-brand hover:bg-brand/10 transition-colors" title="?�화 ?�담">
+                    <i class="fas fa-phone-alt text-sm"></i>
+                </a>
+                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?�약?� 로그?????�용 가?�합?�다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand-sage/10 text-brand-sage hover:bg-brand-sage/20 transition-colors" title="?�약?�기">
+                    <i class="fas fa-calendar-check text-sm"></i>
+                </button>
+                <button id="mobile-menu-btn" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors" onclick="toggleMobileNav()">
+                    <i class="fas fa-bars text-brand text-xl" id="menu-icon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-12 pb-32">
+
+        <!-- Section: Farewell Guide (Original Content) -->
+        <div id="guide-farewell-content">
+            <!-- Hero Section -->
+            <section class="text-center mb-20 fade-up">
+                <div
+                    class="inline-flex items-center gap-2 bg-brand-warm/10 text-brand-warm px-4 py-1.5 rounded-full text-xs font-bold mb-6">
+                    <i class="fas fa-heart"></i> ONSIL CARE GUIDE
+                </div>
+                <h2 class="text-2xl md:text-4xl font-bold leading-tight mb-6">
+                    ?�중???�이?�???�별,<br>
+                    <span class="text-brand-sage">?�황?��? ?�도�??�께?�게??</span>
+                </h2>
+                <p class="text-gray-500 text-lg font-light max-w-lg mx-auto leading-relaxed">
+                    ?�픔???�겨?�는 보호?�님???�해,<br>
+                    반드???�인?�야 ???�들???�리?�습?�다.
+                </p>
+            </section>
+
+
+            <!-- Section 1: Post-mortem Home Care -->
+            <section class="mb-24 fade-up">
+                <div class="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-sm border border-gray-50">
+                    <div class="flex items-center gap-4 mb-10">
+                        <div
+                            class="w-12 h-12 bg-brand-sage/10 rounded-2xl flex items-center justify-center text-brand-sage">
+                            <i class="fas fa-home text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">집에???????�는 마�?�??�돈</h2>
+                    </div>
+
+                    <div class="grid gap-8 md:grid-cols-2">
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-brand-sage text-white flex items-center justify-center font-bold text-sm flex-shrink-0">1</span>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-2">?�안???�세 ?�아주기</h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">?�간??지?�면 몸이 굳어�????�습?�다. ?�리�?�?쪽으�?
+                                        부?�럽�?
+                                        ?�겨 ?�크�??�세�??��?주세??</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-brand-sage text-white flex items-center justify-center font-bold text-sm flex-shrink-0">2</span>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-2">체온 ?��? �?배�? 조치</h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">근육???�완?�면 분비물이 ?�올 ???�습?�다. ?�래??깨끗??
+                                        ?�드??
+                                        ?�요�?갈아주시�???주�?????��주세??</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-brand-sage text-white flex items-center justify-center font-bold text-sm flex-shrink-0">3</span>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-2">?�원???�도 ?��?</h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">부?��? ??���??�해 ?�내 ?�도�???�� ?��??�주?�요. �??�래??
+                                        ?�에
+                                        ?�이?�팩???�건??감싸 ?�시�?좋습?�다.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-brand-sage text-white flex items-center justify-center font-bold text-sm flex-shrink-0">4</span>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-2">충분???�사 ?�누�?/h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">?�둘??보내지 ?�으?�도 괜찮?�니?? ?�이가 가???�랑?�던
+                                        가족들�?
+                                        마�?�??�간??차분??보내주세??</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Preparation Checklist -->
+            <section class="mb-24 fade-up">
+                <div class="flex items-center justify-between mb-10">
+                    <h2 class="text-2xl font-bold flex items-center gap-3">
+                        <i class="fas fa-clipboard-check text-brand-warm"></i>
+                        준비물 체크리스??
+                    </h2>
+                    <span class="text-xs text-gray-400">?��??�장 방문 ??�?챙겨주세??/span>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Photo -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 flex items-center gap-4 group cursor-pointer hover:border-brand-warm transition-all"
+                        onclick="this.classList.toggle('checked')">
+                        <div
+                            class="w-6 h-6 rounded-md border-2 border-gray-200 flex items-center justify-center text-white bg-white group-hover:border-brand-warm group-[.checked]:bg-brand-warm group-[.checked]:border-brand-warm transition-all">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold">가???�쁜 ?�진 (?�정??</h4>
+                            <p class="text-xs text-gray-400 mt-1">?�드?�에 ?�긴 고화�??�본 ?�진?�면 충분?�니??</p>
+                        </div>
+                        <i class="fas fa-image text-brand-warm/20 text-2xl"></i>
+                    </div>
+
+                    <!-- Blanket -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 flex items-center gap-4 group cursor-pointer hover:border-brand-warm transition-all"
+                        onclick="this.classList.toggle('checked')">
+                        <div
+                            class="w-6 h-6 rounded-md border-2 border-gray-200 flex items-center justify-center text-white bg-white group-hover:border-brand-warm group-[.checked]:bg-brand-warm group-[.checked]:border-brand-warm transition-all">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold">좋아?�던 ?�요???�??/h4>
+                            <p class="text-xs text-gray-400 mt-1">?�이�?감싸거나 ?�동 ??체온??보호?�기 ?�해 ?�요?�니??</p>
+                        </div>
+                        <i class="fas fa-soap text-brand-warm/20 text-2xl"></i>
+                    </div>
+
+                    <!-- Snacks -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 flex items-center gap-4 group cursor-pointer hover:border-brand-warm transition-all"
+                        onclick="this.classList.toggle('checked')">
+                        <div
+                            class="w-6 h-6 rounded-md border-2 border-gray-200 flex items-center justify-center text-white bg-white group-hover:border-brand-warm group-[.checked]:bg-brand-warm group-[.checked]:border-brand-warm transition-all">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold">마�?�?간식�?�?/h4>
+                            <p class="text-xs text-gray-400 mt-1">추모 ???�단???�려�?간식?�나 ?��? �????�이�?준비해보세??</p>
+                        </div>
+                        <i class="fas fa-egg text-brand-warm/20 text-2xl"></i>
+                    </div>
+
+                    <!-- Booking -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 flex items-center gap-4 group cursor-pointer hover:border-brand-warm transition-all"
+                        onclick="this.classList.toggle('checked')">
+                        <div
+                            class="w-6 h-6 rounded-md border-2 border-gray-200 flex items-center justify-center text-white bg-white group-hover:border-brand-warm group-[.checked]:bg-brand-warm group-[.checked]:border-brand-warm transition-all">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold">?�실 ?�심 ?�약 ?�정</h4>
+                            <p class="text-xs text-gray-400 mt-1">?��??�간 ?�이 바로 ?�용?????�도�??�약???�인?�주?�요.</p>
+                        </div>
+                        <i class="fas fa-calendar-check text-brand-warm/20 text-2xl"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Timeline Process -->
+            <section class="mb-24 fade-up">
+                <h2 class="text-2xl font-bold mb-12 text-center">?��? 진행 ?�차</h2>
+
+                <div class="relative space-y-12">
+                    <!-- Step 1 -->
+                    <div class="relative flex items-start gap-6 md:gap-12 timeline-step">
+                        <div
+                            class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-brand text-white flex items-center justify-center font-bold z-10 shrink-0">
+                            1</div>
+                        <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-brand">?�구 �?방문</h3>
+                                <span
+                                    class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Arrival</span>
+                            </div>
+                            <p class="text-sm text-gray-500 leading-relaxed font-light">
+                                ?�약 ?�간??맞춰 ?��??�장???�착?�니?? ?�동???�려??경우 ?��??�장 ?�용 차량 ?�비?��? ?�용?�실 ???�습?�다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative flex items-start gap-6 md:gap-12 timeline-step">
+                        <div
+                            class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-brand text-white flex items-center justify-center font-bold z-10 shrink-0">
+                            2</div>
+                        <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-brand">?�습 �??��?</h3>
+                                <span
+                                    class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Preparation</span>
+                            </div>
+                            <p class="text-sm text-gray-500 leading-relaxed font-light">
+                                ?�문 ?��? 지?�사가 ?�성?�럽�??�이??몸을 ??�� ?�장(?�의/관 ?�택 ??진행)?�여 마�?�??�을 준비합?�다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative flex items-start gap-6 md:gap-12 timeline-step">
+                        <div
+                            class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-brand text-white flex items-center justify-center font-bold z-10 shrink-0">
+                            3</div>
+                        <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-brand">추모 ?�식</h3>
+                                <span
+                                    class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Memorial</span>
+                            </div>
+                            <p class="text-sm text-gray-500 leading-relaxed font-light">
+                                ?�독 추모?�에??가족들만의 ?�간??갖습?�다. ?�이?�??추억???�긴 ?�상?�나 ?��?�??�누�??�별 ?�사�??�눕?�다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="relative flex items-start gap-6 md:gap-12 timeline-step">
+                        <div
+                            class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-brand text-white flex items-center justify-center font-bold z-10 shrink-0">
+                            4</div>
+                        <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-brand">개별 ?�장 �??�골</h3>
+                                <span
+                                    class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Cremation</span>
+                            </div>
+                            <p class="text-sm text-gray-500 leading-relaxed font-light">
+                                철�???개별 ?�장??진행?�며 ??과정??참�??�에???�인?�실 ???�습?�다. ?�장 종료 ???�골???�갈?�게 ?�습?�니??
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="relative flex items-start gap-6 md:gap-12 timeline-step">
+                        <div
+                            class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-brand text-white flex items-center justify-center font-bold z-10 shrink-0">
+                            5</div>
+                        <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-brand">봉안 �??�치</h3>
+                                <span
+                                    class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Enshrinement</span>
+                            </div>
+                            <p class="text-sm text-gray-500 leading-relaxed font-light">
+                                ?�습???�골???�골?�에 ?�아 ?�도???�립?�다. 봉안???�치, ?�골, ?�는 메모리얼 ?�톤 ?�작 �??�택?�실 ???�습?�다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: FAQ -->
+            <section class="mb-24 fade-up">
+                <h2 class="text-2xl font-bold mb-10">?�주 묻는 질문</h2>
+
+                <div class="space-y-4">
+                    <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden accordion-item group">
+                        <button
+                            class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                            onclick="toggleAccordion(this)">
+                            <span class="font-bold">?��? 진행 ?�간?� ?�마??걸리?�요?</span>
+                            <i
+                                class="fas fa-chevron-down text-gray-300 group-[.accordion-active]:rotate-180 transition-transform"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="px-6 pb-6 text-sm text-gray-500 leading-relaxed">
+                                ?�이??몸무게�? ?�택?�신 ?�션???�라 ?�르지�? ?�균?�으�?1?�간 30분에??2?�간 ?�도 ?�요?�니?? 충분??추모 ?�간???�하??경우 조금 ???�유 ?�게
+                                계획?�시??
+                                것이 좋습?�다.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden accordion-item group">
+                        <button
+                            class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                            onclick="toggleAccordion(this)">
+                            <span class="font-bold">?�른 ?�이?�과 같이 ?�장?�는 경우???�나??</span>
+                            <i
+                                class="fas fa-chevron-down text-gray-300 group-[.accordion-active]:rotate-180 transition-transform"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="px-6 pb-6 text-sm text-gray-500 leading-relaxed">
+                                ?�실???�내?�는 모든 ?�휴 ?��??�장?� **'100% 개별 ?�장'** ?�칙??준?�합?�다. ??과정???�명?�게 참�??�실 ???�으???�심?�셔???�니??
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden accordion-item group">
+                        <button
+                            class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                            onclick="toggleAccordion(this)">
+                            <span class="font-bold">비용?� ?�제 결제?�나??</span>
+                            <i
+                                class="fas fa-chevron-down text-gray-300 group-[.accordion-active]:rotate-180 transition-transform"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="px-6 pb-6 text-sm text-gray-500 leading-relaxed">
+                                ?�실?�서 ?�내?�린 견적 금액??**?�라?�으�?즉시 결제**?�게 ?�며, ??경우 **?��??�장 ?�장 결제 금액?� 0??*?�니?? 추�? ?�션???�택?��? ?�는 ??
+                                ?�장?�서??
+                                추�? 비용 발생?� ?�습?�다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+        <!-- CTA Section -->
+        <section class="fade-up">
+            <div class="bg-brand py-12 px-8 rounded-[3rem] text-center text-white relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
+                <div class="relative z-10">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6">?�이???�태�?미리 체크??보세??</h2>
+                    <p class="text-white/60 mb-10 text-sm font-light">?�실?� 보호?�님???�픔??미리 ?�해?�고 ?�께 준비하겠습?�다.</p>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <a href="self-diagnosis.html?tab=aging"
+                            class="inline-flex items-center gap-3 bg-brand-warm hover:bg-brand-warm/90 text-white px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105">
+                            ?�화 ?��? 진단?�기
+                        </a>
+                        <a href="self-diagnosis.html?tab=qol"
+                            class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105">
+                            ?�의 �??��??�기
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-brand-cream border-t border-brand/5 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+                <div class="col-span-2 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <img src="./images/onsil_logo_tr.png" width="32" height="32" class="w-8 h-8 object-contain" alt="The ?�실 로고">
+                        <span class="font-bold text-lg text-[#2C3E50]">The ?�실</span>
+                    </div>
+                    <p class="text-sm text-[#2C3E50]/40 mb-4 leading-relaxed max-w-sm">
+                        반려?�물 ?��??�장 비교부???�약까�?.<br>?�려??결정?????�실???�께?�니??
+                    </p>
+                    <p class="text-xs text-[#2C3E50]/30">The ?�실 | ?�??조영??| 문의 010-2292-1918<br>?�업?�등록번??: 181-18-02826<br>주소 : 부천시 ?�작�?280번길 53-9 ?�우?�폴리�? 502??/p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">?�비??/h3>
+                    <ul class="space-y-3 text-sm text-[#2C3E50]/50">
+                        <li><a href="search.html" class="hover:text-[#2C3E50] transition-colors">?��??�장 찾기</a></li>
+                        <li><a href="guide.html" class="hover:text-[#2C3E50] transition-colors">?�별 가?�드</a></li>
+                        <li><a href="self-diagnosis.html" class="hover:text-[#2C3E50] transition-colors">건강?��?진단</a></li>
+                        <li><a href="memory.html" class="hover:text-[#2C3E50] transition-colors">추억 가?�드</a></li>
+                        <li><a href="community.html" class="hover:text-[#2C3E50] transition-colors">커�??�티</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">고객지??/h3>
+                    <ul class="space-y-3 text-sm text-[#2C3E50]/50">
+                        <li><a href="contact.html" class="hover:text-[#2C3E50] transition-colors">문의?�기</a></li>
+                        <li><a href="partnership.html"
+                                class="hover:text-[#2C3E50] transition-colors font-bold text-brand-warm">?�휴문의</a></li>
+                        <li><a href="terms.html" class="hover:text-[#2C3E50] transition-colors">?�용?��?</a></li>
+                        <li><a href="privacy.html" class="hover:text-[#2C3E50] transition-colors">개인?�보처리방침</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // PWA Service Worker
+        if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js');
+            });
+        }
+    </script>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
+            id="mobile-nav-panel">
+            <div class="p-6 h-full flex flex-col pt-safe">
+                <div class="flex justify-between items-center mb-8">
+                    <span class="font-bold text-lg text-brand">메뉴</span>
+                    <button onclick="toggleMobileNav()"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+                <nav class="space-y-1 flex-1">
+                    <a href="search.html?quote=true"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all bg-brand-cream text-brand font-bold mb-4 hover:shadow-md">
+                        <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
+                        <span>바로 견적받기</span>
+                    </a>
+                    <a href="search.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-search w-5 text-center"></i>
+                        <span>?��??�장 찾기</span>
+                    </a>
+                    <a href="guide.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-brand/5 text-brand font-bold transition-colors">
+                        <i class="fas fa-book-open w-5 text-center"></i>
+                        <span>?�별 가?�드</span>
+                    </a>
+                    <a href="self-diagnosis.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-stethoscope w-5 text-center"></i>
+                        <span>건강?��?진단</span>
+                    </a>
+                    <a href="memory.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-heart w-5 text-center"></i>
+                        <span>추억 가?�드</span>
+                    </a>
+                    <a href="community.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-comments w-5 text-center"></i>
+                        <span>커�??�티</span>
+                    </a>
+                </nav>
+                <!-- Mobile Bottom Actions -->
+                <div class="pt-6 border-t border-brand/5 space-y-3">
+                    <button
+                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?�약?� 로그?????�용 가?�합?�다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                        class="w-full bg-brand-sage text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-sage/90 transition-colors">
+                        <i class="fas fa-calendar-check text-sm"></i> ?�약?�기
+                    </button>
+                    <a href="tel:010-2292-1918"
+                        class="w-full bg-brand-warm text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-warmDark transition-colors">
+                        <i class="fas fa-phone-alt text-sm"></i> 010-2292-1918 ?�담???�결
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/pwa.js"></script>
+    <script>
+        // Intersection Observer for fade-up animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-up').forEach(element => {
+                observer.observe(element);
+            });
+        });
+
+        // Accordion Toggle
+        function toggleAccordion(btn) {
+            const item = btn.closest('.accordion-item');
+            const isActive = item.classList.contains('accordion-active');
+            
+            // Close all
+            document.querySelectorAll('.accordion-item').forEach(el => {
+                el.classList.remove('accordion-active');
+            });
+            
+            // Open clicked
+            if (!isActive) {
+                item.classList.add('accordion-active');
+            }
+        }
+
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            const panel = document.getElementById('mobile-nav-panel');
+            if (nav.classList.contains('hidden')) {
+                nav.classList.remove('hidden');
+                setTimeout(() => panel.classList.remove('translate-x-full'), 10);
+            } else {
+                panel.classList.add('translate-x-full');
+                setTimeout(() => nav.classList.add('hidden'), 300);
+            }
+        }
+    </script>
+</body>
+</html>

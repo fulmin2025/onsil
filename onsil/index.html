@@ -1,0 +1,959 @@
+﻿<!-- Onsil Web v1.0.1 - Emergency Restoration -->
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta name="google-site-verification" content="GAHs1TpZmuhsYarlvCvpBwOlxBKNqqQ9baUyd5eWU80" />
+    <meta charset="UTF-8">
+    <script>
+        // Naver Map Domain Fix: Force non-www to match Naver Console registration
+        if (window.location.hostname === 'www.theonsil.co.kr') {
+            window.location.replace('https://theonsil.co.kr' + window.location.pathname + window.location.search);
+        }
+    </script>
+    <meta name="referrer" content="origin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The ?⑥떎 - 諛섎젮?숇Ъ ?덉떖 ?λ?, 鍮꾧탳遺???덉빟源뚯?</title>
+    <meta name="description" content="諛섎젮?숇Ъ ?λ??앹옣 鍮꾧탳, ?щ챸??媛寃? ?덉떖 ?몄쬆源뚯?. The ?⑥떎???대젮??寃곗젙???④퍡?⑸땲??">
+    <meta property="og:title" content="The ?⑥떎 | 諛섎젮?숇Ъ ?덉떖 ?λ?">
+    <meta property="og:description" content="?λ??앹옣 鍮꾧탳遺???덉빟源뚯?, The ?⑥떎怨??④퍡?섏꽭??">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#2C3E50">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#2C3E50',
+                            light: '#34495E',
+                            dark: '#1A252F',
+                            cream: '#F8F6F3',
+                            warm: '#D4A574',
+                            warmDark: '#B8894E',
+                            sage: '#87A08B',
+                            mist: '#E8ECE9'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
+                        serif: ['Nanum Myeongjo', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(180deg,
+                    rgba(44, 62, 80, 0.1) 0%,
+                    rgba(44, 62, 80, 0.05) 30%,
+                    rgba(248, 246, 243, 0.6) 70%,
+                    rgba(248, 246, 243, 1) 100%);
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(44, 62, 80, 0.12);
+        }
+
+        .stat-number {
+            background: linear-gradient(135deg, #2C3E50, #D4A574);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mobile-nav-open {
+            transform: translateX(0) !important;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .float-anim {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .process-line {
+            background: linear-gradient(180deg, #D4A574 0%, #87A08B 100%);
+            width: 2px;
+        }
+
+        .compare-badge {
+            background: linear-gradient(135deg, #D4A574, #B8894E);
+        }
+
+        .floating-bar {
+            background: rgba(44, 62, 80, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .floating-bar.active {
+            transform: translateY(0);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 2.25rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .floating-bar {
+                padding: 1rem !important;
+            }
+
+            .floating-bar a {
+                padding: 0.85rem 1rem !important;
+                font-size: 0.875rem !important;
+            }
+
+            .floating-bar i {
+                font-size: 0.9rem !important;
+            }
+
+            .floating-bar .w-10 {
+                width: 2rem !important;
+                height: 2rem !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-brand-cream font-sans text-brand antialiased">
+
+    <!-- Header -->
+    <header id="main-header" class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-brand/5 transition-all outline-none">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-2 group flex-shrink-0">
+                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="?⑥떎 濡쒓퀬">
+                <span class="font-bold text-lg text-brand tracking-tight">The ?⑥떎</span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden lg:flex items-center gap-1">
+                <a href="search.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg">?λ??앹옣 李얘린</a>
+                <a href="guide.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">?대퀎 媛?대뱶</a>
+                <a href="self-diagnosis.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">嫄닿컯?먭?吏꾨떒</a>
+                <a href="memory.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">異붿뼲 媛?대뱶</a>
+                <a href="community.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">而ㅻ??덊떚</a>
+            </nav>
+
+            <!-- Desktop Actions -->
+            <div class="hidden lg:flex items-center gap-2">
+                <div id="auth-container"></div>
+                <a href="search.html?quote=true" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-calculator"></i> 寃ъ쟻
+                </a>
+                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?덉빟? 濡쒓렇?????댁슜 媛?ν빀?덈떎.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-calendar-check text-sm"></i> ?덉빟
+                </button>
+                <a href="tel:010-2292-1918" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2">
+                    <i class="fas fa-phone-alt text-xs"></i> 010-2292-1918
+                </a>
+            </div>
+
+            <!-- Mobile Header Actions -->
+            <div class="flex lg:hidden items-center gap-2">
+                <a href="tel:010-2292-1918" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand/5 text-brand hover:bg-brand/10 transition-colors" title="?꾪솕 ?곷떞">
+                    <i class="fas fa-phone-alt text-sm"></i>
+                </a>
+                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?덉빟? 濡쒓렇?????댁슜 媛?ν빀?덈떎.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand-sage/10 text-brand-sage hover:bg-brand-sage/20 transition-colors" title="?덉빟?섍린">
+                    <i class="fas fa-calendar-check text-sm"></i>
+                </button>
+                <button id="mobile-menu-btn" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors" onclick="toggleMobileNav()">
+                    <i class="fas fa-bars text-brand text-xl" id="menu-icon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
+            id="mobile-nav-panel">
+            <div class="p-6 h-full flex flex-col pt-safe">
+                <div class="flex justify-between items-center mb-8">
+                    <span class="font-bold text-lg text-brand">硫붾돱</span>
+                    <button onclick="toggleMobileNav()"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+                <nav class="space-y-1 flex-1">
+                    <a href="search.html?quote=true"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all bg-brand-cream text-brand font-bold mb-4 hover:shadow-md">
+                        <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
+                        <span>諛붾줈 寃ъ쟻諛쏄린</span>
+                    </a>
+                    <a href="search.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-search w-5 text-center"></i>
+                        <span>?λ??앹옣 李얘린</span>
+                    </a>
+                    <a href="guide.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-book-open w-5 text-center"></i>
+                        <span>?대퀎 媛?대뱶</span>
+                    </a>
+                    <a href="self-diagnosis.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-stethoscope w-5 text-center"></i>
+                        <span>嫄닿컯?먭?吏꾨떒</span>
+                    </a>
+                    <a href="memory.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-heart w-5 text-center"></i>
+                        <span>異붿뼲 媛?대뱶</span>
+                    </a>
+                    <a href="community.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-comments w-5 text-center"></i>
+                        <span>而ㅻ??덊떚</span>
+                    </a>
+                </nav>
+                <!-- Mobile Bottom Actions -->
+                <div class="pt-6 border-t border-brand/5 space-y-3">
+                    <button
+                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?덉빟? 濡쒓렇?????댁슜 媛?ν빀?덈떎.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                        class="w-full bg-brand-sage text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-sage/90 transition-colors">
+                        <i class="fas fa-calendar-check text-sm"></i> ?덉빟?섍린
+                    </button>
+                    <a href="tel:010-2292-1918"
+                        class="w-full bg-brand-warm text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-warmDark transition-colors">
+                        <i class="fas fa-phone-alt text-sm"></i> 010-2292-1918 ?곷떞???곌껐
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[90vh] sm:min-h-screen flex items-center overflow-hidden pt-16">
+        <div class="absolute inset-0 bg-brand-cream z-0"></div>
+        <img src="./images/hero_dog.jpg"
+            class="absolute inset-0 w-full h-full object-cover opacity-20 sm:opacity-10 mix-blend-multiply z-0"
+            alt="Hero Background" onerror="this.style.display='none';" />
+
+        <!-- Decorative elements -->
+        <div class="absolute top-20 right-10 w-72 h-72 bg-brand-sage/10 rounded-full blur-3xl z-0"></div>
+        <div class="absolute bottom-20 left-10 w-96 h-96 bg-brand-warm/8 rounded-full blur-3xl z-0"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 w-full z-10">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <!-- Text -->
+                <div class="space-y-6 md:space-y-8 fade-up">
+                    <div
+                        class="inline-flex items-center gap-2 bg-brand-sage/15 text-brand-sage px-4 py-2 rounded-full text-sm font-medium">
+                        <span class="w-2 h-2 bg-brand-sage rounded-full animate-pulse"></span>
+                        ?꾧뎅 50+ ?덉떖 ?몄쬆 ?λ??앹옣
+                    </div>
+
+                    <h1 class="text-4xl md:text-5xl lg:text-7xl font-black text-brand leading-[1.1] hero-title">
+                        諛섎젮?숇Ъ ?λ??앹옣,<br class="hidden md:block">鍮꾧탳遺???덉빟源뚯?
+                    </h1>
+                    <p class="text-lg md:text-xl text-brand/60 font-light leading-relaxed max-w-xl">
+                        50??怨녹쓽 ?뺤떇 ?깅줉 ?λ??앹옣???쒕늿??鍮꾧탳?섍퀬<br class="hidden sm:block">
+                        ?щ챸??媛寃⑹쑝濡??덉떖?섍퀬 ?덉빟?섏꽭??
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                        <a href="search.html"
+                            class="bg-brand hover:bg-brand-light text-white px-8 py-4 rounded-2xl text-base font-bold transition-all shadow-xl shadow-brand/15 flex items-center justify-center gap-2 group">
+                            ?덉떖 ?λ??앹옣 李얘린
+                            <i class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                        <a href="guide.html"
+                            class="bg-white hover:bg-gray-50 text-brand border border-brand/10 px-8 py-4 rounded-2xl text-base font-bold transition-all flex items-center justify-center gap-2">
+                            <i class="fas fa-book-open text-brand-warm"></i>
+                            ?대퀎 以鍮?媛?대뱶
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Visual Card -->
+                <div class="relative fade-up block lg:block mt-8 lg:mt-0 max-w-md mx-auto lg:max-w-none"
+                    style="animation-delay: 0.2s;">
+                    <div
+                        class="relative bg-white rounded-3xl shadow-2xl shadow-brand/8 p-5 sm:p-8 border border-brand/5">
+                        <!-- Mock comparison card -->
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 bg-brand-sage/15 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-balance-scale text-brand-sage"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-brand text-sm">?λ??앹옣 鍮꾧탳</p>
+                                <p class="text-xs text-brand/40">???꾩튂 湲곕컲 異붿쿇</p>
+                            </div>
+                        </div>
+
+                        <!-- Mock items -->
+                        <div class="space-y-2.5">
+                            <div
+                                class="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-4 bg-brand-cream rounded-2xl border border-brand/5">
+                                <div
+                                    class="w-12 h-12 sm:w-16 sm:h-16 bg-brand-warm/10 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fas fa-building text-brand-warm text-lg sm:text-xl"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="text-[10px] px-1.5 py-0.5 bg-brand-warm/15 text-brand-warm rounded font-bold">?덉떖?몄쬆</span>
+                                        <p class="font-bold text-brand text-sm truncate">?ロ룷?덉뒪???⑥뼇二쇱젏</p>
+                                    </div>
+                                    <p class="text-xs text-brand/40 mt-0.5">寃쎄린 ?⑥뼇二?쨌 4.8??/p>
+                                </div>
+                                <p class="font-bold text-brand text-sm whitespace-nowrap">25留뚯썝~</p>
+                            </div>
+
+                            <div
+                                class="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-4 bg-white rounded-2xl border border-brand/5">
+                                <div
+                                    class="w-12 h-12 sm:w-16 sm:h-16 bg-brand/5 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fas fa-building text-brand/40 text-lg sm:text-xl"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <p class="font-bold text-brand text-sm truncate">21洹몃옩 寃쎄린愿묒＜??/p>
+                                    </div>
+                                    <p class="text-xs text-brand/40 mt-0.5">寃쎄린 愿묒＜ 쨌 4.9??/p>
+                                </div>
+                                <p class="font-bold text-brand text-sm whitespace-nowrap">25留뚯썝~</p>
+                            </div>
+
+                            <div
+                                class="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-4 bg-white rounded-2xl border border-brand/5">
+                                <div
+                                    class="w-12 h-12 sm:w-16 sm:h-16 bg-brand/5 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fas fa-building text-brand/40 text-lg sm:text-xl"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="text-[10px] px-1.5 py-0.5 bg-brand-sage/15 text-brand-sage rounded font-bold">?쒗쑕</span>
+                                        <p class="font-bold text-brand text-sm truncate">援용컮?댄렖</p>
+                                    </div>
+                                    <p class="text-xs text-brand/40 mt-0.5">異⑸턿 ?쒖쿇 쨌 4.7??/p>
+                                </div>
+                                <p class="font-bold text-brand text-sm whitespace-nowrap">20留뚯썝~</p>
+                            </div>
+                        </div>
+
+                        <a href="search.html"
+                            class="block text-center w-full mt-4 py-3 bg-brand text-white rounded-xl text-sm font-bold hover:bg-brand-light transition-colors">
+                            鍮꾧탳?섍린
+                        </a>
+                    </div>
+
+                    <!-- Floating badges -->
+                    <div
+                        class="absolute -top-4 -right-4 bg-white px-4 py-2 rounded-full shadow-lg border border-brand/5 flex items-center gap-2 float-anim">
+                        <i class="fas fa-shield-alt text-brand-sage text-sm"></i>
+                        <span class="text-xs font-bold text-brand">?덉떖 蹂댁옣</span>
+                    </div>
+                    <div class="absolute -bottom-3 -left-3 bg-white px-4 py-2 rounded-full shadow-lg border border-brand/5 flex items-center gap-2 float-anim"
+                        style="animation-delay: 1.5s;">
+                        <i class="fas fa-won-sign text-brand-warm text-sm"></i>
+                        <span class="text-xs font-bold text-brand">?щ챸 媛寃?/span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="py-12 bg-white border-y border-brand/5 fade-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <p class="stat-number text-3xl sm:text-4xl font-bold">50+</p>
+                    <p class="text-sm text-brand/50 mt-1 font-medium">?꾧뎅 ?깅줉 ?λ??앹옣</p>
+                </div>
+                <div>
+                    <p class="stat-number text-3xl sm:text-4xl font-bold">100%</p>
+                    <p class="text-sm text-brand/50 mt-1 font-medium">李멸? 蹂댁옣 ?쒖꽕</p>
+                </div>
+                <div>
+                    <p class="stat-number text-3xl sm:text-4xl font-bold">24h</p>
+                    <p class="text-sm text-brand/50 mt-1 font-medium">?곷떞 媛??/p>
+                </div>
+                <div>
+                    <p class="stat-number text-3xl sm:text-4xl font-bold">50留?/p>
+                    <p class="text-sm text-brand/50 mt-1 font-medium">?쇳빐 蹂댁긽 ?쒕룄</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The ?⑥떎(Onsil) Promise -->
+    <section class="py-20 sm:py-28 bg-brand-cream fade-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-16">
+                <div class="flex justify-center mb-6">
+                    <img src="./images/onsil_logo_tr.png" class="w-[120px] h-[120px] object-contain" alt="?⑥떎 罹먮┃??濡쒓퀬">
+                </div>
+                <span class="text-brand-warm font-bold text-sm tracking-widest uppercase">The ?⑥떎 Promise</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-brand mt-4 leading-tight">蹂댄샇?먮떂???λ??먮쭔 吏묒쨷?????덈룄濡?/h2>
+                <p class="text-brand/50 font-serif text-lg mt-4">The ?⑥떎???쎌냽?⑸땲??/p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="card-hover bg-white p-8 sm:p-10 rounded-3xl border border-brand/5 group">
+                    <div
+                        class="w-14 h-14 bg-brand/5 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand group-hover:text-white transition-all duration-300 text-brand">
+                        <i class="fas fa-eye text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand mb-3">李멸? 蹂댁옣</h3>
+                    <p class="text-brand/55 leading-relaxed">紐⑤뱺 ?λ? 怨쇱젙??蹂댄샇?먭? 吏곸젒 李멸??????덈뒗 ?λ??앹옣留??뚭컻?⑸땲?? 遺덊닾紐낇븳 怨쇱젙? ?놁뒿?덈떎.</p>
+                </div>
+
+                <div class="card-hover bg-white p-8 sm:p-10 rounded-3xl border border-brand/5 group">
+                    <div
+                        class="w-14 h-14 bg-brand-warm/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-warm group-hover:text-white transition-all duration-300 text-brand-warm">
+                        <i class="fas fa-won-sign text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand mb-3">?щ챸??媛寃?/h3>
+                    <p class="text-brand/55 leading-relaxed">遺덊븘?뷀븳 ?⑺뭹 媛뺣ℓ瑜?湲덉??⑸땲?? 紐⑤뱺 鍮꾩슜???ъ쟾??怨듦컻?섏뼱 ?덉떖?????덉뒿?덈떎.</p>
+                </div>
+
+                <div class="card-hover bg-white p-8 sm:p-10 rounded-3xl border border-brand/5 group">
+                    <div
+                        class="w-14 h-14 bg-brand-sage/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-sage group-hover:text-white transition-all duration-300 text-brand-sage">
+                        <i class="fas fa-shield-alt text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand mb-3">?쇳빐 蹂댁긽??/h3>
+                    <p class="text-brand/55 leading-relaxed">?덉떖 ?뺤콉 ?꾨컲 ??理쒕? 50留???蹂댁긽. ?⑥떎???쎌냽??吏?ㅼ? 紐삵븯硫?梨낆엫吏묐땲??</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-20 sm:py-28 bg-white fade-up overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="flex flex-col lg:flex-row gap-16 items-center">
+                <!-- Left: Content Container -->
+                <div class="lg:w-7/12">
+                    <div class="mb-12">
+                        <span class="text-brand-sage font-bold text-sm tracking-widest uppercase">How It Works</span>
+                        <h2 class="text-3xl sm:text-4xl font-bold text-brand mt-4">泥섏쓬?대씪??愿쒖갖?꾩슂</h2>
+                        <p class="text-brand/50 font-serif text-lg mt-4">?⑥떎??李④렐李④렐 ?④퍡?⑸땲??/p>
+                    </div>
+
+                    <!-- Mobile Image (visible only on mobile/tablet) -->
+                    <div class="lg:hidden mb-12 relative">
+                        <div class="absolute -inset-4 bg-brand-cream/50 rounded-[2.5rem] -rotate-2"></div>
+                        <img src="./images/comforting_guidance.png"
+                            class="relative rounded-3xl shadow-xl w-full object-cover aspect-[4/3]" alt="Guidance">
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-x-8 gap-y-10">
+                        <div class="group">
+                            <div
+                                class="w-12 h-12 bg-brand-cream rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-warm/10 transition-colors">
+                                <span class="text-xl font-bold text-brand-warm">1</span>
+                            </div>
+                            <h3 class="font-bold text-brand mb-2">?λ??앹옣 鍮꾧탳</h3>
+                            <p class="text-sm text-brand/50 leading-relaxed">?꾩튂, 媛寃? ?쒖꽕???쒕늿??鍮꾧탳?섏꽭??/p>
+                        </div>
+
+                        <div class="group">
+                            <div
+                                class="w-12 h-12 bg-brand-cream rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-warm/10 transition-colors">
+                                <span class="text-xl font-bold text-brand-warm">2</span>
+                            </div>
+                            <h3 class="font-bold text-brand mb-2">?곷떞 諛??덉빟</h3>
+                            <p class="text-sm text-brand/50 leading-relaxed">?꾪솕 ?먮뒗 移댁뭅?ㅽ넚?쇰줈 媛꾪렪?섍쾶 ?곷떞?섏꽭??/p>
+                        </div>
+
+                        <div class="group">
+                            <div
+                                class="w-12 h-12 bg-brand-cream rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-warm/10 transition-colors">
+                                <span class="text-xl font-bold text-brand-warm">3</span>
+                            </div>
+                            <h3 class="font-bold text-brand mb-2">?λ? 吏꾪뻾</h3>
+                            <p class="text-sm text-brand/50 leading-relaxed">?꾨Ц ?λ?吏?꾩궗媛 泥섏쓬遺???앷퉴吏 ?④퍡?⑸땲??/p>
+                        </div>
+
+                        <div class="group">
+                            <div
+                                class="w-12 h-12 bg-brand-cream rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-sage/10 transition-colors">
+                                <span class="text-xl font-bold text-brand-sage">4</span>
+                            </div>
+                            <h3 class="font-bold text-brand mb-2">異붾え 湲곕줉</h3>
+                            <p class="text-sm text-brand/50 leading-relaxed">?뚯쨷??異붿뼲???곸썝??媛꾩쭅?섏꽭??/p>
+                        </div>
+                    </div>
+
+                    <div class="mt-12">
+                        <a href="guide.html"
+                            class="inline-flex items-center gap-2 text-brand-warm font-bold hover:gap-3 transition-all">
+                            ?λ? ?덉감 ?먯꽭???뚯븘蹂닿린 <i class="fas fa-arrow-right text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right: Desktop Image (hidden on mobile/tablet) -->
+                <div class="hidden lg:block lg:w-5/12 relative">
+                    <div class="absolute -inset-6 bg-brand-cream/50 rounded-[3rem] rotate-3 translate-x-2"></div>
+                    <div class="relative">
+                        <img src="./images/comforting_guidance.png"
+                            class="rounded-[2.5rem] shadow-2xl w-full object-cover aspect-[4/5]" alt="Guidance">
+                        <!-- Decorative tag -->
+                        <div
+                            class="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl flex items-center gap-4 animate-bounce-subtle">
+                            <div class="w-12 h-12 bg-brand-warm/15 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-heart text-brand-warm text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-brand/40 font-bold uppercase tracking-wider">Onsil Care</p>
+                                <p class="text-brand font-bold">?앷퉴吏 ?④퍡?댁슂</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cinematic Banner 1 -->
+    <section class="relative h-[60vh] sm:h-[70vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="./images/warm_pet_companion.png"
+                class="w-full h-full object-cover transform scale-110 motion-safe:animate-[pulse_8s_infinite]"
+                alt="Companion">
+            <div class="absolute inset-0 bg-black/30"></div>
+        </div>
+        <div class="relative z-10 text-center px-4 fade-up">
+            <h2 class="text-3xl sm:text-5xl font-bold text-white mb-4 leading-tight">?몄젣??怨곸뿉 ?덉쓣寃뚯슂</h2>
+            <p class="text-lg sm:text-xl text-white/80 font-serif">?④퍡???뚯쨷???쒓컙, ?⑥떎???④퍡 湲곗뼲?⑸땲??/p>
+        </div>
+    </section>
+
+    <!-- Why ?⑥떎(Onsil) -->
+    <section class="py-20 sm:py-28 bg-brand fade-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-16">
+                <span class="text-brand-warm font-bold text-sm tracking-widest uppercase">Why The ?⑥떎</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mt-4">??The ?⑥떎?멸???</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div
+                    class="bg-white/5 backdrop-blur border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 bg-brand-warm/20 rounded-2xl flex items-center justify-center shrink-0">
+                            <i class="fas fa-balance-scale text-brand-warm"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">以묐┰?곸씤 鍮꾧탳 ?뚮옯??/h3>
+                            <p class="text-white/50 leading-relaxed text-sm">?⑥떎? ?뱀젙 ?λ??앹옣???댁쁺?섏? ?딆뒿?덈떎. 以묐┰?곸씤 ?낆옣?먯꽌 蹂댄샇?먮떂?먭쾶 理쒖쟻???좏깮吏瑜??쒓났?⑸땲??</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white/5 backdrop-blur border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 bg-brand-sage/20 rounded-2xl flex items-center justify-center shrink-0">
+                            <i class="fas fa-check-double text-brand-sage"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">?덉떖 ?몄쬆 ?쒖뒪??/h3>
+                            <p class="text-white/50 leading-relaxed text-sm">李멸? 蹂댁옣, ?щ챸 媛寃? 媛뺣ℓ 湲덉? ?뺤콉??以?섑븯???λ??앹옣留?'?덉떖 ?몄쬆' 留덊겕瑜?遺?ы빀?덈떎.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white/5 backdrop-blur border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 bg-brand-warm/20 rounded-2xl flex items-center justify-center shrink-0">
+                            <i class="fas fa-map-marked-alt text-brand-warm"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">???꾩튂 湲곕컲 異붿쿇</h3>
+                            <p class="text-white/50 leading-relaxed text-sm">湲됲븳 ?곹솴?먯꽌??媛??媛源뚯슫 ?λ??앹옣??利됱떆 李얠쓣 ???덉뒿?덈떎. 嫄곕━, 媛寃? ?쒖꽕???쒕쾲??鍮꾧탳?섏꽭??</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white/5 backdrop-blur border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 bg-brand-sage/20 rounded-2xl flex items-center justify-center shrink-0">
+                            <i class="fas fa-hands-holding-heart text-brand-sage"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">?λ? ?ы썑 耳??/h3>
+                            <p class="text-white/50 leading-relaxed text-sm">?λ? 媛?대뱶, 異붿뼲 湲곕줉, ?ル줈???뺣낫源뚯?. ?대퀎 ?꾪썑 紐⑤뱺 怨쇱젙?먯꽌 ?⑥떎???④퍡?⑸땲??</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cinematic Banner 2 -->
+    <section class="relative h-[50vh] sm:h-[60vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="./images/memory_honor_bg.jpg"
+                class="w-full h-full object-cover object-top" alt="Memorial">
+            <div class="absolute inset-0 bg-black/10"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/40"></div>
+        </div>
+        <div class="relative z-10 text-center px-4 fade-up">
+            <p class="text-brand-warm font-bold text-sm tracking-widest uppercase mb-4">Memory & Honor</p>
+            <h2 class="text-2xl sm:text-4xl font-bold text-white leading-tight">?뚯쨷??湲곗뼲??媛꾩쭅?섎뒗<br>媛???꾨쫫?ㅼ슫 諛⑸쾿</h2>
+        </div>
+    </section>
+
+    <!-- Community Preview -->
+    <section class="py-20 sm:py-28 bg-brand-cream fade-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-16">
+                <span class="text-brand-sage font-bold text-sm tracking-widest uppercase">Community</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-brand mt-4 leading-tight">?곕━媛 ?④퍡 ?섎늻???댁빞湲?/h2>
+                <p class="text-brand/50 font-serif text-lg mt-4">?곕쑜???꾨줈? ?뚯쨷??異붿뼲??怨듭쑀?⑸땲??/p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Pet Pride -->
+                <a href="community.html" class="group h-full">
+                    <div class="bg-white rounded-[2.5rem] overflow-hidden border border-brand/5 shadow-sm hover:shadow-xl transition-all duration-500 card-hover h-full flex flex-col">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&q=80&w=800" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="諛섎젮?숇Ъ ?먮옉">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+                                <span class="text-white text-sm font-medium transition-all transform translate-y-4 group-hover:translate-y-0">?ㅼ떆媛?寃뚯떆湲 蹂닿린 ??/span>
+                            </div>
+                            <div class="absolute top-6 left-6">
+                                <span class="px-4 py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-bold text-brand uppercase tracking-wider shadow-sm">諛섎젮?숇Ъ ?먮옉</span>
+                            </div>
+                        </div>
+                        <div class="p-8 flex flex-col flex-1">
+                            <h3 class="text-xl font-bold text-brand mb-3 group-hover:text-brand-warm transition-colors">?곕━ ?꾩씠???덉걶 紐⑥뒿</h3>
+                            <p class="text-brand/60 text-sm leading-relaxed mb-6 flex-1">?됰났?덈뜕 ?쒓컙?ㅼ쓣 湲곕줉?섍퀬 ?먮옉?대낫?몄슂.</p>
+                            <div class="flex items-center justify-between pt-6 border-t border-brand/5 mt-auto">
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 rounded-full border-2 border-white bg-brand-cream flex items-center justify-center text-[10px]">?맯</div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-white bg-brand-cream flex items-center justify-center text-[10px]">?맩</div>
+                                </div>
+                                <span class="text-xs font-bold text-brand/30">1.2k+ 李몄뿬??/span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Daily Life -->
+                <a href="community.html" class="group h-full">
+                    <div class="bg-white rounded-[2.5rem] overflow-hidden border border-brand/5 shadow-sm hover:shadow-xl transition-all duration-500 card-hover h-full flex flex-col">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=800" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="?쇱긽 ?댁빞湲?>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+                                <span class="text-white text-sm font-medium transition-all transform translate-y-4 group-hover:translate-y-0">?ㅼ떆媛?寃뚯떆湲 蹂닿린 ??/span>
+                            </div>
+                            <div class="absolute top-6 left-6">
+                                <span class="px-4 py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-bold text-brand uppercase tracking-wider shadow-sm">?쇱긽 ?댁빞湲?/span>
+                            </div>
+                        </div>
+                        <div class="p-8 flex flex-col flex-1">
+                            <h3 class="text-xl font-bold text-brand mb-3 group-hover:text-brand-warm transition-colors">?뚯쨷???쇱긽 怨듭쑀</h3>
+                            <p class="text-brand/60 text-sm leading-relaxed mb-6 flex-1">?ㅻⅨ 蹂댄샇?먮떂?ㅺ낵 ?곕쑜?⑥쓣 ?섎닠蹂댁꽭??</p>
+                            <div class="flex items-center justify-between pt-6 border-t border-brand/5 mt-auto">
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 rounded-full border-2 border-white bg-brand-cream flex items-center justify-center text-[10px]">?뮠</div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-white bg-brand-cream flex items-center justify-center text-[10px]">?ㅿ툘</div>
+                                </div>
+                                <span class="text-xs font-bold text-brand/30">850+ 寃뚯떆湲</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Welcome -->
+                <a href="community.html" class="group h-full">
+                    <div class="bg-white rounded-[2.5rem] overflow-hidden border border-brand/5 shadow-sm hover:shadow-xl transition-all duration-500 card-hover h-full flex flex-col">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=800" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="媛???몄궗">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+                                <span class="text-white text-sm font-medium transition-all transform translate-y-4 group-hover:translate-y-0">?ㅼ떆媛?寃뚯떆湲 蹂닿린 ??/span>
+                            </div>
+                            <div class="absolute top-6 left-6">
+                                <span class="px-4 py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-bold text-brand uppercase tracking-wider shadow-sm">媛???몄궗</span>
+                            </div>
+                        </div>
+                        <div class="p-8 flex flex-col flex-1">
+                            <h3 class="text-xl font-bold text-brand mb-3 group-hover:text-brand-warm transition-colors">?덈줈???몄뿰???쒖옉</h3>
+                            <p class="text-brand/60 text-sm leading-relaxed mb-6 flex-1">泥섏쓬 ?ㅼ뀲?섏슂? 諛섍????몄궗瑜??섎닠蹂댁꽭??</p>
+                            <div class="flex items-center justify-between pt-6 border-t border-brand/5 mt-auto">
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 rounded-full border-2 border-white bg-brand-cream flex items-center justify-center text-[10px]">??/div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-white bg-brand-cream flex items-center justify-center text-[10px]">?몝</div>
+                                </div>
+                                <span class="text-xs font-bold text-brand/30">諛섍????몄궗??/span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="text-center mt-16">
+                <a href="community.html"
+                    class="inline-flex items-center gap-3 bg-brand text-white px-10 py-5 rounded-full font-bold hover:bg-brand-light transition-all shadow-lg hover:shadow-xl group">
+                    ??留롮? 而ㅻ??덊떚 ?댁빞湲?蹂닿린 <i class="fas fa-arrow-right group-hover:ml-2 transition-all"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 sm:py-28 bg-white fade-up">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+            <div
+                class="bg-gradient-to-br from-brand to-brand-light rounded-[2rem] p-10 sm:p-16 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2">
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 w-48 h-48 bg-brand-warm/10 rounded-full translate-y-1/2 -translate-x-1/2">
+                </div>
+
+                <div class="relative">
+                    <h2 class="text-2xl sm:text-4xl font-bold text-white mb-4 leading-tight">
+                        吏湲?媛??媛源뚯슫<br>?덉떖 ?λ??앹옣??李얠븘蹂댁꽭??
+                    </h2>
+                    <p class="text-white/60 mb-8 font-serif">湲됲븯吏 ?딆븘??愿쒖갖?꾩슂. 誘몃━ ?뚯븘?먮㈃ 留덉쓬???명빐吏묐땲??</p>
+
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                        <a href="search.html"
+                            class="bg-white text-brand hover:bg-brand-cream px-8 py-4 rounded-2xl font-bold transition-all shadow-lg inline-flex items-center justify-center gap-2">
+                            <i class="fas fa-search"></i> ?λ??앹옣 李얘린
+                        </a>
+                        <a href="tel:010-2292-1918"
+                            class="bg-brand-warm hover:bg-brand-warmDark text-white px-8 py-4 rounded-2xl font-bold transition-all shadow-lg inline-flex items-center justify-center gap-2">
+                            <i class="fas fa-phone-alt"></i> 010-2292-1918
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-cream border-t border-brand/5 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+                <div class="col-span-2 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <img src="./images/onsil_logo_tr.png" width="32" height="32" class="w-8 h-8 object-contain" alt="The ?⑥떎 濡쒓퀬">
+                        <span class="font-bold text-lg text-brand">The ?⑥떎</span>
+                    </div>
+                    <p class="text-sm text-brand/40 mb-4 leading-relaxed max-w-sm">
+                        諛섎젮?숇Ъ ?λ??앹옣 鍮꾧탳遺???덉빟源뚯?.<br>?대젮??寃곗젙??湲몄뿉 The ?⑥떎???④퍡?⑸땲??
+                    </p>
+                    <p class="text-xs text-brand/30">The ?⑥떎 | ???議곗쁺??| 臾몄쓽 010-2292-1918<br>?ъ뾽?먮벑濡앸쾲??: 181-18-02826<br>二쇱냼 : 遺泥쒖떆 ?쇱옉濡?280踰덇만 53-9 ?됱슦?쇳뤃由ъ? 502??/p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-brand mb-4">?쒕퉬??/h3>
+                    <ul class="space-y-3 text-sm text-brand/50">
+                        <li><a href="search.html" class="hover:text-brand transition-colors">?λ??앹옣 李얘린</a></li>
+                        <li><a href="guide.html" class="hover:text-brand transition-colors">?λ? 媛?대뱶</a></li>
+                        <li><a href="memory.html" class="hover:text-brand transition-colors">異붿뼲 媛?대뱶</a></li>
+                        <li><a href="community.html" class="hover:text-brand transition-colors">而ㅻ??덊떚</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-brand mb-4">怨좉컼吏??/h3>
+                    <ul class="space-y-3 text-sm text-brand/50">
+                        <li><a href="contact.html" class="hover:text-brand transition-colors">臾몄쓽?섍린</a></li>
+                        <li><a href="partnership.html"
+                                class="hover:text-brand transition-colors font-bold text-brand-warm">?쒗쑕臾몄쓽</a></li>
+                        <li><a href="terms.html" class="hover:text-brand transition-colors">?댁슜?쎄?</a></li>
+                        <li><a href="privacy.html" class="hover:text-brand transition-colors">媛쒖씤?뺣낫泥섎━諛⑹묠</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="border-t border-brand/5 mt-10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-brand/30">&copy; 2026 The ?⑥떎. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-9 h-9 bg-brand/5 rounded-full flex items-center justify-center text-brand/30 hover:text-brand hover:bg-brand/10 transition-all">
+                        <i class="fab fa-instagram text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 bg-brand/5 rounded-full flex items-center justify-center text-brand/30 hover:text-brand hover:bg-brand/10 transition-all">
+                        <i class="fab fa-youtube text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 bg-brand/5 rounded-full flex items-center justify-center text-brand/30 hover:text-brand hover:bg-brand/10 transition-all">
+                        <i class="fas fa-comment text-sm"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Bar -->
+    <div id="floating-action-bar" class="floating-bar fixed bottom-0 left-0 right-0 z-50 p-4 sm:p-6 safe-area-bottom">
+        <div class="max-w-xl mx-auto flex flex-col sm:flex-row gap-3">
+            <a href="guide.html"
+                class="flex-1 bg-white hover:bg-brand-cream text-brand py-4 px-6 rounded-2xl font-bold flex items-center justify-between group transition-all shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 bg-brand-sage/10 rounded-xl flex items-center justify-center text-brand-sage group-hover:bg-brand-sage group-hover:text-white transition-all">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <span>?λ?瑜?以鍮꾪븯怨?怨꾩떊媛??</span>
+                </div>
+                <i class="fas fa-chevron-right text-brand/20 group-hover:text-brand-sage transition-colors"></i>
+            </a>
+            <a href="search.html"
+                class="flex-1 bg-brand-warm hover:bg-brand-warmDark text-white py-4 px-6 rounded-2xl font-bold flex items-center justify-between group transition-all shadow-lg shadow-brand-warm/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center text-white">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <span>吏湲??꾩씠媛 臾댁?媛쒕떎由щ? 嫄대꽌?섏슂?</span>
+                </div>
+                <i class="fas fa-chevron-right text-white/50 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Floating Buttons (Mobile/Adjusted) -->
+    <div class="fixed bottom-32 sm:bottom-40 right-6 z-40 flex flex-col gap-3">
+        <a href="tel:010-2292-1918"
+            class="lg:hidden w-14 h-14 bg-brand text-white rounded-full shadow-xl shadow-brand/30 flex items-center justify-center hover:scale-110 transition-transform">
+            <i class="fas fa-phone-alt text-lg"></i>
+        </a>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile Nav
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            const panel = document.getElementById('mobile-nav-panel');
+            if (nav.classList.contains('hidden')) {
+                nav.classList.remove('hidden');
+                requestAnimationFrame(() => panel.classList.add('mobile-nav-open'));
+                document.body.style.overflow = 'hidden';
+            } else {
+                panel.classList.remove('mobile-nav-open');
+                document.body.style.overflow = '';
+                setTimeout(() => nav.classList.add('hidden'), 300);
+            }
+        }
+
+        // Header scroll effect
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('bg-white/95', 'backdrop-blur-lg', 'shadow-sm', 'border-b', 'border-brand/5');
+            } else {
+                header.classList.remove('bg-white/95', 'backdrop-blur-lg', 'shadow-sm', 'border-b', 'border-brand/5');
+            }
+        });
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    </script>
+
+    <!-- Supabase Auth -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Global Error Handler
+        window.onerror = function (msg, url, line, col, error) {
+            console.error("JS Error:", msg);
+            return false;
+        };
+
+        // Use Global Auth Methods if needed for landing page specific logic
+        window.addEventListener('load', () => {
+            if (window.Auth && window.Auth.updateHeaderUI) {
+                window.Auth.updateHeaderUI();
+            }
+        });
+    </script>
+    <script>
+        // Floating Bar Toggle
+        const floatingBar = document.getElementById('floating-action-bar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                floatingBar.classList.add('active');
+            } else {
+                floatingBar.classList.remove('active');
+            }
+        });
+
+        if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .catch(err => console.log('SW registration skipped or failed:', err));
+            });
+        } else if (window.location.protocol === 'file:') {
+            console.warn('Onsil: PWA features (Service Worker) are disabled on file:// protocol for security reasons.');
+        }
+    </script>
+</body>
+
+</html>

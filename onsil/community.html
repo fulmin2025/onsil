@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ïª§Î??àÌã∞ - The ?®Ïã§</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#2C3E50',
+                            light: '#34495E',
+                            cream: '#F8F6F3',
+                            warm: '#D4A574',
+                            warmDark: '#B8894E',
+                            sage: '#87A08B'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        body {
+            background-color: #F8F6F3;
+        }
+
+        .category-tab.active {
+            background-color: #2C3E50;
+            color: white;
+            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2);
+        }
+
+        .post-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .comment-section {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+        }
+
+        .comment-section.active {
+            max-height: 1000px;
+            transition: max-height 1s ease-in-out;
+        }
+
+        .mobile-nav-open {
+            transform: translateX(0) !important;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Modal animation */
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="font-sans text-brand antialiased">
+    <!-- Header -->
+    <header id="main-header" class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-brand/5 transition-all outline-none">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-2 group flex-shrink-0">
+                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="The ?®Ïã§ Î°úÍ≥†">
+                <span class="font-bold text-lg text-brand tracking-tight">The ?®Ïã§</span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden lg:flex items-center gap-1">
+                <a href="search.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">?•Î??ùÏû• Ï∞æÍ∏∞</a>
+                <a href="guide.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">?¥Î≥Ñ Í∞Ä?¥Îìú</a>
+                <a href="self-diagnosis.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">Í±¥Í∞ï?êÍ?ÏßÑÎã®</a>
+                <a href="memory.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">Ï∂îÏñµ Í∞Ä?¥Îìú</a>
+                <a href="community.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg transition-all">Ïª§Î??àÌã∞</a>
+            </nav>
+
+            <!-- Desktop Actions -->
+            <div class="hidden lg:flex items-center gap-2">
+                <div id="auth-container"></div>
+                <a href="search.html?quote=true" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-calculator"></i> Í≤¨Ï†Å
+                </a>
+                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?àÏïΩ?Ä Î°úÍ∑∏?????¥Ïö© Í∞Ä?•Ìï©?àÎã§.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-calendar-check text-sm"></i> ?àÏïΩ
+                </button>
+                <a href="tel:010-2292-1918" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2">
+                    <i class="fas fa-phone-alt text-xs"></i> 010-2292-1918
+                </a>
+            </div>
+
+            <!-- Mobile Header Actions -->
+            <div class="flex lg:hidden items-center gap-2">
+                <a href="tel:010-2292-1918" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand/5 text-brand hover:bg-brand/10 transition-colors" title="?ÑÌôî ?ÅÎã¥">
+                    <i class="fas fa-phone-alt text-sm"></i>
+                </a>
+                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?àÏïΩ?Ä Î°úÍ∑∏?????¥Ïö© Í∞Ä?•Ìï©?àÎã§.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand-sage/10 text-brand-sage hover:bg-brand-sage/20 transition-colors" title="?àÏïΩ?òÍ∏∞">
+                    <i class="fas fa-calendar-check text-sm"></i>
+                </button>
+                <button id="mobile-menu-btn" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors" onclick="toggleMobileNav()">
+                    <i class="fas fa-bars text-brand text-xl" id="menu-icon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Sidebar Navigation -->
+            <aside class="w-full md:w-64 space-y-6">
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-brand/5">
+                    <h2 class="font-bold text-lg mb-6">Ïª§Î??àÌã∞</h2>
+                    <nav class="space-y-2">
+                        <button onclick="switchCategory('welcome')" class="category-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all active" id="tab-welcome">
+                            <i class="fas fa-hand-sparkles w-5"></i> Í∞Ä?ÖÏù∏??
+                        </button>
+                        <button onclick="switchCategory('pet')" class="category-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all" id="tab-pet">
+                            <i class="fas fa-paw w-5"></i> ?ÑÏù¥?êÎûë
+                        </button>
+                        <button onclick="switchCategory('daily')" class="category-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all" id="tab-daily">
+                            <i class="fas fa-heart w-5"></i> ?ºÏÉÅÍ≥µÏú†
+                        </button>
+                    </nav>
+                </div>
+
+                <div id="write-button-container" class="sticky top-24">
+                    <button onclick="openWriteModal()" class="w-full bg-brand hover:bg-brand-light text-white py-4 rounded-2xl font-bold shadow-lg shadow-brand/10 flex items-center justify-center gap-2 transition-all transform active:scale-[0.98]">
+                        <i class="fas fa-edit"></i> Í∏Ä?∞Í∏∞
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <div class="flex-1">
+                <!-- Board Header -->
+                <div class="mb-8 flex justify-between items-end">
+                    <div>
+                        <h1 id="board-title" class="text-3xl font-bold mb-2">Í∞Ä?ÖÏù∏??/h1>
+                        <p id="board-desc" class="text-brand/40">The ?®Ïã§ Ïª§Î??àÌã∞???§Ïã† Í≤ÉÏùÑ ?òÏòÅ?©Îãà?? ?∏ÏÇ¨Î•??òÎà†Î≥¥ÏÑ∏??</p>
+                    </div>
+                </div>
+
+                <!-- Board Content -->
+                <div id="board-content" class="grid gap-6">
+                    <!-- Posts will be injected here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Write Modal -->
+    <div id="write-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-brand/40 backdrop-blur-sm" onclick="closeWriteModal()"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+                <div class="p-6 border-b border-brand/5 flex justify-between items-center bg-brand-cream/50">
+                    <h2 class="font-bold text-lg">??Í∏Ä ?ëÏÑ±</h2>
+                    <button onclick="closeWriteModal()" class="text-brand/40 hover:text-brand transition-colors">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="p-8 overflow-y-auto space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-brand/60 mb-2">Ïπ¥ÌÖåÍ≥†Î¶¨</label>
+                        <select id="post-category" class="w-full px-4 py-3 rounded-xl border border-brand/10 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all appearance-none bg-white">
+                            <option value="welcome">Í∞Ä?ÖÏù∏??/option>
+                            <option value="pet">?ÑÏù¥?êÎûë</option>
+                            <option value="daily">?ºÏÉÅÍ≥µÏú†</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-brand/60 mb-2">?úÎ™©</label>
+                        <input type="text" id="post-title" class="w-full px-4 py-3 rounded-xl border border-brand/10 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all" placeholder="?úÎ™©???ÖÎ†•?¥Ï£º?∏Ïöî.">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-brand/60 mb-2">?¥Ïö©</label>
+                        <textarea id="post-content" rows="6" class="w-full px-4 py-3 rounded-xl border border-brand/10 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all resize-none" placeholder="?¥Ïö©???ÖÎ†•?¥Ï£º?∏Ïöî."></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-brand/60 mb-2">?¨ÏßÑ Ï≤®Î?</label>
+                        <div class="flex items-center gap-4">
+                            <label class="cursor-pointer bg-brand-cream hover:bg-brand/5 px-6 py-4 rounded-2xl border-2 border-dashed border-brand/10 flex flex-col items-center gap-2 transition-all">
+                                <i class="fas fa-camera text-brand/40 text-xl"></i>
+                                <span class="text-xs font-medium text-brand/40">?¨ÏßÑ Ï∂îÍ?</span>
+                                <input type="file" id="post-image" class="hidden" accept="image/*" onchange="handleImagePreview(event)">
+                            </label>
+                            <div id="image-preview" class="relative group hidden">
+                                <img src="" class="w-24 h-24 object-cover rounded-2xl border border-brand/10 shadow-sm">
+                                <button onclick="removeImage()" class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-110">
+                                    <i class="fas fa-times text-[10px]"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-brand-cream/50 border-t border-brand/5 flex gap-3">
+                    <button onclick="closeWriteModal()" class="flex-1 py-4 text-brand font-bold hover:bg-brand/5 rounded-2xl transition-all">Ï∑®ÏÜå</button>
+                    <button onclick="submitPost()" class="flex-[2] py-4 bg-brand text-white font-bold rounded-2xl shadow-lg hover:bg-brand-light transition-all transform active:scale-[0.98]">?ëÏÑ± ?ÑÎ£å</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
+            id="mobile-nav-panel">
+            <div class="p-6 h-full flex flex-col pt-safe">
+                <div class="flex justify-between items-center mb-8">
+                    <span class="font-bold text-lg text-brand">Î©îÎâ¥</span>
+                    <button onclick="toggleMobileNav()"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+                <nav class="space-y-1 flex-1">
+                    <a href="search.html?quote=true"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all bg-brand-cream text-brand font-bold mb-4 hover:shadow-md">
+                        <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
+                        <span>Î∞îÎ°ú Í≤¨Ï†ÅÎ∞õÍ∏∞</span>
+                    </a>
+                    <a href="search.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-search w-5 text-center"></i>
+                        <span>?•Î??ùÏû• Ï∞æÍ∏∞</span>
+                    </a>
+                    <a href="guide.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-book-open w-5 text-center"></i>
+                        <span>?¥Î≥Ñ Í∞Ä?¥Îìú</span>
+                    </a>
+                    <a href="self-diagnosis.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-stethoscope w-5 text-center"></i>
+                        <span>Í±¥Í∞ï?êÍ?ÏßÑÎã®</span>
+                    </a>
+                    <a href="memory.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-heart w-5 text-center"></i>
+                        <span>Ï∂îÏñµ Í∞Ä?¥Îìú</span>
+                    </a>
+                    <a href="community.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-brand/5 text-brand font-bold transition-colors">
+                        <i class="fas fa-comments w-5 text-center"></i>
+                        <span>Ïª§Î??àÌã∞</span>
+                    </a>
+                </nav>
+                <!-- Mobile Bottom Actions -->
+                <div class="pt-6 border-t border-brand/5 space-y-3">
+                    <button
+                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?àÏïΩ?Ä Î°úÍ∑∏?????¥Ïö© Í∞Ä?•Ìï©?àÎã§.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                        class="w-full bg-brand-sage text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-sage/90 transition-colors">
+                        <i class="fas fa-calendar-check text-sm"></i> ?àÏïΩ?òÍ∏∞
+                    </button>
+                    <a href="tel:010-2292-1918"
+                        class="w-full bg-brand-warm text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-warmDark transition-colors">
+                        <i class="fas fa-phone-alt text-sm"></i> 010-2292-1918 ?ÅÎã¥???∞Í≤∞
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/pwa.js"></script>
+    <script>
+        // State Management
+        let currentCategory = 'welcome';
+        let currentUser = null;
+        let posts = [];
+        let uploadedImageBase64 = null;
+        let editPostId = null; // Track if we're editing an existing post
+
+        const ADMIN_EMAIL = 'admin@onsil.com';
+
+        const categoryData = {
+            welcome: { title: 'Í∞Ä?ÖÏù∏??, desc: '?®Ïã§ Ïª§Î??àÌã∞???§Ïã† Í≤ÉÏùÑ ?òÏòÅ?©Îãà?? ?∏ÏÇ¨Î•??òÎà†Î≥¥ÏÑ∏??' },
+            pet: { title: '?ÑÏù¥?êÎûë', desc: '?∞Î¶¨ ?ÑÏù¥??Í∞Ä???àÏÅòÍ≥??âÎ≥µ???úÍ∞Ñ??Í≥µÏú†?¥Ï£º?∏Ïöî.' },
+            daily: { title: '?ºÏÉÅÍ≥µÏú†', desc: '?òÍ≥† ?∂Ï? ?¥ÏïºÍ∏? ?¨ÏÜå???ºÏÉÅ?§ÏùÑ ?êÏú†Î°?≤å ?†Îã•?†Îã• ?òÎà†??' }
+        };
+
+        // Initialize
+        window.onload = async () => {
+            loadPosts();
+            renderPosts();
+            
+            // Check auth state
+            if (window.Auth) {
+                try {
+                    currentUser = await window.Auth.getCurrentUser();
+                    updateAuthUI();
+                } catch (e) { console.error(e); }
+            }
+        };
+
+        function updateAuthUI() {
+            const authContainer = document.getElementById('auth-container');
+            const writeBtn = document.getElementById('write-button-container');
+
+            if (currentUser) {
+                const name = currentUser.email.split('@')[0];
+                authContainer.innerHTML = `
+                    <div class="flex items-center gap-3 mr-2">
+                        <div class="w-8 h-8 rounded-full bg-brand/5 flex items-center justify-center text-xs font-bold text-brand">
+                            ${name[0].toUpperCase()}
+                        </div>
+                        <span class="text-sm font-bold text-brand">${name}??/span>
+                    </div>
+                `;
+                // Members can write
+                if (writeBtn) writeBtn.classList.remove('hidden');
+            } else {
+                authContainer.innerHTML = `
+                    <a href="login.html" class="px-4 py-2.5 text-sm font-bold text-brand/60 hover:text-brand transition-all">Î°úÍ∑∏??/a>
+                    <a href="signup.html" class="bg-brand text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-light transition-all">?åÏõêÍ∞Ä??/a>
+                `;
+                // Hide write button for guests (optional, or show alert on click)
+                // if (writeBtn) writeBtn.classList.add('hidden');
+            }
+        }
+
+        // Category Switching
+        function switchCategory(cat) {
+            currentCategory = cat;
+            
+            // Update UI
+            document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(`tab-${cat}`).classList.add('active');
+
+            document.getElementById('board-title').innerText = categoryData[cat].title;
+            document.getElementById('board-desc').innerText = categoryData[cat].desc;
+
+            // Update modal default select
+            document.getElementById('post-category').value = cat;
+
+            renderPosts();
+        }
+
+        // Data Management (LocalStorage)
+        function loadPosts() {
+            const savedPosts = localStorage.getItem('onsil_community_posts');
+            if (savedPosts) {
+                posts = JSON.parse(savedPosts).map(p => ({
+                    ...p,
+                    authorEmail: p.authorEmail || (p.author + '@test.com'), // Migration for old posts
+                    comments: (p.comments || []).map(c => ({
+                        ...c,
+                        authorEmail: c.authorEmail || (c.author + '@test.com')
+                    }))
+                }));
+            } else {
+                // Mock Data
+                posts = [
+                    { id: 1, cat: 'welcome', title: 'Ï≤òÏùå Í∞Ä?ÖÌñà?µÎãà??', content: '?àÎÖï?òÏÑ∏?? 15????Í∞ïÏïÑÏßÄ Ï¥àÏΩî?Ä ?®Íªò?òÍ≥† ?àÏäµ?àÎã§. Ï¢ãÏ? ?ïÎ≥¥ ÎßéÏù¥ ?ªÏñ¥Í∞ÄÍ≥??∂Ïñ¥??', author: 'Ï¥àÏΩîÎßàÎãò', authorEmail: 'choco@test.com', date: '2026-03-30', image: null, comments: [] },
+                    { id: 3, cat: 'pet', title: '?∞Î¶¨ Î≠âÏπò ÎØ∏Ïö©?àÏñ¥??, content: '?àÎ¨¥ Í∑Ä?ΩÏ£†? Î≥µÏä¨Î≥µÏä¨?àÎçò ?∏ÏùÑ ÍπéÏúº???ÑÍ∏∞ Í∞ôÎÑ§??', author: 'Î≠âÏπò?∏Îãà', authorEmail: 'munchi@test.com', date: '2026-03-29', image: 'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80&w=800', comments: [{id: 101, author: 'Î™ΩÏù¥?ÑÎßà', authorEmail: 'mong@test.com', content: '?¥Î®∏ ?àÎ¨¥ ?∏Ìòï Í∞ôÏïÑ??', date: '2026-03-30'}] },
+                    { id: 4, cat: 'daily', title: 'Í∞ïÏïÑÏßÄ Íª?Ï∂îÏ≤ú?¥Ï£º?∏Ïöî', content: '?±Îî±?òÏ? ?äÏúºÎ©¥ÏÑú ?§Îûò Î®πÎäî Íª??àÏùÑÍπåÏöî?', author: '?ïÎåï?¨Î≤Ñ', authorEmail: 'dang@test.com', date: '2026-03-28', image: null, comments: [] }
+                ];
+                savePosts();
+            }
+        }
+
+        function savePosts() {
+            localStorage.setItem('onsil_community_posts', JSON.stringify(posts));
+        }
+
+        function renderPosts() {
+            const container = document.getElementById('board-content');
+            const filteredPosts = posts.filter(p => p.cat === currentCategory).sort((a,b) => b.id - a.id);
+            
+            if (filteredPosts.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white py-20 rounded-3xl border border-brand/5 text-center">
+                        <i class="fas fa-ghost text-brand/10 text-5xl mb-4"></i>
+                        <p class="text-brand/40 font-medium">?ÑÏßÅ Í≤åÏãúÍ∏Ä???ÜÏäµ?àÎã§.<br>Ï≤?Î≤àÏß∏ ?¥ÏïºÍ∏∞Î? ?®Í≤®Î≥¥ÏÑ∏??</p>
+                    </div>
+                `;
+                return;
+            }
+
+            if (currentCategory === 'pet' || currentCategory === 'daily') {
+                // Photo-heavy grid
+                container.className = "grid sm:grid-cols-2 gap-6";
+                container.innerHTML = filteredPosts.map(p => {
+                    const isOwner = currentUser && currentUser.email === p.authorEmail;
+                    const isAdmin = currentUser && currentUser.email === ADMIN_EMAIL;
+                    
+                    return `
+                    <div class="post-card bg-white rounded-3xl shadow-sm border border-brand/5 overflow-hidden flex flex-col relative">
+                        <!-- Post Management (Owner/Admin only) -->
+                        <div class="absolute top-4 right-4 flex gap-2 z-10">
+                            ${isOwner ? `
+                                <button onclick="editPost(${p.id})" class="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm text-brand/40 hover:text-brand transition-colors shadow-sm flex items-center justify-center">
+                                    <i class="fas fa-pencil-alt text-[10px]"></i>
+                                </button>
+                            ` : ''}
+                            ${(isOwner || isAdmin) ? `
+                                <button onclick="deletePost(${p.id})" class="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm text-red-400 hover:text-red-600 transition-colors shadow-sm flex items-center justify-center">
+                                    <i class="fas fa-trash-alt text-[10px]"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                        ${p.image ? `
+                            <div class="h-48 overflow-hidden bg-brand-cream">
+                                <img src="${p.image}" class="w-full h-full object-cover">
+                            </div>
+                        ` : ''}
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h3 class="font-bold text-lg mb-2 line-clamp-1">${p.title}</h3>
+                            <p class="text-sm text-brand/60 leading-relaxed mb-4 line-clamp-2 flex-1">${p.content}</p>
+                            <div class="flex items-center justify-between pt-4 border-t border-brand/5 mb-4">
+                                <span class="text-xs font-bold text-brand/40">${p.author}</span>
+                                <span class="text-[10px] text-brand/20">${p.date}</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <button onclick="toggleComments(${p.id})" class="flex items-center gap-1.5 text-xs font-bold text-brand/60 hover:text-brand transition-colors">
+                                    <i class="far fa-comment-dots text-sm"></i>
+                                    ?ìÍ? ${p.comments.length}
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Comment Section for Cards -->
+                        <div id="comments-${p.id}" class="comment-section bg-brand-cream/30 border-t border-brand/5">
+                            <div class="p-6 space-y-4">
+                                <div class="space-y-3" id="comment-list-${p.id}">
+                                    ${renderCommentList(p.comments, p.id)}
+                                </div>
+                                <div class="flex gap-2 mt-4">
+                                    <input type="text" id="comment-input-${p.id}" placeholder="?ìÍ????ÖÎ†•?òÏÑ∏??.." class="flex-1 px-4 py-2 rounded-xl border border-brand/10 text-xs focus:ring-2 focus:ring-brand outline-none transition-all">
+                                    <button onclick="submitComment(${p.id})" class="bg-brand text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-brand-light transition-all">?±Î°ù</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `}).join('');
+            } else {
+                // Standard list for Welcome
+                container.className = "grid gap-4";
+                container.innerHTML = filteredPosts.map(p => {
+                    const isOwner = currentUser && currentUser.email === p.authorEmail;
+                    const isAdmin = currentUser && currentUser.email === ADMIN_EMAIL;
+
+                    return `
+                    <div class="bg-white rounded-3xl shadow-sm border border-brand/5 overflow-hidden flex flex-col hover:bg-white/50 transition-all cursor-pointer group">
+                        <div class="p-6 flex justify-between items-center relative" onclick="toggleComments(${p.id})">
+                            <div class="flex-1">
+                                <h3 class="font-bold mb-1">${p.title}</h3>
+                                <p class="text-sm text-brand/40 line-clamp-1">${p.content}</p>
+                            </div>
+                            <!-- Small Management in List UI -->
+                            <div class="flex items-center gap-4">
+                                <div class="text-right">
+                                    <p class="text-xs font-bold text-brand/60">${p.author}</p>
+                                    <p class="text-[10px] text-brand/20">${p.date}</p>
+                                </div>
+                                <div class="flex flex-col gap-1 items-center">
+                                    <div class="w-8 h-8 rounded-full bg-brand/5 flex flex-col items-center justify-center text-[10px] font-bold text-brand/40">
+                                        <i class="far fa-comment"></i>
+                                        ${p.comments.length}
+                                    </div>
+                                    <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        ${isOwner ? `<i onclick="event.stopPropagation(); editPost(${p.id})" class="fas fa-edit text-brand/30 hover:text-brand text-[10px]"></i>` : ''}
+                                        ${(isOwner || isAdmin) ? `<i onclick="event.stopPropagation(); deletePost(${p.id})" class="fas fa-trash-alt text-red-300 hover:text-red-500 text-[10px]"></i>` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Comment Section for List -->
+                        <div id="comments-${p.id}" class="comment-section bg-brand-cream/30 border-t border-brand/5">
+                            <div class="p-6 space-y-4">
+                                <div class="space-y-3" id="comment-list-${p.id}">
+                                    ${renderCommentList(p.comments, p.id)}
+                                </div>
+                                <div class="flex gap-2">
+                                    <input type="text" id="comment-input-${p.id}" placeholder="?ìÍ????ÖÎ†•?òÏÑ∏??.." class="flex-1 px-4 py-2 rounded-xl border border-brand/10 text-xs focus:ring-2 focus:ring-brand outline-none transition-all">
+                                    <button onclick="submitComment(${p.id})" class="bg-brand text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-brand-light transition-all">?±Î°ù</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `}).join('');
+            }
+        }
+
+        // Modal Logic
+        function openWriteModal() {
+            if (!currentUser) {
+                alert('Î°úÍ∑∏?????¥Ïö© Í∞Ä?•Ìï©?àÎã§.');
+                location.href = 'login.html';
+                return;
+            }
+            document.getElementById('write-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeWriteModal() {
+            document.getElementById('write-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+            // Reset form
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-content').value = '';
+            document.querySelector('#write-modal h2').innerText = '??Í∏Ä ?ëÏÑ±';
+            editPostId = null;
+            removeImage();
+        }
+
+        function handleImagePreview(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                uploadedImageBase64 = event.target.result;
+                const preview = document.getElementById('image-preview');
+                preview.querySelector('img').src = uploadedImageBase64;
+                preview.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeImage() {
+            uploadedImageBase64 = null;
+            document.getElementById('post-image').value = '';
+            document.getElementById('image-preview').classList.add('hidden');
+        }
+
+        function submitPost() {
+            const title = document.getElementById('post-title').value.trim();
+            const content = document.getElementById('post-content').value.trim();
+            const category = document.getElementById('post-category').value;
+
+            if (!title) { alert('?úÎ™©???ÖÎ†•?¥Ï£º?∏Ïöî.'); return; }
+            if (!content) { alert('?¥Ïö©???ÖÎ†•?¥Ï£º?∏Ïöî.'); return; }
+
+            if (editPostId) {
+                // UPDATE
+                const postIndex = posts.findIndex(p => p.id === editPostId);
+                if (postIndex !== -1) {
+                    posts[postIndex].title = title;
+                    posts[postIndex].content = content;
+                    posts[postIndex].cat = category;
+                    if (uploadedImageBase64) posts[postIndex].image = uploadedImageBase64;
+                }
+                alert('?òÏ†ï???ÑÎ£å?òÏóà?µÎãà??');
+            } else {
+                // NEW
+                const newPost = {
+                    id: Date.now(),
+                    cat: category,
+                    title: title,
+                    content: content,
+                    author: currentUser.name || currentUser.email.split('@')[0],
+                    authorEmail: currentUser.email,
+                    date: new Date().toISOString().split('T')[0],
+                    image: uploadedImageBase64,
+                    comments: []
+                };
+                posts.unshift(newPost);
+                alert('?ëÏÑ±???ÑÎ£å?òÏóà?µÎãà??');
+            }
+
+            savePosts();
+            closeWriteModal();
+            renderPosts();
+        }
+
+        // Comment Logic
+        function renderCommentList(comments, postId) {
+            if (!comments || comments.length === 0) return `<p class="text-[10px] text-brand/30 text-center py-2">Í∞Ä??Î®ºÏ? ?ìÍ????®Í≤®Î≥¥ÏÑ∏??</p>`;
+            return comments.map(c => {
+                const isCommentOwner = currentUser && currentUser.email === c.authorEmail;
+                const isAdmin = currentUser && currentUser.email === ADMIN_EMAIL;
+
+                return `
+                <div class="flex justify-between items-start gap-3 bg-white/50 p-3 rounded-2xl border border-brand/5 animate-slide-up relative group">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-[11px] font-bold text-brand">${c.author}</span>
+                            <span class="text-[9px] text-brand/20">${c.date}</span>
+                        </div>
+                        <p class="text-xs text-brand/70 leading-relaxed">${c.content}</p>
+                    </div>
+                    ${(isCommentOwner || isAdmin) ? `
+                        <button onclick="deleteComment(${postId}, ${c.id})" class="text-red-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
+                            <i class="fas fa-trash-alt text-[9px]"></i>
+                        </button>
+                    ` : ''}
+                </div>
+            `}).join('');
+        }
+
+        function toggleComments(postId) {
+            const section = document.getElementById(`comments-${postId}`);
+            section.classList.toggle('active');
+        }
+
+        function submitComment(postId) {
+            if (!currentUser) {
+                alert('Î°úÍ∑∏?????ìÍ????ëÏÑ±?????àÏäµ?àÎã§.');
+                location.href = 'login.html';
+                return;
+            }
+
+            const input = document.getElementById(`comment-input-${postId}`);
+            const content = input.value.trim();
+
+            if (!content) {
+                alert('?ìÍ? ?¥Ïö©???ÖÎ†•?¥Ï£º?∏Ïöî.');
+                return;
+            }
+
+            const postIndex = posts.findIndex(p => p.id === postId);
+            if (postIndex === -1) return;
+
+            const newComment = {
+                id: Date.now(),
+                author: currentUser.name || currentUser.email.split('@')[0],
+                authorEmail: currentUser.email,
+                content: content,
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            posts[postIndex].comments.push(newComment);
+            savePosts();
+            
+            renderPosts();
+            input.value = '';
+        }
+
+        // Management Logic
+        function deletePost(postId) {
+            if (!confirm('?ïÎßê ??Í≤åÏãúÍ∏Ä????†ú?òÏãúÍ≤†Ïäµ?àÍπå?')) return;
+            posts = posts.filter(p => p.id !== postId);
+            savePosts();
+            renderPosts();
+        }
+
+        function editPost(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+
+            editPostId = postId;
+            document.getElementById('post-title').value = post.title;
+            document.getElementById('post-content').value = post.content;
+            document.getElementById('post-category').value = post.cat;
+            document.querySelector('#write-modal h2').innerText = 'Í≤åÏãúÍ∏Ä ?òÏ†ï';
+            
+            document.getElementById('write-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function deleteComment(postId, commentId) {
+            if (!confirm('?ïÎßê ???ìÍ?????†ú?òÏãúÍ≤†Ïäµ?àÍπå?')) return;
+            const postIndex = posts.findIndex(p => p.id === postId);
+            if (postIndex !== -1) {
+                posts[postIndex].comments = posts[postIndex].comments.filter(c => c.id !== commentId);
+                savePosts();
+                renderPosts();
+            }
+        }
+
+        function formatTime(dateStr) {
+            return dateStr; // Simple for now
+        }
+
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            const panel = document.getElementById('mobile-nav-panel');
+            if (nav.classList.contains('hidden')) {
+                nav.classList.remove('hidden');
+                setTimeout(() => panel.classList.remove('translate-x-full'), 10);
+            } else {
+                panel.classList.add('translate-x-full');
+                setTimeout(() => nav.classList.add('hidden'), 300);
+            }
+        }
+    </script>
+</body>
+
+</html>

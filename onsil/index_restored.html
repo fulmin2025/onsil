@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>?�실(Onsil) | 반려?�물 ?�심 ?��?, 비교부???�약까�?</title>
+    <meta name="description" content="반려?�물 ?��??�장 비교, ?�명??가�? ?�심 ?�증까�?. ?�실???�려??결정???�께?�니??">
+    <meta property="og:title" content="?�실(Onsil) | 반려?�물 ?�심 ?��?">
+    <meta property="og:description" content="?��??�장 비교부???�약까�?, ?�실�??�께?�세??">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#2C3E50">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#2C3E50',
+                            light: '#34495E',
+                            dark: '#1A252F',
+                            cream: '#F8F6F3',
+                            warm: '#D4A574',
+                            warmDark: '#B8894E',
+                            sage: '#87A08B',
+                            mist: '#E8ECE9'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
+                        serif: ['Nanum Myeongjo', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(180deg,
+                    rgba(44, 62, 80, 0.1) 0%,
+                    rgba(44, 62, 80, 0.05) 30%,
+                    rgba(248, 246, 243, 0.6) 70%,
+                    rgba(248, 246, 243, 1) 100%);
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(44, 62, 80, 0.12);
+        }
+
+        .stat-number {
+            background: linear-gradient(135deg, #2C3E50, #D4A574);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mobile-nav-open {
+            transform: translateX(0) !important;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .float-anim {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .process-line {
+            background: linear-gradient(180deg, #D4A574 0%, #87A08B 100%);
+            width: 2px;
+        }
+
+        .compare-badge {
+            background: linear-gradient(135deg, #D4A574, #B8894E);
+        }
+
+        .floating-bar {
+            background: rgba(44, 62, 80, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .floating-bar.active {
+            transform: translateY(0);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 2.25rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .floating-bar {
+                padding: 1rem !important;
+            }
+
+            .floating-bar a {
+                padding: 0.85rem 1rem !important;
+                font-size: 0.875rem !important;
+            }
+
+            .floating-bar i {
+                font-size: 0.9rem !important;
+            }
+
+            .floating-bar .w-10 {
+                width: 2rem !important;
+                height: 2rem !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-brand-cream font-sans text-brand antialiased">
+
+    <!-- Header -->
+    <header id="main-header" class="fixed top-0 z-50 w-full transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
+                    <span class="text-white text-xs font-bold">??/span>
+                </div>
+                <span class="font-bold text-lg text-brand tracking-tight">?�실(Onsil)</span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden lg:flex items-center gap-1">
+                <a href="search.html"
+                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">?��??�장
+                    찾기</a>
+                <a href="guide.html"
+                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">?�별
+                    가?�드</a>
+                <a href="self-diagnosis.html"
+                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">건강?��?진단</a>
+                <a href="memory.html"
+                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">추억
+                    가?�드</a>
+                <a href="community.html"
+                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">보호??                    ?�기</a>
+            </nav>
+
+            <div class="hidden lg:flex items-center gap-3">
+                <div id="auth-container"></div>
+                <a href="search.html?quote=true"
+                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-2">
+                    <i class="fas fa-calculator"></i> 바로 견적받기
+                </a>
+                <button
+                    onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?�약?� 로그?????�용 가?�합?�다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                    class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-2">
+                    <i class="fas fa-calendar-check"></i> ?�약?�기
+                </button>
+                <a href="tel:010-2292-1918"
+                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-brand-warm/20 flex items-center gap-2">
+                    <i class="fas fa-phone-alt text-xs"></i> 010-2292-1918
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn"
+                class="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors"
+                onclick="toggleMobileNav()">
+                <i class="fas fa-bars text-brand text-lg" id="menu-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
+            id="mobile-nav-panel">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <span class="font-bold text-lg text-brand">메뉴</span>
+                    <button onclick="toggleMobileNav()"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+                <nav class="space-y-1">
+                    <a href="search.html?quote=true"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors bg-brand-cream/50">
+                        <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
+                        <span class="font-bold text-brand">바로 견적받기</span>
+                    </a>
+                    <a href="search.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-search text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">?��??�장 찾기</span>
+                    </a>
+                    <a href="guide.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-book-open text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">?�별 가?�드</span>
+                    </a>
+                    <a href="self-diagnosis.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-stethoscope text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">건강?��?진단</span>
+                    </a>
+                    <a href="memory.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-heart text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">추억 가?�드</span>
+                    </a>
+                    <a href="community.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-comments text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">보호???�기</span>
+                    </a>
+                    <a href="contact.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-envelope text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">문의?�기</span>
+                    </a>
+                </nav>
+                <div class="mt-8 pt-6 border-t">
+                    <button
+                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?�약?� 로그?????�용 가?�합?�다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                        class="w-full flex items-center justify-center gap-2 bg-brand-sage text-white py-3.5 rounded-xl font-bold shadow-lg mb-3 hover:bg-[#87A08B]/90 transition-colors">
+                        <i class="fas fa-calendar-check"></i> ?�약?�기
+                    </button>
+                    <a href="tel:010-2292-1918"
+                        class="flex items-center justify-center gap-2 bg-brand-warm text-white py-3.5 rounded-xl font-bold shadow-lg">
+                        <i class="fas fa-phone-alt"></i> ?�담?�화 010-2292-1918
+                    </a>
+                    <div class="flex gap-2 mt-3">
+                        <a href="login.html"
+                            class="flex-1 text-center py-3 border border-brand/20 rounded-xl text-sm font-medium text-brand hover:bg-brand/5 transition-colors">로그??/a>
+                        <a href="signup.html"
+                            class="flex-1 text-center py-3 bg-brand text-white rounded-xl text-sm font-bold hover:bg-brand-light transition-colors">?�원가??/a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[90vh] sm:min-h-screen flex items-center overflow-hidden pt-16">
+        <div class="absolute inset-0 bg-brand-cream z-0"></div>
+        <img src="./images/hero_dog.jpg"
+            class="absolute inset-0 w-full h-full object-cover opacity-20 sm:opacity-10 mix-blend-multiply z-0"
+            alt="Hero Background" onerror="this.style.display='none';" />
+
+        <!-- Decorative elements -->
+        <div class="absolute top-20 right-10 w-72 h-72 bg-brand-sage/10 rounded-full blur-3xl z-0"></div>
+        <div class="absolute bottom-20 left-10 w-96 h-96 bg-brand-warm/8 rounded-full blur-3xl z-0"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 w-full z-10">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <!-- Text -->
+                <div class="space-y-6 md:space-y-8 fade-up">
+                    <div
+                        class="inline-flex items-center gap-2 bg-brand-sage/15 text-brand-sage px-4 py-2 rounded-full text-sm font-medium">
+                        <span class="w-2 h-2 bg-brand-sage rounded-full animate-pulse"></span>
+                        ?�국 50+ ?�심 ?�증 ?��??�장
+                    </div>
+
+                    <h1 class="text-4xl md:text-5xl lg:text-7xl font-black text-brand leading-[1.1] hero-title">
+                        반려?�물 ?��??�장,<br class="hidden md:block">비교부???�약까�?
+                    </h1>
+                    <p class="text-lg md:text-xl text-brand/60 font-light leading-relaxed max-w-xl">
+                        50??곳의 ?�식 ?�록 ?��??�장???�눈??비교?�고<br class="hidden sm:block">
+                        ?�명??가격으�??�심?�고 ?�약?�세??
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                        <a href="search.html"
+                            class="bg-brand hover:bg-brand-light text-white px-8 py-4 rounded-2xl text-base font-bold transition-all shadow-xl shadow-brand/15 flex items-center justify-center gap-2 group">
+                            ?�심 ?��??�장 찾기
+                            <i class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                        <a href="guide.html"
+                            class="bg-white hover:bg-gray-50 text-brand border border-brand/10 px-8 py-4 rounded-2xl text-base font-bold transition-all flex items-center justify-center gap-2">
+                            <i class="fas fa-book-open text-brand-warm"></i>
+                            ?�별 준�?가?�드
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Visual Card -->
+                <div class="relative fade-up block lg:block mt-8 lg:mt-0 max-w-md mx-auto lg:max-w-none"
+                    style="animation-delay: 0.2s;">
+                    <div
+                        class="relative bg-white rounded-3xl shadow-2xl shadow-brand/8 p-5 sm:p-8 border border-brand/5">
+                        <!-- Mock comparison card -->
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 bg-brand-sage/15 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-balance-scale text-brand-sage"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-brand text-sm">?��??�장 비교</p>
+                                <p class="text-xs text-brand/40">???�치 기반 추천</p>
+                            </div>
+                        </div>
+
+                        <!-- Mock items -->
+                        <div class="space-y-2.5">
+                            <div
+                                class="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-4 bg-brand-cream rounded-2xl border border-brand/5">
+                                <div
+                                    class="w-12 h-12 sm:w-16 sm:h-16 bg-brand-warm/10 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fas fa-building text-brand-warm text-lg sm:text-xl"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="text-[10px] px-1.5 py-0.5 bg-brand-warm/15 text-brand-warm rounded font-bold">?�심?�증</span>
+                                        <p class="font-bold text-brand text-sm truncate">?�포?�스???�양주점</p>
+                                    </div>
+                                    <p class="text-xs text-brand/40 mt-0.5">경기 ?�양�?· 4.8??/p>
+                                </div>
+                                <p class="font-bold text-brand text-sm whitespace-nowrap">25만원~</p>
+                            </div>
+
+                            <div
+                                class="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-4 bg-white rounded-2xl border border-brand/5">
+                                <div
+                                    class="w-12 h-12 sm:w-16 sm:h-16 bg-brand/5 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fas fa-building text-brand/40 text-lg sm:text-xl"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <p class="font-bold text-brand text-sm truncate">21그램 경기광주??/p>
+                                    </div>
+                                    <p class="text-xs text-brand/40 mt-0.5">경기 광주 · 4.9??/p>
+                                </div>
+                                <p class="font-bold text-brand text-sm whitespace-nowrap">25만원~</p>
+                            </div>
+
+                            <div
+                                class="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-4 bg-white rounded-2xl border border-brand/5">
+                                <div
+                                    class="w-12 h-12 sm:w-16 sm:h-16 bg-brand/5 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fas fa-building text-brand/40 text-lg sm:text-xl"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="text-[10px] px-1.5 py-0.5 bg-brand-sage/15 text-brand-sage rounded font-bold">?�휴</span>
+                                        <p class="font-bold text-brand text-sm truncate">굿바?�펫</p>
+                                    </div>
+                                    <p class="text-xs text-brand/40 mt-0.5">충북 ?�천 · 4.7??/p>
+                                </div>
+                                <p class="font-bold text-brand text-sm whitespace-nowrap">20만원~</p>
+                            </div>
+                        </div>
+
+                        <a href="search.html"
+                            class="block text-center w-full mt-4 py-3 bg-brand text-white rounded-xl text-sm font-bold hover:bg-brand-light transition-colors">
+                            비교?�기
+                        </a>
+                    </div>
+
+                    <!-- Floating badges -->
+                    <div
+                        class="absolute -top-4 -right-4 bg-white px-4 py-2 rounded-full shadow-lg border border-brand/5 flex items-center gap-2 float-anim">
+                        <i class="fas fa-shield-alt text-brand-sage text-sm"></i>
+                        <span class="text-xs font-bold text-brand">?�심 보장</span>
+                    </div>
+                    <div class="absolute -bottom-3 -left-3 bg-white px-4 py-2 rounded-full shadow-lg border border-brand/5 flex items-center gap-2 float-anim"
+                        style="animation-delay: 1.5s;">
+                        <i class="fas fa-won-sign text-brand-warm text-sm"></i>
+                        <span class="text-xs font-bold text-brand">?�명 가�?/span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="py-12 bg-white border-y border-brand/5 fade-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <p class="stat-number text-3xl sm:text-4xl font-bold">50+</p>
+                    <p class="text-sm text-brand/50 mt-1 font-medium">?�국 ?�록 ?��??�장</p>
+                </div>
+                <div>
+                    <p class="stat-number text-3xl sm:text-4xl font-bold">100%</p>
+                    <p class="text-sm text-brand/50 mt-1 font-medium">참�? 보장 ?�설</p>
+                </div>
+                <div>
+                    <p class="stat-number text-3xl sm:text-4xl font-bold">24h</p>
+                    <p class="text-sm text-brand/50 mt-1 font-medium">?�담 가??/p>
+                </div>
+                <div>
+                    <p class="stat-number text-3xl sm:text-4xl font-bold">50�?/p>
+                    <p class="text-sm text-brand/50 mt-1 font-medium">?�해 보상 ?�도</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ?�실(Onsil) Promise -->
+    <section class="py-20 sm:py-28 bg-brand-cream fade-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-16">
+                <span class="text-brand-warm font-bold text-sm tracking-widest uppercase">?�실(Onsil) Promise</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-brand mt-4 leading-tight">보호?�님???��??�만 집중?????�도�?/h2>
+                <p class="text-brand/50 font-serif text-lg mt-4">?�실???�속?�니??/p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="card-hover bg-white p-8 sm:p-10 rounded-3xl border border-brand/5 group">
+                    <div
+                        class="w-14 h-14 bg-brand/5 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand group-hover:text-white transition-all duration-300 text-brand">
+                        <i class="fas fa-eye text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand mb-3">참�? 보장</h3>
+                    <p class="text-brand/55 leading-relaxed">모든 ?��? 과정??보호?��? 직접 참�??????�는 ?��??�장�??�개?�니?? 불투명한 과정?� ?�습?�다.</p>
+                </div>
+
+                <div class="card-hover bg-white p-8 sm:p-10 rounded-3xl border border-brand/5 group">
+                    <div
+                        class="w-14 h-14 bg-brand-warm/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-warm group-hover:text-white transition-all duration-300 text-brand-warm">
+                        <i class="fas fa-won-sign text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand mb-3">?�명??가�?/h3>
+                    <p class="text-brand/55 leading-relaxed">불필?�한 ?�품 강매�?금�??�니?? 모든 비용???�전??공개?�어 ?�심?????�습?�다.</p>
+                </div>
+
+                <div class="card-hover bg-white p-8 sm:p-10 rounded-3xl border border-brand/5 group">
+                    <div
+                        class="w-14 h-14 bg-brand-sage/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-sage group-hover:text-white transition-all duration-300 text-brand-sage">
+                        <i class="fas fa-shield-alt text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand mb-3">?�해 보상??/h3>
+                    <p class="text-brand/55 leading-relaxed">?�심 ?�책 ?�반 ??최�? 50�???보상. ?�실???�속??지?��? 못하�?책임집니??</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-20 sm:py-28 bg-white fade-up overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="flex flex-col lg:flex-row gap-16 items-center">
+                <!-- Left: Content Container -->
+                <div class="lg:w-7/12">
+                    <div class="mb-12">
+                        <span class="text-brand-sage font-bold text-sm tracking-widest uppercase">How It Works</span>
+                        <h2 class="text-3xl sm:text-4xl font-bold text-brand mt-4">처음?�라??괜찮?�요</h2>
+                        <p class="text-brand/50 font-serif text-lg mt-4">?�실??차근차근 ?�께?�니??/p>
+                    </div>
+
+                    <!-- Mobile Image (visible only on mobile/tablet) -->
+                    <div class="lg:hidden mb-12 relative">
+                        <div class="absolute -inset-4 bg-brand-cream/50 rounded-[2.5rem] -rotate-2"></div>
+                        <img src="./images/comforting_guidance.png"
+                            class="relative rounded-3xl shadow-xl w-full object-cover aspect-[4/3]" alt="Guidance">
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-x-8 gap-y-10">
+                        <div class="group">
+                            <div
+                                class="w-12 h-12 bg-brand-cream rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-warm/10 transition-colors">
+                                <span class="text-xl font-bold text-brand-warm">1</span>
+                            </div>
+                            <h3 class="font-bold text-brand mb-2">?��??�장 비교</h3>
+                            <p class="text-sm text-brand/50 leading-relaxed">?�치, 가�? ?�설???�눈??비교?�세??/p>
+                        </div>
+
+                        <div class="group">
+                            <div
+                                class="w-12 h-12 bg-brand-cream rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-warm/10 transition-colors">
+                                <span class="text-xl font-bold text-brand-warm">2</span>
+                            </div>
+                            <h3 class="font-bold text-brand mb-2">?�담 �??�약</h3>
+                            <p class="text-sm text-brand/50 leading-relaxed">?�화 ?�는 카카?�톡?�로 간편?�게 ?�담?�세??/p>
+                        </div>
+
+                        <div class="group">
+                            <div
+                                class="w-12 h-12 bg-brand-cream rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-warm/10 transition-colors">
+                                <span class="text-xl font-bold text-brand-warm">3</span>
+                            </div>
+                            <h3 class="font-bold text-brand mb-2">?��? 진행</h3>
+                            <p class="text-sm text-brand/50 leading-relaxed">?�문 ?��?지?�사가 처음부???�까지 ?�께?�니??/p>
+                        </div>
+
+                        <div class="group">
+                            <div
+                                class="w-12 h-12 bg-brand-cream rounded-2xl flex items-center justify-center mb-4 group-hover:bg-brand-sage/10 transition-colors">
+                                <span class="text-xl font-bold text-brand-sage">4</span>
+                            </div>
+                            <h3 class="font-bold text-brand mb-2">추모 기록</h3>
+                            <p class="text-sm text-brand/50 leading-relaxed">?�중??추억???�원??간직?�세??/p>
+                        </div>
+                    </div>
+
+                    <div class="mt-12">
+                        <a href="guide.html"
+                            class="inline-flex items-center gap-2 text-brand-warm font-bold hover:gap-3 transition-all">
+                            ?��? ?�차 ?�세???�아보기 <i class="fas fa-arrow-right text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right: Desktop Image (hidden on mobile/tablet) -->
+                <div class="hidden lg:block lg:w-5/12 relative">
+                    <div class="absolute -inset-6 bg-brand-cream/50 rounded-[3rem] rotate-3 translate-x-2"></div>
+                    <div class="relative">
+                        <img src="./images/comforting_guidance.png"
+                            class="rounded-[2.5rem] shadow-2xl w-full object-cover aspect-[4/5]" alt="Guidance">
+                        <!-- Decorative tag -->
+                        <div
+                            class="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl flex items-center gap-4 animate-bounce-subtle">
+                            <div class="w-12 h-12 bg-brand-warm/15 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-heart text-brand-warm text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-brand/40 font-bold uppercase tracking-wider">Onsil Care</p>
+                                <p class="text-brand font-bold">?�까지 ?�께?�요</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cinematic Banner 1 -->
+    <section class="relative h-[60vh] sm:h-[70vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="./images/warm_pet_companion.png"
+                class="w-full h-full object-cover transform scale-110 motion-safe:animate-[pulse_8s_infinite]"
+                alt="Companion">
+            <div class="absolute inset-0 bg-black/30"></div>
+        </div>
+        <div class="relative z-10 text-center px-4 fade-up">
+            <h2 class="text-3xl sm:text-5xl font-bold text-white mb-4 leading-tight">?�제??곁에 ?�을게요</h2>
+            <p class="text-lg sm:text-xl text-white/80 font-serif">?�께???�중???�간, ?�실???�께 기억?�니??/p>
+        </div>
+    </section>
+
+    <!-- Why ?�실(Onsil) -->
+    <section class="py-20 sm:py-28 bg-brand fade-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-16">
+                <span class="text-brand-warm font-bold text-sm tracking-widest uppercase">Why ?�실(Onsil)</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mt-4">???�실?��???</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div
+                    class="bg-white/5 backdrop-blur border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 bg-brand-warm/20 rounded-2xl flex items-center justify-center shrink-0">
+                            <i class="fas fa-balance-scale text-brand-warm"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">중립??비교 ?�랫??/h3>
+                            <p class="text-white/50 leading-relaxed text-sm">?�실?� ?�정 ?��??�장???�영?��? ?�습?�다. 중립???�장?�서 보호?�님?�게 최적??                                ?�택지�??�공?�니??</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white/5 backdrop-blur border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 bg-brand-sage/20 rounded-2xl flex items-center justify-center shrink-0">
+                            <i class="fas fa-check-double text-brand-sage"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">?�심 ?�증 ?�스??/h3>
+                            <p class="text-white/50 leading-relaxed text-sm">참�? 보장, ?�명 가�? 강매 금�? ?�책??준?�하???��??�장�?'?�심 ?�증'
+                                마크�?부?�합?�다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white/5 backdrop-blur border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 bg-brand-warm/20 rounded-2xl flex items-center justify-center shrink-0">
+                            <i class="fas fa-map-marked-alt text-brand-warm"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">???�치 기반 추천</h3>
+                            <p class="text-white/50 leading-relaxed text-sm">급한 ?�황?�서??가??가까운 ?��??�장??즉시 찾을 ???�습?�다. 거리, 가�?
+                                ?�설???�번??비교?�세??</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white/5 backdrop-blur border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-colors">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 bg-brand-sage/20 rounded-2xl flex items-center justify-center shrink-0">
+                            <i class="fas fa-hands-holding-heart text-brand-sage"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2">?��? ??케??/h3>
+                            <p class="text-white/50 leading-relaxed text-sm">?��? 가?�드, 추억 기록, ?�로???�보까�?. ?�별 ?�후 모든 과정?�서 ?�실??                                ?�께?�니??</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cinematic Banner 2 -->
+    <section class="relative h-[50vh] sm:h-[60vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="./images/calm_memorial_scene.png" class="w-full h-full object-cover" alt="Memorial">
+            <div class="absolute inset-0 bg-brand-warm/20 mix-blend-multiply"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/40"></div>
+        </div>
+        <div class="relative z-10 text-center px-4 fade-up">
+            <p class="text-brand-warm font-bold text-sm tracking-widest uppercase mb-4">Memory & Honor</p>
+            <h2 class="text-2xl sm:text-4xl font-bold text-white leading-tight">?�중??기억??간직?�는<br>가???�름?�운 방법</h2>
+        </div>
+    </section>
+
+    <!-- Community Preview -->
+    <section class="py-20 sm:py-28 bg-brand-cream fade-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-16">
+                <span class="text-brand-sage font-bold text-sm tracking-widest uppercase">Community</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-brand mt-4 leading-tight">우리가 함께 나누는 이야기</h2>
+                <p class="text-brand/50 font-serif text-lg mt-4">따뜻한 위로와 소중한 추억을 공유합니다</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Pet Pride -->
+                <a href="community.html" class="group h-full">
+                    <div class="bg-white rounded-[2.5rem] overflow-hidden border border-brand/5 shadow-sm hover:shadow-xl transition-all duration-500 card-hover h-full flex flex-col">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&q=80&w=800" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="반려동물 자랑">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+                                <span class="text-white text-sm font-medium transition-all transform translate-y-4 group-hover:translate-y-0">실시간 게시글 보기 →</span>
+                            </div>
+                            <div class="absolute top-6 left-6">
+                                <span class="px-4 py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-bold text-brand uppercase tracking-wider shadow-sm">반려동물 자랑</span>
+                            </div>
+                        </div>
+                        <div class="p-8 flex flex-col flex-1">
+                            <h3 class="text-xl font-bold text-brand mb-3 group-hover:text-brand-warm transition-colors">우리 아이의 예쁜 모습</h3>
+                            <p class="text-brand/60 text-sm leading-relaxed mb-6 flex-1">행복했던 순간들을 기록하고 자랑해보세요.</p>
+                            <div class="flex items-center justify-between pt-6 border-t border-brand/5 mt-auto">
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 rounded-full border-2 border-white bg-brand-cream flex items-center justify-center text-[10px]">🐶</div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-white bg-brand-cream flex items-center justify-center text-[10px]">🐱</div>
+                                </div>
+                                <span class="text-xs font-bold text-brand/30">1.2k+ 참여함</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Daily Life -->
+                <a href="community.html" class="group h-full">
+                    <div class="bg-white rounded-[2.5rem] overflow-hidden border border-brand/5 shadow-sm hover:shadow-xl transition-all duration-500 card-hover h-full flex flex-col">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80&w=800" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="일상 이야기">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+                                <span class="text-white text-sm font-medium transition-all transform translate-y-4 group-hover:translate-y-0">실시간 게시글 보기 →</span>
+                            </div>
+                            <div class="absolute top-6 left-6">
+                                <span class="px-4 py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-bold text-brand uppercase tracking-wider shadow-sm">일상 이야기</span>
+                            </div>
+                        </div>
+                        <div class="p-8 flex flex-col flex-1">
+                            <h3 class="text-xl font-bold text-brand mb-3 group-hover:text-brand-warm transition-colors">소중한 일상 공유</h3>
+                            <p class="text-brand/60 text-sm leading-relaxed mb-6 flex-1">다른 보호자님들과 따뜻함을 나눠보세요.</p>
+                            <div class="flex items-center justify-between pt-6 border-t border-brand/5 mt-auto">
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 rounded-full border-2 border-white bg-brand-cream flex items-center justify-center text-[10px]">💬</div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-white bg-brand-cream flex items-center justify-center text-[10px]">❤️</div>
+                                </div>
+                                <span class="text-xs font-bold text-brand/30">850+ 게시글</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Welcome -->
+                <a href="community.html" class="group h-full">
+                    <div class="bg-white rounded-[2.5rem] overflow-hidden border border-brand/5 shadow-sm hover:shadow-xl transition-all duration-500 card-hover h-full flex flex-col">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=800" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="가입 인사">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+                                <span class="text-white text-sm font-medium transition-all transform translate-y-4 group-hover:translate-y-0">실시간 게시글 보기 →</span>
+                            </div>
+                            <div class="absolute top-6 left-6">
+                                <span class="px-4 py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-bold text-brand uppercase tracking-wider shadow-sm">가입 인사</span>
+                            </div>
+                        </div>
+                        <div class="p-8 flex flex-col flex-1">
+                            <h3 class="text-xl font-bold text-brand mb-3 group-hover:text-brand-warm transition-colors">새로운 인연의 시작</h3>
+                            <p class="text-brand/60 text-sm leading-relaxed mb-6 flex-1">처음 오셨나요? 반가운 인사를 나눠보세요.</p>
+                            <div class="flex items-center justify-between pt-6 border-t border-brand/5 mt-auto">
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 rounded-full border-2 border-white bg-brand-cream flex items-center justify-center text-[10px]">✨</div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-white bg-brand-cream flex items-center justify-center text-[10px]">👋</div>
+                                </div>
+                                <span class="text-xs font-bold text-brand/30">반가운 인사들</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="text-center mt-16">
+                <a href="community.html"
+                    class="inline-flex items-center gap-3 bg-brand text-white px-10 py-5 rounded-full font-bold hover:bg-brand-light transition-all shadow-lg hover:shadow-xl group">
+                    더 많은 커뮤니티 이야기 보기 <i class="fas fa-arrow-right group-hover:ml-2 transition-all"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- CTA Section -->
+    <section class="py-20 sm:py-28 bg-white fade-up">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+            <div
+                class="bg-gradient-to-br from-brand to-brand-light rounded-[2rem] p-10 sm:p-16 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2">
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 w-48 h-48 bg-brand-warm/10 rounded-full translate-y-1/2 -translate-x-1/2">
+                </div>
+
+                <div class="relative">
+                    <h2 class="text-2xl sm:text-4xl font-bold text-white mb-4 leading-tight">
+                        지�?가??가까운<br>?�심 ?��??�장??찾아보세??                    </h2>
+                    <p class="text-white/60 mb-8 font-serif">급하지 ?�아??괜찮?�요. 미리 ?�아?�면 마음???�해집니??</p>
+
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                        <a href="search.html"
+                            class="bg-white text-brand hover:bg-brand-cream px-8 py-4 rounded-2xl font-bold transition-all shadow-lg inline-flex items-center justify-center gap-2">
+                            <i class="fas fa-search"></i> ?��??�장 찾기
+                        </a>
+                        <a href="tel:010-2292-1918"
+                            class="bg-brand-warm hover:bg-brand-warmDark text-white px-8 py-4 rounded-2xl font-bold transition-all shadow-lg inline-flex items-center justify-center gap-2">
+                            <i class="fas fa-phone-alt"></i> 010-2292-1918
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-cream border-t border-brand/5 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+                <div class="col-span-2 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
+                            <span class="text-white text-xs font-bold">??/span>
+                        </div>
+                        <span class="font-bold text-lg text-brand">?�실(Onsil)</span>
+                    </div>
+                    <p class="text-sm text-brand/40 mb-4 leading-relaxed max-w-sm">
+                        반려?�물 ?��??�장 비교부???�약까�?.<br>?�려??결정?????�실???�께?�니??
+                    </p>
+                    <p class="text-xs text-brand/30">(�??�온??| ?�?? 조영??| 문의: 010-2292-1918</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-brand mb-4">?�비??/h3>
+                    <ul class="space-y-3 text-sm text-brand/50">
+                        <li><a href="search.html" class="hover:text-brand transition-colors">?��??�장 찾기</a></li>
+                        <li><a href="guide.html" class="hover:text-brand transition-colors">?��? 가?�드</a></li>
+                        <li><a href="memory.html" class="hover:text-brand transition-colors">추억 가?�드</a></li>
+                        <li><a href="community.html" class="hover:text-brand transition-colors">보호???�기</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-brand mb-4">고객지??/h3>
+                    <ul class="space-y-3 text-sm text-brand/50">
+                        <li><a href="contact.html" class="hover:text-brand transition-colors">문의?�기</a></li>
+                        <li><a href="partnership.html"
+                                class="hover:text-brand transition-colors font-bold text-brand-warm">?�휴문의</a></li>
+                        <li><a href="terms.html" class="hover:text-brand transition-colors">?�용?��?</a></li>
+                        <li><a href="terms.html" class="hover:text-brand transition-colors">개인?�보처리방침</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="border-t border-brand/5 mt-10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-brand/30">&copy; 2026 ?�실(Onsil). All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-9 h-9 bg-brand/5 rounded-full flex items-center justify-center text-brand/30 hover:text-brand hover:bg-brand/10 transition-all">
+                        <i class="fab fa-instagram text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 bg-brand/5 rounded-full flex items-center justify-center text-brand/30 hover:text-brand hover:bg-brand/10 transition-all">
+                        <i class="fab fa-youtube text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 bg-brand/5 rounded-full flex items-center justify-center text-brand/30 hover:text-brand hover:bg-brand/10 transition-all">
+                        <i class="fas fa-comment text-sm"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Bar -->
+    <div id="floating-action-bar" class="floating-bar fixed bottom-0 left-0 right-0 z-50 p-4 sm:p-6 safe-area-bottom">
+        <div class="max-w-xl mx-auto flex flex-col sm:flex-row gap-3">
+            <a href="guide.html"
+                class="flex-1 bg-white hover:bg-brand-cream text-brand py-4 px-6 rounded-2xl font-bold flex items-center justify-between group transition-all shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 bg-brand-sage/10 rounded-xl flex items-center justify-center text-brand-sage group-hover:bg-brand-sage group-hover:text-white transition-all">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <span>?��?�?준비하�?계신가??</span>
+                </div>
+                <i class="fas fa-chevron-right text-brand/20 group-hover:text-brand-sage transition-colors"></i>
+            </a>
+            <a href="search.html"
+                class="flex-1 bg-brand-warm hover:bg-brand-warmDark text-white py-4 px-6 rounded-2xl font-bold flex items-center justify-between group transition-all shadow-lg shadow-brand-warm/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center text-white">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <span>지�??�이가 무�?개다리�? 건넜?�요?</span>
+                </div>
+                <i class="fas fa-chevron-right text-white/50 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Floating Buttons (Mobile/Adjusted) -->
+    <div class="fixed bottom-32 sm:bottom-40 right-6 z-40 flex flex-col gap-3">
+        <a href="tel:010-2292-1918"
+            class="lg:hidden w-14 h-14 bg-brand text-white rounded-full shadow-xl shadow-brand/30 flex items-center justify-center hover:scale-110 transition-transform">
+            <i class="fas fa-phone-alt text-lg"></i>
+        </a>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile Nav
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            const panel = document.getElementById('mobile-nav-panel');
+            if (nav.classList.contains('hidden')) {
+                nav.classList.remove('hidden');
+                requestAnimationFrame(() => panel.classList.add('mobile-nav-open'));
+                document.body.style.overflow = 'hidden';
+            } else {
+                panel.classList.remove('mobile-nav-open');
+                document.body.style.overflow = '';
+                setTimeout(() => nav.classList.add('hidden'), 300);
+            }
+        }
+
+        // Header scroll effect
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('bg-white/95', 'backdrop-blur-lg', 'shadow-sm', 'border-b', 'border-brand/5');
+            } else {
+                header.classList.remove('bg-white/95', 'backdrop-blur-lg', 'shadow-sm', 'border-b', 'border-brand/5');
+            }
+        });
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    </script>
+
+    <!-- Supabase Auth -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Global Error Handler
+        window.onerror = function (msg, url, line, col, error) {
+            console.error("JS Error:", msg);
+            return false;
+        };
+
+        // Use Global Auth Methods if needed for landing page specific logic
+        window.addEventListener('load', () => {
+            if (window.Auth && window.Auth.updateHeaderUI) {
+                window.Auth.updateHeaderUI();
+            }
+        });
+    </script>
+    <script>
+        // Floating Bar Toggle
+        const floatingBar = document.getElementById('floating-action-bar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                floatingBar.classList.add('active');
+            } else {
+                floatingBar.classList.remove('active');
+            }
+        });
+
+        if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .catch(err => console.log('SW registration skipped or failed:', err));
+            });
+        } else if (window.location.protocol === 'file:') {
+            console.warn('Onsil: PWA features (Service Worker) are disabled on file:// protocol for security reasons.');
+        }
+    </script>
+</body>
+
+</html>

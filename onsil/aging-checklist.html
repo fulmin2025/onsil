@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>?�리?�이 ?�화체크리스??- The ?�실</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1B2B48">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#1B2B48',
+                            light: '#2A3F64',
+                            sage: '#87A08B',
+                            warm: '#D4A373',
+                            cream: '#FAFAFA'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .comparison-card {
+            transition: all 0.3s ease;
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+        }
+
+        .check-item.active {
+            border-color: #D4A373;
+            background-color: #FFF9F2;
+        }
+
+        .check-item.active .check-box {
+            background-color: #D4A373;
+            border-color: #D4A373;
+        }
+    </style>
+</head>
+
+<body class="bg-brand-cream text-brand overflow-x-hidden">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2">
+                <span class="font-bold text-xl tracking-tighter text-brand">The ?�실</span>
+            </a>
+            <nav class="hidden md:flex gap-8">
+                <a href="search.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?��??�장
+                    찾기</a>
+                <a href="guide.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?�별
+                    가?�드</a>
+                <a href="memory.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">추억
+                    가?�드</a>
+                <a href="community.html"
+                    class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">커�??�티</a>
+            </nav>
+            <div id="auth-container" class="hidden md:flex items-center gap-4"></div>
+            <button class="md:hidden w-10 h-10 flex items-center justify-center text-brand">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-12 pb-32">
+        <!-- Hero -->
+        <section class="text-center mb-16 fade-up">
+            <h1 class="text-3xl md:text-5xl font-bold mb-6">?�리?�이 ?�화체크리스??/h1>
+            <p class="text-gray-500 text-lg font-light">?�이가 ?�어??그런 걸까, ?�니�??�픈 걸까?<br>보호?�의 ?�심??관찰이 ?�이???�일??바꿉?�다.</p>
+        </section>
+
+        <!-- Educational Section -->
+        <section class="mb-24 fade-up">
+            <div class="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-sm border border-gray-50 overflow-hidden relative">
+                <div class="absolute top-0 right-0 p-8 opacity-5">
+                    <i class="fas fa-dog text-9xl"></i>
+                </div>
+
+                <h2 class="text-2xl md:text-3xl font-bold mb-10 leading-snug">
+                    ?�령�?치매?� ?�순 ?�화�?br>
+                    <span class="text-brand-warm underline decoration-brand-warm/30 underline-offset-8">구분?�는 ?�심 증상?�
+                        무엇?��???</span>
+                </h2>
+
+                <div class="space-y-8 text-gray-600 leading-relaxed font-light mb-12">
+                    <p>
+                        ?�령견의 ?�순 ?�화?� 치매(?��?기능?�애 증후�? CDS)�?구분?�는 ?�심?� **?��? 기능 ?�?�로 ?�해 ?�상?�활 ?�체???��????�기?��? ?��?**?�니??
+                    </p>
+                    <p>
+                        ?�순 ?�화???�동?�이 줄고 반응???�려지???�연?�러???�체??변?�에 그치지�? 치매??방향 감각 ?�실?�나 기억???�?��? 같�? 비논리적???�상 ?�동???�반?�니??
+                    </p>
+                </div>
+
+                <!-- Comparison Cards -->
+                <div class="grid gap-6">
+                    <!-- Point 1: Habits -->
+                    <div class="comparison-card bg-gray-50 rounded-3xl p-6 border border-gray-100">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div
+                                class="w-8 h-8 bg-brand-sage text-white rounded-full flex items-center justify-center text-xs font-bold">
+                                1</div>
+                            <h3 class="font-bold text-lg">?�소 ?��?�??��? ?�력??변??/h3>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                                <span
+                                    class="text-xs font-bold text-gray-400 block mb-2 uppercase tracking-widest">Normal
+                                    Aging</span>
+                                <p class="text-sm font-medium">?�동?�이 ?�어지?�라??보호?��? ???�아보고 ?�활 리듬???��???</p>
+                            </div>
+                            <div class="bg-brand-warm/5 p-5 rounded-2xl border border-brand-warm/20 shadow-sm">
+                                <span
+                                    class="text-xs font-bold text-brand-warm block mb-2 uppercase tracking-widest">Dementia
+                                    (CDS)</span>
+                                <p class="text-sm font-bold text-brand">방향 감각 ?�실, �???배회, 가족을 ??��?�하�?명령?��? 망각??</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Point 2: Sleep -->
+                    <div class="comparison-card bg-gray-50 rounded-3xl p-6 border border-gray-100">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div
+                                class="w-8 h-8 bg-brand-sage text-white rounded-full flex items-center justify-center text-xs font-bold">
+                                2</div>
+                            <h3 class="font-bold text-lg">?�면 ?�턴(주야 리듬)??변??/h3>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                                <span
+                                    class="text-xs font-bold text-gray-400 block mb-2 uppercase tracking-widest">Normal
+                                    Aging</span>
+                                <p class="text-sm font-medium">??��??많아지지�??�반?�인 밤에???�면??취함.</p>
+                            </div>
+                            <div class="bg-brand-warm/5 p-5 rounded-2xl border border-brand-warm/20 shadow-sm">
+                                <span
+                                    class="text-xs font-bold text-brand-warm block mb-2 uppercase tracking-widest">Dementia
+                                    (CDS)</span>
+                                <p class="text-sm font-bold text-brand">?�면-각성 주기 ?�상?�로 ??�� ?�고 밤에 배회 �?짖음 발생.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Point 3: Toilet -->
+                    <div class="comparison-card bg-gray-50 rounded-3xl p-6 border border-gray-100">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div
+                                class="w-8 h-8 bg-brand-sage text-white rounded-full flex items-center justify-center text-xs font-bold">
+                                3</div>
+                            <h3 class="font-bold text-lg">배�? ?��?�??�수???��?</h3>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                                <span
+                                    class="text-xs font-bold text-gray-400 block mb-2 uppercase tracking-widest">Normal
+                                    Aging</span>
+                                <p class="text-sm font-medium">배�? ?�소�?기억?�며 ?�수 ???�스�??��???</p>
+                            </div>
+                            <div class="bg-brand-warm/5 p-5 rounded-2xl border border-brand-warm/20 shadow-sm">
+                                <span
+                                    class="text-xs font-bold text-brand-warm block mb-2 uppercase tracking-widest">Dementia
+                                    (CDS)</span>
+                                <p class="text-sm font-bold text-brand">배�? ?�소 ?�식 불�?, ?�무 곳에???�수 ???�치 보�? ?�음.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Checklist Section -->
+        <section class="mb-24 fade-up">
+            <div class="flex flex-col md:flex-row md:items-baseline justify-between gap-4 mb-10">
+                <div class="flex flex-col md:flex-row md:items-baseline gap-2">
+                    <h2 class="text-2xl font-bold">치매 ?�별 ?�문??(DISHAA)</h2>
+                    <span class="text-[11px] text-brand-warm opacity-70 font-light">?�소??모습�?변?��? ?�다�?체크?�주?�요</span>
+                </div>
+                <button onclick="resetChecklist()"
+                    class="text-xs text-brand-warm hover:underline transition-all">초기??/button>
+            </div>
+
+            <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mb-12">
+                <!-- Group D: Disorientation -->
+                <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4 text-brand-sage">
+                        <i class="fas fa-compass"></i>
+                        <h3 class="font-bold text-sm uppercase tracking-wider">D - Disorientation</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">?�숙??�??�에??길을 ?�거??구석(?�는 가�?????갇히?�요?</span>
+                        </div>
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">거실 ?��??�데??�??�에??멍하?????�나??</span>
+                        </div>
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">목적 ?�이 같�? 방향?�로 방을 빙빙 ?�나??</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group I: Interactions -->
+                <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4 text-brand-sage">
+                        <i class="fas fa-users"></i>
+                        <h3 class="font-bold text-sm uppercase tracking-wider">I - Social Interactions</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">가족이???�른 반려?�물과의 교감??줄었?�요?</span>
+                        </div>
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">?�출 ???�아??보호?��? 반기지 ?�고 무�??�한가??</span>
+                        </div>
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">매일 보던 가족을 마치 ??�� ?�람 ?�?�듯 ?�나??</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group S: Sleep/Wake Cycles -->
+                <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4 text-brand-sage">
+                        <i class="fas fa-bed"></i>
+                        <h3 class="font-bold text-sm uppercase tracking-wider">S - Sleep/Wake Cycles</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">??��??과도?�게 ?�어?�는 ??리듬???�상???�나??</span>
+                        </div>
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">??��??조용?�다가 밤만 ?�면 �??�을 ?�아?�니?�요?</span>
+                        </div>
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">밤에 ?�유 ?�이 짖거???�울링을 ?�나??</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group H: Housesoiling, Learning & Memory -->
+                <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4 text-brand-sage">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h3 class="font-bold text-sm uppercase tracking-wider">H - Learning & Memory</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">?�내 배�? ?�소�?기억?��? 못하�??�수?�나??</span>
+                        </div>
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">배�? ?�수 ?�에???��? ?�치�?보�? ?�나??</span>
+                        </div>
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">?�숙??명령??'?�아' ??�??�어버렸?�요?</span>
+                        </div>
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">?�로??지?�어/규칙??반복?�도 배우지 못하?�요?</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group A: Activity -->
+                <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4 text-brand-sage">
+                        <i class="fas fa-running"></i>
+                        <h3 class="font-bold text-sm uppercase tracking-wider">A - Activity</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">?�정 공간?�나 길을 반복?�서 걷는 ?�동???�나??</span>
+                        </div>
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">?�공?�나 ??곳을 멍하�??�시?�는 ?�간???�었?�요?</span>
+                        </div>
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">좋아?�던 ?�난�?간식???�???��?가 ?�어졌나??</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group A: Anxiety -->
+                <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4 text-brand-sage">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3 class="font-bold text-sm uppercase tracking-wider">A - Anxiety</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">?�소???�리???�극?�도 ?�게 불안?�하?�요?</span>
+                        </div>
+                        <div class="check-item group flex items-start gap-3 cursor-pointer p-2 rounded-xl hover:bg-gray-50 transition-all"
+                            onclick="toggleItem(this)">
+                            <div
+                                class="check-box mt-0.5 w-5 h-5 rounded border-2 border-gray-200 flex items-center justify-center text-white shrink-0 group-[.active]:bg-brand-warm group-[.active]:border-brand-warm transition-all">
+                                <i class="fas fa-check text-[10px]"></i>
+                            </div>
+                            <span class="text-sm text-gray-600 leading-snug">?�로???�경?�나 ?��? 변?�에 과�? 반응?�나??</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis Result Placeholder -->
+            <div id="result-box" class="hidden bg-brand p-8 rounded-[2.5rem] text-white text-center shadow-lg">
+                <div class="inline-flex items-center gap-2 bg-white/10 px-4 py-1 rounded-full text-xs mb-4">
+                    <i class="fas fa-stethoscope"></i> 진단 결과 분석
+                </div>
+                <h3 class="text-xl font-bold mb-4" id="result-title">체크 결과 ?�내</h3>
+                <p id="result-text" class="text-white/80 font-light leading-relaxed"></p>
+            </div>
+        </section>
+
+        <!-- Professional Context -->
+        <section class="mb-24 fade-up">
+            <div class="flex items-start gap-6 p-8 bg-brand-sage/5 rounded-3xl border border-brand-sage/10">
+                <div
+                    class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-brand-sage shrink-0 shadow-sm">
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4">?�의?�적 감별 기�?</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">
+                        ?�의?�에?�는 보호?�의 관찰을 바탕?�로 ??**DISHAA ?�문지**??**CADES 척도**�??�용?�여 치매�?진단?�니?? 증상???�심?�다�??�동 변?��? �?**?�상?�로
+                        기록**?�여 ?�의?�님�??�담??보세??
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer CTA -->
+        <section class="text-center fade-up">
+            <a href="guide.html"
+                class="inline-flex items-center gap-2 text-brand font-bold py-3 px-8 rounded-full border border-gray-200 hover:bg-white hover:shadow-sm transition-all">
+                <i class="fas fa-arrow-left"></i> ?�별 가?�드�??�아가�?
+            </a>
+        </section>
+    </main>
+
+    <footer class="bg-white border-t border-gray-100 py-16">
+        <div class="max-w-7xl mx-auto px-6 text-center md:text-left">
+            <span class="font-bold text-2xl tracking-tighter text-brand mb-4 block">The ?�실</span>
+            <p class="text-xs text-gray-400 font-light">The ?�실 | ?�??조영??| 문의 010-2292-1918<br>?�업?�등록번??: 181-18-02826<br>주소 : 부천시 ?�작�?280번길 53-9 ?�우?�폴리�? 502??/p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleItem(el) {
+            el.classList.toggle('active');
+            updateResult();
+        }
+
+        function updateResult() {
+            const activeCount = document.querySelectorAll('.check-item.active').length;
+            const resultBox = document.getElementById('result-box');
+            const resultText = document.getElementById('result-text');
+            const resultTitle = document.getElementById('result-title');
+
+            if (activeCount > 0) {
+                resultBox.classList.remove('hidden');
+
+                if (activeCount >= 3) {
+                    resultTitle.innerText = "?�� ?�문가 ?�담 권고";
+                    resultText.innerHTML = "<strong>치매(CDS)가 ?�당??진행?�었??가?�성???�습?�다.</strong><br>반드???�의?��????�담 �??�상 기록???�한 진단??받아보시�?권장?�니??";
+                } else if (activeCount >= 1) {
+                    resultTitle.innerText = "?�️ ?��???관�??�요";
+                    resultText.innerHTML = "<strong>?�이???��? ?�력??변?��? 관찰되�??�습?�다.</strong><br>?�순 ?�화?�??감별???�해 ?�소 ?�동???�상?�로 기록?�두�??��???관찰해주세??";
+                }
+            } else {
+                resultBox.classList.add('hidden');
+            }
+        }
+
+        function resetChecklist() {
+            document.querySelectorAll('.check-item').forEach(i => i.classList.remove('active'));
+            updateResult();
+        }
+
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    </script>
+</body>
+
+</html>
