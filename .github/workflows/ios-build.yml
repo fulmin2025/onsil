@@ -13,9 +13,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GH_PAT }} # 개인 토큰을 사용하여 권한 문제 완벽 해결
-          fetch-depth: 1 # 최신 코드만 빠르게 가져오기
-          lfs: false # 대용량 파일 문제 방지를 위해 LFS 비활성화
+          token: ${{ secrets.GH_PAT }}
+          persist-credentials: false # 빌드 서버의 기본 인증과 충돌 방지
+          fetch-depth: 1
+          clean: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
