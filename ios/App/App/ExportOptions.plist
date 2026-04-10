@@ -5,11 +5,11 @@
     <key>method</key>
     <string>app-store</string>
     <key>teamID</key>
-    <string> 여기에_팀_ID_입력 </string>
+    <string>59L34WS6RG</string>
     <key>provisioningProfiles</key>
     <dict>
         <key>com.theonsil.onsil</key>
-        <string>TheOnsil_Distribution</string>
+        <string>TheOnsil_AppStore</string>
     </dict>
     <key>signingStyle</key>
     <string>manual</string>
