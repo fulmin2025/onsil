@@ -16,11 +16,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: '22' # 최신 LFS 버전으로 상향 (경고 해결)
 
       - name: Install Dependencies
-        run: npm install
+        run: npm install --no-package-lock # 잠금 파일 없이 설치 진행
 
       - name: Capacitor Sync
         run: |
