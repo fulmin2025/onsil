@@ -13,8 +13,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          clean: true # 잔여 파일 정리 후 체크아웃
-          set-safe-directory: true # macOS 권한 문제 방지
+          token: ${{ secrets.GH_PAT }} # 개인 토큰을 사용하여 권한 문제 완벽 해결
+          fetch-depth: 1 # 최신 코드만 빠르게 가져오기
+          lfs: false # 대용량 파일 문제 방지를 위해 LFS 비활성화
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
