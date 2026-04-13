@@ -1441,7 +1441,9 @@
         }
 
         function getRegion(item) {
-            const addr = item.address || '';
+            // RAW_JSON에 주소 필드가 없으므로 REAL_DATA에서 이름을 키로 하여 주소를 가져옵니다.
+            const realInfo = (typeof REAL_DATA !== 'undefined') ? REAL_DATA[item.name] : null;
+            const addr = item.address || (realInfo ? realInfo.address : '') || '';
             const lat = parseFloat(item.latitude);
             const lng = parseFloat(item.longitude);
 
@@ -1453,7 +1455,9 @@
             if (addr.includes('경남') || addr.includes('경북') || addr.includes('부산') || addr.includes('대구') || addr.includes('울산') || addr.includes('경상')) return 'gyeongsang';
             if (addr.includes('전남') || addr.includes('전북') || addr.includes('광주') || addr.includes('전라')) return 'jeolla';
 
-            if (lat > 37.0 && lat < 38.6 && lng > 127.6) return 'gangwon';
+            // 좌표 기반Fallback (주소 데이터가 부실한 경우를 대비)
+            // 강원도 범위를 조금 더 동쪽(127.9 이상)으로 좁혀서 경기도(양평 등)와 겹치지 않게 합니다.
+            if (lat > 37.0 && lat < 38.6 && lng > 127.9) return 'gangwon';
             if (lat < 37.0 && lng > 127.6) return 'gyeongsang';
             if (lat < 36.1 && lng < 127.6) return 'jeolla';
             if (lat < 37.1 && lng < 127.6) return 'chungcheong';
