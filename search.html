@@ -234,25 +234,11 @@
                         <h3 class="font-bold text-sm mb-4 text-[#8D7B68]">지역 선택</h3>
                         <div class="space-y-3">
                             <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" value="seoul"
+                                <input type="checkbox" value="sudogwon"
                                     class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
                                 <span
-                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">서울
-                                    <span id="count-seoul" class="text-xs text-gray-400">0</span></span>
-                            </label>
-                            <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" value="gyeonggi"
-                                    class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
-                                <span
-                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">경기
-                                    <span id="count-gyeonggi" class="text-xs text-gray-400">0</span></span>
-                            </label>
-                            <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" value="incheon"
-                                    class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
-                                <span
-                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">인천
-                                    <span id="count-incheon" class="text-xs text-gray-400">0</span></span>
+                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">서울/경기/인천
+                                    <span id="count-sudogwon" class="text-xs text-gray-400">0</span></span>
                             </label>
                             <label class="flex items-center gap-3 cursor-pointer group">
                                 <input type="checkbox" value="chungcheong"
@@ -1502,6 +1488,11 @@
                 }
             });
 
+            // 수도권 통합 개수 표시
+            const sudogwonCount = (counts['seoul'] || 0) + (counts['gyeonggi'] || 0) + (counts['incheon'] || 0);
+            const sudogwonEl = document.getElementById('count-sudogwon');
+            if (sudogwonEl) sudogwonEl.textContent = sudogwonCount;
+
             for (const [region, count] of Object.entries(counts)) {
                 const el = document.getElementById(`count-${region}`);
                 if (el) el.textContent = count;
@@ -1525,6 +1516,12 @@
                 // Region filter
                 if (checkedRegions.length === 0) return true;
                 const region = getRegion(item);
+                
+                // 수도권 통합 필터 처리
+                if (checkedRegions.includes('sudogwon')) {
+                    if (['seoul', 'gyeonggi', 'incheon'].includes(region)) return true;
+                }
+                
                 return checkedRegions.includes(region);
             });
 
