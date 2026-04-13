@@ -117,6 +117,43 @@
                         </div>
                     </div>
 
+                    <!-- 약관 동의 -->
+                    <div class="space-y-6 pt-6 border-t border-gray-100">
+                        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl cursor-pointer hover:bg-gray-100 transition-colors group" onclick="toggleAllAgree()">
+                            <input type="checkbox" id="agree-all" class="w-6 h-6 rounded-lg border-gray-300 text-partner focus:ring-partner pointer-events-none">
+                            <div>
+                                <p class="text-sm font-black text-gray-900">전체 항목에 동의합니다.</p>
+                                <p class="text-[10px] text-gray-400 font-medium">이용약관, 개인정보 수집 및 이용, 마케팅 활용(선택) 포함</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4 px-2">
+                            <div class="flex items-center justify-between group">
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" id="agree-terms" required class="agree-item w-5 h-5 rounded border-gray-300 text-partner focus:ring-partner">
+                                    <span class="text-xs font-bold text-gray-600">파트너 이용약관 동의 <span class="text-partner">(필수)</span></span>
+                                </label>
+                                <button type="button" onclick="alert('준비중')" class="text-[10px] text-gray-400 hover:text-partner hover:underline font-bold">상세보기</button>
+                            </div>
+
+                            <div class="flex items-center justify-between group">
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" id="agree-privacy" required class="agree-item w-5 h-5 rounded border-gray-300 text-partner focus:ring-partner">
+                                    <span class="text-xs font-bold text-gray-600">개인정보 수집 및 이용 동의 <span class="text-partner">(필수)</span></span>
+                                </label>
+                                <button type="button" onclick="alert('준비중')" class="text-[10px] text-gray-400 hover:text-partner hover:underline font-bold">상세보기</button>
+                            </div>
+
+                            <div class="flex items-center justify-between group">
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" id="agree-marketing" class="agree-item w-5 h-5 rounded border-gray-300 text-partner focus:ring-partner">
+                                    <span class="text-xs font-bold text-gray-600">비즈니스 정보 및 알림 수신 동의 (선택)</span>
+                                </label>
+                                <button type="button" onclick="alert('준비중')" class="text-[10px] text-gray-400 hover:text-partner hover:underline font-bold">상세보기</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="pt-6">
                         <button type="submit" id="submit-btn"
                             class="w-full py-5 bg-partner text-white rounded-2xl font-bold text-lg shadow-xl shadow-partner/20 hover:bg-black transition-all active:scale-[0.98] flex items-center justify-center gap-3">
@@ -150,6 +187,23 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="js/auth.js"></script>
     <script>
+        function toggleAllAgree() {
+            const agreeAll = document.getElementById('agree-all');
+            const items = document.querySelectorAll('.agree-item');
+            agreeAll.checked = !agreeAll.checked;
+            items.forEach(item => item.checked = agreeAll.checked);
+        }
+
+        // 개별 항목 변경 시 전체 동의 상태 연동
+        document.addEventListener('change', (e) => {
+            if (e.target.classList.contains('agree-item')) {
+                const agreeAll = document.getElementById('agree-all');
+                const items = document.querySelectorAll('.agree-item');
+                const checkedItems = document.querySelectorAll('.agree-item:checked');
+                agreeAll.checked = items.length === checkedItems.length;
+            }
+        });
+
         document.getElementById('signup-form').onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submit-btn');
@@ -164,6 +218,12 @@
 
             if (password.length < 8) {
                 alert('비밀번호는 8자리 이상이어야 합니다.');
+                return;
+            }
+
+            // 필수 약관 동의 확인
+            if (!document.getElementById('agree-terms').checked || !document.getElementById('agree-privacy').checked) {
+                alert('필수 약관에 동의해 주세요.');
                 return;
             }
 
