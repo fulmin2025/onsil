@@ -1212,13 +1212,6 @@
             ]
         }
             ;
-        // Initialize data safely
-        const funeralHomesData = (RAW_JSON && RAW_JSON.business) ? RAW_JSON.business : [];
-        console.log(`DATA: Loaded ${funeralHomesData.length} items`);
-
-        // Initial filter counts
-        updateFilterCounts();
-
         // --- Core Application Logic ---
         const resultList = document.getElementById('result-list');
         const resultCount = document.getElementById('result-count');
@@ -1442,8 +1435,9 @@
 
         function getRegion(item) {
             // RAW_JSON에 주소 필드가 없으므로 REAL_DATA에서 이름을 키로 하여 주소를 가져옵니다.
+            // 일부 데이터에서 location 속성을 사용할 수도 있으므로 addr 추출을 보강합니다.
             const realInfo = (typeof REAL_DATA !== 'undefined') ? REAL_DATA[item.name] : null;
-            const addr = item.address || (realInfo ? realInfo.address : '') || '';
+            const addr = item.address || item.location || (realInfo ? (realInfo.address || realInfo.location || '') : '') || '';
             const lat = parseFloat(item.latitude);
             const lng = parseFloat(item.longitude);
 
@@ -3229,6 +3223,12 @@
 
 
         // --- Initial Load ---
+        // Initialize data safely (Moved to bottom to avoid TDZ errors with REAL_DATA)
+        const funeralHomesData = (RAW_JSON && RAW_JSON.business) ? RAW_JSON.business : [];
+        console.log(`DATA: Loaded ${funeralHomesData.length} items`);
+
+        // Initial filter counts & rendering
+        updateFilterCounts();
         filterItems();
 
         // Handle URL parameters
