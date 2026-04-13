@@ -215,6 +215,7 @@
             const facility = document.getElementById('facility').value;
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
+            const marketingAgree = document.getElementById('agree-marketing').checked;
 
             if (password.length < 8) {
                 alert('비밀번호는 8자리 이상이어야 합니다.');
@@ -231,7 +232,7 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>처리 중...';
 
             try {
-                const res = await Auth.signupPartner(email, password, name, facility, phone);
+                const res = await Auth.signupPartner(email, password, name, facility, phone, marketingAgree);
                 if (res.success) {
                     form.classList.add('hidden');
                     successMsg.classList.remove('hidden');

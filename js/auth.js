@@ -50,6 +50,7 @@ const Auth = {
                 role: metadata.role || 'member', // 권한 명시적 저장
                 facility: metadata.facility || null, // 업체명 명시적 저장
                 phone: metadata.phone || null,
+                marketing_agree: metadata.marketing_agree === true, // 마케팅 동의 여부 추가
                 updated_at: new Date().toISOString()
             };
 
@@ -71,7 +72,7 @@ const Auth = {
     /**
      * Signup a new user
      */
-    signup: async (email, password, name, gender, birthYear, phone) => {
+    signup: async (email, password, name, gender, birthYear, phone, marketingAgree = false) => {
         try {
             const client = getSupabase();
             if (!client) throw new Error('시스템 오류: 서버 연결에 실패했습니다. (SDK 로드 실패)');
@@ -85,6 +86,7 @@ const Auth = {
                         gender: gender,
                         birth_year: String(birthYear), // 서버 트리거가 읽을 필드
                         phone: phone,
+                        marketing_agree: marketingAgree, // 마케팅 수신 동의 추가
                         role: 'member' // 기본 권한
                     }
                 }
@@ -107,7 +109,7 @@ const Auth = {
     /**
      * Signup a new partner (Pending Approval)
      */
-    signupPartner: async (email, password, name, facility, phone) => {
+    signupPartner: async (email, password, name, facility, phone, marketingAgree = false) => {
         try {
             const client = getSupabase();
             if (!client) throw new Error('시스템 오류: 서버 연결에 실패했습니다.');
@@ -120,6 +122,7 @@ const Auth = {
                         name: name,
                         facility: facility,
                         phone: phone,
+                        marketing_agree: marketingAgree, // 마케팅 수신 동의 추가
                         role: 'pending_partner' // 승인 대기 권한
                     }
                 }

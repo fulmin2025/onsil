@@ -207,6 +207,7 @@
                 const gender = document.getElementById('gender').value;
                 const birthYear = document.getElementById('birth-year').value;
                 const phone = document.getElementById('phone').value.trim();
+                const marketingAgree = document.getElementById('agree-marketing').checked; // 마케팅 동의 여부
 
                 if (!email || !password || !name || !gender || !birthYear || !phone) {
                     throw new Error('모든 필드를 입력해 주세요.');
@@ -218,7 +219,7 @@
                 }
 
                 // Use centralized Auth logic
-                const res = await Auth.signup(email, password, name, gender, birthYear, phone);
+                const res = await Auth.signup(email, password, name, gender, birthYear, phone, marketingAgree);
 
                 if (res.success) {
                     alert('회원가입이 완료되었습니다. 이메일 인증이 필요할 수 있습니다.\n확인 후 로그인해 주세요.');
