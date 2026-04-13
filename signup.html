@@ -47,21 +47,21 @@
 
         <form id="signup-form" class="space-y-6" onsubmit="return false;">
             <div>
-                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">이름</label>
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">이름 <span class="text-red-500">*</span></label>
                 <input type="text" id="name" required
                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
                     placeholder="홍길동">
             </div>
 
             <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">이메일</label>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">이메일 <span class="text-red-500">*</span></label>
                 <input type="email" id="email" required
                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
                     placeholder="example@email.com">
             </div>
 
             <div>
-                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">비밀번호</label>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">비밀번호 <span class="text-red-500">*</span></label>
                 <input type="password" id="password" required
                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
                     placeholder="••••••••">
@@ -69,7 +69,7 @@
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">성별</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">성별 <span class="text-red-500">*</span></label>
                     <div class="flex gap-2">
                         <button type="button" onclick="setGender('male')" id="gender-male"
                             class="flex-1 py-3 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all font-medium gender-btn">
@@ -83,7 +83,7 @@
                     <input type="hidden" id="gender" required>
                 </div>
                 <div>
-                    <label for="birth-year" class="block text-sm font-medium text-gray-700 mb-1">출생년도</label>
+                    <label for="birth-year" class="block text-sm font-medium text-gray-700 mb-1">출생년도 <span class="text-red-500">*</span></label>
                     <input type="number" id="birth-year" required min="1900" max="2026"
                         class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
                         placeholder="예: 1990">
@@ -91,10 +91,26 @@
             </div>
 
             <div>
-                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">전화번호</label>
+                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">전화번호 <span class="text-red-500">*</span></label>
                 <input type="tel" id="phone" required
                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
                     placeholder="010-0000-0000">
+            </div>
+
+            <div>
+                <label for="location" class="block text-sm font-medium text-gray-700 mb-1">거주 지역 <span class="text-red-500">*</span></label>
+                <select id="location" required
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black bg-white">
+                    <option value="" disabled selected>지역을 선택해주세요</option>
+                    <option value="서울">서울</option>
+                    <option value="경기">경기</option>
+                    <option value="인천">인천</option>
+                    <option value="강원">강원</option>
+                    <option value="충청">충청</option>
+                    <option value="전라">전라</option>
+                    <option value="경상">경상</option>
+                    <option value="제주">제주</option>
+                </select>
             </div>
 
             <!-- 약관 동의 섹션 -->
@@ -266,10 +282,11 @@
                 const gender = document.getElementById('gender').value;
                 const birthYear = document.getElementById('birth-year').value;
                 const phone = document.getElementById('phone').value.trim();
+                const location = document.getElementById('location').value;
                 const marketingAgree = document.getElementById('agree-marketing').checked; // 마케팅 동의 여부
 
-                if (!email || !password || !name || !gender || !birthYear || !phone) {
-                    throw new Error('모든 필드를 입력해 주세요.');
+                if (!email || !password || !name || !gender || !birthYear || !phone || !location) {
+                    throw new Error('모든 필수 필드를 입력해 주세요.');
                 }
 
                 // 필수 약관 동의 확인
@@ -278,7 +295,7 @@
                 }
 
                 // Use centralized Auth logic
-                const res = await Auth.signup(email, password, name, gender, birthYear, phone, marketingAgree);
+                const res = await Auth.signup(email, password, name, gender, birthYear, phone, location, marketingAgree);
 
                 if (res.success) {
                     alert('회원가입이 완료되었습니다. 이메일 인증이 필요할 수 있습니다.\n확인 후 로그인해 주세요.');
