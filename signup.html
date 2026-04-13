@@ -110,7 +110,7 @@
                             <input type="checkbox" id="agree-terms" required class="agree-item w-4 h-4 rounded border-gray-300 text-[#1B2B48] focus:ring-[#1B2B48]">
                             <span class="text-xs text-gray-600">이용약관 동의 <span class="text-[#1B2B48] font-bold">(필수)</span></span>
                         </label>
-                        <button type="button" onclick="alert('이용약관 준비중')" class="text-[10px] text-gray-400 hover:underline">보기</button>
+                        <button type="button" onclick="showPolicy('terms')" class="text-[10px] text-gray-400 hover:underline">보기</button>
                     </div>
 
                     <div class="flex items-center justify-between group">
@@ -118,7 +118,7 @@
                             <input type="checkbox" id="agree-privacy" required class="agree-item w-4 h-4 rounded border-gray-300 text-[#1B2B48] focus:ring-[#1B2B48]">
                             <span class="text-xs text-gray-600">개인정보 수집 및 이용 동의 <span class="text-[#1B2B48] font-bold">(필수)</span></span>
                         </label>
-                        <button type="button" onclick="alert('개인정보처리방침 준비중')" class="text-[10px] text-gray-400 hover:underline">보기</button>
+                        <button type="button" onclick="showPolicy('privacy')" class="text-[10px] text-gray-400 hover:underline">보기</button>
                     </div>
 
                     <div class="flex items-center justify-between group">
@@ -126,7 +126,7 @@
                             <input type="checkbox" id="agree-marketing" class="agree-item w-4 h-4 rounded border-gray-300 text-[#1B2B48] focus:ring-[#1B2B48]">
                             <span class="text-xs text-gray-600">마케팅 정보 수신 동의 (선택)</span>
                         </label>
-                        <button type="button" onclick="alert('마케팅 동의 준비중')" class="text-[10px] text-gray-400 hover:underline">보기</button>
+                        <button type="button" onclick="showPolicy('marketing')" class="text-[10px] text-gray-400 hover:underline">보기</button>
                     </div>
                 </div>
             </div>
@@ -160,6 +160,24 @@
         </div>
     </div>
 
+    <!-- 약관 상세 모달 -->
+    <div id="policy-modal" class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div class="p-6 border-b flex justify-between items-center bg-gray-50">
+                <h3 id="policy-title" class="font-bold text-lg text-[#1B2B48]">약관 상세</h3>
+                <button onclick="closePolicy()" class="text-gray-400 hover:text-gray-600 p-2">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="policy-content" class="p-8 max-h-[60vh] overflow-y-auto text-sm text-gray-600 leading-relaxed space-y-4">
+                <!-- Content will be injected here -->
+            </div>
+            <div class="p-6 border-t bg-gray-50 text-right">
+                <button onclick="closePolicy()" class="bg-[#1B2B48] text-white px-8 py-3 rounded-xl font-bold shadow-md hover:bg-[#2a4269] transition-all">확인</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Supabase & Auth Logic -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="js/auth.js"></script>
@@ -172,7 +190,6 @@
             items.forEach(item => item.checked = agreeAll.checked);
         }
 
-        // 개별 항목 변경 시 전체 동의 상태 연동
         document.addEventListener('change', (e) => {
             if (e.target.classList.contains('agree-item')) {
                 const agreeAll = document.getElementById('agree-all');
@@ -181,6 +198,48 @@
                 agreeAll.checked = items.length === checkedItems.length;
             }
         });
+
+        const POLICY_DATA = {
+            terms: `
+                <h4 class="font-bold text-gray-900">[이용약관]</h4>
+                <p>제 1 조 (목적)<br>이 약관은 "The 온실"(이하 "회사")이 운영하는 서비스의 이용 조건 및 절차에 관한 사항을 규정함을 목적으로 합니다.</p>
+                <p>제 2 조 (회원가입)<br>이용자는 회사가 정한 양식에 따라 정보를 기입하고 약관에 동의함으로써 가입을 신청합니다.</p>
+                <p>제 3 조 (서비스 제공)<br>회사는 반려동물 장례식장 정보 제공 및 예약 중개 서비스를 제공하며, 실제 장례 서비스는 제휴 업체가 수행합니다.</p>
+                <p>제 4 조 (취소 및 환불)<br>예약 취소 시 환불 기준은 예약일로부터의 남은 기간에 따라 차등 적용됩니다 (2일 전~당일 환불 불가).</p>
+            `,
+            privacy: `
+                <h4 class="font-bold text-gray-900">[개인정보 처리방침]</h4>
+                <p>1. 수집 항목: 이름, 이메일, 성별, 출생년도, 전화번호, 반려동물 정보.</p>
+                <p>2. 수집 목적: 회원 식별, 서비스 예약 접수 및 안내, 상담 서비스 제공.</p>
+                <p>3. 보유 기간: 회원 탈퇴 시까지 또는 법령에서 정한 보존 기간까지.</p>
+                <p>4. 동의 거부권: 이용자는 개인정보 수집에 대한 동의를 거부할 수 있으나, 가입 및 예약 서비스 이용이 제한될 수 있습니다.</p>
+            `,
+            marketing: `
+                <h4 class="font-bold text-gray-900">[마케팅 정보 수신 동의]</h4>
+                <p>회사는 서비스 이용자에게 최적화된 혜택과 정보를 제공하기 위해 아래와 같이 마케팅 정보를 활용합니다.</p>
+                <p>1. 활용 목적: 신규 서비스 안내, 이벤트 및 프로모션 정보 발송, 이용 통계 분석.</p>
+                <p>2. 수신 수단: 이메일, SMS, 앱 푸시 알림.</p>
+                <p>3. 철회 방법: 마이페이지 설정 또는 고객센터를 통해 언제든지 동의를 철회할 수 있습니다.</p>
+            `
+        };
+
+        function showPolicy(type) {
+            const modal = document.getElementById('policy-modal');
+            const title = document.getElementById('policy-title');
+            const content = document.getElementById('policy-content');
+            
+            const titles = { terms: '이용약관 상세', privacy: '개인정보 처리방침', marketing: '마케팅 정보 활용 동의' };
+            
+            title.innerText = titles[type] || '약관 상세';
+            content.innerHTML = POLICY_DATA[type] || '내용을 불러올 수 없습니다.';
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePolicy() {
+            document.getElementById('policy-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
 
         function setGender(gender) {
             document.getElementById('gender').value = gender;

@@ -133,7 +133,7 @@
                                     <input type="checkbox" id="agree-terms" required class="agree-item w-5 h-5 rounded border-gray-300 text-partner focus:ring-partner">
                                     <span class="text-xs font-bold text-gray-600">파트너 이용약관 동의 <span class="text-partner">(필수)</span></span>
                                 </label>
-                                <button type="button" onclick="alert('준비중')" class="text-[10px] text-gray-400 hover:text-partner hover:underline font-bold">상세보기</button>
+                                <button type="button" onclick="showPolicy('terms')" class="text-[10px] text-gray-400 hover:text-partner hover:underline font-bold">상세보기</button>
                             </div>
 
                             <div class="flex items-center justify-between group">
@@ -141,7 +141,7 @@
                                     <input type="checkbox" id="agree-privacy" required class="agree-item w-5 h-5 rounded border-gray-300 text-partner focus:ring-partner">
                                     <span class="text-xs font-bold text-gray-600">개인정보 수집 및 이용 동의 <span class="text-partner">(필수)</span></span>
                                 </label>
-                                <button type="button" onclick="alert('준비중')" class="text-[10px] text-gray-400 hover:text-partner hover:underline font-bold">상세보기</button>
+                                <button type="button" onclick="showPolicy('privacy')" class="text-[10px] text-gray-400 hover:text-partner hover:underline font-bold">상세보기</button>
                             </div>
 
                             <div class="flex items-center justify-between group">
@@ -149,7 +149,7 @@
                                     <input type="checkbox" id="agree-marketing" class="agree-item w-5 h-5 rounded border-gray-300 text-partner focus:ring-partner">
                                     <span class="text-xs font-bold text-gray-600">비즈니스 정보 및 알림 수신 동의 (선택)</span>
                                 </label>
-                                <button type="button" onclick="alert('준비중')" class="text-[10px] text-gray-400 hover:text-partner hover:underline font-bold">상세보기</button>
+                                <button type="button" onclick="showPolicy('marketing')" class="text-[10px] text-gray-400 hover:text-partner hover:underline font-bold">상세보기</button>
                             </div>
                         </div>
                     </div>
@@ -184,6 +184,24 @@
         &copy; 2026 THE ONSIL PARTNER SYSTEM
     </footer>
 
+    <!-- 약관 상세 모달 -->
+    <div id="policy-modal" class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div class="p-6 border-b flex justify-between items-center bg-gray-50 font-sans">
+                <h3 id="policy-title" class="font-black text-lg text-partner uppercase tracking-tight">약관 상세</h3>
+                <button onclick="closePolicy()" class="text-gray-400 hover:text-partner p-2">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="policy-content" class="p-8 max-h-[60vh] overflow-y-auto text-sm text-gray-600 leading-relaxed font-medium space-y-4">
+                <!-- Content injected here -->
+            </div>
+            <div class="p-6 border-t bg-gray-50 text-right">
+                <button onclick="closePolicy()" class="bg-partner text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-partner/20 hover:bg-black transition-all">확인했습니다</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="js/auth.js"></script>
     <script>
@@ -203,6 +221,47 @@
                 agreeAll.checked = items.length === checkedItems.length;
             }
         });
+
+        const POLICY_DATA = {
+            terms: `
+                <h4 class="font-black text-partner">[The 온실 파트너 이용약관]</h4>
+                <p>제 1 조 (목적)<br>본 약관은 "The 온실"과 파트너사 간의 입점 및 서비스 이용에 관한 권리와 의무를 규정합니다.</p>
+                <p>제 2 조 (입점 승인)<br>파트너는 정확한 업체 정보를 제공해야 하며, 회사의 승인 후 장례 예약 중개 서비스를 이용할 수 있습니다.</p>
+                <p>제 3 조 (충실의 의무)<br>파트너는 이용자의 예약 정보에 대해 신속하게 대응해야 하며, 최상의 장례 서비스를 제공할 의무가 있습니다.</p>
+                <p>제 4 조 (수수료 및 정산)<br>중개 서비스 이용에 따른 정산 방식은 별도의 개별 계약에 따릅니다.</p>
+            `,
+            privacy: `
+                <h4 class="font-black text-partner">[개인정보 처리방침 (파트너)]</h4>
+                <p>1. 수집 항목: 담당자 성명, 연락처, 이메일, 업체명, 대표자명.</p>
+                <p>2. 수집 목적: 입점 신청 검토, 파트너 관리, 예약 정보 전달 및 정산 안내.</p>
+                <p>3. 보유 기간: 파트너 관계 종료 또는 탈퇴 시까지.</p>
+                <p>4. 파트너는 서비스 이용 중 취득한 고객의 개인정보를 타인에게 유출하거나 목적 외로 사용해서는 안 됩니다.</p>
+            `,
+            marketing: `
+                <h4 class="font-black text-partner">[비즈니스 정보 및 알림 수신 동의]</h4>
+                <p>1. 활용 목적: 신규 입점 프로모션 안내, 비즈니스 성과 분석 리포트 발송, 서비스 기능 업데이트 공지.</p>
+                <p>2. 수신 수단: 이메일, SMS, 알림톡.</p>
+                <p>3. 동의 시 파트너 성공을 위한 다양한 비즈니스 팁과 할인 혜택 정보를 우선적으로 받으실 수 있습니다.</p>
+            `
+        };
+
+        function showPolicy(type) {
+            const modal = document.getElementById('policy-modal');
+            const title = document.getElementById('policy-title');
+            const content = document.getElementById('policy-content');
+            
+            const titles = { terms: '파트너 이용약관', privacy: '개인정보 처리방침', marketing: '비즈니스 알림 동의' };
+            
+            title.innerText = titles[type] || '약관 상세';
+            content.innerHTML = POLICY_DATA[type] || '내용을 불러올 수 없습니다.';
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePolicy() {
+            document.getElementById('policy-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
 
         document.getElementById('signup-form').onsubmit = async (e) => {
             e.preventDefault();
