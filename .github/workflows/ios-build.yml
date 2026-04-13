@@ -1,10 +1,13 @@
 name: iOS Build (Cloud)
+
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
+
 permissions:
   contents: read
+
 jobs:
   build:
     runs-on: macos-14
@@ -12,30 +15,38 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+
       - name: Install Dependencies
         run: |
           npm install
+
       - name: Capacitor Sync
         run: npx cap sync ios --inline
+
       - name: Set Build Number
         run: |
           cd ios/App
           xcrun agvtool new-version -all ${{ github.run_number }}
+
       - name: Import Certificates
         uses: apple-actions/import-codesign-certs@v1
         with:
           p12-file-base64: ${{ secrets.IOS_P12_CERTIFICATE }}
           p12-password: ${{ secrets.IOS_P12_PASSWORD }}
+
       - name: Install Provisioning Profile
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           echo "${{ secrets.IOS_PROVISIONING_PROFILE }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/TheOnsil_AppStore.mobileprovision
+
       - name: Build iOS App (IPA)
         run: |
+          # 1. Archive 생성
           xcodebuild -workspace ios/App/App.xcworkspace \
                      -scheme App \
                      -sdk iphoneos \
@@ -47,19 +58,23 @@ jobs:
                      PROVISIONING_PROFILE_SPECIFIER="TheOnsil_AppStore" \
                      DEVELOPMENT_TEAM="59L34WS6RG"
           
+          # 2. IPA 파일 Export
           xcodebuild -exportArchive \
                      -archivePath $PWD/build/App.xcarchive \
                      -exportOptionsPlist ios/App/App/ExportOptions.plist \
                      -exportPath $PWD/build/ipa
+
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
           name: TheOnsil-iOS-Build
           path: build/ipa/*.ipa
+
       - name: Upload to App Store Connect
         uses: apple-actions/upload-testflight-build@v1
         with:
-          app-path: build/ipa/*.ipa
+          # 경로를 더 명확히 지정하여 'File not found' 에러를 방지합니다.
+          app-path: build/ipa/App.ipa
           issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           api-key-id: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           api-private-key: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
