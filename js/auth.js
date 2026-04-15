@@ -47,11 +47,13 @@ const Auth = {
                 id: user.id,
                 email: user.email,
                 name: metadata.name || user.email.split('@')[0],
-                role: metadata.role || 'member', // 권한 명시적 저장
-                facility: metadata.facility || null, // 업체명 명시적 저장
+                role: metadata.role || 'member',
+                facility: metadata.facility || null,
                 phone: metadata.phone || null,
-                location: metadata.location || null, // 지역 정보 추가
-                marketing_agree: metadata.marketing_agree === true, // 마케팅 동의 여부 추가
+                location: metadata.location || null,
+                gender: metadata.gender || null,
+                birth_year: metadata.birth_year || null,
+                marketing_agree: metadata.marketing_agree === true,
                 updated_at: new Date().toISOString()
             };
 
