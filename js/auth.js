@@ -53,8 +53,8 @@ const Auth = {
                 location: metadata.location || null,
                 gender: metadata.gender || null,
                 birth_year: metadata.birth_year || null,
-                marketing_agree: metadata.marketing_agree === true,
-                updated_at: new Date().toISOString()
+                marketing_agree: metadata.marketing_agree === true
+                // updated_at 제외
             };
 
             console.log('Syncing profile for:', user.id);
@@ -195,8 +195,7 @@ const Auth = {
             const { error: dbError } = await client
                 .from('profiles')
                 .update({
-                    ...metadata,
-                    updated_at: new Date().toISOString()
+                    ...metadata
                 })
                 .eq('id', authData.user.id);
 
