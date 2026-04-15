@@ -63,7 +63,8 @@ const Auth = {
                 .upsert(profileData, { onConflict: 'id' });
 
             if (error) {
-                console.warn('Profile sync failed (Table might be missing):', error.message);
+                console.warn('Profile sync failed:', error.message);
+                alert('[시스템 오류 진단] 프로필 테이블에 데이터를 복사할 수 없습니다!\n\n원인: ' + error.message + '\n디테일: ' + (error.details || '없음'));
             } else {
                 console.log('Profile synced successfully');
             }
