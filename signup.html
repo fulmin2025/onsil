@@ -281,7 +281,7 @@
                 const name = document.getElementById('name').value.trim();
                 const gender = document.getElementById('gender').value;
                 const birthYear = document.getElementById('birth-year').value;
-                const phone = document.getElementById('phone').value.trim();
+                const phone = document.getElementById('phone').value.trim().replace(/-/g, '');
                 const location = document.getElementById('location').value;
                 const marketingAgree = document.getElementById('agree-marketing').checked; // 마케팅 동의 여부
 
