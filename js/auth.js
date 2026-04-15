@@ -410,6 +410,73 @@ const Auth = {
     },
 
     /**
+     * Find Email by Name and Phone
+     */
+    findEmailByNameAndPhone: async (name, phone) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('서버 연결 실패');
+            const { data, error } = await client
+                .from('profiles')
+                .select('email')
+                .eq('name', name)
+                .eq('phone', phone)
+                .limit(1);
+            if (error) throw error;
+            if (!data || data.length === 0) throw new Error('일치하는 회원 정보가 없습니다.');
+            
+            let email = data[0].email;
+            let parts = email.split('@');
+            if (parts.length === 2 && parts[0].length >= 3) {
+                let maskString = '*'.repeat(parts[0].length - 3);
+                email = parts[0].substring(0, 3) + maskString + '@' + parts[1];
+            } else if (parts.length === 2) {
+                email = parts[0].substring(0, 1) + '***@' + parts[1];
+            }
+            return { success: true, email: email };
+        } catch (error) {
+            console.error('findEmail error:', error);
+            return { success: false, message: error.message };
+        }
+    },
+
+    /**
+     * Send Password Reset Email
+     */
+    sendPasswordResetEmail: async (email) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('서버 연결 실패');
+            const { error } = await client.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + '/reset-password.html'
+            });
+            if (error) throw error;
+            return { success: true, message: '비밀번호 재설정 링크가 발송되었습니다. 이메일을 확인해 주세요.' };
+        } catch (error) {
+            console.error('resetPassword error:', error);
+            let msg = error.message;
+            if (msg.includes('not found') || msg.includes('User not found')) msg = '가입되지 않은 이메일입니다.';
+            return { success: false, message: msg };
+        }
+    },
+
+    /**
+     * Update Password after Reset link clicked
+     */
+    updateNewPassword: async (newPassword) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('서버 연결 실패');
+            const { error } = await client.auth.updateUser({ password: newPassword });
+            if (error) throw error;
+            return { success: true, message: '비밀번호가 성공적으로 변경되었습니다.' };
+        } catch (error) {
+            console.error('updateNewPassword error:', error);
+            return { success: false, message: '링크가 만료되었거나 올바르지 않습니다.' };
+        }
+    },
+
+    /**
      * Get Supabase Client (Helper)
      */
     getSupabase: () => {
