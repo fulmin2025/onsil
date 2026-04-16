@@ -271,7 +271,7 @@ const Auth = {
         if (session && session.user) {
             const metadata = session.user.user_metadata || {};
             // Role detection: Metadata role or hardcoded Admin List
-            const adminEmails = ['theonsil@gmail.com', 'admin@theonsil.co.kr', 'theonsilofficila@gmail.com']; // Example admins
+            const adminEmails = ['theonsil@gmail.com', 'admin@theonsil.co.kr', 'theonsilofficial@gmail.com']; // Example admins
             const isSystemAdmin = adminEmails.includes(session.user.email) || metadata.role === 'admin';
             const isPartner = metadata.role === 'partner';
 
