@@ -185,29 +185,36 @@
         <div class="flex flex-col lg:flex-row justify-between mb-6 gap-4 items-start lg:items-center">
             <span id="result-count" class="text-sm text-gray-600 font-medium whitespace-nowrap">총 <span
                     class="text-[#C5A065] font-bold">0</span>개</span>
-            <div class="flex flex-wrap lg:flex-nowrap gap-2 items-center w-full lg:w-auto">
-                <select id="sort-select"
-                    class="px-3 py-2 border rounded-md text-sm font-medium text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#8D7B68] bg-white">
-                    <option value="recommend">추천순</option>
-                    <option value="distance">거리순</option>
-                    <option value="price">가격순</option>
-                </select>
-                <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar flex-nowrap w-full lg:w-auto">
-                    <button id="btn-mobile-filter" onclick="openFilterModal()"
-                        class="lg:hidden flex-shrink-0 whitespace-nowrap px-3 py-2 bg-white text-[#8D7B68] border-2 border-[#8D7B68] rounded-md text-xs sm:text-sm font-bold shadow-sm hover:bg-[#F9F5F0] flex items-center gap-1.5 transition-colors">
-                        <i class="fas fa-filter text-[10px] sm:text-xs"></i> 필터
-                    </button>
+            <div class="w-full lg:w-auto overflow-x-auto no-scrollbar" style="-webkit-overflow-scrolling: touch;">
+                <div class="flex items-center gap-2 pb-1 flex-nowrap min-w-max">
+                    <!-- 정렬 & 필터 그룹 -->
+                    <div class="flex items-center bg-gray-100 rounded-xl p-1 border border-gray-200 shadow-sm">
+                        <select id="sort-select"
+                            class="px-2 py-1.5 bg-transparent text-sm font-bold text-gray-700 focus:outline-none focus:ring-0 border-none cursor-pointer">
+                            <option value="recommend">추천순</option>
+                            <option value="distance">거리순</option>
+                            <option value="price">가격순</option>
+                        </select>
+                        <div class="w-px h-4 bg-gray-300 mx-1"></div>
+                        <button id="btn-mobile-filter" onclick="openFilterModal()"
+                            class="px-3 py-1.5 text-[#8D7B68] text-sm font-bold flex items-center gap-1.5 hover:text-[#C5A065] transition-colors">
+                            <i class="fas fa-filter text-xs"></i> <span>필터</span>
+                        </button>
+                    </div>
+                    
+                    <div class="w-px h-6 bg-gray-200 mx-1"></div>
+                    
                     <button id="btn-instant-quote"
-                        class="flex-shrink-0 whitespace-nowrap px-3 py-2 bg-[#C5A065] text-white rounded-md text-xs sm:text-sm font-bold shadow-md hover:bg-[#B08D55] transition-all flex items-center gap-1.5">
-                        <i class="fas fa-calculator text-[10px] sm:text-xs"></i> 바로견적 받기
+                        class="flex-shrink-0 whitespace-nowrap px-4 py-2 bg-[#C5A065] text-white rounded-xl text-sm font-bold shadow-sm hover:bg-[#B08D55] transition-all flex items-center gap-2">
+                        <i class="fas fa-calculator text-xs"></i> 바로견적
                     </button>
                     <button id="btn-list-view"
-                        class="flex-shrink-0 whitespace-nowrap px-3 py-2 bg-[#8D7B68] text-white rounded-md text-xs sm:text-sm font-bold shadow-sm flex items-center gap-1.5">
-                        <i class="fas fa-list text-[10px] sm:text-xs"></i> 목록 보기
+                        class="flex-shrink-0 whitespace-nowrap px-4 py-2 bg-[#8D7B68] text-white rounded-xl text-sm font-bold shadow-sm flex items-center gap-2 hover:brightness-110 transition-all">
+                        <i class="fas fa-list text-xs"></i> 목록
                     </button>
                     <button id="btn-map-view"
-                        class="flex-shrink-0 whitespace-nowrap px-3 py-2 bg-white text-gray-600 border rounded-md text-xs sm:text-sm font-bold shadow-sm hover:bg-gray-50 flex items-center gap-1.5 transition-colors">
-                        <i class="fas fa-map-marker-alt text-[10px] sm:text-xs"></i> 지도 보기
+                        class="flex-shrink-0 whitespace-nowrap px-4 py-2 bg-white text-gray-600 border border-gray-200 rounded-xl text-sm font-bold shadow-sm hover:bg-gray-50 transition-all flex items-center gap-2">
+                        <i class="fas fa-map-marker-alt text-xs"></i> 지도
                     </button>
                 </div>
             </div>
