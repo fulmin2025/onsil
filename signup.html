@@ -95,19 +95,10 @@
                     휴대폰 번호 <span class="text-red-500">*</span> 
                     <span class="text-xs text-red-500 ml-1 font-normal tracking-tight">(- 없이 숫자만 입력)</span>
                 </label>
-                <div class="flex gap-2">
-                    <input type="tel" id="phone" required pattern="[0-9]+" maxlength="11" readonly
-                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                        class="flex-1 px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black cursor-not-allowed"
-                        placeholder="본인인증을 해주세요">
-                    <button type="button" id="verify-btn" onclick="handleVerify()"
-                        class="px-5 py-3 bg-[#1B2B48] text-white rounded-lg font-bold hover:bg-[#2a4269] transition-all whitespace-nowrap">
-                        본인인증
-                    </button>
-                </div>
-                <p id="verify-status" class="hidden text-xs text-green-600 mt-1 font-medium italic">
-                    <i class="fas fa-check-circle mr-1"></i>본인인증이 완료되었습니다.
-                </p>
+                <input type="tel" id="phone" required pattern="[0-9]+" maxlength="11"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
+                    placeholder="01012345678">
             </div>
 
             <div>
@@ -209,15 +200,9 @@
 
     <!-- Supabase & Auth Logic -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
     <script src="js/auth.js"></script>
 
     <script>
-        // PortOne V2 식별 정보
-        const STORE_ID = "store-da73189c-c561-4ce0-8354-3de92abc40b9";
-        const IDENTITY_CHANNEL_KEY = "channel-key-f5a9e74f-4ef2-4fe0-89e8-8e85e65246b4"; // 채널 정보를 확인 후 수정 필요
-
-        let isVerified = false;
         function toggleAllAgree() {
             const agreeAll = document.getElementById('agree-all');
             const items = document.querySelectorAll('.agree-item');
@@ -287,51 +272,6 @@
             selected.classList.add('bg-[#1B2B48]', 'text-white', 'border-[#1B2B48]');
         }
 
-        async function handleVerify() {
-            try {
-                const response = await PortOne.requestIdentityVerification({
-                    storeId: STORE_ID,
-                    channelKey: IDENTITY_CHANNEL_KEY,
-                });
-
-                if (response.code) {
-                    // 인증 실패
-                    alert('본인인증에 실패하였습니다: ' + response.message);
-                    return;
-                }
-
-                // 인증 성공 시 데이터 처리 (V2 SDK는 identityVerificationId 또는 직접 정보를 리턴할 수 있음)
-                // 실제 환경에서는 identityVerificationId를 통해 서버에서 휴대폰 번호와 이름을 조회해오는 것이 좋습니다.
-                // 여기서는 테스트를 위해 성공 여부만 체크하도록 합니다.
-                
-                // 가상 정보를 채워넣는 예시 (실제로는 API 호출 필요)
-                // PortOne V2의 경우 보안상 클라이언트에는 모든 정보가 노출되지 않을 수 있습니다.
-                // 우선은 인증 성공 시 사용자 입력을 허용하거나, 고정된 정보를 받아오는 로직을 추가합니다.
-                
-                alert('본인인증이 완료되었습니다.');
-                
-                isVerified = true;
-                const phoneInput = document.getElementById('phone');
-                const verifyBtn = document.getElementById('verify-btn');
-                const verifyStatus = document.getElementById('verify-status');
-                
-                // 인증 성공 후 상태 업데이트
-                verifyBtn.disabled = true;
-                verifyBtn.innerText = '인증됨';
-                verifyBtn.classList.replace('bg-[#1B2B48]', 'bg-gray-400');
-                verifyStatus.classList.remove('hidden');
-                
-                // 임시로 입력을 가능하게 하거나 특정 번호로 세팅 (실제 구현 시 서버 통신 권장)
-                phoneInput.readOnly = false;
-                phoneInput.classList.remove('bg-gray-50', 'cursor-not-allowed');
-                phoneInput.focus();
-
-            } catch (error) {
-                console.error('Verification Error:', error);
-                alert('본인인증 중 오류가 발생했습니다.');
-            }
-        }
-
         async function handleSignup() {
             const submitBtn = document.getElementById('signup-btn');
             const originalBtnText = submitBtn.innerText;
@@ -351,10 +291,6 @@
 
                 if (!email || !password || !name || !gender || !birthYear || !phone || !location) {
                     throw new Error('모든 필수 필드를 입력해 주세요.');
-                }
-
-                if (!isVerified) {
-                    throw new Error('휴대폰 본인인증을 진행해 주세요.');
                 }
 
                 // 필수 약관 동의 확인
