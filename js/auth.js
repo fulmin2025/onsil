@@ -343,17 +343,51 @@ const Auth = {
                 </div>
             `;
 
-            // 모바일 메뉴 처리 (mobile-nav 내부 내비게이션 업데이트용 로직이 필요할 수 있음)
+            // 모바일 메뉴 처리
             const mobileNav = document.querySelector('#mobile-nav nav');
-            if (mobileNav && !document.getElementById('mobile-mypage-link')) {
-                 const mpLink = document.createElement('a');
-                 mpLink.id = 'mobile-mypage-link';
-                 mpLink.href = 'mypage.html';
-                 mpLink.className = 'flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium';
-                 mpLink.innerHTML = '<i class="fas fa-id-card w-5 text-center text-brand-warm"></i><span>마이페이지</span>';
-                 mobileNav.prepend(mpLink);
-            }
+            if (mobileNav) {
+                // 기존 모바일 인증 관련 요소 제거
+                const existingAuth = document.getElementById('mobile-auth-section');
+                if (existingAuth) existingAuth.remove();
 
+                const authSection = document.createElement('div');
+                authSection.id = 'mobile-auth-section';
+                authSection.className = 'mb-6 pb-6 border-b border-brand/5';
+                
+                if (user) {
+                    authSection.innerHTML = `
+                        <div class="flex items-center gap-3 px-2 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-brand-sage/10 flex items-center justify-center text-brand-sage">
+                                <i class="fas fa-user-circle text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-brand">${user.name}님 반가워요!</p>
+                                <p class="text-[10px] text-brand/40">${user.email}</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <a href="mypage.html" class="flex items-center justify-center gap-2 py-2.5 bg-brand-cream rounded-xl text-xs font-bold text-brand">
+                                <i class="fas fa-id-card text-brand-warm"></i> 마이페이지
+                            </a>
+                            <button onclick="Auth.logout()" class="flex items-center justify-center gap-2 py-2.5 bg-red-50 rounded-xl text-xs font-bold text-red-500">
+                                <i class="fas fa-sign-out-alt"></i> 로그아웃
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    authSection.innerHTML = `
+                        <div class="grid grid-cols-2 gap-2">
+                            <a href="login.html" class="flex items-center justify-center gap-2 py-3 bg-brand-cream rounded-xl text-sm font-bold text-brand">
+                                <i class="fas fa-sign-in-alt text-brand-warm"></i> 로그인
+                            </a>
+                            <a href="signup.html" class="flex items-center justify-center gap-2 py-3 bg-brand text-white rounded-xl text-sm font-bold shadow-md">
+                                <i class="fas fa-user-plus"></i> 회원가입
+                            </a>
+                        </div>
+                    `;
+                }
+                mobileNav.prepend(authSection);
+            }
         } else {
             authContainer.innerHTML = `
                 <div class="flex items-center gap-1">
@@ -365,9 +399,28 @@ const Auth = {
                     </a>
                 </div>
             `;
-            // 로그아웃 시 모바일 링크 제거
-            const mpLink = document.getElementById('mobile-mypage-link');
-            if (mpLink) mpLink.remove();
+            
+            // 로그아웃 상태의 모바일 메뉴 처리
+            const mobileNav = document.querySelector('#mobile-nav nav');
+            if (mobileNav) {
+                const existingAuth = document.getElementById('mobile-auth-section');
+                if (existingAuth) existingAuth.remove();
+
+                const authSection = document.createElement('div');
+                authSection.id = 'mobile-auth-section';
+                authSection.className = 'mb-6 pb-6 border-b border-brand/5';
+                authSection.innerHTML = `
+                    <div class="grid grid-cols-2 gap-2">
+                        <a href="login.html" class="flex items-center justify-center gap-2 py-3 bg-brand-cream rounded-xl text-sm font-bold text-brand">
+                            <i class="fas fa-sign-in-alt text-brand-warm"></i> 로그인
+                        </a>
+                        <a href="signup.html" class="flex items-center justify-center gap-2 py-3 bg-brand text-white rounded-xl text-sm font-bold shadow-md">
+                            <i class="fas fa-user-plus"></i> 회원가입
+                        </a>
+                    </div>
+                `;
+                mobileNav.prepend(authSection);
+            }
         }
     },
 
