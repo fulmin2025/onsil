@@ -6,7 +6,7 @@ const API_KEY = Deno.env.get("SOLAPI_API_KEY") || "";
 const API_SECRET = Deno.env.get("SOLAPI_API_SECRET") || "";
 const PFID = "KA01PF260408034734597Qg0MWoJwm6X";
 const TEMPLATE_ID = "KA01TP260408034931311qxnv1nRriN5";
-const SENDER = "01022921918";
+const SENDER = "15515052";
 
 console.log("Send Alimtalk function started");
 

@@ -85,7 +85,7 @@
 
                 <div class="mt-8 pt-8 border-t border-gray-50 text-center">
                     <p class="text-xs text-gray-400 leading-relaxed">
-                        계정 정보를 분실하셨거나 접근 권한이 없으신 경우<br>서포트팀(<span class="text-partner font-bold">010-2292-1918</span>)으로 문의주세요.
+                        계정 정보를 분실하셨거나 접근 권한이 없으신 경우<br>서포트팀(<span class="text-partner font-bold">1551-5052</span>)으로 문의주세요.
                     </p>
                 </div>
             </div>
@@ -117,7 +117,7 @@
                     } else if (user && user.role === 'pending_partner') {
                         // Pending approval
                         await Auth.logout();
-                        alert('아직 승인되지 않은 계정입니다. 관리자의 승인을 기다려주세요.\n(문의: 010-2292-1918)');
+                        alert('아직 승인되지 않은 계정입니다. 관리자의 승인을 기다려주세요.\n(문의: 1551-5052)');
                         location.reload();
                     } else {
                         // Not an admin or partner
