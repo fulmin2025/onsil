@@ -85,6 +85,14 @@
             transform: scale(1);
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
+
+        @keyframes modalEnter {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-modal-enter {
+            animation: modalEnter 0.3s ease-out forwards;
+        }
     </style>
 </head>
 
@@ -299,6 +307,50 @@
         </div>
     </div>
 
+    <!-- Post Detail Modal (Expanded Lightbox) -->
+    <div id="post-detail-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closePostDetail()"></div>
+        <div class="relative max-w-2xl w-full max-h-[90vh] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-modal-enter">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-brand/5 flex justify-between items-center bg-brand-cream/30">
+                <div>
+                    <span id="modal-category" class="text-[10px] font-bold text-brand-warm uppercase tracking-wider mb-1 block"></span>
+                    <h2 id="modal-title" class="font-bold text-xl text-brand leading-tight"></h2>
+                </div>
+                <button onclick="closePostDetail()" class="text-brand/40 hover:text-brand transition-colors p-2">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Body (Scrollable) -->
+            <div class="overflow-y-auto p-8 space-y-6 no-scrollbar">
+                <!-- Author Info -->
+                <div class="flex items-center justify-between pb-6 border-b border-brand/5">
+                    <div class="flex items-center gap-3">
+                        <div id="modal-author-avatar" class="w-10 h-10 rounded-full bg-brand/5 flex items-center justify-center text-brand font-bold"></div>
+                        <div>
+                            <p id="modal-author-name" class="font-bold text-sm text-brand"></p>
+                            <p id="modal-date" class="text-xs text-brand/30"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image (Optional) -->
+                <div id="modal-image-container" class="rounded-2xl overflow-hidden bg-brand-cream hidden border border-brand/5">
+                    <img id="modal-image" src="" class="w-full h-auto object-contain max-h-[500px]">
+                </div>
+
+                <!-- Full Content -->
+                <div id="modal-content" class="text-brand/80 leading-relaxed whitespace-pre-wrap py-2 text-lg"></div>
+            </div>
+
+            <!-- Modal Footer (Optional: Quick actions or close) -->
+            <div class="p-4 bg-brand-cream/20 border-t border-brand/5 text-center">
+                <button onclick="closePostDetail()" class="px-8 py-3 bg-brand text-white rounded-xl font-bold hover:bg-brand-light transition-all shadow-md">닫기</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/auth.js"></script>
@@ -446,11 +498,11 @@
                     ` : ''}
                 </div>
                 ${p.image ? `
-                    <div class="h-48 overflow-hidden bg-brand-cream">
-                        <img src="${p.image}" class="w-full h-full object-cover">
+                    <div class="h-48 overflow-hidden bg-brand-cream cursor-pointer" onclick="openPostDetail(${p.id})">
+                        <img src="${p.image}" class="w-full h-full object-cover transition-transform hover:scale-110">
                     </div>
                 ` : ''}
-                <div class="p-6 flex-1 flex flex-col">
+                <div class="p-6 flex-1 flex flex-col cursor-pointer" onclick="openPostDetail(${p.id})">
                     <h3 class="font-bold text-lg mb-2 line-clamp-1">${p.title}</h3>
                     <p class="text-sm text-brand/60 leading-relaxed mb-4 line-clamp-2 flex-1">${p.content}</p>
                     <div class="flex items-center justify-between pt-4 border-t border-brand/5 mb-4">
@@ -485,7 +537,7 @@
 
             return `
             <div class="bg-white rounded-3xl shadow-sm border border-brand/5 overflow-hidden flex flex-col hover:bg-white/50 transition-all cursor-pointer group">
-                <div class="p-6 flex justify-between items-center relative" onclick="toggleComments(${p.id})">
+                <div class="p-6 flex justify-between items-center relative" onclick="openPostDetail(${p.id})">
                     <div class="flex-1">
                         <h3 class="font-bold mb-1">${p.title}</h3>
                         <p class="text-sm text-brand/40 line-clamp-1">${p.content}</p>
@@ -747,6 +799,45 @@
             document.querySelector('#write-modal h2').innerText = '게시글 수정';
             document.getElementById('write-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
+        }
+
+        // Post Detail Modal Logic
+        function openPostDetail(postId) {
+            const post = posts.find(p => p.id == postId);
+            if (!post) return;
+
+            const modal = document.getElementById('post-detail-modal');
+            const title = document.getElementById('modal-title');
+            const authorName = document.getElementById('modal-author-name');
+            const authorAvatar = document.getElementById('modal-author-avatar');
+            const date = document.getElementById('modal-date');
+            const category = document.getElementById('modal-category');
+            const content = document.getElementById('modal-content');
+            const imgContainer = document.getElementById('modal-image-container');
+            const img = document.getElementById('modal-image');
+
+            title.innerText = post.title || '제목 없음';
+            category.innerText = categoryData[post.cat] ? categoryData[post.cat].title : '기타';
+            authorName.innerText = (post.author || '익명') + '님';
+            authorAvatar.innerText = (post.author && post.author[0]) ? post.author[0].toUpperCase() : '?';
+            date.innerText = post.date || '';
+            content.innerText = post.content || '';
+
+            if (post.image) {
+                img.src = post.image;
+                imgContainer.classList.remove('hidden');
+            } else {
+                imgContainer.classList.add('hidden');
+            }
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePostDetail() {
+            const modal = document.getElementById('post-detail-modal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
         }
 
         async function deleteComment(postId, commentId) {
