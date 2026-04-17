@@ -548,9 +548,9 @@
             const file = e.target.files[0];
             if (!file) return;
 
-            // 100MB limit
-            if (file.size > 100 * 1024 * 1024) {
-                alert('파일 크기는 100MB를 넘을 수 없습니다.');
+            // 10MB limit
+            if (file.size > 10 * 1024 * 1024) {
+                alert('파일 크기는 10MB를 넘을 수 없습니다.');
                 return;
             }
 
