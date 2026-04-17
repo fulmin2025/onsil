@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>커�??�티 - The ?�실</title>
+    <title>커뮤니티 - The 온실</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -94,17 +94,17 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
             <!-- Logo -->
             <a href="index.html" class="flex items-center gap-2 group flex-shrink-0">
-                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="The ?�실 로고">
-                <span class="font-bold text-lg text-brand tracking-tight">The ?�실</span>
+                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="The 온실 로고">
+                <span class="font-bold text-lg text-brand tracking-tight">The 온실</span>
             </a>
 
             <!-- Desktop Nav -->
             <nav class="hidden lg:flex items-center gap-1">
-                <a href="search.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">?��??�장 찾기</a>
-                <a href="guide.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">?�별 가?�드</a>
-                <a href="self-diagnosis.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">건강?��?진단</a>
-                <a href="memory.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">추억 가?�드</a>
-                <a href="community.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg transition-all">커�??�티</a>
+                <a href="search.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">반려견장례식장 찾기</a>
+                <a href="guide.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">이별 가이드</a>
+                <a href="self-diagnosis.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">건강자가진단</a>
+                <a href="memory.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">추억 가이드</a>
+                <a href="community.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg transition-all">커뮤니티</a>
             </nav>
 
             <!-- Desktop Actions -->
@@ -113,8 +113,8 @@
                 <a href="search.html?quote=true" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
                     <i class="fas fa-calculator"></i> 견적
                 </a>
-                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?�약?� 로그?????�용 가?�합?�다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
-                    <i class="fas fa-calendar-check text-sm"></i> ?�약
+                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-calendar-check text-sm"></i> 예약
                 </button>
                 <a href="tel:1551-5052" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2">
                     <i class="fas fa-phone-alt text-xs"></i> 1551-5052
@@ -123,10 +123,10 @@
 
             <!-- Mobile Header Actions -->
             <div class="flex lg:hidden items-center gap-2">
-                <a href="tel:1551-5052" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand/5 text-brand hover:bg-brand/10 transition-colors" title="?�화 ?�담">
+                <a href="tel:1551-5052" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand/5 text-brand hover:bg-brand/10 transition-colors" title="전화 상담">
                     <i class="fas fa-phone-alt text-sm"></i>
                 </a>
-                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?�약?� 로그?????�용 가?�합?�다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand-sage/10 text-brand-sage hover:bg-brand-sage/20 transition-colors" title="?�약?�기">
+                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand-sage/10 text-brand-sage hover:bg-brand-sage/20 transition-colors" title="예약하기">
                     <i class="fas fa-calendar-check text-sm"></i>
                 </button>
                 <button id="mobile-menu-btn" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors" onclick="toggleMobileNav()">
@@ -141,23 +141,23 @@
             <!-- Sidebar Navigation -->
             <aside class="w-full md:w-64 space-y-6">
                 <div class="bg-white p-6 rounded-3xl shadow-sm border border-brand/5">
-                    <h2 class="font-bold text-lg mb-6">커�??�티</h2>
+                    <h2 class="font-bold text-lg mb-6">커뮤니티</h2>
                     <nav class="space-y-2">
                         <button onclick="switchCategory('welcome')" class="category-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all active" id="tab-welcome">
-                            <i class="fas fa-hand-sparkles w-5"></i> 가?�인??
+                            <i class="fas fa-hand-sparkles w-5"></i> 가입인사
                         </button>
                         <button onclick="switchCategory('pet')" class="category-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all" id="tab-pet">
-                            <i class="fas fa-paw w-5"></i> ?�이?�랑
+                            <i class="fas fa-paw w-5"></i> 아이자랑
                         </button>
                         <button onclick="switchCategory('daily')" class="category-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all" id="tab-daily">
-                            <i class="fas fa-heart w-5"></i> ?�상공유
+                            <i class="fas fa-heart w-5"></i> 일상공유
                         </button>
                     </nav>
                 </div>
 
                 <div id="write-button-container" class="sticky top-24">
                     <button onclick="openWriteModal()" class="w-full bg-brand hover:bg-brand-light text-white py-4 rounded-2xl font-bold shadow-lg shadow-brand/10 flex items-center justify-center gap-2 transition-all transform active:scale-[0.98]">
-                        <i class="fas fa-edit"></i> 글?�기
+                        <i class="fas fa-edit"></i> 글쓰기
                     </button>
                 </div>
             </aside>
@@ -167,8 +167,8 @@
                 <!-- Board Header -->
                 <div class="mb-8 flex justify-between items-end">
                     <div>
-                        <h1 id="board-title" class="text-3xl font-bold mb-2">가?�인??/h1>
-                        <p id="board-desc" class="text-brand/40">The ?�실 커�??�티???�신 것을 ?�영?�니?? ?�사�??�눠보세??</p>
+                        <h1 id="board-title" class="text-3xl font-bold mb-2">가입인사</h1>
+                        <p id="board-desc" class="text-brand/40">The 온실 커뮤니티에 오신 것을 환영합니다! 인사를 나눠보세요.</p>
                     </div>
                 </div>
 
@@ -186,7 +186,7 @@
         <div class="absolute inset-0 flex items-center justify-center p-4">
             <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
                 <div class="p-6 border-b border-brand/5 flex justify-between items-center bg-brand-cream/50">
-                    <h2 class="font-bold text-lg">??글 ?�성</h2>
+                    <h2 class="font-bold text-lg">새 글 작성</h2>
                     <button onclick="closeWriteModal()" class="text-brand/40 hover:text-brand transition-colors">
                         <i class="fas fa-times text-xl"></i>
                     </button>
@@ -196,28 +196,28 @@
                     <div>
                         <label class="block text-sm font-bold text-brand/60 mb-2">카테고리</label>
                         <select id="post-category" class="w-full px-4 py-3 rounded-xl border border-brand/10 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all appearance-none bg-white">
-                            <option value="welcome">가?�인??/option>
-                            <option value="pet">?�이?�랑</option>
-                            <option value="daily">?�상공유</option>
+                            <option value="welcome">가입인사</option>
+                            <option value="pet">아이자랑</option>
+                            <option value="daily">일상공유</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-bold text-brand/60 mb-2">?�목</label>
-                        <input type="text" id="post-title" class="w-full px-4 py-3 rounded-xl border border-brand/10 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all" placeholder="?�목???�력?�주?�요.">
+                        <label class="block text-sm font-bold text-brand/60 mb-2">제목</label>
+                        <input type="text" id="post-title" class="w-full px-4 py-3 rounded-xl border border-brand/10 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all" placeholder="제목을 입력해주세요.">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-bold text-brand/60 mb-2">?�용</label>
-                        <textarea id="post-content" rows="6" class="w-full px-4 py-3 rounded-xl border border-brand/10 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all resize-none" placeholder="?�용???�력?�주?�요."></textarea>
+                        <label class="block text-sm font-bold text-brand/60 mb-2">내용</label>
+                        <textarea id="post-content" rows="6" class="w-full px-4 py-3 rounded-xl border border-brand/10 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all resize-none" placeholder="내용을 입력해주세요."></textarea>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-bold text-brand/60 mb-2">?�진 첨�?</label>
+                        <label class="block text-sm font-bold text-brand/60 mb-2">사진 첨부</label>
                         <div class="flex items-center gap-4">
                             <label class="cursor-pointer bg-brand-cream hover:bg-brand/5 px-6 py-4 rounded-2xl border-2 border-dashed border-brand/10 flex flex-col items-center gap-2 transition-all">
                                 <i class="fas fa-camera text-brand/40 text-xl"></i>
-                                <span class="text-xs font-medium text-brand/40">?�진 추�?</span>
+                                <span class="text-xs font-medium text-brand/40">사진 추가</span>
                                 <input type="file" id="post-image" class="hidden" accept="image/*" onchange="handleImagePreview(event)">
                             </label>
                             <div id="image-preview" class="relative group hidden">
@@ -232,7 +232,7 @@
 
                 <div class="p-6 bg-brand-cream/50 border-t border-brand/5 flex gap-3">
                     <button onclick="closeWriteModal()" class="flex-1 py-4 text-brand font-bold hover:bg-brand/5 rounded-2xl transition-all">취소</button>
-                    <button onclick="submitPost()" class="flex-[2] py-4 bg-brand text-white font-bold rounded-2xl shadow-lg hover:bg-brand-light transition-all transform active:scale-[0.98]">?�성 ?�료</button>
+                    <button onclick="submitPost()" class="flex-[2] py-4 bg-brand text-white font-bold rounded-2xl shadow-lg hover:bg-brand-light transition-all transform active:scale-[0.98]">작성 완료</button>
                 </div>
             </div>
         </div>
@@ -260,39 +260,39 @@
                     <a href="search.html"
                         class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
                         <i class="fas fa-search w-5 text-center"></i>
-                        <span>?��??�장 찾기</span>
+                        <span>반려견장례식장 찾기</span>
                     </a>
                     <a href="guide.html"
                         class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
                         <i class="fas fa-book-open w-5 text-center"></i>
-                        <span>?�별 가?�드</span>
+                        <span>이별 가이드</span>
                     </a>
                     <a href="self-diagnosis.html"
                         class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
                         <i class="fas fa-stethoscope w-5 text-center"></i>
-                        <span>건강?��?진단</span>
+                        <span>건강자가진단</span>
                     </a>
                     <a href="memory.html"
                         class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
                         <i class="fas fa-heart w-5 text-center"></i>
-                        <span>추억 가?�드</span>
+                        <span>추억 가이드</span>
                     </a>
                     <a href="community.html"
                         class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-brand/5 text-brand font-bold transition-colors">
                         <i class="fas fa-comments w-5 text-center"></i>
-                        <span>커�??�티</span>
+                        <span>커뮤니티</span>
                     </a>
                 </nav>
                 <!-- Mobile Bottom Actions -->
                 <div class="pt-6 border-t border-brand/5 space-y-3">
                     <button
-                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?�약?� 로그?????�용 가?�합?�다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
                         class="w-full bg-brand-sage text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-sage/90 transition-colors">
-                        <i class="fas fa-calendar-check text-sm"></i> ?�약?�기
+                        <i class="fas fa-calendar-check text-sm"></i> 예약하기
                     </button>
                     <a href="tel:1551-5052"
                         class="w-full bg-brand-warm text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-warmDark transition-colors">
-                        <i class="fas fa-phone-alt text-sm"></i> 1551-5052 ?�담???�결
+                        <i class="fas fa-phone-alt text-sm"></i> 1551-5052 상담원 연결
                     </a>
                 </div>
             </div>
@@ -309,28 +309,28 @@
         let currentUser = null;
         let posts = [];
         let uploadedImageBase64 = null;
-        let editPostId = null; // Track if we're editing an existing post
+        let editPostId = null; 
 
-        const ADMIN_EMAIL = 'admin@onsil.com';
+        const ADMIN_EMAILS = ['theonsil@gmail.com', 'admin@theonsil.co.kr', 'theonsilofficial@gmail.com', 'admin@onsil.com'];
 
         const categoryData = {
-            welcome: { title: '가?�인??, desc: '?�실 커�??�티???�신 것을 ?�영?�니?? ?�사�??�눠보세??' },
-            pet: { title: '?�이?�랑', desc: '?�리 ?�이??가???�쁘�??�복???�간??공유?�주?�요.' },
-            daily: { title: '?�상공유', desc: '?�고 ?��? ?�야�? ?�소???�상?�을 ?�유�?�� ?�닥?�닥 ?�눠??' }
+            welcome: { title: '가입인사', desc: '온실 커뮤니티에 오신 것을 환영합니다! 인사를 나눠보세요.' },
+            pet: { title: '아이자랑', desc: '우리 아이의 가장 예쁘고 행복한 순간을 공유해주세요.' },
+            daily: { title: '일상공유', desc: '하고 싶은 이야기, 사소한 일상들을 자유롭게 토닥토닥 나눠요.' }
         };
 
         // Initialize
         window.onload = async () => {
-            loadPosts();
-            renderPosts();
-            
-            // Check auth state
+            // 1. Auth check first
             if (window.Auth) {
                 try {
                     currentUser = await window.Auth.getCurrentUser();
                     updateAuthUI();
-                } catch (e) { console.error(e); }
+                } catch (e) { console.error('Auth Check Error:', e); }
             }
+
+            // 2. Load Posts from Supabase
+            await loadPosts();
         };
 
         function updateAuthUI() {
@@ -338,193 +338,193 @@
             const writeBtn = document.getElementById('write-button-container');
 
             if (currentUser) {
-                const name = currentUser.email.split('@')[0];
                 authContainer.innerHTML = `
-                    <div class="flex items-center gap-3 mr-2">
-                        <div class="w-8 h-8 rounded-full bg-brand/5 flex items-center justify-center text-xs font-bold text-brand">
-                            ${name[0].toUpperCase()}
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-full bg-brand-sage/10 flex items-center justify-center text-brand-sage text-xs font-bold">
+                            ${currentUser.name[0].toUpperCase()}
                         </div>
-                        <span class="text-sm font-bold text-brand">${name}??/span>
+                        <span class="text-sm font-bold text-brand hidden sm:inline">${currentUser.name}님</span>
                     </div>
                 `;
-                // Members can write
                 if (writeBtn) writeBtn.classList.remove('hidden');
             } else {
                 authContainer.innerHTML = `
-                    <a href="login.html" class="px-4 py-2.5 text-sm font-bold text-brand/60 hover:text-brand transition-all">로그??/a>
-                    <a href="signup.html" class="bg-brand text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-light transition-all">?�원가??/a>
+                    <a href="login.html" class="px-4 py-2.5 text-sm font-bold text-brand/60 hover:text-brand transition-all">로그인</a>
+                    <a href="signup.html" class="bg-brand text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-light transition-all">회원가입</a>
                 `;
-                // Hide write button for guests (optional, or show alert on click)
-                // if (writeBtn) writeBtn.classList.add('hidden');
             }
         }
 
         // Category Switching
         function switchCategory(cat) {
             currentCategory = cat;
-            
-            // Update UI
             document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
             document.getElementById(`tab-${cat}`).classList.add('active');
-
             document.getElementById('board-title').innerText = categoryData[cat].title;
             document.getElementById('board-desc').innerText = categoryData[cat].desc;
-
-            // Update modal default select
             document.getElementById('post-category').value = cat;
 
             renderPosts();
         }
 
-        // Data Management (LocalStorage)
-        function loadPosts() {
-            const savedPosts = localStorage.getItem('onsil_community_posts');
-            if (savedPosts) {
-                posts = JSON.parse(savedPosts).map(p => ({
+        // Data Management (Supabase)
+        async function loadPosts() {
+            try {
+                const supabase = Auth.getSupabase();
+                if (!supabase) return;
+
+                const { data, error } = await supabase
+                    .from('community_posts')
+                    .select('*, community_comments(*) ')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                // Sync with local state
+                posts = data.map(p => ({
                     ...p,
-                    authorEmail: p.authorEmail || (p.author + '@test.com'), // Migration for old posts
-                    comments: (p.comments || []).map(c => ({
-                        ...c,
-                        authorEmail: c.authorEmail || (c.author + '@test.com')
+                    cat: p.category,
+                    date: new Date(p.created_at).toISOString().split('T')[0],
+                    author: p.author_name,
+                    authorEmail: p.author_email,
+                    image: p.image_url,
+                    comments: (p.community_comments || []).map(c => ({
+                        id: c.id,
+                        author: c.author_name,
+                        authorEmail: c.author_email,
+                        content: c.content,
+                        date: new Date(c.created_at).toISOString().split('T')[0]
                     }))
                 }));
-            } else {
-                // Mock Data
-                posts = [
-                    { id: 1, cat: 'welcome', title: '처음 가?�했?�니??', content: '?�녕?�세?? 15????강아지 초코?� ?�께?�고 ?�습?�다. 좋�? ?�보 많이 ?�어가�??�어??', author: '초코마님', authorEmail: 'choco@test.com', date: '2026-03-30', image: null, comments: [] },
-                    { id: 3, cat: 'pet', title: '?�리 뭉치 미용?�어??, content: '?�무 귀?�죠? 복슬복슬?�던 ?�을 깎으???�기 같네??', author: '뭉치?�니', authorEmail: 'munchi@test.com', date: '2026-03-29', image: 'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80&w=800', comments: [{id: 101, author: '몽이?�마', authorEmail: 'mong@test.com', content: '?�머 ?�무 ?�형 같아??', date: '2026-03-30'}] },
-                    { id: 4, cat: 'daily', title: '강아지 �?추천?�주?�요', content: '?�딱?��? ?�으면서 ?�래 먹는 �??�을까요?', author: '?�댕?�버', authorEmail: 'dang@test.com', date: '2026-03-28', image: null, comments: [] }
-                ];
-                savePosts();
-            }
-        }
 
-        function savePosts() {
-            localStorage.setItem('onsil_community_posts', JSON.stringify(posts));
+                renderPosts();
+            } catch (error) {
+                console.error('Error loading posts:', error);
+            }
         }
 
         function renderPosts() {
             const container = document.getElementById('board-content');
-            const filteredPosts = posts.filter(p => p.cat === currentCategory).sort((a,b) => b.id - a.id);
+            const filteredPosts = posts.filter(p => p.cat === currentCategory); // Already sorted from DB
             
             if (filteredPosts.length === 0) {
                 container.innerHTML = `
                     <div class="bg-white py-20 rounded-3xl border border-brand/5 text-center">
                         <i class="fas fa-ghost text-brand/10 text-5xl mb-4"></i>
-                        <p class="text-brand/40 font-medium">?�직 게시글???�습?�다.<br>�?번째 ?�야기�? ?�겨보세??</p>
+                        <p class="text-brand/40 font-medium">아직 게시글이 없습니다.<br>첫 번째 이야기를 남겨보세요!</p>
                     </div>
                 `;
                 return;
             }
 
             if (currentCategory === 'pet' || currentCategory === 'daily') {
-                // Photo-heavy grid
                 container.className = "grid sm:grid-cols-2 gap-6";
-                container.innerHTML = filteredPosts.map(p => {
-                    const isOwner = currentUser && currentUser.email === p.authorEmail;
-                    const isAdmin = currentUser && currentUser.email === ADMIN_EMAIL;
-                    
-                    return `
-                    <div class="post-card bg-white rounded-3xl shadow-sm border border-brand/5 overflow-hidden flex flex-col relative">
-                        <!-- Post Management (Owner/Admin only) -->
-                        <div class="absolute top-4 right-4 flex gap-2 z-10">
-                            ${isOwner ? `
-                                <button onclick="editPost(${p.id})" class="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm text-brand/40 hover:text-brand transition-colors shadow-sm flex items-center justify-center">
-                                    <i class="fas fa-pencil-alt text-[10px]"></i>
-                                </button>
-                            ` : ''}
-                            ${(isOwner || isAdmin) ? `
-                                <button onclick="deletePost(${p.id})" class="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm text-red-400 hover:text-red-600 transition-colors shadow-sm flex items-center justify-center">
-                                    <i class="fas fa-trash-alt text-[10px]"></i>
-                                </button>
-                            ` : ''}
-                        </div>
-                        ${p.image ? `
-                            <div class="h-48 overflow-hidden bg-brand-cream">
-                                <img src="${p.image}" class="w-full h-full object-cover">
-                            </div>
-                        ` : ''}
-                        <div class="p-6 flex-1 flex flex-col">
-                            <h3 class="font-bold text-lg mb-2 line-clamp-1">${p.title}</h3>
-                            <p class="text-sm text-brand/60 leading-relaxed mb-4 line-clamp-2 flex-1">${p.content}</p>
-                            <div class="flex items-center justify-between pt-4 border-t border-brand/5 mb-4">
-                                <span class="text-xs font-bold text-brand/40">${p.author}</span>
-                                <span class="text-[10px] text-brand/20">${p.date}</span>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <button onclick="toggleComments(${p.id})" class="flex items-center gap-1.5 text-xs font-bold text-brand/60 hover:text-brand transition-colors">
-                                    <i class="far fa-comment-dots text-sm"></i>
-                                    ?��? ${p.comments.length}
-                                </button>
-                            </div>
-                        </div>
-                        <!-- Comment Section for Cards -->
-                        <div id="comments-${p.id}" class="comment-section bg-brand-cream/30 border-t border-brand/5">
-                            <div class="p-6 space-y-4">
-                                <div class="space-y-3" id="comment-list-${p.id}">
-                                    ${renderCommentList(p.comments, p.id)}
-                                </div>
-                                <div class="flex gap-2 mt-4">
-                                    <input type="text" id="comment-input-${p.id}" placeholder="?��????�력?�세??.." class="flex-1 px-4 py-2 rounded-xl border border-brand/10 text-xs focus:ring-2 focus:ring-brand outline-none transition-all">
-                                    <button onclick="submitComment(${p.id})" class="bg-brand text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-brand-light transition-all">?�록</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `}).join('');
+                container.innerHTML = filteredPosts.map(p => renderCardPost(p)).join('');
             } else {
-                // Standard list for Welcome
                 container.className = "grid gap-4";
-                container.innerHTML = filteredPosts.map(p => {
-                    const isOwner = currentUser && currentUser.email === p.authorEmail;
-                    const isAdmin = currentUser && currentUser.email === ADMIN_EMAIL;
+                container.innerHTML = filteredPosts.map(p => renderListPost(p)).join('');
+            }
+        }
 
-                    return `
-                    <div class="bg-white rounded-3xl shadow-sm border border-brand/5 overflow-hidden flex flex-col hover:bg-white/50 transition-all cursor-pointer group">
-                        <div class="p-6 flex justify-between items-center relative" onclick="toggleComments(${p.id})">
-                            <div class="flex-1">
-                                <h3 class="font-bold mb-1">${p.title}</h3>
-                                <p class="text-sm text-brand/40 line-clamp-1">${p.content}</p>
-                            </div>
-                            <!-- Small Management in List UI -->
-                            <div class="flex items-center gap-4">
-                                <div class="text-right">
-                                    <p class="text-xs font-bold text-brand/60">${p.author}</p>
-                                    <p class="text-[10px] text-brand/20">${p.date}</p>
-                                </div>
-                                <div class="flex flex-col gap-1 items-center">
-                                    <div class="w-8 h-8 rounded-full bg-brand/5 flex flex-col items-center justify-center text-[10px] font-bold text-brand/40">
-                                        <i class="far fa-comment"></i>
-                                        ${p.comments.length}
-                                    </div>
-                                    <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        ${isOwner ? `<i onclick="event.stopPropagation(); editPost(${p.id})" class="fas fa-edit text-brand/30 hover:text-brand text-[10px]"></i>` : ''}
-                                        ${(isOwner || isAdmin) ? `<i onclick="event.stopPropagation(); deletePost(${p.id})" class="fas fa-trash-alt text-red-300 hover:text-red-500 text-[10px]"></i>` : ''}
-                                    </div>
-                                </div>
-                            </div>
+        function renderCardPost(p) {
+            const isOwner = currentUser && currentUser.email === p.authorEmail;
+            const isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
+            
+            return `
+            <div class="post-card bg-white rounded-3xl shadow-sm border border-brand/5 overflow-hidden flex flex-col relative">
+                <div class="absolute top-4 right-4 flex gap-2 z-10">
+                    ${isOwner ? `
+                        <button onclick="editPost(${p.id})" class="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm text-brand/40 hover:text-brand transition-colors shadow-sm flex items-center justify-center">
+                            <i class="fas fa-pencil-alt text-[10px]"></i>
+                        </button>
+                    ` : ''}
+                    ${(isOwner || isAdmin) ? `
+                        <button onclick="deletePost(${p.id})" class="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm text-red-400 hover:text-red-600 transition-colors shadow-sm flex items-center justify-center">
+                            <i class="fas fa-trash-alt text-[10px]"></i>
+                        </button>
+                    ` : ''}
+                </div>
+                ${p.image ? `
+                    <div class="h-48 overflow-hidden bg-brand-cream">
+                        <img src="${p.image}" class="w-full h-full object-cover">
+                    </div>
+                ` : ''}
+                <div class="p-6 flex-1 flex flex-col">
+                    <h3 class="font-bold text-lg mb-2 line-clamp-1">${p.title}</h3>
+                    <p class="text-sm text-brand/60 leading-relaxed mb-4 line-clamp-2 flex-1">${p.content}</p>
+                    <div class="flex items-center justify-between pt-4 border-t border-brand/5 mb-4">
+                        <span class="text-xs font-bold text-brand/40">${p.author}</span>
+                        <span class="text-[10px] text-brand/20">${p.date}</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <button onclick="toggleComments(${p.id})" class="flex items-center gap-1.5 text-xs font-bold text-brand/60 hover:text-brand transition-colors">
+                            <i class="far fa-comment-dots text-sm"></i>
+                            댓글 ${p.comments.length}
+                        </button>
+                    </div>
+                </div>
+                <div id="comments-${p.id}" class="comment-section bg-brand-cream/30 border-t border-brand/5">
+                    <div class="p-6 space-y-4">
+                        <div class="space-y-3" id="comment-list-${p.id}">
+                            ${renderCommentList(p.comments, p.id)}
                         </div>
-                        <!-- Comment Section for List -->
-                        <div id="comments-${p.id}" class="comment-section bg-brand-cream/30 border-t border-brand/5">
-                            <div class="p-6 space-y-4">
-                                <div class="space-y-3" id="comment-list-${p.id}">
-                                    ${renderCommentList(p.comments, p.id)}
-                                </div>
-                                <div class="flex gap-2">
-                                    <input type="text" id="comment-input-${p.id}" placeholder="?��????�력?�세??.." class="flex-1 px-4 py-2 rounded-xl border border-brand/10 text-xs focus:ring-2 focus:ring-brand outline-none transition-all">
-                                    <button onclick="submitComment(${p.id})" class="bg-brand text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-brand-light transition-all">?�록</button>
-                                </div>
+                        <div class="flex gap-2 mt-4">
+                            <input type="text" id="comment-input-${p.id}" placeholder="댓글을 입력하세요..." class="flex-1 px-4 py-2 rounded-xl border border-brand/10 text-xs focus:ring-2 focus:ring-brand outline-none transition-all">
+                            <button onclick="submitComment(${p.id})" class="bg-brand text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-brand-light transition-all">등록</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        function renderListPost(p) {
+            const isOwner = currentUser && currentUser.email === p.authorEmail;
+            const isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
+
+            return `
+            <div class="bg-white rounded-3xl shadow-sm border border-brand/5 overflow-hidden flex flex-col hover:bg-white/50 transition-all cursor-pointer group">
+                <div class="p-6 flex justify-between items-center relative" onclick="toggleComments(${p.id})">
+                    <div class="flex-1">
+                        <h3 class="font-bold mb-1">${p.title}</h3>
+                        <p class="text-sm text-brand/40 line-clamp-1">${p.content}</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right">
+                            <p class="text-xs font-bold text-brand/60">${p.author}</p>
+                            <p class="text-[10px] text-brand/20">${p.date}</p>
+                        </div>
+                        <div class="flex flex-col gap-1 items-center">
+                            <div class="w-8 h-8 rounded-full bg-brand/5 flex flex-col items-center justify-center text-[10px] font-bold text-brand/40">
+                                <i class="far fa-comment"></i>
+                                ${p.comments.length}
+                            </div>
+                            <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                ${isOwner ? `<i onclick="event.stopPropagation(); editPost(${p.id})" class="fas fa-edit text-brand/30 hover:text-brand text-[10px]"></i>` : ''}
+                                ${(isOwner || isAdmin) ? `<i onclick="event.stopPropagation(); deletePost(${p.id})" class="fas fa-trash-alt text-red-300 hover:text-red-500 text-[10px]"></i>` : ''}
                             </div>
                         </div>
                     </div>
-                `}).join('');
-            }
+                </div>
+                <div id="comments-${p.id}" class="comment-section bg-brand-cream/30 border-t border-brand/5">
+                    <div class="p-6 space-y-4">
+                        <div class="space-y-3" id="comment-list-${p.id}">
+                            ${renderCommentList(p.comments, p.id)}
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="comment-input-${p.id}" placeholder="댓글을 입력하세요..." class="flex-1 px-4 py-2 rounded-xl border border-brand/10 text-xs focus:ring-2 focus:ring-brand outline-none transition-all">
+                            <button onclick="submitComment(${p.id})" class="bg-brand text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-brand-light transition-all">등록</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
         }
 
         // Modal Logic
         function openWriteModal() {
             if (!currentUser) {
-                alert('로그?????�용 가?�합?�다.');
+                alert('로그인 후 이용 가능합니다.');
                 location.href = 'login.html';
                 return;
             }
@@ -535,10 +535,9 @@
         function closeWriteModal() {
             document.getElementById('write-modal').classList.add('hidden');
             document.body.style.overflow = '';
-            // Reset form
             document.getElementById('post-title').value = '';
             document.getElementById('post-content').value = '';
-            document.querySelector('#write-modal h2').innerText = '??글 ?�성';
+            document.querySelector('#write-modal h2').innerText = '새 글 작성';
             editPostId = null;
             removeImage();
         }
@@ -546,6 +545,11 @@
         function handleImagePreview(e) {
             const file = e.target.files[0];
             if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                alert('파일 크기는 2MB를 넘을 수 없습니다.');
+                return;
+            }
 
             const reader = new FileReader();
             reader.onload = function(event) {
@@ -563,52 +567,61 @@
             document.getElementById('image-preview').classList.add('hidden');
         }
 
-        function submitPost() {
+        async function submitPost() {
             const title = document.getElementById('post-title').value.trim();
             const content = document.getElementById('post-content').value.trim();
             const category = document.getElementById('post-category').value;
 
-            if (!title) { alert('?�목???�력?�주?�요.'); return; }
-            if (!content) { alert('?�용???�력?�주?�요.'); return; }
+            if (!title) { alert('제목을 입력해주세요.'); return; }
+            if (!content) { alert('내용을 입력해주세요.'); return; }
 
-            if (editPostId) {
-                // UPDATE
-                const postIndex = posts.findIndex(p => p.id === editPostId);
-                if (postIndex !== -1) {
-                    posts[postIndex].title = title;
-                    posts[postIndex].content = content;
-                    posts[postIndex].cat = category;
-                    if (uploadedImageBase64) posts[postIndex].image = uploadedImageBase64;
+            const supabase = Auth.getSupabase();
+            if (!supabase) return;
+
+            try {
+                if (editPostId) {
+                    const { error } = await supabase
+                        .from('community_posts')
+                        .update({
+                            category: category,
+                            title: title,
+                            content: content,
+                            image_url: uploadedImageBase64 
+                        })
+                        .eq('id', editPostId);
+                    
+                    if (error) throw error;
+                    alert('수정이 완료되었습니다.');
+                } else {
+                    const { error } = await supabase
+                        .from('community_posts')
+                        .insert([{
+                            category: category,
+                            title: title,
+                            content: content,
+                            author_name: currentUser.name,
+                            author_email: currentUser.email,
+                            image_url: uploadedImageBase64
+                        }]);
+                    
+                    if (error) throw error;
+                    alert('작성이 완료되었습니다.');
                 }
-                alert('?�정???�료?�었?�니??');
-            } else {
-                // NEW
-                const newPost = {
-                    id: Date.now(),
-                    cat: category,
-                    title: title,
-                    content: content,
-                    author: currentUser.name || currentUser.email.split('@')[0],
-                    authorEmail: currentUser.email,
-                    date: new Date().toISOString().split('T')[0],
-                    image: uploadedImageBase64,
-                    comments: []
-                };
-                posts.unshift(newPost);
-                alert('?�성???�료?�었?�니??');
-            }
 
-            savePosts();
-            closeWriteModal();
-            renderPosts();
+                closeWriteModal();
+                await loadPosts(); 
+            } catch (error) {
+                console.error('Error saving post:', error);
+                alert('게시글 저장에 실패했습니다: ' + error.message);
+            }
         }
 
         // Comment Logic
         function renderCommentList(comments, postId) {
-            if (!comments || comments.length === 0) return `<p class="text-[10px] text-brand/30 text-center py-2">가??먼�? ?��????�겨보세??</p>`;
+            if (!comments || comments.length === 0) return `<p class="text-[10px] text-brand/30 text-center py-2">가장 먼저 댓글을 남겨보세요!</p>`;
             return comments.map(c => {
                 const isCommentOwner = currentUser && currentUser.email === c.authorEmail;
-                const isAdmin = currentUser && currentUser.email === ADMIN_EMAIL;
+                const isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
 
                 return `
                 <div class="flex justify-between items-start gap-3 bg-white/50 p-3 rounded-2xl border border-brand/5 animate-slide-up relative group">
@@ -633,9 +646,9 @@
             section.classList.toggle('active');
         }
 
-        function submitComment(postId) {
+        async function submitComment(postId) {
             if (!currentUser) {
-                alert('로그?????��????�성?????�습?�다.');
+                alert('로그인 후 댓글을 작성할 수 있습니다.');
                 location.href = 'login.html';
                 return;
             }
@@ -643,35 +656,48 @@
             const input = document.getElementById(`comment-input-${postId}`);
             const content = input.value.trim();
 
-            if (!content) {
-                alert('?��? ?�용???�력?�주?�요.');
-                return;
+            if (!content) { alert('댓글 내용을 입력해주세요.'); return; }
+
+            const supabase = Auth.getSupabase();
+            if (!supabase) return;
+
+            try {
+                const { error } = await supabase
+                    .from('community_comments')
+                    .insert([{
+                        post_id: postId,
+                        author_name: currentUser.name,
+                        author_email: currentUser.email,
+                        content: content
+                    }]);
+
+                if (error) throw error;
+                input.value = '';
+                await loadPosts(); 
+            } catch (error) {
+                console.error('Error submitting comment:', error);
+                alert('댓글 작성 실패: ' + error.message);
             }
-
-            const postIndex = posts.findIndex(p => p.id === postId);
-            if (postIndex === -1) return;
-
-            const newComment = {
-                id: Date.now(),
-                author: currentUser.name || currentUser.email.split('@')[0],
-                authorEmail: currentUser.email,
-                content: content,
-                date: new Date().toISOString().split('T')[0]
-            };
-
-            posts[postIndex].comments.push(newComment);
-            savePosts();
-            
-            renderPosts();
-            input.value = '';
         }
 
         // Management Logic
-        function deletePost(postId) {
-            if (!confirm('?�말 ??게시글????��?�시겠습?�까?')) return;
-            posts = posts.filter(p => p.id !== postId);
-            savePosts();
-            renderPosts();
+        async function deletePost(postId) {
+            if (!confirm('정말 이 게시글을 삭제하시겠습니까?')) return;
+            
+            const supabase = Auth.getSupabase();
+            if (!supabase) return;
+
+            try {
+                const { error } = await supabase
+                    .from('community_posts')
+                    .delete()
+                    .eq('id', postId);
+
+                if (error) throw error;
+                await loadPosts();
+            } catch (error) {
+                console.error('Error deleting post:', error);
+            }
         }
 
         function editPost(postId) {
@@ -682,24 +708,34 @@
             document.getElementById('post-title').value = post.title;
             document.getElementById('post-content').value = post.content;
             document.getElementById('post-category').value = post.cat;
-            document.querySelector('#write-modal h2').innerText = '게시글 ?�정';
-            
+            if (post.image) {
+                uploadedImageBase64 = post.image;
+                const preview = document.getElementById('image-preview');
+                preview.querySelector('img').src = uploadedImageBase64;
+                preview.classList.remove('hidden');
+            }
+            document.querySelector('#write-modal h2').innerText = '게시글 수정';
             document.getElementById('write-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
 
-        function deleteComment(postId, commentId) {
-            if (!confirm('?�말 ???��?????��?�시겠습?�까?')) return;
-            const postIndex = posts.findIndex(p => p.id === postId);
-            if (postIndex !== -1) {
-                posts[postIndex].comments = posts[postIndex].comments.filter(c => c.id !== commentId);
-                savePosts();
-                renderPosts();
-            }
-        }
+        async function deleteComment(postId, commentId) {
+            if (!confirm('정말 이 댓글을 삭제하시겠습니까?')) return;
+            
+            const supabase = Auth.getSupabase();
+            if (!supabase) return;
 
-        function formatTime(dateStr) {
-            return dateStr; // Simple for now
+            try {
+                const { error } = await supabase
+                    .from('community_comments')
+                    .delete()
+                    .eq('id', commentId);
+
+                if (error) throw error;
+                await loadPosts();
+            } catch (error) {
+                console.error('Error deleting comment:', error);
+            }
         }
 
         function toggleMobileNav() {

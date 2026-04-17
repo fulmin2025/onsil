@@ -309,9 +309,9 @@
         let currentUser = null;
         let posts = [];
         let uploadedImageBase64 = null;
-        let editPostId = null; // Track if we're editing an existing post
+        let editPostId = null; 
 
-        const ADMIN_EMAIL = 'admin@onsil.com';
+        const ADMIN_EMAILS = ['theonsil@gmail.com', 'admin@theonsil.co.kr', 'theonsilofficial@gmail.com', 'admin@onsil.com'];
 
         const categoryData = {
             welcome: { title: '가입인사', desc: '온실 커뮤니티에 오신 것을 환영합니다! 인사를 나눠보세요.' },
@@ -321,16 +321,16 @@
 
         // Initialize
         window.onload = async () => {
-            loadPosts();
-            renderPosts();
-            
-            // Check auth state
+            // 1. Auth check first
             if (window.Auth) {
                 try {
                     currentUser = await window.Auth.getCurrentUser();
                     updateAuthUI();
-                } catch (e) { console.error(e); }
+                } catch (e) { console.error('Auth Check Error:', e); }
             }
+
+            // 2. Load Posts from Supabase
+            await loadPosts();
         };
 
         function updateAuthUI() {
@@ -338,74 +338,75 @@
             const writeBtn = document.getElementById('write-button-container');
 
             if (currentUser) {
-                const name = currentUser.email.split('@')[0];
                 authContainer.innerHTML = `
-                    <div class="flex items-center gap-3 mr-2">
-                        <div class="w-8 h-8 rounded-full bg-brand/5 flex items-center justify-center text-xs font-bold text-brand">
-                            ${name[0].toUpperCase()}
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-full bg-brand-sage/10 flex items-center justify-center text-brand-sage text-xs font-bold">
+                            ${currentUser.name[0].toUpperCase()}
                         </div>
-                        <span class="text-sm font-bold text-brand">${name}님</span>
+                        <span class="text-sm font-bold text-brand hidden sm:inline">${currentUser.name}님</span>
                     </div>
                 `;
-                // Members can write
                 if (writeBtn) writeBtn.classList.remove('hidden');
             } else {
                 authContainer.innerHTML = `
                     <a href="login.html" class="px-4 py-2.5 text-sm font-bold text-brand/60 hover:text-brand transition-all">로그인</a>
                     <a href="signup.html" class="bg-brand text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-light transition-all">회원가입</a>
                 `;
-                // Hide write button for guests (optional, or show alert on click)
-                // if (writeBtn) writeBtn.classList.add('hidden');
             }
         }
 
         // Category Switching
         function switchCategory(cat) {
             currentCategory = cat;
-            
-            // Update UI
             document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
             document.getElementById(`tab-${cat}`).classList.add('active');
-
             document.getElementById('board-title').innerText = categoryData[cat].title;
             document.getElementById('board-desc').innerText = categoryData[cat].desc;
-
-            // Update modal default select
             document.getElementById('post-category').value = cat;
 
             renderPosts();
         }
 
-        // Data Management (LocalStorage)
-        function loadPosts() {
-            const savedPosts = localStorage.getItem('onsil_community_posts');
-            if (savedPosts) {
-                posts = JSON.parse(savedPosts).map(p => ({
+        // Data Management (Supabase)
+        async function loadPosts() {
+            try {
+                const supabase = Auth.getSupabase();
+                if (!supabase) return;
+
+                const { data, error } = await supabase
+                    .from('community_posts')
+                    .select('*, community_comments(*) ')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                // Sync with local state
+                posts = data.map(p => ({
                     ...p,
-                    authorEmail: p.authorEmail || (p.author + '@test.com'), // Migration for old posts
-                    comments: (p.comments || []).map(c => ({
-                        ...c,
-                        authorEmail: c.authorEmail || (c.author + '@test.com')
+                    cat: p.category,
+                    date: new Date(p.created_at).toISOString().split('T')[0],
+                    author: p.author_name,
+                    authorEmail: p.author_email,
+                    image: p.image_url,
+                    comments: (p.community_comments || []).map(c => ({
+                        id: c.id,
+                        author: c.author_name,
+                        authorEmail: c.author_email,
+                        content: c.content,
+                        date: new Date(c.created_at).toISOString().split('T')[0]
                     }))
                 }));
-            } else {
-                // Mock Data
-                posts = [
-                    { id: 1, cat: 'welcome', title: '처음 가입했습니다!', content: '안녕하세요, 15년 산 강아지 초코와 함께하고 있습니다. 좋은 정보 많이 얻어가고 싶어요.', author: '초코마님', authorEmail: 'choco@test.com', date: '2026-03-30', image: null, comments: [] },
-                    { id: 3, cat: 'pet', title: '우리 뭉치 미용했어요', content: '너무 귀엽죠? 복슬복슬했던 털을 깎으니 아기 같네요.', author: '뭉치언니', authorEmail: 'munchi@test.com', date: '2026-03-29', image: 'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80&w=800', comments: [{id: 101, author: '몽이엄마', authorEmail: 'mong@test.com', content: '어머 너무 인형 같아요!', date: '2026-03-30'}] },
-                    { id: 4, cat: 'daily', title: '강아지 껌 추천해주세요', content: '딱딱하지 않으면서 오래 먹는 껌 있을까요?', author: '댕댕러버', authorEmail: 'dang@test.com', date: '2026-03-28', image: null, comments: [] }
-                ];
-                savePosts();
-            }
-        }
 
-        function savePosts() {
-            localStorage.setItem('onsil_community_posts', JSON.stringify(posts));
+                renderPosts();
+            } catch (error) {
+                console.error('Error loading posts:', error);
+                // Fallback UI or toast
+            }
         }
 
         function renderPosts() {
             const container = document.getElementById('board-content');
-            const filteredPosts = posts.filter(p => p.cat === currentCategory).sort((a,b) => b.id - a.id);
+            const filteredPosts = posts.filter(p => p.cat === currentCategory); // Already sorted from DB
             
             if (filteredPosts.length === 0) {
                 container.innerHTML = `
@@ -418,107 +419,107 @@
             }
 
             if (currentCategory === 'pet' || currentCategory === 'daily') {
-                // Photo-heavy grid
                 container.className = "grid sm:grid-cols-2 gap-6";
-                container.innerHTML = filteredPosts.map(p => {
-                    const isOwner = currentUser && currentUser.email === p.authorEmail;
-                    const isAdmin = currentUser && currentUser.email === ADMIN_EMAIL;
-                    
-                    return `
-                    <div class="post-card bg-white rounded-3xl shadow-sm border border-brand/5 overflow-hidden flex flex-col relative">
-                        <!-- Post Management (Owner/Admin only) -->
-                        <div class="absolute top-4 right-4 flex gap-2 z-10">
-                            ${isOwner ? `
-                                <button onclick="editPost(${p.id})" class="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm text-brand/40 hover:text-brand transition-colors shadow-sm flex items-center justify-center">
-                                    <i class="fas fa-pencil-alt text-[10px]"></i>
-                                </button>
-                            ` : ''}
-                            ${(isOwner || isAdmin) ? `
-                                <button onclick="deletePost(${p.id})" class="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm text-red-400 hover:text-red-600 transition-colors shadow-sm flex items-center justify-center">
-                                    <i class="fas fa-trash-alt text-[10px]"></i>
-                                </button>
-                            ` : ''}
-                        </div>
-                        ${p.image ? `
-                            <div class="h-48 overflow-hidden bg-brand-cream">
-                                <img src="${p.image}" class="w-full h-full object-cover">
-                            </div>
-                        ` : ''}
-                        <div class="p-6 flex-1 flex flex-col">
-                            <h3 class="font-bold text-lg mb-2 line-clamp-1">${p.title}</h3>
-                            <p class="text-sm text-brand/60 leading-relaxed mb-4 line-clamp-2 flex-1">${p.content}</p>
-                            <div class="flex items-center justify-between pt-4 border-t border-brand/5 mb-4">
-                                <span class="text-xs font-bold text-brand/40">${p.author}</span>
-                                <span class="text-[10px] text-brand/20">${p.date}</span>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <button onclick="toggleComments(${p.id})" class="flex items-center gap-1.5 text-xs font-bold text-brand/60 hover:text-brand transition-colors">
-                                    <i class="far fa-comment-dots text-sm"></i>
-                                    댓글 ${p.comments.length}
-                                </button>
-                            </div>
-                        </div>
-                        <!-- Comment Section for Cards -->
-                        <div id="comments-${p.id}" class="comment-section bg-brand-cream/30 border-t border-brand/5">
-                            <div class="p-6 space-y-4">
-                                <div class="space-y-3" id="comment-list-${p.id}">
-                                    ${renderCommentList(p.comments, p.id)}
-                                </div>
-                                <div class="flex gap-2 mt-4">
-                                    <input type="text" id="comment-input-${p.id}" placeholder="댓글을 입력하세요..." class="flex-1 px-4 py-2 rounded-xl border border-brand/10 text-xs focus:ring-2 focus:ring-brand outline-none transition-all">
-                                    <button onclick="submitComment(${p.id})" class="bg-brand text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-brand-light transition-all">등록</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `}).join('');
+                container.innerHTML = filteredPosts.map(p => renderCardPost(p)).join('');
             } else {
-                // Standard list for Welcome
                 container.className = "grid gap-4";
-                container.innerHTML = filteredPosts.map(p => {
-                    const isOwner = currentUser && currentUser.email === p.authorEmail;
-                    const isAdmin = currentUser && currentUser.email === ADMIN_EMAIL;
+                container.innerHTML = filteredPosts.map(p => renderListPost(p)).join('');
+            }
+        }
 
-                    return `
-                    <div class="bg-white rounded-3xl shadow-sm border border-brand/5 overflow-hidden flex flex-col hover:bg-white/50 transition-all cursor-pointer group">
-                        <div class="p-6 flex justify-between items-center relative" onclick="toggleComments(${p.id})">
-                            <div class="flex-1">
-                                <h3 class="font-bold mb-1">${p.title}</h3>
-                                <p class="text-sm text-brand/40 line-clamp-1">${p.content}</p>
-                            </div>
-                            <!-- Small Management in List UI -->
-                            <div class="flex items-center gap-4">
-                                <div class="text-right">
-                                    <p class="text-xs font-bold text-brand/60">${p.author}</p>
-                                    <p class="text-[10px] text-brand/20">${p.date}</p>
-                                </div>
-                                <div class="flex flex-col gap-1 items-center">
-                                    <div class="w-8 h-8 rounded-full bg-brand/5 flex flex-col items-center justify-center text-[10px] font-bold text-brand/40">
-                                        <i class="far fa-comment"></i>
-                                        ${p.comments.length}
-                                    </div>
-                                    <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        ${isOwner ? `<i onclick="event.stopPropagation(); editPost(${p.id})" class="fas fa-edit text-brand/30 hover:text-brand text-[10px]"></i>` : ''}
-                                        ${(isOwner || isAdmin) ? `<i onclick="event.stopPropagation(); deletePost(${p.id})" class="fas fa-trash-alt text-red-300 hover:text-red-500 text-[10px]"></i>` : ''}
-                                    </div>
-                                </div>
-                            </div>
+        function renderCardPost(p) {
+            const isOwner = currentUser && currentUser.email === p.authorEmail;
+            const isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
+            
+            return `
+            <div class="post-card bg-white rounded-3xl shadow-sm border border-brand/5 overflow-hidden flex flex-col relative">
+                <div class="absolute top-4 right-4 flex gap-2 z-10">
+                    ${isOwner ? `
+                        <button onclick="editPost(${p.id})" class="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm text-brand/40 hover:text-brand transition-colors shadow-sm flex items-center justify-center">
+                            <i class="fas fa-pencil-alt text-[10px]"></i>
+                        </button>
+                    ` : ''}
+                    ${(isOwner || isAdmin) ? `
+                        <button onclick="deletePost(${p.id})" class="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm text-red-400 hover:text-red-600 transition-colors shadow-sm flex items-center justify-center">
+                            <i class="fas fa-trash-alt text-[10px]"></i>
+                        </button>
+                    ` : ''}
+                </div>
+                ${p.image ? `
+                    <div class="h-48 overflow-hidden bg-brand-cream">
+                        <img src="${p.image}" class="w-full h-full object-cover">
+                    </div>
+                ` : ''}
+                <div class="p-6 flex-1 flex flex-col">
+                    <h3 class="font-bold text-lg mb-2 line-clamp-1">${p.title}</h3>
+                    <p class="text-sm text-brand/60 leading-relaxed mb-4 line-clamp-2 flex-1">${p.content}</p>
+                    <div class="flex items-center justify-between pt-4 border-t border-brand/5 mb-4">
+                        <span class="text-xs font-bold text-brand/40">${p.author}</span>
+                        <span class="text-[10px] text-brand/20">${p.date}</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <button onclick="toggleComments(${p.id})" class="flex items-center gap-1.5 text-xs font-bold text-brand/60 hover:text-brand transition-colors">
+                            <i class="far fa-comment-dots text-sm"></i>
+                            댓글 ${p.comments.length}
+                        </button>
+                    </div>
+                </div>
+                <div id="comments-${p.id}" class="comment-section bg-brand-cream/30 border-t border-brand/5">
+                    <div class="p-6 space-y-4">
+                        <div class="space-y-3" id="comment-list-${p.id}">
+                            ${renderCommentList(p.comments, p.id)}
                         </div>
-                        <!-- Comment Section for List -->
-                        <div id="comments-${p.id}" class="comment-section bg-brand-cream/30 border-t border-brand/5">
-                            <div class="p-6 space-y-4">
-                                <div class="space-y-3" id="comment-list-${p.id}">
-                                    ${renderCommentList(p.comments, p.id)}
-                                </div>
-                                <div class="flex gap-2">
-                                    <input type="text" id="comment-input-${p.id}" placeholder="댓글을 입력하세요..." class="flex-1 px-4 py-2 rounded-xl border border-brand/10 text-xs focus:ring-2 focus:ring-brand outline-none transition-all">
-                                    <button onclick="submitComment(${p.id})" class="bg-brand text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-brand-light transition-all">등록</button>
-                                </div>
+                        <div class="flex gap-2 mt-4">
+                            <input type="text" id="comment-input-${p.id}" placeholder="댓글을 입력하세요..." class="flex-1 px-4 py-2 rounded-xl border border-brand/10 text-xs focus:ring-2 focus:ring-brand outline-none transition-all">
+                            <button onclick="submitComment(${p.id})" class="bg-brand text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-brand-light transition-all">등록</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        function renderListPost(p) {
+            const isOwner = currentUser && currentUser.email === p.authorEmail;
+            const isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
+
+            return `
+            <div class="bg-white rounded-3xl shadow-sm border border-brand/5 overflow-hidden flex flex-col hover:bg-white/50 transition-all cursor-pointer group">
+                <div class="p-6 flex justify-between items-center relative" onclick="toggleComments(${p.id})">
+                    <div class="flex-1">
+                        <h3 class="font-bold mb-1">${p.title}</h3>
+                        <p class="text-sm text-brand/40 line-clamp-1">${p.content}</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right">
+                            <p class="text-xs font-bold text-brand/60">${p.author}</p>
+                            <p class="text-[10px] text-brand/20">${p.date}</p>
+                        </div>
+                        <div class="flex flex-col gap-1 items-center">
+                            <div class="w-8 h-8 rounded-full bg-brand/5 flex flex-col items-center justify-center text-[10px] font-bold text-brand/40">
+                                <i class="far fa-comment"></i>
+                                ${p.comments.length}
+                            </div>
+                            <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                ${isOwner ? `<i onclick="event.stopPropagation(); editPost(${p.id})" class="fas fa-edit text-brand/30 hover:text-brand text-[10px]"></i>` : ''}
+                                ${(isOwner || isAdmin) ? `<i onclick="event.stopPropagation(); deletePost(${p.id})" class="fas fa-trash-alt text-red-300 hover:text-red-500 text-[10px]"></i>` : ''}
                             </div>
                         </div>
                     </div>
-                `}).join('');
-            }
+                </div>
+                <div id="comments-${p.id}" class="comment-section bg-brand-cream/30 border-t border-brand/5">
+                    <div class="p-6 space-y-4">
+                        <div class="space-y-3" id="comment-list-${p.id}">
+                            ${renderCommentList(p.comments, p.id)}
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="comment-input-${p.id}" placeholder="댓글을 입력하세요..." class="flex-1 px-4 py-2 rounded-xl border border-brand/10 text-xs focus:ring-2 focus:ring-brand outline-none transition-all">
+                            <button onclick="submitComment(${p.id})" class="bg-brand text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-brand-light transition-all">등록</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
         }
 
         // Modal Logic
@@ -535,7 +536,6 @@
         function closeWriteModal() {
             document.getElementById('write-modal').classList.add('hidden');
             document.body.style.overflow = '';
-            // Reset form
             document.getElementById('post-title').value = '';
             document.getElementById('post-content').value = '';
             document.querySelector('#write-modal h2').innerText = '새 글 작성';
@@ -546,6 +546,11 @@
         function handleImagePreview(e) {
             const file = e.target.files[0];
             if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                alert('파일 크기는 2MB를 넘을 수 없습니다.');
+                return;
+            }
 
             const reader = new FileReader();
             reader.onload = function(event) {
@@ -563,7 +568,7 @@
             document.getElementById('image-preview').classList.add('hidden');
         }
 
-        function submitPost() {
+        async function submitPost() {
             const title = document.getElementById('post-title').value.trim();
             const content = document.getElementById('post-content').value.trim();
             const category = document.getElementById('post-category').value;
@@ -571,36 +576,45 @@
             if (!title) { alert('제목을 입력해주세요.'); return; }
             if (!content) { alert('내용을 입력해주세요.'); return; }
 
-            if (editPostId) {
-                // UPDATE
-                const postIndex = posts.findIndex(p => p.id === editPostId);
-                if (postIndex !== -1) {
-                    posts[postIndex].title = title;
-                    posts[postIndex].content = content;
-                    posts[postIndex].cat = category;
-                    if (uploadedImageBase64) posts[postIndex].image = uploadedImageBase64;
-                }
-                alert('수정이 완료되었습니다.');
-            } else {
-                // NEW
-                const newPost = {
-                    id: Date.now(),
-                    cat: category,
-                    title: title,
-                    content: content,
-                    author: currentUser.name || currentUser.email.split('@')[0],
-                    authorEmail: currentUser.email,
-                    date: new Date().toISOString().split('T')[0],
-                    image: uploadedImageBase64,
-                    comments: []
-                };
-                posts.unshift(newPost);
-                alert('작성이 완료되었습니다.');
-            }
+            const supabase = Auth.getSupabase();
+            if (!supabase) return;
 
-            savePosts();
-            closeWriteModal();
-            renderPosts();
+            try {
+                if (editPostId) {
+                    const { error } = await supabase
+                        .from('community_posts')
+                        .update({
+                            category: category,
+                            title: title,
+                            content: content,
+                            image_url: uploadedImageBase64 // Note: Base64 might be large for large images
+                        })
+                        .eq('id', editPostId);
+                    
+                    if (error) throw error;
+                    alert('수정이 완료되었습니다.');
+                } else {
+                    const { error } = await supabase
+                        .from('community_posts')
+                        .insert([{
+                            category: category,
+                            title: title,
+                            content: content,
+                            author_name: currentUser.name,
+                            author_email: currentUser.email,
+                            image_url: uploadedImageBase64
+                        }]);
+                    
+                    if (error) throw error;
+                    alert('작성이 완료되었습니다.');
+                }
+
+                closeWriteModal();
+                await loadPosts(); // Refresh list
+            } catch (error) {
+                console.error('Error saving post:', error);
+                alert('게시글 저장에 실패했습니다: ' + error.message);
+            }
         }
 
         // Comment Logic
@@ -608,7 +622,7 @@
             if (!comments || comments.length === 0) return `<p class="text-[10px] text-brand/30 text-center py-2">가장 먼저 댓글을 남겨보세요!</p>`;
             return comments.map(c => {
                 const isCommentOwner = currentUser && currentUser.email === c.authorEmail;
-                const isAdmin = currentUser && currentUser.email === ADMIN_EMAIL;
+                const isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
 
                 return `
                 <div class="flex justify-between items-start gap-3 bg-white/50 p-3 rounded-2xl border border-brand/5 animate-slide-up relative group">
@@ -633,7 +647,7 @@
             section.classList.toggle('active');
         }
 
-        function submitComment(postId) {
+        async function submitComment(postId) {
             if (!currentUser) {
                 alert('로그인 후 댓글을 작성할 수 있습니다.');
                 location.href = 'login.html';
@@ -643,35 +657,48 @@
             const input = document.getElementById(`comment-input-${postId}`);
             const content = input.value.trim();
 
-            if (!content) {
-                alert('댓글 내용을 입력해주세요.');
-                return;
+            if (!content) { alert('댓글 내용을 입력해주세요.'); return; }
+
+            const supabase = Auth.getSupabase();
+            if (!supabase) return;
+
+            try {
+                const { error } = await supabase
+                    .from('community_comments')
+                    .insert([{
+                        post_id: postId,
+                        author_name: currentUser.name,
+                        author_email: currentUser.email,
+                        content: content
+                    }]);
+
+                if (error) throw error;
+                input.value = '';
+                await loadPosts(); // Refresh to show new comment
+            } catch (error) {
+                console.error('Error submitting comment:', error);
+                alert('댓글 작성 실패: ' + error.message);
             }
-
-            const postIndex = posts.findIndex(p => p.id === postId);
-            if (postIndex === -1) return;
-
-            const newComment = {
-                id: Date.now(),
-                author: currentUser.name || currentUser.email.split('@')[0],
-                authorEmail: currentUser.email,
-                content: content,
-                date: new Date().toISOString().split('T')[0]
-            };
-
-            posts[postIndex].comments.push(newComment);
-            savePosts();
-            
-            renderPosts();
-            input.value = '';
         }
 
         // Management Logic
-        function deletePost(postId) {
+        async function deletePost(postId) {
             if (!confirm('정말 이 게시글을 삭제하시겠습니까?')) return;
-            posts = posts.filter(p => p.id !== postId);
-            savePosts();
-            renderPosts();
+            
+            const supabase = Auth.getSupabase();
+            if (!supabase) return;
+
+            try {
+                const { error } = await supabase
+                    .from('community_posts')
+                    .delete()
+                    .eq('id', postId);
+
+                if (error) throw error;
+                await loadPosts();
+            } catch (error) {
+                console.error('Error deleting post:', error);
+            }
         }
 
         function editPost(postId) {
@@ -682,24 +709,34 @@
             document.getElementById('post-title').value = post.title;
             document.getElementById('post-content').value = post.content;
             document.getElementById('post-category').value = post.cat;
+            if (post.image) {
+                uploadedImageBase64 = post.image;
+                const preview = document.getElementById('image-preview');
+                preview.querySelector('img').src = uploadedImageBase64;
+                preview.classList.remove('hidden');
+            }
             document.querySelector('#write-modal h2').innerText = '게시글 수정';
-            
             document.getElementById('write-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
 
-        function deleteComment(postId, commentId) {
+        async function deleteComment(postId, commentId) {
             if (!confirm('정말 이 댓글을 삭제하시겠습니까?')) return;
-            const postIndex = posts.findIndex(p => p.id === postId);
-            if (postIndex !== -1) {
-                posts[postIndex].comments = posts[postIndex].comments.filter(c => c.id !== commentId);
-                savePosts();
-                renderPosts();
-            }
-        }
+            
+            const supabase = Auth.getSupabase();
+            if (!supabase) return;
 
-        function formatTime(dateStr) {
-            return dateStr; // Simple for now
+            try {
+                const { error } = await supabase
+                    .from('community_comments')
+                    .delete()
+                    .eq('id', commentId);
+
+                if (error) throw error;
+                await loadPosts();
+            } catch (error) {
+                console.error('Error deleting comment:', error);
+            }
         }
 
         function toggleMobileNav() {
@@ -713,6 +750,7 @@
                 setTimeout(() => nav.classList.add('hidden'), 300);
             }
         }
+
     </script>
 </body>
 
