@@ -41,5 +41,5 @@
 
 // Boot Channel Talk
 ChannelIO('boot', {
-  "pluginKey": "69e58eae215cabda221d"
+  "pluginKey": "e62e821d-0e7d-439e-8a9a-f4a3dbe57494"
 });
