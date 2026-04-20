@@ -8,7 +8,7 @@
     <string>59L34WS6RG</string>
     <key>provisioningProfiles</key>
     <dict>
-        <key>com.theonsil.reservation</key>
+        <key>com.theonsil.onsil</key>
         <string>TheOnsil_AppStore</string>
     </dict>
     <key>signingStyle</key>

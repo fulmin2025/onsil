@@ -12,7 +12,7 @@
 | **부제 (Subtitle)** | 반려동물 장례 및 추모 서비스 |
 | **기본 언어 (Primary Language)** | Korean (한국어) |
 | **카테고리 (Category)** | 라이프스타일 (Lifestyle) |
-| **번들 ID (Bundle ID)** | `com.theonsil.reservation` |
+| **번들 ID (Bundle ID)** | `com.theonsil.onsil` |
 
 ---
 
