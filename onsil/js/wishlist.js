@@ -33,6 +33,7 @@ const Wishlist = {
      */
     toggle: async (facilityName) => {
         try {
+            console.log(`Wishlist: Toggling ${facilityName}...`);
             const client = window.Auth.getSupabase();
             if (!client) throw new Error('서버 연결 실패');
 
@@ -40,10 +41,11 @@ const Wishlist = {
             if (!user) {
                 alert('찜 기능은 로그인 후 이용 가능합니다.');
                 window.location.href = 'login.html';
-                return null;
+                return { success: false, action: 'login_required' };
             }
 
             const favorited = await Wishlist.isFavorited(facilityName);
+            console.log(`Wishlist: Currently favorited? ${favorited}`);
 
             if (favorited) {
                 // 삭제
@@ -54,6 +56,7 @@ const Wishlist = {
                     .eq('facility_name', facilityName);
 
                 if (error) throw error;
+                console.log(`Wishlist: Removed ${facilityName}`);
                 return { action: 'removed', success: true };
             } else {
                 // 추가
@@ -65,10 +68,12 @@ const Wishlist = {
                     });
 
                 if (error) throw error;
+                console.log(`Wishlist: Added ${facilityName}`);
                 return { action: 'added', success: true };
             }
         } catch (error) {
             console.error('Wishlist toggle error:', error);
+            alert('찜하기 처리 중 오류가 발생했습니다: ' + error.message);
             return { success: false, message: error.message };
         }
     },

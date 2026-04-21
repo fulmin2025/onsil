@@ -3340,25 +3340,42 @@
         // --- Wishlist UI Handling ---
         async function handleWishlistToggle(btn, facilityName) {
             const icon = btn.querySelector('i');
-            
+            if (!icon) return;
+
             // 시각적 피드백 즉시 제공 (낙관적 업데이트)
             const wasFavorited = icon.classList.contains('fas');
+            
+            // 클래스 교체 (기존 transition, text-size 등 유지)
+            if (wasFavorited) {
+                icon.classList.remove('fas', 'text-red-500');
+                icon.classList.add('far', 'text-white');
+            } else {
+                icon.classList.remove('far', 'text-white');
+                icon.classList.add('fas', 'text-red-500');
+            }
+            
             icon.style.transform = 'scale(1.3)';
             
             const result = await Wishlist.toggle(facilityName);
             
+            // 결과에 따른 최종 조정
             if (result && result.success) {
+                // 성공 시 서버 상태에 맞춰 확정
                 if (result.action === 'added') {
-                    icon.className = 'fas fa-heart text-red-500';
+                    icon.classList.remove('far', 'text-white');
+                    icon.classList.add('fas', 'text-red-500');
                 } else {
-                    icon.className = 'far fa-heart text-white';
+                    icon.classList.remove('fas', 'text-red-500');
+                    icon.classList.add('far', 'text-white');
                 }
             } else {
-                // 실패 시 복구
+                // 실패하거나 취소(로그인 필요 등) 시 복구
                 if (wasFavorited) {
-                    icon.className = 'fas fa-heart text-red-500';
+                    icon.classList.remove('far', 'text-white');
+                    icon.classList.add('fas', 'text-red-500');
                 } else {
-                    icon.className = 'far fa-heart text-white';
+                    icon.classList.remove('fas', 'text-red-500');
+                    icon.classList.add('far', 'text-white');
                 }
             }
             
