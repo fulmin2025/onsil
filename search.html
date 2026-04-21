@@ -130,6 +130,11 @@
             transform: translateX(0) !important;
         }
     </style>
+    <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=5tiwbscjvi"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wishlist.js"></script>
+    <script src="js/pwa.js"></script>
 </head>
 
 <body class="bg-gray-50 text-gray-900">
@@ -1264,7 +1269,14 @@
             if (!resultList || !resultCount) return;
 
             // 내가 찜한 목록 가져오기 (로그인 상태일 때만)
-            const myWishlist = await Wishlist.getAll();
+            let myWishlist = [];
+            if (window.Wishlist && typeof Wishlist.getAll === 'function') {
+                try {
+                    myWishlist = await Wishlist.getAll();
+                } catch (e) {
+                    console.error('Wishlist load failed:', e);
+                }
+            }
 
             resultList.innerHTML = '';
             resultCount.innerHTML = `총 <span class="text-[#C5A065] font-bold">${items.length}</span>개 장례식장`;
@@ -3376,8 +3388,6 @@
             }
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script src="js/auth.js"></script>
     <script>
         // Global reservation handler
         async function handleReservation(facilityId) {
@@ -3703,12 +3713,6 @@
                 </button>
             </div>
         </div>
-    <!-- Naver Maps API: ncpKeyId=5tiwbscjvi -->
-    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=5tiwbscjvi"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/wishlist.js"></script>
-    <script src="js/pwa.js"></script>
     <script>
         function toggleMobileNav() {
             const nav = document.getElementById('mobile-nav');
