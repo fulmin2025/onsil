@@ -1,12 +1,16 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>커뮤니티 - The 온실</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1B2B48">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -15,14 +19,17 @@
                         brand: {
                             DEFAULT: '#2C3E50',
                             light: '#34495E',
+                            dark: '#1A252F',
                             cream: '#F8F6F3',
                             warm: '#D4A574',
                             warmDark: '#B8894E',
-                            sage: '#87A08B'
+                            sage: '#87A08B',
+                            mist: '#E8ECE9'
                         }
                     },
                     fontFamily: {
-                        sans: ['Pretendard', 'sans-serif'],
+                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
+                        serif: ['Nanum Myeongjo', 'serif'],
                     }
                 }
             }
@@ -31,38 +38,15 @@
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
-        body {
-            background-color: #F8F6F3;
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
         }
 
-        .category-tab.active {
-            background-color: #2C3E50;
-            color: white;
-            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2);
-        }
-
-        .post-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .post-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-        }
-
-        .comment-section {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
-        }
-
-        .comment-section.active {
-            max-height: 1000px;
-            transition: max-height 1s ease-in-out;
-        }
-
-        .mobile-nav-open {
-            transform: translateX(0) !important;
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .no-scrollbar::-webkit-scrollbar {
@@ -74,48 +58,39 @@
             scrollbar-width: none;
         }
 
-        /* Modal animation */
-        .modal-enter {
-            opacity: 0;
-            transform: scale(0.95);
+        .post-card {
+            transition: all 0.3s ease;
         }
 
-        .modal-enter-active {
-            opacity: 1;
-            transform: scale(1);
-            transition: opacity 0.3s ease, transform 0.3s ease;
+        .post-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.1);
         }
-
-        @keyframes modalEnter {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .animate-modal-enter {
-            animation: modalEnter 0.3s ease-out forwards;
+        
+        .mobile-nav-open {
+            transform: translateX(0) !important;
         }
     </style>
 </head>
 
-<body class="font-sans text-brand antialiased">
+<body class="bg-gray-50 text-brand overflow-x-hidden">
+
     <!-- Header -->
     <header id="main-header" class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-brand/5 transition-all outline-none">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
-            <!-- Logo -->
             <a href="index.html" class="flex items-center gap-2 group flex-shrink-0">
-                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="The 온실 로고">
+                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="온실 캐릭터 로고">
                 <span class="font-bold text-lg text-brand tracking-tight">The 온실</span>
             </a>
 
-            <!-- Desktop Nav -->
             <nav class="hidden lg:flex items-center gap-1">
-                <a href="search.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">반려견장례식장 찾기</a>
+                <a href="search.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">장례식장 찾기</a>
                 <a href="guide.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">이별 가이드</a>
                 <a href="self-diagnosis.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">건강자가진단</a>
                 <a href="memory.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">추억 가이드</a>
-                <a href="community.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg transition-all">커뮤니티</a>
+                <a href="community.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg">커뮤니티</a>
             </nav>
 
-            <!-- Desktop Actions -->
             <div class="hidden lg:flex items-center gap-2">
                 <div id="auth-container"></div>
                 <a href="search.html?quote=true" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
@@ -124,739 +99,221 @@
                 <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
                     <i class="fas fa-calendar-check text-sm"></i> 예약
                 </button>
-                <a href="tel:1551-5052" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2">
-                    <i class="fas fa-phone-alt text-xs"></i> 1551-5052
-                </a>
             </div>
 
-            <!-- Mobile Header Actions -->
             <div class="flex lg:hidden items-center gap-2">
-                <a href="tel:1551-5052" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand/5 text-brand hover:bg-brand/10 transition-colors" title="전화 상담">
-                    <i class="fas fa-phone-alt text-sm"></i>
-                </a>
-                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand-sage/10 text-brand-sage hover:bg-brand-sage/20 transition-colors" title="예약하기">
-                    <i class="fas fa-calendar-check text-sm"></i>
-                </button>
                 <button id="mobile-menu-btn" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors" onclick="toggleMobileNav()">
-                    <i class="fas fa-bars text-brand text-xl" id="menu-icon"></i>
+                    <i class="fas fa-bars text-brand text-xl"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        <div class="flex flex-col md:flex-row gap-8">
-            <!-- Sidebar Navigation -->
-            <aside class="w-full md:w-64 space-y-6">
-                <div class="bg-white p-6 rounded-3xl shadow-sm border border-brand/5">
-                    <h2 class="font-bold text-lg mb-6">커뮤니티</h2>
-                    <nav class="space-y-2">
-                        <button onclick="switchCategory('welcome')" class="category-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all active" id="tab-welcome">
-                            <i class="fas fa-hand-sparkles w-5"></i> 가입인사
-                        </button>
-                        <button onclick="switchCategory('pet')" class="category-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all" id="tab-pet">
-                            <i class="fas fa-paw w-5"></i> 아이자랑
-                        </button>
-                        <button onclick="switchCategory('daily')" class="category-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all" id="tab-daily">
-                            <i class="fas fa-heart w-5"></i> 일상공유
-                        </button>
-                    </nav>
-                </div>
+    <main class="max-w-6xl mx-auto px-6 py-12 pb-32">
+        <section class="mb-12 fade-up">
+            <h1 class="text-3xl md:text-4xl font-bold mb-4">커뮤니티</h1>
+            <p class="text-gray-500 font-light">반려가족들과 따뜻한 이야기를 나눠보세요.</p>
+        </section>
 
-                <div id="write-button-container" class="sticky top-24">
-                    <button onclick="openWriteModal()" class="w-full bg-brand hover:bg-brand-light text-white py-4 rounded-2xl font-bold shadow-lg shadow-brand/10 flex items-center justify-center gap-2 transition-all transform active:scale-[0.98]">
-                        <i class="fas fa-edit"></i> 글쓰기
-                    </button>
-                </div>
-            </aside>
-
-            <!-- Content Area -->
-            <div class="flex-1">
-                <!-- Board Header -->
-                <div class="mb-8 flex justify-between items-end">
-                    <div>
-                        <h1 id="board-title" class="text-3xl font-bold mb-2">가입인사</h1>
-                        <p id="board-desc" class="text-brand/40">The 온실 커뮤니티에 오신 것을 환영합니다! 인사를 나눠보세요.</p>
-                    </div>
-                </div>
-
-                <!-- Board Content -->
-                <div id="board-content" class="grid gap-6">
-                    <!-- Posts will be injected here -->
-                </div>
-            </div>
+        <!-- Category Tabs -->
+        <div class="flex gap-2 mb-10 overflow-x-auto no-scrollbar pb-2">
+            <button class="whitespace-nowrap px-6 py-2.5 bg-brand text-white rounded-full text-sm font-bold shadow-lg shadow-brand/10">전체</button>
+            <button class="whitespace-nowrap px-6 py-2.5 bg-white text-gray-400 border border-gray-100 rounded-full text-sm font-medium hover:bg-gray-50 transition-all">자유글</button>
+            <button class="whitespace-nowrap px-6 py-2.5 bg-white text-gray-400 border border-gray-100 rounded-full text-sm font-medium hover:bg-gray-50 transition-all">이별이야기</button>
+            <button class="whitespace-nowrap px-6 py-2.5 bg-white text-gray-400 border border-gray-100 rounded-full text-sm font-medium hover:bg-gray-50 transition-all">궁금해요</button>
+            <button class="whitespace-nowrap px-6 py-2.5 bg-white text-gray-400 border border-gray-100 rounded-full text-sm font-medium hover:bg-gray-50 transition-all">정보공유</button>
         </div>
+
+        <!-- Post Grid -->
+        <div id="posts-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            <!-- Loading States or Static Content -->
+            <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm animate-pulse h-64"></div>
+            <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm animate-pulse h-64"></div>
+            <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm animate-pulse h-64"></div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button onclick="handleWritePost()" class="fixed bottom-24 right-6 bg-brand-warm text-white px-6 py-3.5 rounded-full font-bold shadow-2xl flex items-center gap-2 hover:bg-brand-warmDark transition-all active:scale-95 z-40">
+            <i class="fas fa-pen"></i>
+            <span>글쓰기</span>
+        </button>
     </main>
 
-    <!-- Write Modal -->
-    <div id="write-modal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-brand/40 backdrop-blur-sm" onclick="closeWriteModal()"></div>
-        <div class="absolute inset-0 flex items-center justify-center p-4">
-            <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-                <div class="p-6 border-b border-brand/5 flex justify-between items-center bg-brand-cream/50">
-                    <h2 class="font-bold text-lg">새 글 작성</h2>
-                    <button onclick="closeWriteModal()" class="text-brand/40 hover:text-brand transition-colors">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
+    <footer class="bg-brand-cream border-t border-brand/5 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+                <div class="col-span-2 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <img src="./images/onsil_logo_tr.png" width="32" height="32" class="w-8 h-8 object-contain" alt="The 온실 로고">
+                        <span class="font-bold text-lg text-[#2C3E50]">The 온실</span>
+                    </div>
+                    <p class="text-sm text-[#2C3E50]/40 mb-4 leading-relaxed max-w-sm">
+                        반려동물 장례식장 비교부터 예약까지.<br>어려운 결정에 늘 온실이 함께합니다.
+                    </p>
+                    <p class="text-xs text-[#2C3E50]/30">The 온실 | 대표 조영호 | 문의 1551-5052<br>사업자등록번호 : 181-18-02826<br>주소 : 부천시 삼작로 280번길 53-9 행우라폴리움 502호</p>
                 </div>
-
-                <div class="p-8 overflow-y-auto space-y-6">
-                    <div>
-                        <label class="block text-sm font-bold text-brand/60 mb-2">카테고리</label>
-                        <select id="post-category" class="w-full px-4 py-3 rounded-xl border border-brand/10 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all appearance-none bg-white">
-                            <option value="welcome">가입인사</option>
-                            <option value="pet">아이자랑</option>
-                            <option value="daily">일상공유</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-brand/60 mb-2">제목</label>
-                        <input type="text" id="post-title" class="w-full px-4 py-3 rounded-xl border border-brand/10 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all" placeholder="제목을 입력해주세요.">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-brand/60 mb-2">내용</label>
-                        <textarea id="post-content" rows="6" class="w-full px-4 py-3 rounded-xl border border-brand/10 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all resize-none" placeholder="내용을 입력해주세요."></textarea>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-brand/60 mb-2">사진 첨부</label>
-                        <div class="flex items-center gap-4">
-                            <label class="cursor-pointer bg-brand-cream hover:bg-brand/5 px-6 py-4 rounded-2xl border-2 border-dashed border-brand/10 flex flex-col items-center gap-2 transition-all">
-                                <i class="fas fa-camera text-brand/40 text-xl"></i>
-                                <span class="text-xs font-medium text-brand/40">사진 추가</span>
-                                <input type="file" id="post-image" class="hidden" accept="image/*" onchange="handleImagePreview(event)">
-                            </label>
-                            <div id="image-preview" class="relative group hidden">
-                                <img src="" class="w-24 h-24 object-cover rounded-2xl border border-brand/10 shadow-sm">
-                                <button onclick="removeImage()" class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-110">
-                                    <i class="fas fa-times text-[10px]"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">서비스</h3>
+                    <ul class="space-y-3 text-sm text-[#2C3E50]/50">
+                        <li><a href="search.html" class="hover:text-[#2C3E50] transition-colors">장례식장 찾기</a></li>
+                        <li><a href="guide.html" class="hover:text-[#2C3E50] transition-colors">이별 가이드</a></li>
+                        <li><a href="self-diagnosis.html" class="hover:text-[#2C3E50] transition-colors">건강자가진단</a></li>
+                        <li><a href="memory.html" class="hover:text-[#2C3E50] transition-colors">추억 가이드</a></li>
+                        <li><a href="community.html" class="hover:text-[#2C3E50] transition-colors">커뮤니티</a></li>
+                    </ul>
                 </div>
-
-                <div class="p-6 bg-brand-cream/50 border-t border-brand/5 flex gap-3">
-                    <button onclick="closeWriteModal()" class="flex-1 py-4 text-brand font-bold hover:bg-brand/5 rounded-2xl transition-all">취소</button>
-                    <button onclick="submitPost()" class="flex-[2] py-4 bg-brand text-white font-bold rounded-2xl shadow-lg hover:bg-brand-light transition-all transform active:scale-[0.98]">작성 완료</button>
+                <div>
+                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">고객지원</h3>
+                    <ul class="space-y-3 text-sm text-[#2C3E50]/50">
+                        <li><a href="contact.html" class="hover:text-[#2C3E50] transition-colors">문의하기</a></li>
+                        <li><a href="partnership.html"
+                                class="hover:text-[#2C3E50] transition-colors font-bold text-brand-warm">제휴문의</a></li>
+                        <li><a href="terms.html" class="hover:text-[#2C3E50] transition-colors">이용약관</a></li>
+                        <li><a href="privacy.html" class="hover:text-[#2C3E50] transition-colors">개인정보처리방침</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="border-t border-[#2C3E50]/5 mt-10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-[#2C3E50]/30">&copy; 2026 The 온실. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
+                        <i class="fab fa-instagram text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
+                        <i class="fab fa-youtube text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
+                        <i class="fas fa-comment text-sm"></i>
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
+    </footer>
 
     <!-- Mobile Navigation Overlay -->
     <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
-        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
-            id="mobile-nav-panel">
+        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300" id="mobile-nav-panel">
             <div class="p-6 h-full flex flex-col pt-safe">
                 <div class="flex justify-between items-center mb-8">
                     <span class="font-bold text-lg text-brand">메뉴</span>
-                    <button onclick="toggleMobileNav()"
-                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
+                    <button onclick="toggleMobileNav()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
                         <i class="fas fa-times text-gray-500"></i>
                     </button>
                 </div>
                 <nav class="space-y-1 flex-1">
-                    <a href="search.html?quote=true"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all bg-brand-cream text-brand font-bold mb-4 hover:shadow-md">
+                    <a href="search.html?quote=true" class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all bg-brand-cream text-brand font-bold mb-4 hover:shadow-md">
                         <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
                         <span>바로 견적받기</span>
                     </a>
-                    <a href="search.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                    <a href="search.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
                         <i class="fas fa-search w-5 text-center"></i>
-                        <span>반려견장례식장 찾기</span>
+                        <span>장례식장 찾기</span>
                     </a>
-                    <a href="guide.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                    <a href="guide.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
                         <i class="fas fa-book-open w-5 text-center"></i>
                         <span>이별 가이드</span>
                     </a>
-                    <a href="self-diagnosis.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                    <a href="self-diagnosis.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
                         <i class="fas fa-stethoscope w-5 text-center"></i>
                         <span>건강자가진단</span>
                     </a>
-                    <a href="memory.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                    <a href="memory.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
                         <i class="fas fa-heart w-5 text-center"></i>
                         <span>추억 가이드</span>
                     </a>
-                    <a href="community.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-brand/5 text-brand font-bold transition-colors">
+                    <a href="community.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-brand/5 text-brand font-bold transition-colors">
                         <i class="fas fa-comments w-5 text-center"></i>
                         <span>커뮤니티</span>
                     </a>
                 </nav>
-                <!-- Mobile Bottom Actions -->
-                <div class="pt-6 border-t border-brand/5 space-y-3">
-                    <button
-                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
-                        class="w-full bg-brand-sage text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-sage/90 transition-colors">
-                        <i class="fas fa-calendar-check text-sm"></i> 예약하기
-                    </button>
-                    <a href="tel:1551-5052"
-                        class="w-full bg-brand-warm text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-warmDark transition-colors">
-                        <i class="fas fa-phone-alt text-sm"></i> 1551-5052 상담원 연결
-                    </a>
-                </div>
             </div>
         </div>
     </div>
 
-    <!-- Post Detail Modal (Expanded Lightbox) -->
-    <div id="post-detail-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closePostDetail()"></div>
-        <div class="relative max-w-2xl w-full max-h-[90vh] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-modal-enter">
-            <!-- Modal Header -->
-            <div class="p-6 border-b border-brand/5 flex justify-between items-center bg-brand-cream/30">
-                <div>
-                    <span id="modal-category" class="text-[10px] font-bold text-brand-warm uppercase tracking-wider mb-1 block"></span>
-                    <h2 id="modal-title" class="font-bold text-xl text-brand leading-tight"></h2>
-                </div>
-                <button onclick="closePostDetail()" class="text-brand/40 hover:text-brand transition-colors p-2">
-                    <i class="fas fa-times text-2xl"></i>
-                </button>
-            </div>
-            
-            <!-- Modal Body (Scrollable) -->
-            <div class="overflow-y-auto p-8 space-y-6 no-scrollbar">
-                <!-- Author Info -->
-                <div class="flex items-center justify-between pb-6 border-b border-brand/5">
-                    <div class="flex items-center gap-3">
-                        <div id="modal-author-avatar" class="w-10 h-10 rounded-full bg-brand/5 flex items-center justify-center text-brand font-bold"></div>
-                        <div>
-                            <p id="modal-author-name" class="font-bold text-sm text-brand"></p>
-                            <p id="modal-date" class="text-xs text-brand/30"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Image (Optional) -->
-                <div id="modal-image-container" class="rounded-2xl overflow-hidden bg-brand-cream hidden border border-brand/5">
-                    <img id="modal-image" src="" class="w-full h-auto object-contain max-h-[500px]">
-                </div>
-
-                <!-- Full Content -->
-                <div id="modal-content" class="text-brand/80 leading-relaxed whitespace-pre-wrap py-2 text-lg"></div>
-            </div>
-
-            <!-- Modal Footer (Optional: Quick actions or close) -->
-            <div class="p-4 bg-brand-cream/20 border-t border-brand/5 text-center">
-                <button onclick="closePostDetail()" class="px-8 py-3 bg-brand text-white rounded-xl font-bold hover:bg-brand-light transition-all shadow-md">닫기</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/auth.js"></script>
     <script src="js/pwa.js"></script>
     <script>
-        // State Management
-        let currentCategory = 'welcome';
-        let currentUser = null;
-        let posts = [];
-        let uploadedImageBase64 = null; // For Preview
-        let uploadedImageFile = null;   // For Upload
-        let editPostId = null; 
-
-        const ADMIN_EMAILS = ['theonsil@gmail.com', 'admin@theonsil.co.kr', 'theonsilofficial@gmail.com', 'admin@onsil.com'];
-
-        const categoryData = {
-            welcome: { title: '가입인사', desc: '온실 커뮤니티에 오신 것을 환영합니다! 인사를 나눠보세요.' },
-            pet: { title: '아이자랑', desc: '우리 아이의 가장 예쁘고 행복한 순간을 공유해주세요.' },
-            daily: { title: '일상공유', desc: '하고 싶은 이야기, 사소한 일상들을 자유롭게 토닥토닥 나눠요.' }
-        };
-
-        // Initialize
-        window.onload = async () => {
-            // 1. Auth check first
-            if (window.Auth) {
-                try {
-                    currentUser = await window.Auth.getCurrentUser();
-                    updateAuthUI();
-                } catch (e) { console.error('Auth Check Error:', e); }
-            }
-
-            // 2. Load Posts from Supabase
-            await loadPosts();
-        };
-
-        function updateAuthUI() {
-            const authContainer = document.getElementById('auth-container');
-            const writeBtn = document.getElementById('write-button-container');
-
-            if (currentUser) {
-                authContainer.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-full bg-brand-sage/10 flex items-center justify-center text-brand-sage text-xs font-bold">
-                            ${currentUser.name[0].toUpperCase()}
-                        </div>
-                        <span class="text-sm font-bold text-brand hidden sm:inline">${currentUser.name}님</span>
-                    </div>
-                `;
-                if (writeBtn) writeBtn.classList.remove('hidden');
-            } else {
-                authContainer.innerHTML = `
-                    <a href="login.html" class="px-4 py-2.5 text-sm font-bold text-brand/60 hover:text-brand transition-all">로그인</a>
-                    <a href="signup.html" class="bg-brand text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-light transition-all">회원가입</a>
-                `;
-            }
-        }
-
-        // Category Switching
-        function switchCategory(cat) {
-            currentCategory = cat;
-            document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
-            document.getElementById(`tab-${cat}`).classList.add('active');
-            document.getElementById('board-title').innerText = categoryData[cat].title;
-            document.getElementById('board-desc').innerText = categoryData[cat].desc;
-            document.getElementById('post-category').value = cat;
-
-            renderPosts();
-        }
-
-        // Data Management (Supabase)
-        async function loadPosts() {
+        async function fetchPosts() {
+            const container = document.getElementById('posts-container');
+            const supabase = window.Auth.getSupabase();
+            
             try {
-                const supabase = Auth.getSupabase();
-                if (!supabase) return;
-
-                const { data, error } = await supabase
-                    .from('community_posts')
-                    .select('*, community_comments(*) ')
-                    .order('created_at', { ascending: false });
+                const { data: posts, error } = await supabase
+                    .from('posts_view') // Custom view in Supabase for community
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(12);
 
                 if (error) throw error;
 
-                // Sync with local state
-                posts = data.map(p => ({
-                    ...p,
-                    cat: p.category,
-                    date: new Date(p.created_at).toISOString().split('T')[0],
-                    author: p.author_name,
-                    authorEmail: p.author_email,
-                    image: p.image_url,
-                    comments: (p.community_comments || []).map(c => ({
-                        id: c.id,
-                        author: c.author_name,
-                        authorEmail: c.author_email,
-                        content: c.content,
-                        date: new Date(c.created_at).toISOString().split('T')[0]
-                    }))
-                }));
-
-                renderPosts();
-            } catch (error) {
-                console.error('Error loading posts:', error);
-            }
-        }
-
-        function renderPosts() {
-            const container = document.getElementById('board-content');
-            const filteredPosts = posts.filter(p => p.cat === currentCategory); // Already sorted from DB
-            
-            if (filteredPosts.length === 0) {
-                container.innerHTML = `
-                    <div class="bg-white py-20 rounded-3xl border border-brand/5 text-center">
-                        <i class="fas fa-ghost text-brand/10 text-5xl mb-4"></i>
-                        <p class="text-brand/40 font-medium">아직 게시글이 없습니다.<br>첫 번째 이야기를 남겨보세요!</p>
-                    </div>
-                `;
-                return;
-            }
-
-            if (currentCategory === 'pet' || currentCategory === 'daily') {
-                container.className = "grid sm:grid-cols-2 gap-6";
-                container.innerHTML = filteredPosts.map(p => renderCardPost(p)).join('');
-            } else {
-                container.className = "grid gap-4";
-                container.innerHTML = filteredPosts.map(p => renderListPost(p)).join('');
-            }
-        }
-
-        function renderCardPost(p) {
-            const isOwner = currentUser && currentUser.email === p.authorEmail;
-            const isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
-            
-            return `
-            <div class="post-card bg-white rounded-3xl shadow-sm border border-brand/5 overflow-hidden flex flex-col relative">
-                <div class="absolute top-4 right-4 flex gap-2 z-10">
-                    ${isOwner ? `
-                        <button onclick="editPost(${p.id})" class="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm text-brand/40 hover:text-brand transition-colors shadow-sm flex items-center justify-center">
-                            <i class="fas fa-pencil-alt text-[10px]"></i>
-                        </button>
-                    ` : ''}
-                    ${(isOwner || isAdmin) ? `
-                        <button onclick="deletePost(${p.id})" class="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm text-red-400 hover:text-red-600 transition-colors shadow-sm flex items-center justify-center">
-                            <i class="fas fa-trash-alt text-[10px]"></i>
-                        </button>
-                    ` : ''}
-                </div>
-                ${p.image ? `
-                    <div class="h-48 overflow-hidden bg-brand-cream cursor-pointer" onclick="openPostDetail(${p.id})">
-                        <img src="${p.image}" class="w-full h-full object-cover transition-transform hover:scale-110">
-                    </div>
-                ` : ''}
-                <div class="p-6 flex-1 flex flex-col cursor-pointer" onclick="openPostDetail(${p.id})">
-                    <h3 class="font-bold text-lg mb-2 line-clamp-1">${p.title}</h3>
-                    <p class="text-sm text-brand/60 leading-relaxed mb-4 line-clamp-2 flex-1">${p.content}</p>
-                    <div class="flex items-center justify-between pt-4 border-t border-brand/5 mb-4">
-                        <span class="text-xs font-bold text-brand/40">${p.author}</span>
-                        <span class="text-[10px] text-brand/20">${p.date}</span>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <button onclick="toggleComments(${p.id})" class="flex items-center gap-1.5 text-xs font-bold text-brand/60 hover:text-brand transition-colors">
-                            <i class="far fa-comment-dots text-sm"></i>
-                            댓글 ${p.comments.length}
-                        </button>
-                    </div>
-                </div>
-                <div id="comments-${p.id}" class="comment-section bg-brand-cream/30 border-t border-brand/5">
-                    <div class="p-6 space-y-4">
-                        <div class="space-y-3" id="comment-list-${p.id}">
-                            ${renderCommentList(p.comments, p.id)}
-                        </div>
-                        <div class="flex gap-2 mt-4">
-                            <input type="text" id="comment-input-${p.id}" placeholder="댓글을 입력하세요..." class="flex-1 px-4 py-2 rounded-xl border border-brand/10 text-xs focus:ring-2 focus:ring-brand outline-none transition-all">
-                            <button onclick="submitComment(${p.id})" class="bg-brand text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-brand-light transition-all">등록</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            `;
-        }
-
-        function renderListPost(p) {
-            const isOwner = currentUser && currentUser.email === p.authorEmail;
-            const isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
-
-            return `
-            <div class="bg-white rounded-3xl shadow-sm border border-brand/5 overflow-hidden flex flex-col hover:bg-white/50 transition-all cursor-pointer group">
-                <div class="p-6 flex justify-between items-center relative" onclick="openPostDetail(${p.id})">
-                    <div class="flex-1">
-                        <h3 class="font-bold mb-1">${p.title}</h3>
-                        <p class="text-sm text-brand/40 line-clamp-1">${p.content}</p>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div class="text-right">
-                            <p class="text-xs font-bold text-brand/60">${p.author}</p>
-                            <p class="text-[10px] text-brand/20">${p.date}</p>
-                        </div>
-                        <div class="flex flex-col gap-1 items-center">
-                            <div class="w-8 h-8 rounded-full bg-brand/5 flex flex-col items-center justify-center text-[10px] font-bold text-brand/40">
-                                <i class="far fa-comment"></i>
-                                ${p.comments.length}
+                if (!posts || posts.length === 0) {
+                    container.innerHTML = `
+                        <div class="col-span-full py-20 text-center bg-white rounded-[3rem] border border-gray-50">
+                            <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-200">
+                                <i class="fas fa-comment-slash text-2xl"></i>
                             </div>
-                            <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                ${isOwner ? `<i onclick="event.stopPropagation(); editPost(${p.id})" class="fas fa-edit text-brand/30 hover:text-brand text-[10px]"></i>` : ''}
-                                ${(isOwner || isAdmin) ? `<i onclick="event.stopPropagation(); deletePost(${p.id})" class="fas fa-trash-alt text-red-300 hover:text-red-500 text-[10px]"></i>` : ''}
+                            <h3 class="font-bold text-gray-400">아직 등록된 게시글이 없습니다.</h3>
+                            <p class="text-xs text-gray-300 mt-2">첫 번째 이야기의 주인공이 되어주세요.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = posts.map(post => `
+                    <div class="post-card group bg-white rounded-3xl p-6 border border-gray-100 shadow-sm flex flex-col h-full cursor-pointer" onclick="location.href='post-detail.html?id=${post.id}'">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 bg-brand/5 text-[10px] font-bold text-brand rounded-lg">${post.category || '자유글'}</span>
+                            <span class="text-[10px] text-gray-300">${formatDate(post.created_at)}</span>
+                        </div>
+                        <h3 class="font-bold text-[15px] mb-3 line-clamp-2 leading-snug group-hover:text-brand-warm transition-colors">${post.title}</h3>
+                        <p class="text-xs text-gray-400 line-clamp-3 mb-6 leading-relaxed font-light">${post.content_plain || post.content}</p>
+                        <div class="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
+                                    <i class="fas fa-user text-[10px] text-gray-300"></i>
+                                </div>
+                                <span class="text-[11px] font-medium text-gray-500">${post.author_name || '익명'}</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-[10px] text-gray-300">
+                                <span class="flex items-center gap-1"><i class="far fa-heart"></i> ${post.likes_count || 0}</span>
+                                <span class="flex items-center gap-1"><i class="far fa-comment"></i> ${post.comments_count || 0}</span>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div id="comments-${p.id}" class="comment-section bg-brand-cream/30 border-t border-brand/5">
-                    <div class="p-6 space-y-4">
-                        <div class="space-y-3" id="comment-list-${p.id}">
-                            ${renderCommentList(p.comments, p.id)}
-                        </div>
-                        <div class="flex gap-2">
-                            <input type="text" id="comment-input-${p.id}" placeholder="댓글을 입력하세요..." class="flex-1 px-4 py-2 rounded-xl border border-brand/10 text-xs focus:ring-2 focus:ring-brand outline-none transition-all">
-                            <button onclick="submitComment(${p.id})" class="bg-brand text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-brand-light transition-all">등록</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            `;
-        }
+                `).join('');
 
-        // Modal Logic
-        function openWriteModal() {
-            if (!currentUser) {
-                alert('로그인 후 이용 가능합니다.');
-                location.href = 'login.html';
-                return;
-            }
-            document.getElementById('write-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeWriteModal() {
-            document.getElementById('write-modal').classList.add('hidden');
-            document.body.style.overflow = '';
-            document.getElementById('post-title').value = '';
-            document.getElementById('post-content').value = '';
-            document.querySelector('#write-modal h2').innerText = '새 글 작성';
-            editPostId = null;
-            removeImage();
-        }
-
-        function handleImagePreview(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            // 10MB limit
-            if (file.size > 10 * 1024 * 1024) {
-                alert('파일 크기는 10MB를 넘을 수 없습니다.');
-                return;
-            }
-
-            uploadedImageFile = file;
-
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                uploadedImageBase64 = event.target.result;
-                const preview = document.getElementById('image-preview');
-                preview.querySelector('img').src = uploadedImageBase64;
-                preview.classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function removeImage() {
-            uploadedImageBase64 = null;
-            uploadedImageFile = null;
-            document.getElementById('post-image').value = '';
-            document.getElementById('image-preview').classList.add('hidden');
-        }
-
-        async function submitPost() {
-            const title = document.getElementById('post-title').value.trim();
-            const content = document.getElementById('post-content').value.trim();
-            const category = document.getElementById('post-category').value;
-
-            if (!title) { alert('제목을 입력해주세요.'); return; }
-            if (!content) { alert('내용을 입력해주세요.'); return; }
-
-            const supabase = Auth.getSupabase();
-            if (!supabase) return;
-
-            try {
-                let imageUrl = uploadedImageBase64; // Default to existing/preview if not changed
-
-                // If new file chosen, upload to Storage
-                if (uploadedImageFile) {
-                    const fileExt = uploadedImageFile.name.split('.').pop();
-                    const fileName = `${Date.now()}.${fileExt}`;
-                    const filePath = `posts/${fileName}`;
-
-                    const { data: uploadData, error: uploadError } = await supabase.storage
-                        .from('community')
-                        .upload(filePath, uploadedImageFile);
-
-                    if (uploadError) {
-                        console.error('Upload Error:', uploadError);
-                        throw new Error('이미지 업로드에 실패했습니다. (Storage Bucket 설정을 확인해주세요)');
-                    }
-
-                    // Get Public URL
-                    const { data: { publicUrl } } = supabase.storage
-                        .from('community')
-                        .getPublicUrl(filePath);
-                    
-                    imageUrl = publicUrl;
-                }
-
-                if (editPostId) {
-                    const { error } = await supabase
-                        .from('community_posts')
-                        .update({
-                            category: category,
-                            title: title,
-                            content: content,
-                            image_url: imageUrl
-                        })
-                        .eq('id', editPostId);
-                    
-                    if (error) throw error;
-                    alert('수정이 완료되었습니다.');
-                } else {
-                    const { error } = await supabase
-                        .from('community_posts')
-                        .insert([{
-                            category: category,
-                            title: title,
-                            content: content,
-                            author_name: currentUser.name,
-                            author_email: currentUser.email,
-                            image_url: imageUrl
-                        }]);
-                    
-                    if (error) throw error;
-                    alert('작성이 완료되었습니다.');
-                }
-
-                closeWriteModal();
-                await loadPosts(); 
             } catch (error) {
-                console.error('Error saving post:', error);
-                alert('게시글 저장에 실패했습니다: ' + error.message);
+                console.error('Fetch error:', error);
+                container.innerHTML = `<p class="text-center text-red-400 py-10">데이터를 불러오지 못했습니다.</p>`;
             }
         }
 
-        // Comment Logic
-        function renderCommentList(comments, postId) {
-            if (!comments || comments.length === 0) return `<p class="text-[10px] text-brand/30 text-center py-2">가장 먼저 댓글을 남겨보세요!</p>`;
-            return comments.map(c => {
-                const isCommentOwner = currentUser && currentUser.email === c.authorEmail;
-                const isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
-
-                return `
-                <div class="flex justify-between items-start gap-3 bg-white/50 p-3 rounded-2xl border border-brand/5 animate-slide-up relative group">
-                    <div class="flex-1">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-[11px] font-bold text-brand">${c.author}</span>
-                            <span class="text-[9px] text-brand/20">${c.date}</span>
-                        </div>
-                        <p class="text-xs text-brand/70 leading-relaxed">${c.content}</p>
-                    </div>
-                    ${(isCommentOwner || isAdmin) ? `
-                        <button onclick="deleteComment(${postId}, ${c.id})" class="text-red-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
-                            <i class="fas fa-trash-alt text-[9px]"></i>
-                        </button>
-                    ` : ''}
-                </div>
-            `}).join('');
-        }
-
-        function toggleComments(postId) {
-            const section = document.getElementById(`comments-${postId}`);
-            section.classList.toggle('active');
-        }
-
-        async function submitComment(postId) {
-            if (!currentUser) {
-                alert('로그인 후 댓글을 작성할 수 있습니다.');
-                location.href = 'login.html';
-                return;
-            }
-
-            const input = document.getElementById(`comment-input-${postId}`);
-            const content = input.value.trim();
-
-            if (!content) { alert('댓글 내용을 입력해주세요.'); return; }
-
-            const supabase = Auth.getSupabase();
-            if (!supabase) return;
-
-            try {
-                const { error } = await supabase
-                    .from('community_comments')
-                    .insert([{
-                        post_id: postId,
-                        author_name: currentUser.name,
-                        author_email: currentUser.email,
-                        content: content
-                    }]);
-
-                if (error) throw error;
-                input.value = '';
-                await loadPosts(); 
-            } catch (error) {
-                console.error('Error submitting comment:', error);
-                alert('댓글 작성 실패: ' + error.message);
-            }
-        }
-
-        // Management Logic
-        async function deletePost(postId) {
-            if (!confirm('정말 이 게시글을 삭제하시겠습니까?')) return;
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const now = new Date();
+            const diff = (now - date) / 1000;
             
-            const supabase = Auth.getSupabase();
-            if (!supabase) return;
-
-            try {
-                const { error } = await supabase
-                    .from('community_posts')
-                    .delete()
-                    .eq('id', postId);
-
-                if (error) throw error;
-                await loadPosts();
-            } catch (error) {
-                console.error('Error deleting post:', error);
-            }
+            if (diff < 60) return '방금 전';
+            if (diff < 3600) return Math.floor(diff/60) + '분 전';
+            if (diff < 86400) return Math.floor(diff/3600) + '시간 전';
+            return `${date.getMonth()+1}/${date.getDate()}`;
         }
 
-        function editPost(postId) {
-            const post = posts.find(p => p.id === postId);
-            if (!post) return;
-
-            editPostId = postId;
-            document.getElementById('post-title').value = post.title;
-            document.getElementById('post-content').value = post.content;
-            document.getElementById('post-category').value = post.cat;
-            if (post.image) {
-                uploadedImageBase64 = post.image;
-                const preview = document.getElementById('image-preview');
-                preview.querySelector('img').src = uploadedImageBase64;
-                preview.classList.remove('hidden');
+        async function handleWritePost() {
+            const user = await window.Auth.getCurrentUser();
+            if(!user) {
+                if(confirm('글쓰기는 로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?')) {
+                    location.href = 'login.html';
+                }
+                return;
             }
-            document.querySelector('#write-modal h2').innerText = '게시글 수정';
-            document.getElementById('write-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        // Post Detail Modal Logic
-        function openPostDetail(postId) {
-            const post = posts.find(p => p.id == postId);
-            if (!post) return;
-
-            const modal = document.getElementById('post-detail-modal');
-            const title = document.getElementById('modal-title');
-            const authorName = document.getElementById('modal-author-name');
-            const authorAvatar = document.getElementById('modal-author-avatar');
-            const date = document.getElementById('modal-date');
-            const category = document.getElementById('modal-category');
-            const content = document.getElementById('modal-content');
-            const imgContainer = document.getElementById('modal-image-container');
-            const img = document.getElementById('modal-image');
-
-            title.innerText = post.title || '제목 없음';
-            category.innerText = categoryData[post.cat] ? categoryData[post.cat].title : '기타';
-            authorName.innerText = (post.author || '익명') + '님';
-            authorAvatar.innerText = (post.author && post.author[0]) ? post.author[0].toUpperCase() : '?';
-            date.innerText = post.date || '';
-            content.innerText = post.content || '';
-
-            if (post.image) {
-                img.src = post.image;
-                imgContainer.classList.remove('hidden');
-            } else {
-                imgContainer.classList.add('hidden');
-            }
-
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closePostDetail() {
-            const modal = document.getElementById('post-detail-modal');
-            modal.classList.add('hidden');
-            document.body.style.overflow = '';
-        }
-
-        async function deleteComment(postId, commentId) {
-            if (!confirm('정말 이 댓글을 삭제하시겠습니까?')) return;
-            
-            const supabase = Auth.getSupabase();
-            if (!supabase) return;
-
-            try {
-                const { error } = await supabase
-                    .from('community_comments')
-                    .delete()
-                    .eq('id', commentId);
-
-                if (error) throw error;
-                await loadPosts();
-            } catch (error) {
-                console.error('Error deleting comment:', error);
-            }
+            location.href = 'write-post.html';
         }
 
         function toggleMobileNav() {
@@ -870,9 +327,10 @@
                 setTimeout(() => nav.classList.add('hidden'), 300);
             }
         }
+
+        document.addEventListener('DOMContentLoaded', fetchPosts);
     </script>
     <script src="js/channel-talk.js"></script>
 </body>
 
 </html>
-

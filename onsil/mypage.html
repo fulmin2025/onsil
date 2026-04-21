@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마이?�이지 - The ?�실</title>
+    <title>마이페이지 - The 온실</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -54,8 +54,8 @@
     <header class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-brand/5">
         <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2 group flex-shrink-0">
-                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="?�실 로고">
-                <span class="font-bold text-lg text-brand tracking-tight">The ?�실</span>
+                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="온실 로고">
+                <span class="font-bold text-lg text-brand tracking-tight">The 온실</span>
             </a>
             <div id="auth-container"></div>
         </div>
@@ -63,15 +63,16 @@
 
     <main class="max-w-4xl mx-auto px-4 py-8 sm:py-12">
         <div class="mb-8">
-            <h1 class="text-2xl sm:text-3xl font-bold text-brand mb-2">마이?�이지</h1>
-            <p class="text-brand/60 text-sm">???�동 ?�역�?개인?�보�?관리할 ???�습?�다.</p>
+            <h1 class="text-2xl sm:text-3xl font-bold text-brand mb-2">마이페이지</h1>
+            <p class="text-brand/60 text-sm">내 활동 내역과 개인정보를 관리할 수 있습니다.</p>
         </div>
 
         <!-- Tabs -->
         <div class="flex border-b border-brand/10 mb-8 overflow-x-auto no-scrollbar">
-            <button onclick="switchTab('reservations')" id="tab-reservations" class="tab-btn active px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">???�약 ?�역</button>
-            <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">???�보 ?�정</button>
-            <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">계정 ?�정</button>
+            <button onclick="switchTab('reservations')" id="tab-reservations" class="tab-btn active px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">내 예약 내역</button>
+            <button onclick="switchTab('wishlist')" id="tab-wishlist" class="tab-btn px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">찜한 장례식장</button>
+            <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">내 정보 수정</button>
+            <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">계정 설정</button>
         </div>
 
         <!-- Section: Reservations -->
@@ -81,7 +82,19 @@
                     <div class="w-16 h-16 bg-brand-mist rounded-full flex items-center justify-center mx-auto mb-4 text-brand/20">
                         <i class="fas fa-calendar-alt text-2xl"></i>
                     </div>
-                    <p class="text-brand/40 font-medium">?�약 ?�이?��? 불러?�는 �?..</p>
+                    <p class="text-brand/40 font-medium">예약 데이터를 불러오는 중...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Wishlist -->
+        <section id="sec-wishlist" class="tab-content hidden fade-in">
+            <div class="grid sm:grid-cols-2 gap-4" id="wishlist-list">
+                <div class="bg-white p-12 rounded-3xl border border-brand/5 text-center sm:col-span-2">
+                    <div class="w-16 h-16 bg-brand-mist rounded-full flex items-center justify-center mx-auto mb-4 text-brand/20">
+                        <i class="fas fa-heart text-2xl"></i>
+                    </div>
+                    <p class="text-brand/40 font-medium">찜한 장례식장이 없습니다.</p>
                 </div>
             </div>
         </section>
@@ -92,50 +105,50 @@
                 <form id="profile-form" class="space-y-6" onsubmit="handleProfileUpdate(event)">
                     <div class="grid sm:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-bold text-brand/70 mb-2">?�름</label>
-                            <input type="text" id="p-name" required class="w-full px-4 py-3 rounded-xl bg-brand-cream border-none focus:ring-2 focus:ring-brand/10 outline-none transition-all" placeholder="?�름???�력?�세??>
+                            <label class="block text-sm font-bold text-brand/70 mb-2">이름</label>
+                            <input type="text" id="p-name" required class="w-full px-4 py-3 rounded-xl bg-brand-cream border-none focus:ring-2 focus:ring-brand/10 outline-none transition-all" placeholder="이름을 입력하세요">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-brand/70 mb-2">?�메??(?�정 불�?)</label>
+                            <label class="block text-sm font-bold text-brand/70 mb-2">이메일 (수정 불가)</label>
                             <input type="email" id="p-email" disabled class="w-full px-4 py-3 rounded-xl bg-gray-100 border-none text-brand/40 outline-none">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-brand/70 mb-2">?�화번호</label>
+                            <label class="block text-sm font-bold text-brand/70 mb-2">전화번호</label>
                             <input type="tel" id="p-phone" required class="w-full px-4 py-3 rounded-xl bg-brand-cream border-none focus:ring-2 focus:ring-brand/10 outline-none transition-all" placeholder="010-0000-0000">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-brand/70 mb-2">출생?�도</label>
-                            <input type="number" id="p-birth" class="w-full px-4 py-3 rounded-xl bg-brand-cream border-none focus:ring-2 focus:ring-brand/10 outline-none transition-all" placeholder="?? 1990">
+                            <label class="block text-sm font-bold text-brand/70 mb-2">출생년도</label>
+                            <input type="number" id="p-birth" class="w-full px-4 py-3 rounded-xl bg-brand-cream border-none focus:ring-2 focus:ring-brand/10 outline-none transition-all" placeholder="예: 1990">
                         </div>
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-bold text-brand/70 mb-3">?�별</label>
+                        <label class="block text-sm font-bold text-brand/70 mb-3">성별</label>
                         <div class="flex gap-3">
-                            <button type="button" onclick="setGender('male')" id="btn-male" class="gender-btn flex-1 py-3.5 rounded-xl border border-brand/10 text-brand/60 font-bold hover:bg-brand-mist/30 transition-all">?�성</button>
-                            <button type="button" onclick="setGender('female')" id="btn-female" class="gender-btn flex-1 py-3.5 rounded-xl border border-brand/10 text-brand/60 font-bold hover:bg-brand-mist/30 transition-all">?�성</button>
+                            <button type="button" onclick="setGender('male')" id="btn-male" class="gender-btn flex-1 py-3.5 rounded-xl border border-brand/10 text-brand/60 font-bold hover:bg-brand-mist/30 transition-all">남성</button>
+                            <button type="button" onclick="setGender('female')" id="btn-female" class="gender-btn flex-1 py-3.5 rounded-xl border border-brand/10 text-brand/60 font-bold hover:bg-brand-mist/30 transition-all">여성</button>
                         </div>
                         <input type="hidden" id="p-gender">
                     </div>
 
                     <div class="pt-4 border-t border-brand/5 mt-8">
-                        <h3 class="text-lg font-bold text-brand mb-4">비�?번호 변�?/h3>
+                        <h3 class="text-lg font-bold text-brand mb-4">비밀번호 변경</h3>
                         <div class="grid sm:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-sm font-bold text-brand/70 mb-2">??비�?번호</label>
-                                <input type="password" id="p-pass" class="w-full px-4 py-3 rounded-xl bg-brand-cream border-none focus:ring-2 focus:ring-brand/10 outline-none transition-all" placeholder="?�••••••�?>
+                                <label class="block text-sm font-bold text-brand/70 mb-2">새 비밀번호</label>
+                                <input type="password" id="p-pass" class="w-full px-4 py-3 rounded-xl bg-brand-cream border-none focus:ring-2 focus:ring-brand/10 outline-none transition-all" placeholder="••••••••">
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-brand/70 mb-2">??비�?번호 ?�인</label>
-                                <input type="password" id="p-pass-confirm" class="w-full px-4 py-3 rounded-xl bg-brand-cream border-none focus:ring-2 focus:ring-brand/10 outline-none transition-all" placeholder="?�••••••�?>
+                                <label class="block text-sm font-bold text-brand/70 mb-2">새 비밀번호 확인</label>
+                                <input type="password" id="p-pass-confirm" class="w-full px-4 py-3 rounded-xl bg-brand-cream border-none focus:ring-2 focus:ring-brand/10 outline-none transition-all" placeholder="••••••••">
                             </div>
                         </div>
-                        <p class="text-[11px] text-brand/40 mt-2">* 비�?번호 변경을 ?�하???�만 ?�력?�주?�요.</p>
+                        <p class="text-[11px] text-brand/40 mt-2">* 비밀번호 변경을 원하실 때만 입력해주세요.</p>
                     </div>
 
                     <div class="pt-4">
                         <button type="submit" id="save-btn" class="w-full bg-brand text-white py-4 rounded-2xl font-bold hover:bg-brand-light transition-all shadow-lg active:scale-[0.98]">
-                            ?�정 ?�용 ?�?�하�?
+                            수정 내용 저장하기
                         </button>
                     </div>
                 </form>
@@ -147,10 +160,10 @@
             <div class="bg-white rounded-3xl border border-brand/5 p-6 sm:p-8 shadow-sm">
                 <div class="flex items-center justify-between gap-4 p-4 rounded-2xl bg-red-50/50 border border-red-100">
                     <div>
-                        <h3 class="text-red-600 font-bold mb-1">?�원 ?�퇴</h3>
-                        <p class="text-red-600/60 text-xs">?�퇴 ??모든 ?�약 ?�역�?개인?�보가 ??��?�니??</p>
+                        <h3 class="text-red-600 font-bold mb-1">회원 탈퇴</h3>
+                        <p class="text-red-600/60 text-xs">탈퇴 시 모든 예약 내역과 개인정보가 삭제됩니다.</p>
                     </div>
-                    <button onclick="handleWithdrawal()" class="px-4 py-2 bg-white border border-red-200 text-red-500 rounded-lg text-sm font-bold hover:bg-red-50 transition-all">?�퇴?�기</button>
+                    <button onclick="handleWithdrawal()" class="px-4 py-2 bg-white border border-red-200 text-red-500 rounded-lg text-sm font-bold hover:bg-red-50 transition-all">탈퇴하기</button>
                 </div>
             </div>
         </section>
@@ -158,7 +171,26 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/wishlist.js"></script>
     <script>
+        // Data for display lookup
+        const FACILITY_MAP = {
+            "펫오케스트라": { address: "경기 화성시 비봉면", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/petorchestra.webp" },
+            "리틀포즈": { address: "대구 군위군 부계면", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/littlepaws.webp" },
+            "스윗드림펫": { address: "경북 칠곡군 가산면", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/sweetdreampet.webp" },
+            "스타티스": { address: "부산 기장군 일광읍", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/statice.webp" },
+            "씨엘로펫": { address: "경기 용인시 처인구", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/cielopet.webp" },
+            "메리온": { address: "경남 양산시 상북면", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/merion.webp" },
+            "한별소울펫": { address: "경북 구미시 옥성면", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/hanbyeolsoulpet.webp" },
+            "펫메모리얼": { address: "강원 횡성군 공근면", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/petmemorial.webp" },
+            "전주아리움": { address: "전북 전주시 완산구", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/jeonjuarium.webp" },
+            "포포즈 화성점": { address: "경기 화성시 팔탄면", imageUrl: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000" },
+            "펫포레스트 남양주점": { address: "경기 남양주시 일패동", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/petforest-namyangju_1762610155894.webp" },
+            "퍼스트펫": { address: "전남 나주시 다시면", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/firstpet_1762224788154.webp" },
+            "아이헤븐": { address: "경남 김해시 생림면", imageUrl: "https://images.unsplash.com/photo-1501630834273-4b5604d2ee31?q=80&w=1000" },
+            "스마일어게인": { address: "경북 문경시 문경읍", imageUrl: "https://www.goodbyepet.co.kr/PEG/gallery/gallery.16974555519550.jpg" }
+        };
+
         let currentUser = null;
 
         /**
@@ -172,6 +204,7 @@
             document.getElementById('tab-' + tabId).classList.add('active');
             
             if (tabId === 'reservations') loadReservations();
+            if (tabId === 'wishlist') loadWishlist();
             if (tabId === 'profile') loadProfileData();
         }
 
@@ -215,8 +248,8 @@
                 if (!data || data.length === 0) {
                     list.innerHTML = `
                         <div class="bg-white p-12 rounded-3xl border border-brand/5 text-center">
-                            <p class="text-brand/40 font-medium">?�직 ?�약 ?�역???�습?�다.</p>
-                            <a href="search.html" class="inline-block mt-4 text-brand-sage font-bold hover:underline">?��??�장 ?�러보기</a>
+                            <p class="text-brand/40 font-medium">아직 예약 내역이 없습니다.</p>
+                            <a href="search.html" class="inline-block mt-4 text-brand-sage font-bold hover:underline">장례식장 둘러보기</a>
                         </div>
                     `;
                     return;
@@ -227,19 +260,19 @@
                         <div class="flex flex-wrap justify-between items-start gap-4 mb-4">
                             <div>
                                 <div class="flex items-center gap-2 mb-1">
-                                    <span class="text-[10px] px-2 py-0.5 bg-brand-sage/10 text-brand-sage rounded-full font-bold">?��? ?�수??/span>
+                                    <span class="text-[10px] px-2 py-0.5 bg-brand-sage/10 text-brand-sage rounded-full font-bold">장례 접수됨</span>
                                     <span class="text-xs text-brand/40">${new Date(res.created_at).toLocaleDateString()}</span>
                                 </div>
                                 <h3 class="text-lg font-bold text-brand">${res.facility_name}</h3>
                             </div>
                             <div class="text-right">
-                                <p class="text-xs text-brand/60 mb-1">?�약 ?�정??/p>
+                                <p class="text-xs text-brand/60 mb-1">예약 확정일</p>
                                 <p class="font-bold text-brand-warm">${res.reservation_date} ${res.reservation_time}</p>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-2xl bg-brand-cream/50 text-sm">
                             <div>
-                                <p class="text-brand/40 text-[11px] mb-1">반려?�물 �?/p>
+                                <p class="text-brand/40 text-[11px] mb-1">반려동물 명</p>
                                 <p class="font-bold">${res.pet_name}</p>
                             </div>
                             <div>
@@ -247,19 +280,72 @@
                                 <p class="font-bold">${res.pet_weight}kg / ${res.pet_type}</p>
                             </div>
                             <div>
-                                <p class="text-brand/40 text-[11px] mb-1">?�택 ?�비??/p>
-                                <p class="font-bold">${res.selected_service || '기본??}</p>
+                                <p class="text-brand/40 text-[11px] mb-1">선택 서비스</p>
+                                <p class="font-bold">${res.selected_service || '기본형'}</p>
                             </div>
                             <div>
-                                <p class="text-brand/40 text-[11px] mb-1">결제 ?�태</p>
-                                <p class="font-bold">${res.payment_status === 'paid' ? '결제?�료' : '결제?��?}</p>
+                                <p class="text-brand/40 text-[11px] mb-1">결제 상태</p>
+                                <p class="font-bold">${res.payment_status === 'paid' ? '결제완료' : '결제대기'}</p>
                             </div>
                         </div>
                     </div>
                 `).join('');
             } catch (err) {
                 console.error(err);
-                list.innerHTML = `<p class="p-8 text-center text-red-500">?�류가 발생?�습?�다: ${err.message}</p>`;
+                list.innerHTML = `<p class="p-8 text-center text-red-500">오류가 발생했습니다: ${err.message}</p>`;
+            }
+        }
+
+        /**
+         * Load Wishlist Data
+         */
+        async function loadWishlist() {
+            const list = document.getElementById('wishlist-list');
+            try {
+                const favorites = await Wishlist.getAll();
+                
+                if (!favorites || favorites.length === 0) {
+                    list.innerHTML = `
+                        <div class="bg-white p-12 rounded-3xl border border-brand/5 text-center sm:col-span-2">
+                            <div class="w-16 h-16 bg-brand-mist rounded-full flex items-center justify-center mx-auto mb-4 text-brand/20">
+                                <i class="fas fa-heart text-2xl"></i>
+                            </div>
+                            <p class="text-brand/40 font-medium">찜한 장례식장이 없습니다.</p>
+                            <a href="search.html" class="inline-block mt-4 text-brand-sage font-bold hover:underline">장례식장 둘러보기</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                list.innerHTML = favorites.map(name => {
+                    const info = FACILITY_MAP[name] || { address: '정보 준비 중', imageUrl: 'https://images.unsplash.com/photo-1596230526487-11152a4a754b?w=500' };
+                    return `
+                        <div class="bg-white flex gap-4 p-4 rounded-2xl border border-brand/5 shadow-sm group hover:shadow-md transition-all">
+                            <div class="w-24 h-24 rounded-xl bg-cover bg-center shrink-0" style="background-image: url('${info.imageUrl}')"></div>
+                            <div class="flex-1 flex flex-col justify-between py-1">
+                                <div>
+                                    <h3 class="font-bold text-brand mb-1">${name}</h3>
+                                    <p class="text-[11px] text-brand/40 line-clamp-1">${info.address}</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="handleWishlistRemove('${name}')" class="text-[11px] font-bold text-red-400 hover:text-red-500 transition-colors">찜 해제</button>
+                                    <a href="search.html?keyword=${encodeURIComponent(name)}" class="text-[11px] font-bold text-brand-sage hover:underline">상세보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (err) {
+                console.error(err);
+                list.innerHTML = `<p class="p-8 text-center text-red-500 sm:col-span-2">목록을 불러오는 중 오류가 발생했습니다.</p>`;
+            }
+        }
+
+        async function handleWishlistRemove(name) {
+            if (!confirm(`'${name}'을(를) 찜 목록에서 삭제할까요?`)) return;
+            const res = await Wishlist.toggle(name);
+            if (res && res.success) {
+                loadWishlist();
             }
         }
 
@@ -287,7 +373,7 @@
             
             try {
                 btn.disabled = true;
-                btn.innerText = '?�??�?..';
+                btn.innerText = '저장 중...';
 
                 const name = document.getElementById('p-name').value;
                 const phone = document.getElementById('p-phone').value;
@@ -297,7 +383,7 @@
                 const confirmPassword = document.getElementById('p-pass-confirm').value;
 
                 if (password && password !== confirmPassword) {
-                    throw new Error('??비�?번호가 ?�로 ?�치?��? ?�습?�다.');
+                    throw new Error('새 비밀번호가 서로 일치하지 않습니다.');
                 }
 
                 const updates = { name, phone, birth_year, gender };
@@ -305,7 +391,7 @@
 
                 const res = await Auth.updateProfile(updates);
                 if (res.success) {
-                    alert('?�원 ?�보가 ?�공?�으�??�정?�었?�니??');
+                    alert('회원 정보가 성공적으로 수정되었습니다.');
                     if (password) {
                         document.getElementById('p-pass').value = '';
                         document.getElementById('p-pass-confirm').value = '';
@@ -315,7 +401,7 @@
                     throw new Error(res.message);
                 }
             } catch (err) {
-                alert('?�정 ?�패: ' + err.message);
+                alert('수정 실패: ' + err.message);
             } finally {
                 btn.disabled = false;
                 btn.innerText = originalText;
@@ -326,7 +412,7 @@
          * Handle Account Withdrawal
          */
         async function handleWithdrawal() {
-            if (!confirm('?�말�??�퇴?�시겠습?�까?\n?�성?�신 모든 ?�이?��? 복구 불�??�하�???��?�니??')) return;
+            if (!confirm('정말로 탈퇴하시겠습니까?\n작성하신 모든 데이터가 복구 불가능하게 삭제됩니다.')) return;
             
             try {
                 const res = await Auth.withdrawAccount();
@@ -337,7 +423,7 @@
                     throw new Error(res.message);
                 }
             } catch (err) {
-                alert('?�퇴 처리 ?�패: ' + err.message);
+                alert('탈퇴 처리 실패: ' + err.message);
             }
         }
 
@@ -345,18 +431,20 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const user = await Auth.getCurrentUser();
             if (!user) {
-                alert('로그?�이 ?�요???�비?�입?�다.');
+                alert('로그인이 필요한 서비스입니다.');
                 location.href = 'login.html';
                 return;
             }
 
-            // URL ?�라미터 체크 (?tab=profile 처리)
+            // URL 파라미터 체크 (?tab=profile 처리)
             const urlParams = new URLSearchParams(window.location.search);
             const tab = urlParams.get('tab');
             if (tab === 'profile') {
                 switchTab('profile');
             } else if (tab === 'settings') {
                 switchTab('settings');
+            } else if (tab === 'wishlist') {
+                switchTab('wishlist');
             } else {
                 loadReservations();
             }
@@ -366,4 +454,3 @@
 </body>
 
 </html>
-

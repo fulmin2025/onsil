@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>커�??�티 - The ?�실</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>추억 가이드 - The 온실</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1B2B48">
     <link rel="apple-touch-icon" href="icons/icon.svg">
@@ -27,7 +27,7 @@
                         }
                     },
                     fontFamily: {
-                        sans: ['Pretendard', 'sans-serif'],
+                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
                         serif: ['Nanum Myeongjo', 'serif'],
                     }
                 }
@@ -40,8 +40,8 @@
 
         .fade-up {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
         }
 
         .fade-up.visible {
@@ -49,26 +49,25 @@
             transform: translateY(0);
         }
 
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
         .serif {
             font-family: 'Nanum Myeongjo', serif;
         }
-
-        @keyframes pulse-slow {
-
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 0.9;
-                transform: scale(1.02);
-            }
+        
+        .memory-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .animate-pulse-slow {
-            animation: pulse-slow 3s infinite ease-in-out;
+        
+        .memory-card:hover {
+            transform: scale(1.02);
         }
 
         .mobile-nav-open {
@@ -77,50 +76,34 @@
     </style>
 </head>
 
-<body class="bg-gray-50 text-gray-900 font-sans overflow-x-hidden">
+<body class="bg-white text-brand overflow-x-hidden">
 
     <!-- Header -->
     <header id="main-header" class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-brand/5 transition-all outline-none">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
-            <!-- Logo -->
             <a href="index.html" class="flex items-center gap-2 group flex-shrink-0">
-                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="?�실 캐릭??로고">
-                <span class="font-bold text-lg text-brand tracking-tight">The ?�실</span>
+                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="온실 캐릭터 로고">
+                <span class="font-bold text-lg text-brand tracking-tight">The 온실</span>
             </a>
 
-            <!-- Desktop Nav -->
             <nav class="hidden lg:flex items-center gap-1">
-                <a href="search.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">?��??�장 찾기</a>
-                <a href="guide.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">?�별 가?�드</a>
-                <a href="self-diagnosis.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">건강?��?진단</a>
-                <a href="memory.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg">추억 가?�드</a>
-                <a href="community.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">커�??�티</a>
+                <a href="search.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">장례식장 찾기</a>
+                <a href="guide.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">이별 가이드</a>
+                <a href="self-diagnosis.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">건강자가진단</a>
+                <a href="memory.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg transition-all">추억 가이드</a>
+                <a href="community.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">커뮤니티</a>
             </nav>
 
-            <!-- Desktop Actions -->
             <div class="hidden lg:flex items-center gap-2">
                 <div id="auth-container"></div>
                 <a href="search.html?quote=true" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
                     <i class="fas fa-calculator"></i> 견적
                 </a>
-                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?�약?� 로그?????�용 가?�합?�다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
-                    <i class="fas fa-calendar-check text-sm"></i> ?�약
-                </button>
-                <a href="tel:1551-5052" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2">
-                    <i class="fas fa-phone-alt text-xs"></i> 1551-5052
-                </a>
             </div>
 
-            <!-- Mobile Header Actions -->
             <div class="flex lg:hidden items-center gap-2">
-                <a href="tel:1551-5052" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand/5 text-brand hover:bg-brand/10 transition-colors" title="?�화 ?�담">
-                    <i class="fas fa-phone-alt text-sm"></i>
-                </a>
-                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?�약?� 로그?????�용 가?�합?�다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand-sage/10 text-brand-sage hover:bg-brand-sage/20 transition-colors" title="?�약?�기">
-                    <i class="fas fa-calendar-check text-sm"></i>
-                </button>
                 <button id="mobile-menu-btn" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors" onclick="toggleMobileNav()">
-                    <i class="fas fa-bars text-brand text-xl" id="menu-icon"></i>
+                    <i class="fas fa-bars text-brand text-xl"></i>
                 </button>
             </div>
         </div>
@@ -128,245 +111,87 @@
 
     <main>
         <!-- Hero Section -->
-        <section class="relative py-32 bg-[#1B2B48] text-white overflow-hidden">
-            <div
-                class="absolute inset-0 opacity-25 bg-[url('https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=2669&auto=format&fit=crop')] bg-cover bg-center scale-110">
+        <section class="relative bg-brand py-24 md:py-32 text-center text-white overflow-hidden">
+            <div class="absolute inset-0 opacity-10 pointer-events-none">
+                <div class="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -ml-32 -mt-32"></div>
+                <div class="absolute bottom-0 right-0 w-96 h-96 bg-brand-warm rounded-full -mr-48 -mb-48"></div>
             </div>
-            <div class="relative max-w-7xl mx-auto px-4 text-center">
-                <span
-                    class="inline-block py-1.5 px-4 bg-white/10 backdrop-blur-md rounded-full text-xs font-bold tracking-[0.2em] mb-8 fade-up">MEMORIAL
-                    GUIDE</span>
-                <h1 class="text-4xl md:text-6xl serif font-bold mb-8 fade-up text-white/95">?�중??추억???�원??/h1>
-                <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed font-light fade-up">
-                    ?�별???�픔?�로�??��? ?�도�?<br>?�께?�던 ?�름?�운 ?�간?�을 기록?�고 기억?�주?�요.
+            
+            <div class="max-w-4xl mx-auto px-6 relative z-10 fade-up">
+                <h1 class="text-4xl md:text-6xl font-bold mb-8 leading-tight serif italic">"언제까지나 당신을<br>기억할게요"</h1>
+                <p class="text-white/60 text-lg font-light leading-relaxed max-w-2xl mx-auto">
+                    함께한 소중한 시간들이 잊히지 않도록,<br>온실이 아름다운 추억의 보관함이 되어 드립니다.
                 </p>
             </div>
         </section>
 
-        <div class="max-w-5xl mx-auto px-4 py-24 space-y-32">
-
-            <!-- Section 1: Bucket List -->
-            <section class="grid md:grid-cols-2 gap-16 items-center fade-up">
+        <!-- Memory Content -->
+        <section class="max-w-6xl mx-auto px-6 py-20 md:py-32">
+            <div class="grid md:grid-cols-2 gap-16 items-center mb-32 fade-up">
                 <div class="space-y-8">
-                    <div class="space-y-3">
-                        <span class="text-[#C5A065] font-bold tracking-widest text-xs uppercase">Memory 01</span>
-                        <h2 class="text-3xl md:text-4xl font-bold text-[#1B2B48] serif leading-tight">?�께?�는<br>마�?�?버킷리스??
-                        </h2>
-                    </div>
-                    <p class="text-gray-600 leading-relaxed text-lg font-light">
-                        ?�직 ?�간???�아?�다�? ?�이?� ?�께 �??�보�??�었???�들???�나???�천?�보?�요.
-                        거창?��? ?�아??좋아?? ?�숙??공원 ?�책, 좋아?�는 간식 ?�컷 먹기 ???�소???�복??가????추억???�니??
-                    </p>
-                    <div class="grid grid-cols-1 gap-4">
-                        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
-                            <div
-                                class="w-10 h-10 bg-[#C5A065]/10 rounded-xl flex items-center justify-center text-[#C5A065]">
-                                <i class="fas fa-camera"></i>
-                            </div>
-                            <span class="font-medium text-gray-700">?��? 못할 가족사�??�기�?/span>
-                        </div>
-                        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
-                            <div
-                                class="w-10 h-10 bg-[#C5A065]/10 rounded-xl flex items-center justify-center text-[#C5A065]">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </div>
-                            <span class="font-medium text-gray-700">가??좋아?�던 ?�책�??�까지 걷기</span>
-                        </div>
-                        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
-                            <div
-                                class="w-10 h-10 bg-[#C5A065]/10 rounded-xl flex items-center justify-center text-[#C5A065]">
-                                <i class="fas fa-cookie-bite"></i>
-                            </div>
-                            <span class="font-medium text-gray-700">?�상?�서 가??맛있??간식 ?�티</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="rounded-[2.5rem] overflow-hidden shadow-2xl h-[450px] bg-gray-200 relative group">
-                    <img src="https://images.unsplash.com/photo-1535930749574-1399327ce78f?q=80&w=2536&auto=format&fit=crop"
-                        alt="Bucket List"
-                        class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
-                </div>
-            </section>
-
-            <!-- Section 2: Traces (NEW) -->
-            <section class="grid md:grid-cols-2 gap-16 items-center md:flex-row-reverse fade-up">
-                <div
-                    class="order-2 md:order-1 rounded-[2.5rem] overflow-hidden shadow-2xl h-[450px] bg-gray-200 relative group">
-                    <img src="https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?q=80&w=1200&auto=format&fit=crop"
-                        alt="Traces"
-                        class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
-                </div>
-                <div class="space-y-8 order-1 md:order-2">
-                    <div class="space-y-3 text-right">
-                        <span class="text-[#C5A065] font-bold tracking-widest text-xs uppercase">Memory 02</span>
-                        <h2 class="text-3xl md:text-4xl font-bold text-[#1B2B48] serif leading-tight">?�이???��? ?�적<br>?�중??
-                            간직?�기</h2>
-                    </div>
-                    <p class="text-gray-600 leading-relaxed text-lg font-light text-right">
-                        ?�에 ?�던 보드?�운 ????�? ?�씩?�게 ?�랐???�염 ?�나까�?.<br>
-                        ?�이??체취가 �??�적?�을 ?�쁜 ?�자???�아보세??<br>
-                        ???��? 조각?�이 ???�실�??�에???�뜻???�안???�어�?것입?�다.
-                    </p>
-                    <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-4">
-                        <h4 class="font-bold text-[#1B2B48] flex items-center gap-2">
-                            <i class="fas fa-box-open text-[#C5A065]"></i> 보존 ?�이?�어
-                        </h4>
-                        <ul class="space-y-2 text-sm text-gray-500">
-                            <li>??부?�러??빗질 ???�온 ?�을 ?�크 리본?�로 묶어 보�?</li>
-                            <li>???�연?�럽�?빠진 ?�염?�나 ?�빨???�고 ?�명???�리병에 ?�기</li>
-                            <li>???�이가 가???�끼???��? ?�난감이???�착 ?�요</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Section 3: Recording (Enhanced) -->
-            <section class="fade-up">
-                <div class="bg-white rounded-[3rem] p-12 md:p-20 shadow-sm border border-gray-100">
-                    <div class="max-w-2xl mx-auto text-center space-y-8">
-                        <span class="text-[#C5A065] font-bold tracking-widest text-xs uppercase">Memory 03</span>
-                        <h2 class="text-3xl md:text-4xl font-bold text-[#1B2B48] serif">지�????�간??기록</h2>
-                        <p class="text-gray-600 leading-relaxed text-lg font-light">
-                            건강?�을 ?�의 ?�기�?모습뿐만 ?�니?? 조금?� ?�려�?지금의 ?�온??모습???�중?�니??<br>
-                            ?�중??가??그리??�?같�? ?�면?�을 ?�상?�로 ?�아?�세??
-                        </p>
-                        <div class="grid md:grid-cols-2 gap-6 pt-6">
-                            <div
-                                class="text-left p-6 bg-gray-50 rounded-2xl border border-gray-100 transition-hover hover:shadow-md">
-                                <i class="fas fa-video text-[#C5A065] mb-4 text-xl"></i>
-                                <h4 class="font-bold text-[#1B2B48] mb-2 uppercase text-sm tracking-tighter">Voice &
-                                    Sound</h4>
-                                <p class="text-xs text-gray-500 leading-relaxed">?�름??불�?????귀�?쫑긋?�거?? 보호?�님??목소리에 반응?�는 ?�이??
-                                    모습???�리까�? ?�명?�게 기록?�두?�요.</p>
-                            </div>
-                            <div
-                                class="text-left p-6 bg-gray-50 rounded-2xl border border-gray-100 transition-hover hover:shadow-md">
-                                <i class="fas fa-magic text-[#C5A065] mb-4 text-xl"></i>
-                                <h4 class="font-bold text-[#1B2B48] mb-2 uppercase text-sm tracking-tighter">Last Walk
-                                    Flowers</h4>
-                                <p class="text-xs text-gray-500 leading-relaxed">마�?�??�책?�서 만난 ?��? 꽃이???�사귀�??�성�?말려 ?�화�?
-                                    보�??�보?�요. �?공기?� ?�경???�께 기억??거예??</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Section 4: Memorial Services (NEW) -->
-            <section class="grid md:grid-cols-2 gap-16 items-center fade-up">
-                <div class="space-y-8">
-                    <div class="space-y-3">
-                        <span class="text-[#C5A065] font-bold tracking-widest text-xs uppercase">Memory 04</span>
-                        <h2 class="text-3xl md:text-4xl font-bold text-[#1B2B48] serif leading-tight">?�원???�께?�는<br>?�문?�인
-                            추억�?/h2>
-                    </div>
-                    <p class="text-gray-600 leading-relaxed text-lg font-light">
-                        ?�이?�??물리??거리??멀?��?지�? ?�리 곁에 ?�른 모습?�로 ?�원??머무�????�는 방법?�이 ?�습?�다.
-                        ?�즘?� ?��??�인 기념 ?�비?��? ?�해 ?�이�??�상 ?�에??기억?�기???�니??
+                    <span class="text-brand-warm font-bold text-xs tracking-widest uppercase">Memorial Service</span>
+                    <h2 class="text-3xl md:text-4xl font-bold leading-tight">온실 모바일 추모관<br>마음을 전하는 공간</h2>
+                    <p class="text-gray-400 font-light leading-relaxed">
+                        물리적인 거리에 상관없이 아이를 사랑하는 모든 가족들이<br>함께 사진을 올리고 댓글로 추모할 수 있는 공간을 열어드립니다.
                     </p>
                     <div class="space-y-4">
-                        <details class="group bg-white rounded-2xl border border-gray-100">
-                            <summary
-                                class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-[#1B2B48]">
-                                메모리얼 ?�톤 & 주얼�?
-                                <i
-                                    class="fas fa-plus text-xs text-[#C5A065] group-open:rotate-45 transition-transform"></i>
-                            </summary>
-                            <div class="p-6 pt-0 text-sm text-gray-500 leading-relaxed border-t border-gray-50">
-                                ?�이???�골???�름?�운 보석 ?�태�??�작?�여 간직?�거?? 목걸??반�? ?�의 주얼리에 ?�아 매일 �??�기�??�낄 ???�습?�다.
-                            </div>
-                        </details>
-                        <details class="group bg-white rounded-2xl border border-gray-100">
-                            <summary
-                                class="list-none p-6 cursor-pointer flex justify-between items-center font-bold text-[#1B2B48]">
-                                맞춤??초상??& ?�규??
-                                <i
-                                    class="fas fa-plus text-xs text-[#C5A065] group-open:rotate-45 transition-transform"></i>
-                            </summary>
-                            <div class="p-6 pt-0 text-sm text-gray-500 leading-relaxed border-t border-gray-50">
-                                ?�진??바탕?�로 ???�세??초상?�나 ?�규?��? ?�작?�여 침�? ?�이??거실 ???�에 ?�이???�리�?만들?�주?�요.
-                            </div>
-                        </details>
-                    </div>
-                </div>
-                <div class="rounded-[2.5rem] overflow-hidden shadow-2xl h-[450px] bg-gray-200 relative group">
-                    <img src="images/memorial_art_premium.jpg"
-                        alt="Memorial Jewel"
-                        class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
-                </div>
-            </section>
-
-            <!-- Section 5: Letter to My Pet (NEW) -->
-            <section
-                class="max-w-3xl mx-auto text-center bg-[#FDFBF9] p-12 md:p-20 rounded-[3rem] border border-[#EBE3D5] fade-up relative overflow-hidden">
-                <div class="absolute -top-10 -right-10 w-40 h-40 bg-[#C5A065]/5 rounded-full blur-3xl"></div>
-                <div class="relative z-10 space-y-8">
-                    <i class="fas fa-feather-alt text-3xl text-[#C5A065]"></i>
-                    <h2 class="text-3xl font-bold text-[#1B2B48] serif">못다 ??진심???�어보세??/h2>
-                    <p class="text-gray-600 leading-relaxed text-lg font-light">
-                        ?�이?�게 말해주고 ?�었??진심, ?�복?�던 기억?�을 글�???��보세??<br>
-                        ?�고 ?�었??말들????글????글???�어 ?�려가??보면,<br>
-                        무거?�던 마음??조금?� 가벼워지??것을 ?�낄 ???�습?�다.
-                    </p>
-                    <div class="pt-6">
-                        <p class="text-[#C5A065] font-serif italic text-lg opacity-80 italic">"?�랑?�다, 고마?�다. ?�리 ?�시 만날 그날까�?
-                            ??지?�고 ?�으??"</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Section 6: Comforting Message Board (NEW) -->
-            <section class="max-w-3xl mx-auto fade-up">
-                <div class="text-center mb-12 space-y-4">
-                    <div
-                        class="w-16 h-16 bg-[#F5F5F0] rounded-full flex items-center justify-center mx-auto mb-6 text-[#1B2B48]">
-                        <i class="fas fa-comments text-2xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-bold text-[#1B2B48] serif">?�뜻???�로 ?�누�?/h2>
-                    <p class="text-gray-500 font-light">?�로???�픔???�루만�?�? ?�중???�이�??�께 기억?�는 공간?�니??</p>
-                </div>
-
-                <!-- Message Board (Speech Bubbles) -->
-                <div id="comfort-board" class="space-y-6 mb-8 min-h-[400px]">
-                    <!-- Messages will be rendered here by JS -->
-                </div>
-
-                <!-- Pagination -->
-                <div id="pagination" class="flex justify-center flex-wrap gap-2 mb-12">
-                    <!-- Pagination buttons will be rendered here by JS -->
-                </div>
-
-                <!-- Message Input -->
-                <div
-                    class="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm relative overflow-hidden group">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-br from-[#1B2B48]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                    </div>
-                    <div class="relative z-10 space-y-4">
-                        <h4 class="font-bold text-[#1B2B48] flex items-center gap-2 text-sm">
-                            <i class="fas fa-feather-alt text-[#C5A065]"></i> ?�스??마음???�해볼까??
-                        </h4>
-                        <div class="flex flex-col gap-3">
-                            <input type="text" id="comfort-nickname"
-                                class="w-full sm:w-1/3 p-3 rounded-xl bg-gray-50 border border-gray-100 focus:outline-none focus:ring-2 focus:ring-[#C5A065]/20 text-sm font-light transition-all placeholder:text-gray-300"
-                                placeholder="보호???�네??(?? 별이�?">
-                            <textarea id="comfort-input"
-                                class="w-full p-5 rounded-2xl bg-gray-50 border border-gray-100 focus:outline-none focus:ring-2 focus:ring-[#C5A065]/20 text-sm font-light resize-none h-32 transition-all placeholder:text-gray-300"
-                                placeholder="?�중???�이?�게 ?�하�??��? 말이?? ?�른 보호?�분?�께 ?�이 ?�는 ?�마?��? ?�겨주세??"></textarea>
+                        <div class="flex items-center gap-4 p-5 bg-gray-50 rounded-2xl border border-transparent hover:border-brand-warm/20 transition-all">
+                            <i class="fas fa-images text-brand-warm text-xl"></i>
+                            <span class="text-sm font-medium">영구 보관되는 온라인 앨범</span>
                         </div>
-                        <div class="flex justify-between items-center sm:flex-row flex-col gap-4">
-                            <p class="text-xs text-gray-400 font-light text-center sm:text-left">?�로???�픔???�누�?마음??짐이 조금?�
-                                가벼워�?거예??</p>
-                            <button onclick="addComfortMessage()"
-                                class="w-full sm:w-auto bg-[#1B2B48] hover:bg-[#2A3F64] text-white px-8 py-3.5 rounded-2xl font-bold text-sm transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-[#1B2B48]/10 animate-pulse-slow">
-                                ?�로 ?�기�?
-                            </button>
+                        <div class="flex items-center gap-4 p-5 bg-gray-50 rounded-2xl border border-transparent hover:border-brand-warm/20 transition-all">
+                            <i class="fas fa-heart text-brand-warm text-xl"></i>
+                            <span class="text-sm font-medium">지인들과 공유하는 추모 메시지</span>
                         </div>
                     </div>
+                    <button class="bg-brand text-white px-8 py-4 rounded-2xl font-bold shadow-lg shadow-brand/10 hover:bg-brand/90 transition-all">추모관 신청하기</button>
                 </div>
-            </section>
+                <div class="rounded-[3rem] overflow-hidden shadow-2xl rotate-2">
+                    <img src="https://images.unsplash.com/photo-1594493393166-7013897b764c?q=80&w=2672&auto=format&fit=crop" class="w-full aspect-[4/5] object-cover" alt="추모 이미지">
+                </div>
+            </div>
 
-        </div>
+            <div class="grid md:grid-cols-3 gap-8 mb-32">
+                <div class="memory-card bg-brand-cream p-10 rounded-[2.5rem] flex flex-col items-center text-center fade-up">
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-brand-warm mb-8 shadow-sm">
+                        <i class="fas fa-gem text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-4">메모리얼 스톤</h3>
+                    <p class="text-xs text-brand/40 leading-relaxed mb-8">아이의 유골을 보석과 같은 결정체로 제작하여 늘 곁에서 온기를 느낄 수 있습니다.</p>
+                    <a href="stone-guide.html" class="text-xs font-bold text-brand-warm hover:underline">과정 보기 <i class="fas fa-arrow-right ml-1"></i></a>
+                </div>
+                <div class="memory-card bg-brand-cream p-10 rounded-[2.5rem] flex flex-col items-center text-center fade-up" style="transition-delay: 100ms;">
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-brand-warm mb-8 shadow-sm">
+                        <i class="fas fa-seedling text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-4">그린 리턴(수목장)</h3>
+                    <p class="text-xs text-brand/40 leading-relaxed mb-8">자연으로 돌아가는 아름다운 순환. 아이가 나무와 함께 다시 자라날 수 있도록 돕습니다.</p>
+                    <a href="nature-guide.html" class="text-xs font-bold text-brand-warm hover:underline">시설 보기 <i class="fas fa-arrow-right ml-1"></i></a>
+                </div>
+                <div class="memory-card bg-brand-cream p-10 rounded-[2.5rem] flex flex-col items-center text-center fade-up" style="transition-delay: 200ms;">
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-brand-warm mb-8 shadow-sm">
+                        <i class="fas fa-wind text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-4">슬픔 케어(Counseling)</h3>
+                    <p class="text-xs text-brand/40 leading-relaxed mb-8">이별 후 찾아오는 '펫로스 증후군'. 당신의 마음이 충분히 치유될 때까지 온실이 함께 걷겠습니다.</p>
+                    <a href="counseling-guide.html" class="text-xs font-bold text-brand-warm hover:underline">상담 안내 <i class="fas fa-arrow-right ml-1"></i></a>
+                </div>
+            </div>
+
+            <!-- Content Card -->
+            <div class="bg-gray-50 rounded-[3rem] p-8 md:p-16 flex flex-col items-center text-center fade-up">
+                <i class="fas fa-quote-left text-4xl text-brand-warm/20 mb-8"></i>
+                <h2 class="text-2xl md:text-3xl font-bold mb-8 serif">아이를 잘 보내주는 것도<br>사랑의 마지막 약속입니다.</h2>
+                <div class="w-12 h-[2px] bg-brand-warm mb-8"></div>
+                <p class="text-gray-400 text-sm leading-relaxed max-w-2xl mx-auto">
+                    후회보다는 감사로, 슬픔보다는 아름다운 기억으로 채색될 수 있도록 최선을 다하겠습니다. 궁금한 점이 있으시면 언제든 편안하게 말씀해주세요.
+                </p>
+                <div class="mt-12 flex flex-wrap justify-center gap-4">
+                    <a href="tel:1551-5052" class="bg-brand-warm text-white px-8 py-4 rounded-2xl font-bold shadow-lg shadow-brand-warm/20 active:scale-95 transition-all">전화 상담</a>
+                    <a href="contact.html" class="bg-white text-brand border border-gray-100 px-8 py-4 rounded-2xl font-bold shadow-sm active:scale-95 transition-all">1:1 문의하기</a>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="bg-brand-cream border-t border-brand/5 py-16">
@@ -374,38 +199,38 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
                 <div class="col-span-2 md:col-span-2">
                     <div class="flex items-center gap-2 mb-4">
-                        <img src="./images/onsil_logo_tr.png" width="32" height="32" class="w-8 h-8 object-contain" alt="The ?�실 로고">
-                        <span class="font-bold text-lg text-[#2C3E50]">The ?�실</span>
+                        <img src="./images/onsil_logo_tr.png" width="32" height="32" class="w-8 h-8 object-contain" alt="The 온실 로고">
+                        <span class="font-bold text-lg text-[#2C3E50]">The 온실</span>
                     </div>
                     <p class="text-sm text-[#2C3E50]/40 mb-4 leading-relaxed max-w-sm">
-                        반려?�물 ?��??�장 비교부???�약까�?.<br>?�려??결정?????�실???�께?�니??
+                        반려동물 장례식장 비교부터 예약까지.<br>어려운 결정에 늘 온실이 함께합니다.
                     </p>
-                    <p class="text-xs text-[#2C3E50]/30">The ?�실 | ?�??조영??| 문의 1551-5052<br>?�업?�등록번??: 181-18-02826<br>주소 : 부천시 ?�작�?280번길 53-9 ?�우?�폴리�? 502??/p>
+                    <p class="text-xs text-[#2C3E50]/30">The 온실 | 대표 조영호 | 문의 1551-5052<br>사업자등록번호 : 181-18-02826<br>주소 : 부천시 삼작로 280번길 53-9 행우라폴리움 502호</p>
                 </div>
                 <div>
-                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">?�비??/h3>
+                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">서비스</h3>
                     <ul class="space-y-3 text-sm text-[#2C3E50]/50">
-                        <li><a href="search.html" class="hover:text-[#2C3E50] transition-colors">?��??�장 찾기</a></li>
-                        <li><a href="guide.html" class="hover:text-[#2C3E50] transition-colors">?�별 가?�드</a></li>
-                        <li><a href="self-diagnosis.html" class="hover:text-[#2C3E50] transition-colors">건강?��?진단</a></li>
-                        <li><a href="memory.html" class="hover:text-[#2C3E50] transition-colors">추억 가?�드</a></li>
-                        <li><a href="community.html" class="hover:text-[#2C3E50] transition-colors">커�??�티</a></li>
+                        <li><a href="search.html" class="hover:text-[#2C3E50] transition-colors">장례식장 찾기</a></li>
+                        <li><a href="guide.html" class="hover:text-[#2C3E50] transition-colors">이별 가이드</a></li>
+                        <li><a href="self-diagnosis.html" class="hover:text-[#2C3E50] transition-colors">건강자가진단</a></li>
+                        <li><a href="memory.html" class="hover:text-[#2C3E50] transition-colors">추억 가이드</a></li>
+                        <li><a href="community.html" class="hover:text-[#2C3E50] transition-colors">커뮤니티</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">고객지??/h3>
+                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">고객지원</h3>
                     <ul class="space-y-3 text-sm text-[#2C3E50]/50">
-                        <li><a href="contact.html" class="hover:text-[#2C3E50] transition-colors">문의?�기</a></li>
+                        <li><a href="contact.html" class="hover:text-[#2C3E50] transition-colors">문의하기</a></li>
                         <li><a href="partnership.html"
-                                class="hover:text-[#2C3E50] transition-colors font-bold text-accent">?�휴문의</a></li>
-                        <li><a href="terms.html" class="hover:text-[#2C3E50] transition-colors">?�용?��?</a></li>
-                        <li><a href="privacy.html" class="hover:text-[#2C3E50] transition-colors">개인?�보처리방침</a></li>
+                                class="hover:text-[#2C3E50] transition-colors font-bold text-brand-warm">제휴문의</a></li>
+                        <li><a href="terms.html" class="hover:text-[#2C3E50] transition-colors">이용약관</a></li>
+                        <li><a href="privacy.html" class="hover:text-[#2C3E50] transition-colors">개인정보처리방침</a></li>
                     </ul>
                 </div>
             </div>
             <div
                 class="border-t border-[#2C3E50]/5 mt-10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-                <p class="text-xs text-[#2C3E50]/30">&copy; 2026 The ?�실. All rights reserved.</p>
+                <p class="text-xs text-[#2C3E50]/30">&copy; 2026 The 온실. All rights reserved.</p>
                 <div class="flex gap-4">
                     <a href="#"
                         class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
@@ -423,153 +248,53 @@
             </div>
         </div>
     </footer>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300" id="mobile-nav-panel">
+            <div class="p-6 h-full flex flex-col pt-safe">
+                <div class="flex justify-between items-center mb-8">
+                    <span class="font-bold text-lg text-brand">메뉴</span>
+                    <button onclick="toggleMobileNav()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+                <nav class="space-y-1 flex-1">
+                    <a href="search.html?quote=true" class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all bg-brand-cream text-brand font-bold mb-4 hover:shadow-md">
+                        <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
+                        <span>바로 견적받기</span>
+                    </a>
+                    <a href="search.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-search w-5 text-center"></i>
+                        <span>장례식장 찾기</span>
+                    </a>
+                    <a href="guide.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-book-open w-5 text-center"></i>
+                        <span>이별 가이드</span>
+                    </a>
+                    <a href="self-diagnosis.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-stethoscope w-5 text-center"></i>
+                        <span>건강자가진단</span>
+                    </a>
+                    <a href="memory.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-brand/5 text-brand font-bold transition-colors">
+                        <i class="fas fa-heart w-5 text-center"></i>
+                        <span>추억 가이드</span>
+                    </a>
+                    <a href="community.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-comments w-5 text-center"></i>
+                        <span>커뮤니티</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/auth.js"></script>
+    <script src="js/pwa.js"></script>
     <script>
-        // Scroll Animation Observer
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-        // Comfort Board Logic
-        let comfortMessages = [
-            { nickname: '?�명보호??, content: '?�리 초코가 무�?�??�리�?건넌 지 벌써 ???�이 ?�었?�요. ?�전??보고 ?��?�? ?�기??많�? ?�로�??�고 갑니??', time: '2?�간 ??, type: 'left' },
-            { nickname: '별이�?, content: '길에??만난 �????�이???�비 ?�각???�컥?�네?? 그래???�비?? 그곳?�선 마음�??�어?��??�으??', time: '5?�간 ??, type: 'right' },
-            { nickname: '?�복?�아�?, content: '?�께 보낸 15?�이 ?�무 ?�복?�어?? ?�젠가 ?�시 만날 ???�다??믿음?�로 ?�루?�루 견뎌봅니??', time: '1????, type: 'left' },
-            { nickname: '초롱?�누??, content: '벌써 보고 ?�다 초롱?? ?�나가 많이 ?�랑??', time: '1????, type: 'right' },
-            { nickname: '몽이?�마', content: '?�뜻???�로 감사?�요. 몽이???�늘?�서 좋아??�?같아??', time: '2????, type: 'left' },
-            { nickname: '?�랑?�네', content: '?�간???�이?�는 말이 맞을까요? ?�직?� ?�무 ?�프?�요.', time: '2????, type: 'left' },
-            { nickname: '구름?�아�?, content: '구름?? ?��? ?�께??구름 ???�책 ?��? ?�을�?', time: '3????, type: 'right' },
-            { nickname: '초코쿠키', content: '초코??쿠키?? ?�이???�이좋게 지?�고 ?��??', time: '3????, type: 'left' },
-            { nickname: '?�네보호??, content: '모든 ?�이?�이 ?�프지 ?��? 곳에???�복?�기�?바랍?�다.', time: '4????, type: 'left' },
-            { nickname: '가?�하??, content: '?�늘?? 거기??친구?�이???�나�??�고 ?�어.', time: '4????, type: 'right' },
-            { nickname: '봄이?�생', content: '봄이?? ?�리 가족이 ?�어줘서 ?�말 고마?�어.', time: '5????, type: 'left' },
-            { nickname: '까�???, content: '검?� 보석 같던 까�????�동?��? 그립?�요.', time: '5????, type: 'right' },
-            { nickname: '?��??�랑', content: '?��??? ?�음 ?�에??�??�리 ?�마 ?�로 ?�어?�줘.', time: '6????, type: 'left' },
-            { nickname: '초록�?, content: '?�이�?보내�??�참???�었지�? ?�제???�으�?기억?�려 ?�니??', time: '6????, type: 'left' },
-            { nickname: '?�튼??, content: '?�튼?�게 ??지?�다 가줘서 고마???�랑??', time: '1주일 ??, type: 'right' },
-            { nickname: '무�?개맘', content: '무�?�??�리 ?�머?�서 ?�리�?기다?�줄 거예??', time: '1주일 ??, type: 'left' },
-            { nickname: '?�살??, content: '?�살처럼 밝게 ?�던 �?모습 ?��? ?�을�?', time: '1주일 ??, type: 'left' },
-            { nickname: '방울?�누??, content: '방울???�책 가?? ?�고 부르면 ?�려??것만 같아??', time: '2주일 ??, type: 'right' },
-            { nickname: '민들??, content: '바람???�리??민들?�씨처럼 ?�유�?�� ?�아가??', time: '2주일 ??, type: 'left' },
-            { nickname: '마�?막인??, content: '?�녕?�라??말�? ?�시�??�껴?�게. ?�중??�?만나??', time: '2주일 ??, type: 'left' }
-        ];
-
-        const messagesPerPage = 5;
-        let currentPage = 1;
-
-        function renderMessages(page) {
-            const board = document.getElementById('comfort-board');
-            board.innerHTML = '';
-
-            const start = (page - 1) * messagesPerPage;
-            const end = start + messagesPerPage;
-            const pageMessages = comfortMessages.slice(start, end);
-
-            pageMessages.forEach(msg => {
-                const isRight = msg.type === 'right';
-                const div = document.createElement('div');
-                div.className = `flex items-start gap-4 ${isRight ? 'flex-row-reverse' : ''} fade-up visible`;
-
-                div.innerHTML = `
-                    <div class="w-10 h-10 rounded-full ${isRight ? 'bg-[#C5A065]/10 text-[#C5A065]' : 'bg-gray-200 text-gray-400'} flex-shrink-0 flex items-center justify-center">
-                        <i class="fas ${isRight ? 'fa-paw' : 'fa-user'} text-sm"></i>
-                    </div>
-                    <div class="relative ${isRight ? 'bg-[#FDFBF9] border-[#EBE3D5] rounded-tr-none text-right' : 'bg-white border-gray-100 rounded-tl-none'} p-5 rounded-2xl shadow-sm border max-w-sm">
-                        <p class="text-sm text-gray-700 leading-relaxed font-light font-sans italic">
-                            "${msg.content}"
-                        </p>
-                        <div class="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between ${isRight ? 'flex-row-reverse' : ''}">
-                            <span class="text-[10px] text-gray-400 font-medium">${msg.nickname} ??${msg.time}</span>
-                            <div class="flex items-center gap-2 text-[10px] text-[#C5A065]">
-                                <i class="fas fa-heart"></i>
-                                <span>?�로?�요</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                board.appendChild(div);
-            });
-
-            renderPagination();
-        }
-
-        function renderPagination() {
-            const pagination = document.getElementById('pagination');
-            pagination.innerHTML = '';
-
-            const totalPages = Math.ceil(comfortMessages.length / messagesPerPage);
-
-            for (let i = 1; i <= totalPages; i++) {
-                const btn = document.createElement('button');
-                btn.className = `w-8 h-8 rounded-lg text-sm font-bold transition-all ${i === currentPage ? 'bg-[#1B2B48] text-white shadow-md' : 'bg-white text-gray-400 hover:bg-gray-50 border border-gray-100'}`;
-                btn.textContent = i;
-                btn.onclick = () => {
-                    currentPage = i;
-                    renderMessages(i);
-                };
-                pagination.appendChild(btn);
-            }
-        }
-
-        function addComfortMessage() {
-            const nicknameInput = document.getElementById('comfort-nickname');
-            const contentInput = document.getElementById('comfort-input');
-
-            if (!contentInput.value.trim()) {
-                alert('?�용???�력?�주?�요.');
-                return;
-            }
-
-            const nickname = nicknameInput.value.trim() || '?�명보호??;
-
-            comfortMessages.unshift({
-                nickname: nickname,
-                content: contentInput.value,
-                time: '방금 ??,
-                type: 'left'
-            });
-
-            currentPage = 1;
-            renderMessages(1);
-
-            // Clear inputs
-            contentInput.value = '';
-            nicknameInput.value = '';
-
-            // Interaction effect
-            const btn = document.querySelector('button[onclick="addComfortMessage()"]');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check"></i> ?�록??;
-            btn.classList.add('bg-brand-sage');
-
-            setTimeout(() => {
-                btn.innerHTML = originalText;
-                btn.classList.remove('bg-brand-sage');
-            }, 2000);
-        }
-
-        // Initialize board
-        renderMessages(1);
-
-        if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js');
-            });
-        }
-
-        // Mobile Nav
         function toggleMobileNav() {
             const nav = document.getElementById('mobile-nav');
             const panel = document.getElementById('mobile-nav-panel');
@@ -581,72 +306,18 @@
                 setTimeout(() => nav.classList.add('hidden'), 300);
             }
         }
-    </script>
 
-    <!-- Mobile Navigation Overlay -->
-    <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
-        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
-            id="mobile-nav-panel">
-            <div class="p-6 h-full flex flex-col pt-safe">
-                <div class="flex justify-between items-center mb-8">
-                    <span class="font-bold text-lg text-brand">메뉴</span>
-                    <button onclick="toggleMobileNav()"
-                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
-                        <i class="fas fa-times text-gray-500"></i>
-                    </button>
-                </div>
-                <nav class="space-y-1 flex-1">
-                    <a href="search.html?quote=true"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all bg-brand-cream text-brand font-bold mb-4 hover:shadow-md">
-                        <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
-                        <span>바로 견적받기</span>
-                    </a>
-                    <a href="search.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-search w-5 text-center"></i>
-                        <span>?��??�장 찾기</span>
-                    </a>
-                    <a href="guide.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-book-open w-5 text-center"></i>
-                        <span>?�별 가?�드</span>
-                    </a>
-                    <a href="self-diagnosis.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-stethoscope w-5 text-center"></i>
-                        <span>건강?��?진단</span>
-                    </a>
-                    <a href="memory.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-brand/5 text-brand font-bold transition-colors">
-                        <i class="fas fa-heart w-5 text-center"></i>
-                        <span>추억 가?�드</span>
-                    </a>
-                    <a href="community.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-comments w-5 text-center"></i>
-                        <span>커�??�티</span>
-                    </a>
-                </nav>
-                <!-- Mobile Bottom Actions -->
-                <div class="pt-6 border-t border-brand/5 space-y-3">
-                    <button
-                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('?�약?� 로그?????�용 가?�합?�다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
-                        class="w-full bg-brand-sage text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-sage/90 transition-colors">
-                        <i class="fas fa-calendar-check text-sm"></i> ?�약?�기
-                    </button>
-                    <a href="tel:1551-5052"
-                        class="w-full bg-brand-warm text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-warmDark transition-colors">
-                        <i class="fas fa-phone-alt text-sm"></i> 1551-5052 ?�담???�결
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script src="js/auth.js"></script>
-    <script src="js/pwa.js"></script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+        });
+    </script>
     <script src="js/channel-talk.js"></script>
 </body>
 
 </html>
-

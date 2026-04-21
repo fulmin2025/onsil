@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
@@ -70,6 +70,7 @@
         <!-- Tabs -->
         <div class="flex border-b border-brand/10 mb-8 overflow-x-auto no-scrollbar">
             <button onclick="switchTab('reservations')" id="tab-reservations" class="tab-btn active px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">내 예약 내역</button>
+            <button onclick="switchTab('wishlist')" id="tab-wishlist" class="tab-btn px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">찜한 장례식장</button>
             <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">내 정보 수정</button>
             <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">계정 설정</button>
         </div>
@@ -82,6 +83,18 @@
                         <i class="fas fa-calendar-alt text-2xl"></i>
                     </div>
                     <p class="text-brand/40 font-medium">예약 데이터를 불러오는 중...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Wishlist -->
+        <section id="sec-wishlist" class="tab-content hidden fade-in">
+            <div class="grid sm:grid-cols-2 gap-4" id="wishlist-list">
+                <div class="bg-white p-12 rounded-3xl border border-brand/5 text-center sm:col-span-2">
+                    <div class="w-16 h-16 bg-brand-mist rounded-full flex items-center justify-center mx-auto mb-4 text-brand/20">
+                        <i class="fas fa-heart text-2xl"></i>
+                    </div>
+                    <p class="text-brand/40 font-medium">찜한 장례식장이 없습니다.</p>
                 </div>
             </div>
         </section>
@@ -158,7 +171,26 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/wishlist.js"></script>
     <script>
+        // Data for display lookup
+        const FACILITY_MAP = {
+            "펫오케스트라": { address: "경기 화성시 비봉면", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/petorchestra.webp" },
+            "리틀포즈": { address: "대구 군위군 부계면", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/littlepaws.webp" },
+            "스윗드림펫": { address: "경북 칠곡군 가산면", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/sweetdreampet.webp" },
+            "스타티스": { address: "부산 기장군 일광읍", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/statice.webp" },
+            "씨엘로펫": { address: "경기 용인시 처인구", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/cielopet.webp" },
+            "메리온": { address: "경남 양산시 상북면", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/merion.webp" },
+            "한별소울펫": { address: "경북 구미시 옥성면", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/hanbyeolsoulpet.webp" },
+            "펫메모리얼": { address: "강원 횡성군 공근면", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/petmemorial.webp" },
+            "전주아리움": { address: "전북 전주시 완산구", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/jeonjuarium.webp" },
+            "포포즈 화성점": { address: "경기 화성시 팔탄면", imageUrl: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000" },
+            "펫포레스트 남양주점": { address: "경기 남양주시 일패동", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/petforest-namyangju_1762610155894.webp" },
+            "퍼스트펫": { address: "전남 나주시 다시면", imageUrl: "https://d21ntoj848ohi.cloudfront.net/business-main-img/firstpet_1762224788154.webp" },
+            "아이헤븐": { address: "경남 김해시 생림면", imageUrl: "https://images.unsplash.com/photo-1501630834273-4b5604d2ee31?q=80&w=1000" },
+            "스마일어게인": { address: "경북 문경시 문경읍", imageUrl: "https://www.goodbyepet.co.kr/PEG/gallery/gallery.16974555519550.jpg" }
+        };
+
         let currentUser = null;
 
         /**
@@ -172,6 +204,7 @@
             document.getElementById('tab-' + tabId).classList.add('active');
             
             if (tabId === 'reservations') loadReservations();
+            if (tabId === 'wishlist') loadWishlist();
             if (tabId === 'profile') loadProfileData();
         }
 
@@ -260,6 +293,59 @@
             } catch (err) {
                 console.error(err);
                 list.innerHTML = `<p class="p-8 text-center text-red-500">오류가 발생했습니다: ${err.message}</p>`;
+            }
+        }
+
+        /**
+         * Load Wishlist Data
+         */
+        async function loadWishlist() {
+            const list = document.getElementById('wishlist-list');
+            try {
+                const favorites = await Wishlist.getAll();
+                
+                if (!favorites || favorites.length === 0) {
+                    list.innerHTML = `
+                        <div class="bg-white p-12 rounded-3xl border border-brand/5 text-center sm:col-span-2">
+                            <div class="w-16 h-16 bg-brand-mist rounded-full flex items-center justify-center mx-auto mb-4 text-brand/20">
+                                <i class="fas fa-heart text-2xl"></i>
+                            </div>
+                            <p class="text-brand/40 font-medium">찜한 장례식장이 없습니다.</p>
+                            <a href="search.html" class="inline-block mt-4 text-brand-sage font-bold hover:underline">장례식장 둘러보기</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                list.innerHTML = favorites.map(name => {
+                    const info = FACILITY_MAP[name] || { address: '정보 준비 중', imageUrl: 'https://images.unsplash.com/photo-1596230526487-11152a4a754b?w=500' };
+                    return `
+                        <div class="bg-white flex gap-4 p-4 rounded-2xl border border-brand/5 shadow-sm group hover:shadow-md transition-all">
+                            <div class="w-24 h-24 rounded-xl bg-cover bg-center shrink-0" style="background-image: url('${info.imageUrl}')"></div>
+                            <div class="flex-1 flex flex-col justify-between py-1">
+                                <div>
+                                    <h3 class="font-bold text-brand mb-1">${name}</h3>
+                                    <p class="text-[11px] text-brand/40 line-clamp-1">${info.address}</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="handleWishlistRemove('${name}')" class="text-[11px] font-bold text-red-400 hover:text-red-500 transition-colors">찜 해제</button>
+                                    <a href="search.html?keyword=${encodeURIComponent(name)}" class="text-[11px] font-bold text-brand-sage hover:underline">상세보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (err) {
+                console.error(err);
+                list.innerHTML = `<p class="p-8 text-center text-red-500 sm:col-span-2">목록을 불러오는 중 오류가 발생했습니다.</p>`;
+            }
+        }
+
+        async function handleWishlistRemove(name) {
+            if (!confirm(`'${name}'을(를) 찜 목록에서 삭제할까요?`)) return;
+            const res = await Wishlist.toggle(name);
+            if (res && res.success) {
+                loadWishlist();
             }
         }
 
@@ -357,6 +443,8 @@
                 switchTab('profile');
             } else if (tab === 'settings') {
                 switchTab('settings');
+            } else if (tab === 'wishlist') {
+                switchTab('wishlist');
             } else {
                 loadReservations();
             }
@@ -366,4 +454,3 @@
 </body>
 
 </html>
-

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>보험 진단 - The 온실</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1B2B48">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#2C3E50',
+                            warm: '#D4A574',
+                            warmDark: '#B8894E',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        body { font-family: 'Pretendard', sans-serif; }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-brand">
+
+    <header class="bg-white border-b border-gray-100 h-16 flex items-center px-4 sticky top-0 z-50">
+        <a href="guide.html" class="w-10 h-10 flex items-center justify-center text-gray-400">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+        <h1 class="flex-1 text-center font-bold text-lg mr-10">보험 혜택 진단</h1>
+    </header>
+
+    <main class="max-w-xl mx-auto p-6 pt-10 pb-32">
+        <div class="mb-10 text-center">
+            <div class="w-20 h-20 bg-brand/5 rounded-full flex items-center justify-center mx-auto mb-6 text-brand-warm">
+                <i class="fas fa-file-invoice-dollar text-3xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-4 italic serif">"우리 아이 보험,<br>장례비 지원이 될까요?"</h2>
+            <p class="text-sm text-gray-400 leading-relaxed">복잡한 약관 속에서 놓치기 쉬운 '사망 위로금'과 '장례 지원비' 혜택을 온실 전문가가 찾아드립니다.</p>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="flex items-center justify-between mb-12 px-4">
+            <div class="flex flex-col items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center text-xs font-bold">1</div>
+                <span class="text-[10px] font-bold text-brand">정보입력</span>
+            </div>
+            <div class="flex-1 h-[2px] bg-gray-100 mx-2 -translate-y-3"></div>
+            <div class="flex flex-col items-center gap-2 opacity-30">
+                <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-xs font-bold">2</div>
+                <span class="text-[10px] font-bold text-gray-500">약관분석</span>
+            </div>
+            <div class="flex-1 h-[2px] bg-gray-100 mx-2 -translate-y-3"></div>
+            <div class="flex flex-col items-center gap-2 opacity-30">
+                <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-xs font-bold">3</div>
+                <span class="text-[10px] font-bold text-gray-500">결과안내</span>
+            </div>
+        </div>
+
+        <form id="diagnosis-form" class="space-y-8 bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100" onsubmit="return false;">
+            <div class="space-y-4">
+                <label class="block text-sm font-bold text-gray-700">가입하신 보험사를 선택해주세요</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <button type="button" onclick="selectInsurance('메리츠')" class="ins-btn p-4 border border-gray-100 rounded-2xl text-sm font-medium hover:bg-gray-50 transition-all text-center">메리츠화재</button>
+                    <button type="button" onclick="selectInsurance('삼성화재')" class="ins-btn p-4 border border-gray-100 rounded-2xl text-sm font-medium hover:bg-gray-50 transition-all text-center">삼성화재</button>
+                    <button type="button" onclick="selectInsurance('DB손보')" class="ins-btn p-4 border border-gray-100 rounded-2xl text-sm font-medium hover:bg-gray-50 transition-all text-center">DB손해보험</button>
+                    <button type="button" onclick="selectInsurance('현대해상')" class="ins-btn p-4 border border-gray-100 rounded-2xl text-sm font-medium hover:bg-gray-50 transition-all text-center">현대해상</button>
+                    <button type="button" onclick="selectInsurance('기타')" class="ins-btn col-span-2 p-4 border border-gray-100 rounded-2xl text-sm font-medium hover:bg-gray-50 transition-all text-center">기타 / 잘 모름</button>
+                </div>
+            </div>
+
+            <div class="space-y-4 pt-4">
+                <label for="pet-name" class="block text-sm font-bold text-gray-700">반려동물 이름</label>
+                <input type="text" id="pet-name" placeholder="아이의 이름을 입력해주세요" class="w-full px-5 py-4 bg-gray-50 border border-transparent rounded-2xl text-sm focus:bg-white focus:border-brand transition-all outline-none">
+            </div>
+
+            <div class="space-y-4 pt-4">
+                <label for="phone" class="block text-sm font-bold text-gray-700">연락처 (결과 전송용)</label>
+                <input type="tel" id="user-phone" placeholder="010-0000-0000" class="w-full px-5 py-4 bg-gray-50 border border-transparent rounded-2xl text-sm focus:bg-white focus:border-brand transition-all outline-none">
+            </div>
+
+            <div class="pt-6">
+                <button type="button" onclick="submitDiagnosis()" class="w-full bg-brand text-white py-5 rounded-2xl font-bold shadow-lg shadow-brand/10 active:scale-[0.98] transition-all">
+                    분석 요청하기
+                </button>
+            </div>
+            
+            <p class="text-[10px] text-gray-300 text-center leading-relaxed">
+                * 입력하신 정보는 보험 약관 분석 및 상담 안내 목적으로만 사용되며,<br>상담 완료 후 안전하게 파기됩니다.
+            </p>
+        </form>
+
+        <div class="mt-12 p-8 bg-brand-warm/5 rounded-3xl border border-brand-warm/10 space-y-4">
+            <h4 class="font-bold text-brand-warm text-sm flex items-center gap-2">
+                <i class="fas fa-lightbulb"></i> 온실 보험 진단 서비스는?
+            </h4>
+            <ul class="space-y-3">
+                <li class="flex items-start gap-3 text-xs text-brand-warm/80">
+                    <i class="fas fa-check mt-0.5"></i>
+                    <span>무료로 진행되는 공익 목적의 서비스입니다.</span>
+                </li>
+                <li class="flex items-start gap-3 text-xs text-brand-warm/80">
+                    <i class="fas fa-check mt-0.5"></i>
+                    <span>가입 보험사 상관없이 모든 약관 분석이 가능합니다.</span>
+                </li>
+                <li class="flex items-start gap-3 text-xs text-brand-warm/80">
+                    <i class="fas fa-check mt-0.5"></i>
+                    <span>보험금 청구에 필요한 서류 리스트까지 안내해드립니다.</span>
+                </li>
+            </ul>
+        </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="bg-white w-full max-w-sm rounded-[2.5rem] p-10 text-center relative z-10 animate-in zoom-in duration-300">
+            <div class="w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-check text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4">분석 요청 완료</h3>
+            <p class="text-sm text-gray-400 leading-relaxed mb-8">
+                전문 상담사가 약관을 분석한 후,<br>입력하신 연락처로 1:1 안내를 도와드리겠습니다.
+            </p>
+            <button onclick="location.href='guide.html'" class="w-full bg-brand text-white py-4 rounded-2xl font-bold shadow-lg">확인</button>
+        </div>
+    </div>
+
+    <script src="js/channel-talk.js"></script>
+    <script>
+        let selectedIns = '';
+
+        function selectInsurance(name) {
+            selectedIns = name;
+            document.querySelectorAll('.ins-btn').forEach(btn => {
+                btn.classList.remove('bg-brand', 'text-white', 'border-brand');
+                btn.classList.add('border-gray-100', 'text-brand', 'bg-white');
+            });
+            event.target.classList.remove('border-gray-100', 'bg-white');
+            event.target.classList.add('bg-brand', 'text-white', 'border-brand');
+        }
+
+        async function submitDiagnosis() {
+            const petName = document.getElementById('pet-name').value.trim();
+            const phone = document.getElementById('user-phone').value.trim();
+
+            if (!selectedIns || !petName || !phone) {
+                alert('모든 정보를 입력해주세요.');
+                return;
+            }
+
+            // 실시간 상담 연동 (Channel Talk 등) 또는 백엔드 발송 로직
+            console.log('Diagnosis Requested:', { selectedIns, petName, phone });
+            
+            // UI 처리
+            document.getElementById('success-modal').classList.remove('hidden');
+        }
+    </script>
+</body>
+
+</html>

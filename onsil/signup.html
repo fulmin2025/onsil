@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>?�원가??- The ?�실</title>
+    <title>회원가입 - The 온실</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1B2B48">
     <link rel="apple-touch-icon" href="icons/icon.svg">
@@ -39,67 +39,121 @@
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden p-8">
         <div class="text-center mb-10">
             <a href="index.html" class="inline-flex flex-col items-center gap-3 group">
-                <img src="./images/onsil_logo_tr.png" width="80" height="80" class="w-20 h-20 object-contain transition-transform group-hover:scale-105" alt="?�실 캐릭??로고">
-                <span class="text-3xl font-bold text-[#1B2B48]">The ?�실</span>
+                <img src="./images/onsil_logo_tr.png" width="80" height="80" class="w-20 h-20 object-contain transition-transform group-hover:scale-105" alt="온실 캐릭터 로고">
+                <span class="text-3xl font-bold text-[#1B2B48]">The 온실</span>
             </a>
-            <p class="text-gray-500 text-sm mt-4">?�원가?�하�?The ?�실???�비?��? ?�용?�보?�요.</p>
+            <p class="text-gray-500 text-sm mt-4">회원가입하고 The 온실의 서비스를 이용해보세요.</p>
         </div>
 
         <form id="signup-form" class="space-y-6" onsubmit="return false;">
             <div>
-                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">?�름</label>
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">이름 <span class="text-red-500">*</span></label>
                 <input type="text" id="name" required
                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
-                    placeholder="?�길??>
+                    placeholder="홍길동">
             </div>
 
             <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">?�메??/label>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">이메일 <span class="text-red-500">*</span></label>
                 <input type="email" id="email" required
                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
                     placeholder="example@email.com">
             </div>
 
             <div>
-                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">비�?번호</label>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">비밀번호 <span class="text-red-500">*</span></label>
                 <input type="password" id="password" required
                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
-                    placeholder="?�••••••�?>
+                    placeholder="••••••••">
             </div>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">?�별</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">성별 <span class="text-red-500">*</span></label>
                     <div class="flex gap-2">
                         <button type="button" onclick="setGender('male')" id="gender-male"
                             class="flex-1 py-3 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all font-medium gender-btn">
-                            ??
+                            남
                         </button>
                         <button type="button" onclick="setGender('female')" id="gender-female"
                             class="flex-1 py-3 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-all font-medium gender-btn">
-                            ??
+                            여
                         </button>
                     </div>
                     <input type="hidden" id="gender" required>
                 </div>
                 <div>
-                    <label for="birth-year" class="block text-sm font-medium text-gray-700 mb-1">출생?�도</label>
+                    <label for="birth-year" class="block text-sm font-medium text-gray-700 mb-1">출생년도 <span class="text-red-500">*</span></label>
                     <input type="number" id="birth-year" required min="1900" max="2026"
                         class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
-                        placeholder="?? 1990">
+                        placeholder="예: 1990">
                 </div>
             </div>
 
             <div>
-                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">?�화번호</label>
-                <input type="tel" id="phone" required
+                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">
+                    휴대폰 번호 <span class="text-red-500">*</span> 
+                    <span class="text-xs text-red-500 ml-1 font-normal tracking-tight">(- 없이 숫자만 입력)</span>
+                </label>
+                <input type="tel" id="phone" required pattern="[0-9]+" maxlength="11"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
-                    placeholder="010-0000-0000">
+                    placeholder="01012345678">
+            </div>
+
+            <div>
+                <label for="location" class="block text-sm font-medium text-gray-700 mb-1">거주 지역 <span class="text-red-500">*</span></label>
+                <select id="location" required
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black bg-white">
+                    <option value="" disabled selected>지역을 선택해주세요</option>
+                    <option value="서울">서울</option>
+                    <option value="경기">경기</option>
+                    <option value="인천">인천</option>
+                    <option value="강원">강원</option>
+                    <option value="충청">충청</option>
+                    <option value="전라">전라</option>
+                    <option value="경상">경상</option>
+                    <option value="제주">제주</option>
+                </select>
+            </div>
+
+            <!-- 약관 동의 섹션 -->
+            <div class="space-y-4 border-t border-gray-100 pt-6">
+                <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer group" onclick="toggleAllAgree()">
+                    <input type="checkbox" id="agree-all" class="w-5 h-5 rounded border-gray-300 text-[#1B2B48] focus:ring-[#1B2B48] pointer-events-none">
+                    <span class="text-sm font-bold text-gray-700 group-hover:text-[#1B2B48]">전체 동의하기</span>
+                </div>
+                
+                <div class="space-y-3 px-1">
+                    <div class="flex items-center justify-between group">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" id="agree-terms" required class="agree-item w-4 h-4 rounded border-gray-300 text-[#1B2B48] focus:ring-[#1B2B48]">
+                            <span class="text-xs text-gray-600">이용약관 동의 <span class="text-[#1B2B48] font-bold">(필수)</span></span>
+                        </label>
+                        <button type="button" onclick="showPolicy('terms')" class="text-[10px] text-gray-400 hover:underline">보기</button>
+                    </div>
+
+                    <div class="flex items-center justify-between group">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" id="agree-privacy" required class="agree-item w-4 h-4 rounded border-gray-300 text-[#1B2B48] focus:ring-[#1B2B48]">
+                            <span class="text-xs text-gray-600">개인정보 수집 및 이용 동의 <span class="text-[#1B2B48] font-bold">(필수)</span></span>
+                        </label>
+                        <button type="button" onclick="showPolicy('privacy')" class="text-[10px] text-gray-400 hover:underline">보기</button>
+                    </div>
+
+                    <div class="flex items-center justify-between group">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" id="agree-marketing" class="agree-item w-4 h-4 rounded border-gray-300 text-[#1B2B48] focus:ring-[#1B2B48]">
+                            <span class="text-xs text-gray-600">마케팅 정보 수신 동의 (선택)</span>
+                        </label>
+                        <button type="button" onclick="showPolicy('marketing')" class="text-[10px] text-gray-400 hover:underline">보기</button>
+                    </div>
+                </div>
             </div>
 
             <button type="button" id="signup-btn" onclick="handleSignup()"
-                class="w-full bg-[#1B2B48] text-white py-3 rounded-lg font-bold hover:bg-[#2a4269] transition-colors shadow-md">
-                가?�하�?
+                class="w-full bg-[#1B2B48] text-white py-4 rounded-xl font-bold hover:bg-[#2a4269] transition-all shadow-lg active:scale-[0.98]">
+                가입하기
             </button>
 
             <div class="relative py-4">
@@ -107,7 +161,7 @@
                     <div class="w-full border-t border-gray-200"></div>
                 </div>
                 <div class="relative flex justify-center text-sm">
-                    <span class="px-2 bg-white text-gray-400 font-medium whitespace-nowrap">?�는 간편 ?�원가??/span>
+                    <span class="px-2 bg-white text-gray-400 font-medium whitespace-nowrap">또는 간편 회원가입</span>
                 </div>
             </div>
 
@@ -116,13 +170,31 @@
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 3C6.477 3 2 6.48 2 10.79c0 2.75 1.81 5.15 4.54 6.55l-1.15 4.23c-.05.18.05.37.21.43.05.02.1.03.15.03.12 0 .23-.07.28-.19l4.59-3.04c1.1.13 2.25.2 3.42.2 5.523 0 10-3.48 10-7.79S17.523 3 12 3z"/>
                 </svg>
-                카카?�로 ?�작?�기
+                카카오로 시작하기
             </button>
         </form>
 
         <div class="mt-6 text-center text-sm text-gray-600">
-            ?��? 계정???�으?��???
-            <a href="login.html" class="text-[#C5A065] font-bold hover:underline">로그??/a>
+            이미 계정이 있으신가요?
+            <a href="login.html" class="text-[#C5A065] font-bold hover:underline">로그인</a>
+        </div>
+    </div>
+
+    <!-- 약관 상세 모달 -->
+    <div id="policy-modal" class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div class="p-6 border-b flex justify-between items-center bg-gray-50">
+                <h3 id="policy-title" class="font-bold text-lg text-[#1B2B48]">약관 상세</h3>
+                <button onclick="closePolicy()" class="text-gray-400 hover:text-gray-600 p-2">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="policy-content" class="p-8 max-h-[60vh] overflow-y-auto text-sm text-gray-600 leading-relaxed space-y-4">
+                <!-- Content will be injected here -->
+            </div>
+            <div class="p-6 border-t bg-gray-50 text-right">
+                <button onclick="closePolicy()" class="bg-[#1B2B48] text-white px-8 py-3 rounded-xl font-bold shadow-md hover:bg-[#2a4269] transition-all">확인</button>
+            </div>
         </div>
     </div>
 
@@ -131,6 +203,64 @@
     <script src="js/auth.js"></script>
 
     <script>
+        function toggleAllAgree() {
+            const agreeAll = document.getElementById('agree-all');
+            const items = document.querySelectorAll('.agree-item');
+            agreeAll.checked = !agreeAll.checked;
+            items.forEach(item => item.checked = agreeAll.checked);
+        }
+
+        document.addEventListener('change', (e) => {
+            if (e.target.classList.contains('agree-item')) {
+                const agreeAll = document.getElementById('agree-all');
+                const items = document.querySelectorAll('.agree-item');
+                const checkedItems = document.querySelectorAll('.agree-item:checked');
+                agreeAll.checked = items.length === checkedItems.length;
+            }
+        });
+
+        const POLICY_DATA = {
+            terms: `
+                <h4 class="font-bold text-gray-900">[이용약관]</h4>
+                <p>제 1 조 (목적)<br>이 약관은 "The 온실"(이하 "회사")이 운영하는 서비스의 이용 조건 및 절차에 관한 사항을 규정함을 목적으로 합니다.</p>
+                <p>제 2 조 (회원가입)<br>이용자는 회사가 정한 양식에 따라 정보를 기입하고 약관에 동의함으로써 가입을 신청합니다.</p>
+                <p>제 3 조 (서비스 제공)<br>회사는 반려동물 장례식장 정보 제공 및 예약 중개 서비스를 제공하며, 실제 장례 서비스는 제휴 업체가 수행합니다.</p>
+                <p>제 4 조 (취소 및 환불)<br>예약 취소 시 환불 기준은 예약일로부터의 남은 기간에 따라 차등 적용됩니다 (2일 전~당일 환불 불가).</p>
+            `,
+            privacy: `
+                <h4 class="font-bold text-gray-900">[개인정보 처리방침]</h4>
+                <p>1. 수집 항목: 이름, 이메일, 성별, 출생년도, 전화번호, 반려동물 정보.</p>
+                <p>2. 수집 목적: 회원 식별, 서비스 예약 접수 및 안내, 상담 서비스 제공.</p>
+                <p>3. 보유 기간: 회원 탈퇴 시까지 또는 법령에서 정한 보존 기간까지.</p>
+                <p>4. 동의 거부권: 이용자는 개인정보 수집에 대한 동의를 거부할 수 있으나, 가입 및 예약 서비스 이용이 제한될 수 있습니다.</p>
+            `,
+            marketing: `
+                <h4 class="font-bold text-gray-900">[마케팅 정보 수신 동의]</h4>
+                <p>회사는 서비스 이용자에게 최적화된 혜택과 정보를 제공하기 위해 아래와 같이 마케팅 정보를 활용합니다.</p>
+                <p>1. 활용 목적: 신규 서비스 안내, 이벤트 및 프로모션 정보 발송, 이용 통계 분석.</p>
+                <p>2. 수신 수단: 이메일, SMS, 앱 푸시 알림.</p>
+                <p>3. 철회 방법: 마이페이지 설정 또는 고객센터를 통해 언제든지 동의를 철회할 수 있습니다.</p>
+            `
+        };
+
+        function showPolicy(type) {
+            const modal = document.getElementById('policy-modal');
+            const title = document.getElementById('policy-title');
+            const content = document.getElementById('policy-content');
+            
+            const titles = { terms: '이용약관 상세', privacy: '개인정보 처리방침', marketing: '마케팅 정보 활용 동의' };
+            
+            title.innerText = titles[type] || '약관 상세';
+            content.innerHTML = POLICY_DATA[type] || '내용을 불러올 수 없습니다.';
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePolicy() {
+            document.getElementById('policy-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
         function setGender(gender) {
             document.getElementById('gender').value = gender;
             document.querySelectorAll('.gender-btn').forEach(btn => {
@@ -148,24 +278,31 @@
 
             try {
                 submitBtn.disabled = true;
-                submitBtn.innerText = '처리 �?..';
+                submitBtn.innerText = '처리 중...';
 
                 const email = document.getElementById('email').value.trim();
                 const password = document.getElementById('password').value.trim();
                 const name = document.getElementById('name').value.trim();
                 const gender = document.getElementById('gender').value;
                 const birthYear = document.getElementById('birth-year').value;
-                const phone = document.getElementById('phone').value.trim();
+                const phone = document.getElementById('phone').value.trim().replace(/-/g, '');
+                const location = document.getElementById('location').value;
+                const marketingAgree = document.getElementById('agree-marketing').checked; // 마케팅 동의 여부
 
-                if (!email || !password || !name || !gender || !birthYear || !phone) {
-                    throw new Error('모든 ?�드�??�력??주세??');
+                if (!email || !password || !name || !gender || !birthYear || !phone || !location) {
+                    throw new Error('모든 필수 필드를 입력해 주세요.');
+                }
+
+                // 필수 약관 동의 확인
+                if (!document.getElementById('agree-terms').checked || !document.getElementById('agree-privacy').checked) {
+                    throw new Error('필수 약관에 동의해 주세요.');
                 }
 
                 // Use centralized Auth logic
-                const res = await Auth.signup(email, password, name, gender, birthYear, phone);
+                const res = await Auth.signup(email, password, name, gender, birthYear, phone, location, marketingAgree);
 
                 if (res.success) {
-                    alert('?�원가?�이 ?�료?�었?�니?? ?�메???�증???�요?????�습?�다.\n?�인 ??로그?�해 주세??');
+                    alert('회원가입이 완료되었습니다. 이메일 인증이 필요할 수 있습니다.\n확인 후 로그인해 주세요.');
                     window.location.href = 'login.html';
                 } else {
                     throw new Error(res.message);
@@ -174,9 +311,9 @@
             } catch (error) {
                 console.error('Signup Error:', error);
                 let msg = error.message;
-                if (msg.includes('rate limit')) msg = "?�무 많�? 가???�도�??�해 ?�시?�으�?차단?�었?�니??";
-                else if (msg.includes('already registered')) msg = "?��? 가?�된 ?�메?�입?�다.";
-                alert('?�류 발생: ' + msg);
+                if (msg.includes('rate limit')) msg = "너무 많은 가입 시도로 인해 일시적으로 차단되었습니다.";
+                else if (msg.includes('already registered')) msg = "이미 가입된 이메일입니다.";
+                alert('오류 발생: ' + msg);
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = originalBtnText;
@@ -186,7 +323,7 @@
         async function handleKakaoLogin() {
             try {
                 const client = Auth.getSupabase();
-                if (!client) throw new Error('?�증 ?�비???�결 ?�패');
+                if (!client) throw new Error('인증 서비스 연결 실패');
 
                 const { data, error } = await client.auth.signInWithOAuth({
                     provider: 'kakao',
@@ -197,7 +334,7 @@
                 if (error) throw error;
             } catch (error) {
                 console.error('Kakao Login Error:', error);
-                alert('카카??로그??�??�류가 발생?�습?�다.');
+                alert('카카오 로그인 중 오류가 발생했습니다.');
             }
         }
     </script>
@@ -214,4 +351,3 @@
 </body>
 
 </html>
-
