@@ -3463,20 +3463,82 @@
             const region = document.querySelector('input[name="quote-region"]:checked').value;
             const total = updateEstimatedQuote();
 
-            // Apply standard filters
+            if (!enrichedHomesData) {
+                enrichedHomesData = funeralHomesData.map(item => getExtendedDetails(item));
+            }
+
+            // Region Mapping (quote-region -> target mapping)
+            const regionMapping = {
+                'seoul': 'seoul',
+                'gyeonggi': 'gyeonggi',
+                'incheon': 'incheon',
+                'others': 'other'
+            };
+            const targetRegion = regionMapping[region] || region;
+
+            // Step 1: Filter by exact region
+            let filtered = enrichedHomesData.filter(item => {
+                const itemRegion = getRegion(item);
+                if (targetRegion === 'other') {
+                    return !['seoul', 'gyeonggi', 'incheon'].includes(itemRegion);
+                }
+                return itemRegion === targetRegion;
+            });
+
+            let isFallback = false;
+            let centerPos = null;
+
+            // Step 2: Fallback to 50km radius if no facilities found
+            if (filtered.length === 0) {
+                const config = REGION_CONFIG[targetRegion] || REGION_CONFIG['seoul'];
+                if (config && config.coords) {
+                    centerPos = config.coords;
+                    filtered = enrichedHomesData.filter(item => {
+                        const dist = calculateDistance(centerPos[0], centerPos[1], parseFloat(item.latitude), parseFloat(item.longitude));
+                        return dist <= 50;
+                    });
+                    
+                    if (filtered.length > 0) {
+                        isFallback = true;
+                        // Sort by distance from region center
+                        filtered.sort((a, b) => {
+                            const distA = calculateDistance(centerPos[0], centerPos[1], parseFloat(a.latitude), parseFloat(a.longitude));
+                            const distB = calculateDistance(centerPos[0], centerPos[1], parseFloat(b.latitude), parseFloat(b.longitude));
+                            return distA - distB;
+                        });
+                    }
+                }
+            }
+
+            // Sync UI filter checkboxes for consistency
             const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
             filterCheckboxes.forEach(cb => {
-                cb.checked = (cb.value === region);
+                if (region === 'others') {
+                    cb.checked = !['sudogwon'].includes(cb.value) && (cb.value !== 'alliance');
+                } else {
+                    cb.checked = (cb.value === 'sudogwon');
+                }
             });
-            document.getElementById('filter-alliance').checked = true; // Always show alliance only for quote results
+            document.getElementById('filter-alliance').checked = true;
 
-            // Trigger search filter and switch view
-            setTimeout(() => {
-                filterItems(); // Correct function name
-                showView('list'); // Automatically switch to List View
-                closeQuoteModal();
-                alert(`선택하신 예산(약 ${total.toLocaleString()}원)과 ${REGION_CONFIG[region]?.name || region} 지역에 기반한 추천 결과입니다.`);
-            }, 100);
+            // Render and switch view
+            renderListItems(filtered);
+            renderMapPins(filtered);
+            renderRegionLabels(filtered);
+            updateFilterCounts(filtered);
+
+            showView('list');
+            closeQuoteModal();
+
+            // Notify user about recommendation results
+            const regionName = REGION_CONFIG[targetRegion]?.name || (region === 'others' ? '지방' : region);
+            if (isFallback) {
+                alert(`선택하신 ${regionName} 지역에 등록된 장례식장이 없어, 근방 50km 이내의 추천 결과(${filtered.length}곳)를 보여드립니다.`);
+            } else if (filtered.length === 0) {
+                alert(`죄송합니다. ${regionName} 지역 및 근처 50km 이내에 추천 가능한 장례식장이 없습니다.`);
+            } else {
+                alert(`선택하신 예산(약 ${total.toLocaleString()}원)과 ${regionName} 지역에 기반한 추천 결과입니다.`);
+            }
         }
 
         if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
