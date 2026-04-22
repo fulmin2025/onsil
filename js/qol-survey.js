@@ -312,26 +312,31 @@ async function saveResultToDB(totalScore) {
     }
 
     try {
+        console.log("Preparing to save QOL data...", { petName, petAge, totalScore });
         const { data: { user } } = await sb.auth.getUser();
+        
         const resultData = {
             user_id: user ? user.id : null,
-            pet_name: petName,
-            pet_age: parseInt(petAge),
+            pet_name: petName || "우리 아이",
+            pet_age: parseInt(petAge) || 0,
             pet_weight: parseFloat(petWeight) || null,
-            pet_type: petType,
-            pet_breed: petBreed,
+            pet_type: petType || "unknown",
+            pet_breed: petBreed || "",
             total_score: totalScore,
-            answers: answers,
+            answers: answers && answers.length > 0 ? answers : [],
             created_at: new Date().toISOString()
         };
 
-        const { error } = await sb
+        const { data, error } = await sb
             .from('qol_results')
-            .insert([resultData]);
+            .insert([resultData])
+            .select();
 
         if (error) throw error;
-        console.log("Result saved successfully");
+        console.log("Result saved successfully:", data);
+        alert("평가 결과가 성공적으로 저장되었습니다.");
     } catch (error) {
         console.error("Error saving QOL result:", error.message);
+        alert("결과 저장 중 오류가 발생했습니다: " + error.message);
     }
 }
