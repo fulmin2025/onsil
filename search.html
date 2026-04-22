@@ -1320,11 +1320,13 @@
                 const image = (realData && realData.imageUrl) ? realData.imageUrl : defaultImage;
 
                 let priceText = "상담 문의";
+                let priceBasis = "기본";
                 if (realData && realData.prices && realData.prices.length > 0) {
                     try {
                         const firstCategory = realData.prices[0];
                         if (firstCategory.items && firstCategory.items.length > 0) {
                             priceText = firstCategory.items[0].price;
+                            priceBasis = firstCategory.items[0].name;
                         }
                     } catch (e) { }
                 }
@@ -1362,7 +1364,7 @@
                             </div>
                             <div class="flex justify-between items-end border-t border-gray-50 pt-3">
                                 <div class="flex flex-col">
-                                    <span class="text-[10px] text-gray-400 mb-0.5">* 5kg 미만 기본화장 기준</span>
+                                    <span class="text-[10px] text-gray-400 mb-0.5">* ${priceBasis} 기준</span>
                                     <span class="font-bold text-gray-900 border-b-2 border-[#C5A065]/30">최저 ${priceText}</span>
                                 </div>
                                 <button class="bg-[#8D7B68] text-white px-5 py-2 rounded-xl text-sm font-bold shadow-sm hover:brightness-110 active:scale-95 transition-all" onclick="event.stopPropagation(); handleReservation('${item.name}')">예약하기</button>
