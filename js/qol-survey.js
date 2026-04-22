@@ -304,13 +304,15 @@ function showResult() {
 }
 
 async function saveResultToDB(totalScore) {
-    if (!window.supabase) {
+    const sb = (window.Auth && window.Auth.getSupabase) ? window.Auth.getSupabase() : window.supabase;
+    
+    if (!sb) {
         console.error("Supabase client not found");
         return;
     }
 
     try {
-        const { data: { user } } = await window.supabase.auth.getUser();
+        const { data: { user } } = await sb.auth.getUser();
         const resultData = {
             user_id: user ? user.id : null,
             pet_name: petName,
@@ -323,7 +325,7 @@ async function saveResultToDB(totalScore) {
             created_at: new Date().toISOString()
         };
 
-        const { error } = await window.supabase
+        const { error } = await sb
             .from('qol_results')
             .insert([resultData]);
 
