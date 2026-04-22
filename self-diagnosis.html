@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
@@ -146,13 +146,13 @@
         <!-- Tab Navigation -->
         <div class="flex justify-center mb-12 sticky top-20 z-40 bg-brand-cream/80 backdrop-blur-sm py-4">
             <div class="bg-gray-100 p-1 rounded-2xl flex gap-1 shadow-inner overflow-x-auto no-scrollbar max-w-full">
-                <button id="tab-aging" onclick="switchTab('aging')"
-                    class="whitespace-nowrap px-4 md:px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-white text-brand shadow-sm">
-                    노화 및 치매 진단
-                </button>
                 <button id="tab-qol" onclick="switchTab('qol')"
-                    class="whitespace-nowrap px-4 md:px-6 py-2.5 rounded-xl text-sm font-medium transition-all text-gray-400 hover:text-brand">
+                    class="whitespace-nowrap px-4 md:px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-white text-brand shadow-sm">
                     삶의 질 평가
+                </button>
+                <button id="tab-aging" onclick="switchTab('aging')"
+                    class="whitespace-nowrap px-4 md:px-6 py-2.5 rounded-xl text-sm font-medium transition-all text-gray-400 hover:text-brand">
+                    노화 및 치매 진단
                 </button>
                 <button id="tab-cat" onclick="switchTab('cat')"
                     class="whitespace-nowrap px-4 md:px-6 py-2.5 rounded-xl text-sm font-medium transition-all text-gray-400 hover:text-brand">
@@ -165,8 +165,61 @@
             </div>
         </div>
 
-        <!-- Tab 1: Aging & Dementia -->
-        <div id="content-aging" class="tab-content">
+        <!-- Tab 1: Quality of Life (QoL) -->
+        <div id="content-qol" class="tab-content">
+            <section class="max-w-4xl mx-auto py-12 px-4 fade-up">
+                <div
+                    class="bg-white rounded-[3rem] p-8 md:p-16 shadow-xl border border-brand/5 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-brand-warm/5 rounded-full -mr-32 -mt-32"></div>
+                    <div class="absolute bottom-0 left-0 w-48 h-48 bg-brand-sage/5 rounded-full -ml-24 -mb-24"></div>
+
+                    <div class="relative z-10 text-center max-w-2xl mx-auto">
+                        <div
+                            class="inline-flex items-center gap-2 bg-brand-warm/10 text-brand-warm px-4 py-1.5 rounded-full text-xs font-bold mb-6">
+                            <i class="fas fa-stethoscope"></i> SCIENTIFIC SCALE
+                        </div>
+                        <h2 class="text-3xl md:text-5xl font-extrabold text-brand mb-8 font-serif leading-tight">
+                            반려동물의 삶의 질,<br>
+                            <span class="text-brand-warm">얼마나 알고 계신가요?</span>
+                        </h2>
+                        <p class="text-brand/50 text-lg font-light leading-relaxed mb-12">
+                            사랑하는 아이와의 이별이 가까워진 것 같아 두렵고 막막하신가요?<br>
+                            수의학적 척도(HHHHHMM)를 기반으로 한 10가지 지표를 통해<br>
+                            현재 아이의 상태를 객관적으로 확인하고 최선의 결정을 내릴 수 있도록 돕겠습니다.
+                        </p>
+
+                        <div class="grid md:grid-cols-3 gap-6 mb-12 text-left">
+                            <div class="p-6 bg-brand-cream rounded-2xl">
+                                <i class="fas fa-check-circle text-brand-warm mb-3 text-xl"></i>
+                                <h4 class="font-bold text-brand mb-1">체계적 진단</h4>
+                                <p class="text-xs text-brand/40">식욕, 이동성 등 10개 핵심 영역 정밀 분석</p>
+                            </div>
+                            <div class="p-6 bg-brand-cream rounded-2xl">
+                                <i class="fas fa-chart-line text-brand-warm mb-3 text-xl"></i>
+                                <h4 class="font-bold text-brand mb-1">점수 기반 리포트</h4>
+                                <p class="text-xs text-brand/40">객관적인 수치로 확인하는 삶의 질 점수</p>
+                            </div>
+                            <div class="p-6 bg-brand-cream rounded-2xl">
+                                <i class="fas fa-lightbulb text-brand-warm mb-3 text-xl"></i>
+                                <h4 class="font-bold text-brand mb-1">맞춤형 가이드</h4>
+                                <p class="text-xs text-brand/40">결과에 따른 적절한 돌봄 및 이별 대처법</p>
+                            </div>
+                        </div>
+
+                        <button onclick="handleQolSurveyStart()"
+                            class="inline-flex items-center gap-3 bg-brand text-white px-10 py-5 rounded-2xl font-black text-xl shadow-2xl hover:bg-brand-light hover:-translate-y-1 transition-all active:scale-[0.98]">
+                            설문 시작하기 <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <p class="mt-8 text-xs text-brand/30">
+                            * 설문은 약 3~5분 정도 소요되며, 아이의 최근 2~3일간의 상태를 기준으로 합니다.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Tab 2: Aging & Dementia -->
+        <div id="content-aging" class="tab-content hidden">
             <section class="text-center mb-16 fade-up">
                 <h1 class="text-3xl md:text-5xl font-bold mb-6">우리아이 노화체크리스트</h1>
                 <p class="text-gray-500 text-lg font-light leading-relaxed">나이가 들어서 그런 걸까, 아니면 아픈 걸까?<br>보호자의 세심한 관찰이
@@ -356,59 +409,6 @@
             </section>
         </div>
 
-        <!-- Tab 2: Quality of Life (QoL) -->
-        <div id="content-qol" class="tab-content hidden">
-            <section class="max-w-4xl mx-auto py-12 px-4 fade-up">
-                <div
-                    class="bg-white rounded-[3rem] p-8 md:p-16 shadow-xl border border-brand/5 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-brand-warm/5 rounded-full -mr-32 -mt-32"></div>
-                    <div class="absolute bottom-0 left-0 w-48 h-48 bg-brand-sage/5 rounded-full -ml-24 -mb-24"></div>
-
-                    <div class="relative z-10 text-center max-w-2xl mx-auto">
-                        <div
-                            class="inline-flex items-center gap-2 bg-brand-warm/10 text-brand-warm px-4 py-1.5 rounded-full text-xs font-bold mb-6">
-                            <i class="fas fa-stethoscope"></i> SCIENTIFIC SCALE
-                        </div>
-                        <h2 class="text-3xl md:text-5xl font-extrabold text-brand mb-8 font-serif leading-tight">
-                            반려동물의 삶의 질,<br>
-                            <span class="text-brand-warm">얼마나 알고 계신가요?</span>
-                        </h2>
-                        <p class="text-brand/50 text-lg font-light leading-relaxed mb-12">
-                            사랑하는 아이와의 이별이 가까워진 것 같아 두렵고 막막하신가요?<br>
-                            수의학적 척도(HHHHHMM)를 기반으로 한 10가지 지표를 통해<br>
-                            현재 아이의 상태를 객관적으로 확인하고 최선의 결정을 내릴 수 있도록 돕겠습니다.
-                        </p>
-
-                        <div class="grid md:grid-cols-3 gap-6 mb-12 text-left">
-                            <div class="p-6 bg-brand-cream rounded-2xl">
-                                <i class="fas fa-check-circle text-brand-warm mb-3 text-xl"></i>
-                                <h4 class="font-bold text-brand mb-1">체계적 진단</h4>
-                                <p class="text-xs text-brand/40">식욕, 이동성 등 10개 핵심 영역 정밀 분석</p>
-                            </div>
-                            <div class="p-6 bg-brand-cream rounded-2xl">
-                                <i class="fas fa-chart-line text-brand-warm mb-3 text-xl"></i>
-                                <h4 class="font-bold text-brand mb-1">점수 기반 리포트</h4>
-                                <p class="text-xs text-brand/40">객관적인 수치로 확인하는 삶의 질 점수</p>
-                            </div>
-                            <div class="p-6 bg-brand-cream rounded-2xl">
-                                <i class="fas fa-lightbulb text-brand-warm mb-3 text-xl"></i>
-                                <h4 class="font-bold text-brand mb-1">맞춤형 가이드</h4>
-                                <p class="text-xs text-brand/40">결과에 따른 적절한 돌봄 및 이별 대처법</p>
-                            </div>
-                        </div>
-
-                        <a href="qol-survey.html"
-                            class="inline-flex items-center gap-3 bg-brand text-white px-10 py-5 rounded-2xl font-black text-xl shadow-2xl hover:bg-brand-light hover:-translate-y-1 transition-all active:scale-[0.98]">
-                            설문 시작하기 <i class="fas fa-arrow-right"></i>
-                        </a>
-                        <p class="mt-8 text-xs text-brand/30">
-                            * 설문은 약 3~5분 정도 소요되며, 아이의 최근 2~3일간의 상태를 기준으로 합니다.
-                        </p>
-                    </div>
-                </div>
-            </section>
-        </div>
-
         <!-- Tab 3: Cat Health -->
         <div id="content-cat" class="tab-content hidden">
             <section class="text-center mb-20 fade-up">
@@ -570,15 +570,18 @@
         // Tab Switching Logic
         function switchTab(type) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-            document.getElementById(`content-${type}`).classList.remove('hidden');
+            const content = document.getElementById(`content-${type}`);
+            if(content) content.classList.remove('hidden');
 
             document.querySelectorAll('button[id^="tab-"]').forEach(t => {
                 t.classList.remove('bg-white', 'text-brand', 'shadow-sm', 'font-bold');
                 t.classList.add('text-gray-400', 'font-medium');
             });
             const activeTab = document.getElementById(`tab-${type}`);
-            activeTab.classList.remove('text-gray-400', 'font-medium');
-            activeTab.classList.add('bg-white', 'text-brand', 'shadow-sm', 'font-bold');
+            if(activeTab) {
+                activeTab.classList.remove('text-gray-400', 'font-medium');
+                activeTab.classList.add('bg-white', 'text-brand', 'shadow-sm', 'font-bold');
+            }
 
             // Re-trigger scroll animations
             document.querySelectorAll('.fade-up').forEach(el => {
@@ -600,7 +603,7 @@
             const title = document.getElementById('aging-result-title');
             const text = document.getElementById('aging-result-text');
 
-            if (count > 0) {
+            if (count > 0 && res && title && text) {
                 res.classList.remove('hidden');
                 if (count >= 5) {
                     title.innerText = "🚨 심각한 인지 기능 저하 의심";
@@ -612,7 +615,7 @@
                     title.innerText = "💡 경미한 변화";
                     text.innerHTML = "작은 변화들이 시작되고 있습니다. 정기적인 건강 검진을 통해 관리해 주세요.";
                 }
-            } else {
+            } else if(res) {
                 res.classList.add('hidden');
             }
         }
@@ -621,29 +624,24 @@
             updateAgingResult();
         }
 
-        // QOL Logic
-        function updateQolScore(input) {
-            input.parentElement.querySelector('.score-display').textContent = input.value;
-            let sum = 0;
-            document.querySelectorAll('#content-qol .score-slider').forEach(s => sum += parseInt(s.value));
-            document.getElementById('qol-total').textContent = sum;
-
-            const feedback = document.getElementById('qol-feedback');
-            if (sum >= 35) {
-                feedback.innerHTML = "<span class='text-brand-warm font-bold'>양호 (Success):</span> 현재 관리 상태가 매우 양호합니다. 아이가 편안한 시간을 보내고 있습니다.";
-            } else if (sum >= 20) {
-                feedback.innerHTML = "<span class='text-brand-warm font-bold'>중급 (Care Needed):</span> 특정 부분에서 삶의 질 저하가 보입니다. 전문가와 통증 관리 등을 상담해 보세요.";
+        // Login Check for QOL
+        async function handleQolSurveyStart() {
+            if (window.Auth) {
+                const user = await window.Auth.getCurrentUser();
+                if (user) {
+                    location.href = 'qol-survey.html';
+                } else {
+                    alert('삶의 질 평가 설문은 회원 전용 서비스입니다. 로그인 후 이용해 주세요.');
+                    location.href = 'login.html';
+                }
             } else {
-                feedback.innerHTML = "<span class='text-brand-warm font-bold'>주의 (Crisis):</span> 삶의 질이 크게 저하되었습니다. 아이의 고통을 줄이기 위한 적극적인 조치가 필요합니다.";
+                location.href = 'login.html';
             }
         }
 
-        // Initial QOL score calculation
+        // Initial QOL score calculation & Tab setup
         document.addEventListener('DOMContentLoaded', () => {
-            let sum = 0;
-            document.querySelectorAll('#content-qol .score-slider').forEach(s => sum += parseInt(s.value));
-            document.getElementById('qol-total').textContent = sum;
-            updateQolScore({ parentElement: document.querySelector('.qol-item'), value: 5 }); // Dummy call to init feedback
+             switchTab('qol');
         });
 
         // Intersection Observer
@@ -655,61 +653,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
         });
-    </script>
 
-    <!-- Mobile Navigation Overlay -->
-    <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
-        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300" id="mobile-nav-panel">
-            <div class="p-6 h-full flex flex-col pt-safe">
-                <div class="flex justify-between items-center mb-8">
-                    <span class="font-bold text-lg text-brand">메뉴</span>
-                    <button onclick="toggleMobileNav()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
-                        <i class="fas fa-times text-gray-500"></i>
-                    </button>
-                </div>
-                <nav class="space-y-1 flex-1">
-                    <a href="search.html?quote=true" class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all bg-brand-cream text-brand font-bold mb-4 hover:shadow-md">
-                        <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
-                        <span>바로 견적받기</span>
-                    </a>
-                    <a href="search.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-search w-5 text-center"></i>
-                        <span>장례식장 찾기</span>
-                    </a>
-                    <a href="guide.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-book-open w-5 text-center"></i>
-                        <span>이별 가이드</span>
-                    </a>
-                    <a href="self-diagnosis.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-brand/5 text-brand font-bold transition-colors">
-                        <i class="fas fa-stethoscope w-5 text-center"></i>
-                        <span>건강자가진단</span>
-                    </a>
-                    <a href="memory.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-heart w-5 text-center"></i>
-                        <span>추억 가이드</span>
-                    </a>
-                    <a href="community.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-comments w-5 text-center"></i>
-                        <span>커뮤니티</span>
-                    </a>
-                </nav>
-                <!-- Mobile Bottom Actions -->
-                <div class="pt-6 border-t border-brand/5 space-y-3">
-                    <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-full bg-brand-sage text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-sage/90 transition-colors">
-                        <i class="fas fa-calendar-check text-sm"></i> 예약하기
-                    </button>
-                    <a href="tel:1551-5052" class="w-full bg-brand-warm text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-warmDark transition-colors">
-                        <i class="fas fa-phone-alt text-sm"></i> 1551-5052 상담원 연결
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/pwa.js"></script>
-    <script>
         function toggleMobileNav() {
             const nav = document.getElementById('mobile-nav');
             const panel = document.getElementById('mobile-nav-panel');
@@ -722,6 +666,10 @@
             }
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/pwa.js"></script>
     <script src="js/channel-talk.js"></script>
 </body>
+
 </html>
