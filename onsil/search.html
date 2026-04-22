@@ -537,18 +537,12 @@
                 <!-- Step 1: Region -->
                 <div>
                     <h3 class="font-bold text-sm text-gray-400 mb-4 uppercase tracking-wider text-center">지역 선택</h3>
-                    <div class="grid grid-cols-3 gap-2">
+                    <div class="grid grid-cols-2 gap-2">
                         <label class="cursor-pointer">
-                            <input type="radio" name="quote-region" value="seoul" class="hidden quote-input" checked>
+                            <input type="radio" name="quote-region" value="seoul_gyeonggi" class="hidden quote-input" checked>
                             <div
                                 class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">
-                                서울</div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="quote-region" value="gyeonggi" class="hidden quote-input">
-                            <div
-                                class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">
-                                경기</div>
+                                서울 / 경기</div>
                         </label>
                         <label class="cursor-pointer">
                             <input type="radio" name="quote-region" value="incheon" class="hidden quote-input">
@@ -557,10 +551,28 @@
                                 인천</div>
                         </label>
                         <label class="cursor-pointer">
-                            <input type="radio" name="quote-region" value="others" class="hidden quote-input">
+                            <input type="radio" name="quote-region" value="chungcheong" class="hidden quote-input">
                             <div
                                 class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">
-                                기타</div>
+                                충청 / 대전 / 세종</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="quote-region" value="gyeongsang" class="hidden quote-input">
+                            <div
+                                class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">
+                                경상 / 부산 / 대구</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="quote-region" value="jeolla" class="hidden quote-input">
+                            <div
+                                class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">
+                                전라 / 광주</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="quote-region" value="gangwon" class="hidden quote-input">
+                            <div
+                                class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">
+                                강원</div>
                         </label>
                     </div>
                 </div>
@@ -3486,12 +3498,14 @@
 
             // Region Mapping (quote-region -> target mapping)
             const regionMapping = {
-                'seoul': 'seoul',
-                'gyeonggi': 'gyeonggi',
-                'incheon': 'incheon',
-                'others': 'other'
+                'seoul_gyeonggi': ['seoul', 'gyeonggi'],
+                'incheon': ['incheon'],
+                'chungcheong': ['chungcheong'],
+                'gyeongsang': ['gyeongsang'],
+                'jeolla': ['jeolla'],
+                'gangwon': ['gangwon']
             };
-            const targetRegion = regionMapping[region] || region;
+            const targetRegions = regionMapping[region] || [region];
 
             // Step 1: Filter by exact region and 24h option
             const is24hOnly = document.getElementById('opt-24h').checked;
@@ -3499,12 +3513,7 @@
             let filtered = enrichedHomesData.filter(item => {
                 // Region Match
                 const itemRegion = getRegion(item);
-                let regionMatch = false;
-                if (targetRegion === 'other') {
-                    regionMatch = !['seoul', 'gyeonggi', 'incheon'].includes(itemRegion);
-                } else {
-                    regionMatch = (itemRegion === targetRegion);
-                }
+                const regionMatch = targetRegions.includes(itemRegion);
 
                 if (!regionMatch) return false;
 
@@ -3519,7 +3528,8 @@
 
             // Step 2: Fallback to 50km radius if no facilities found
             if (filtered.length === 0) {
-                const config = REGION_CONFIG[targetRegion] || REGION_CONFIG['seoul'];
+                const fallbackBaseRegion = targetRegions[0];
+                const config = REGION_CONFIG[fallbackBaseRegion] || REGION_CONFIG['seoul'];
                 if (config && config.coords) {
                     centerPos = config.coords;
                     filtered = enrichedHomesData.filter(item => {
@@ -3542,11 +3552,10 @@
             // Sync UI filter checkboxes for consistency
             const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
             filterCheckboxes.forEach(cb => {
-                if (region === 'others') {
-                    cb.checked = !['sudogwon'].includes(cb.value) && (cb.value !== 'alliance');
-                } else {
-                    cb.checked = (cb.value === 'sudogwon');
-                }
+                cb.checked = targetRegions.some(reg => {
+                    if (reg === 'seoul' || reg === 'gyeonggi' || reg === 'incheon') return cb.value === 'sudogwon';
+                    return cb.value === reg;
+                });
             });
             document.getElementById('filter-alliance').checked = true;
 
@@ -3560,7 +3569,15 @@
             closeQuoteModal();
 
             // Notify user about recommendation results
-            const regionName = REGION_CONFIG[targetRegion]?.name || (region === 'others' ? '지방' : region);
+            const regionLabels = {
+                'seoul_gyeonggi': '서울/경기',
+                'incheon': '인천',
+                'chungcheong': '충청/대전/세종',
+                'gyeongsang': '경상/부산/대구',
+                'jeolla': '전라/광주',
+                'gangwon': '강원'
+            };
+            const regionName = regionLabels[region] || region;
             if (isFallback) {
                 alert(`선택하신 ${regionName} 지역에 등록된 장례식장이 없어, 근방 50km 이내의 추천 결과(${filtered.length}곳)를 보여드립니다.`);
             } else if (filtered.length === 0) {
