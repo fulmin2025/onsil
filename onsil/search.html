@@ -648,6 +648,22 @@
                                 class="quote-checkbox w-6 h-6 rounded-full text-[#8D7B68] focus:ring-[#8D7B68]"
                                 onchange="updateEstimatedQuote()">
                         </label>
+                        <label
+                            class="flex items-center justify-between p-4 border rounded-2xl cursor-pointer hover:bg-[#8D7B68]/5 border-[#8D7B68]/20 transition-all group">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-10 h-10 bg-[#8D7B68]/10 rounded-xl flex items-center justify-center text-[#8D7B68] group-hover:bg-[#8D7B68] group-hover:text-white transition-all">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-sm text-gray-900">24시간 운영 업체</p>
+                                    <p class="text-xs text-gray-400">심야/새벽에도 상담 및 안치 가능</p>
+                                </div>
+                            </div>
+                            <input type="checkbox" id="opt-24h"
+                                class="quote-checkbox w-6 h-6 rounded-full text-[#8D7B68] focus:ring-[#8D7B68]"
+                                onchange="updateEstimatedQuote()">
+                        </label>
                     </div>
                 </div>
             </div>
@@ -3038,7 +3054,8 @@
                 rating: realInfo ? dynamicRating : (4.0 + Math.random() * 1.0).toFixed(1),
                 reviewCount: realInfo ? dynamicReviewCount : Math.floor(Math.random() * 50) + 5,
                 address: address,
-                hours: '24시간 연중무휴',
+                is24h: realInfo?.is24h || false,
+                hours: realInfo?.is24h ? '24시간 연중무휴' : '상담 문의',
                 phone: PHONE_DATA[item.name] || `0507-${Math.floor(Math.random() * 9000) + 1000}-${Math.floor(Math.random() * 9000) + 1000}`,
                 description: `${item.name}은(는) 보호자님의 슬픔을 깊이 위로하며, 정성을 다해 반려동물의 마지막 가는 길을 함께합니다.`,
                 facilities: facilities,
@@ -3476,13 +3493,25 @@
             };
             const targetRegion = regionMapping[region] || region;
 
-            // Step 1: Filter by exact region
+            // Step 1: Filter by exact region and 24h option
+            const is24hOnly = document.getElementById('opt-24h').checked;
+
             let filtered = enrichedHomesData.filter(item => {
+                // Region Match
                 const itemRegion = getRegion(item);
+                let regionMatch = false;
                 if (targetRegion === 'other') {
-                    return !['seoul', 'gyeonggi', 'incheon'].includes(itemRegion);
+                    regionMatch = !['seoul', 'gyeonggi', 'incheon'].includes(itemRegion);
+                } else {
+                    regionMatch = (itemRegion === targetRegion);
                 }
-                return itemRegion === targetRegion;
+
+                if (!regionMatch) return false;
+
+                // 24h Filter
+                if (is24hOnly && !item.is24h) return false;
+
+                return true;
             });
 
             let isFallback = false;

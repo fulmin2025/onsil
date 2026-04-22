@@ -1,5 +1,6 @@
-﻿{
+{
     "별다만": {
+        "is24h": true,
         "address": "전남 나주시 다도면 신동리 467-92",
         "pricingType": "categorized",
         "prices": [
@@ -86,6 +87,7 @@
         ]
     },
     "펫오케스트라": {
+        "is24h": true,
         "address": "경기도 화성시 비봉면 양노남길 108",
         "pricingType": "categorized",
         "prices": [
@@ -120,6 +122,7 @@
         ]
     },
     "어게인": {
+        "is24h": true,
         "address": "충북 옥천군 동이면 옥천동이로 439",
         "pricingType": "categorized",
         "prices": [
@@ -208,6 +211,7 @@
         ]
     },
     "퍼스트펫": {
+        "is24h": true,
         "address": "전남 나주시 다시면 신광리 911-4",
         "pricingType": "categorized",
         "prices": [
@@ -254,6 +258,7 @@
         ]
     },
     "스토리펫": {
+        "is24h": true,
         "address": "경기 화성시 정남면 문학리 663",
         "pricingType": "categorized",
         "prices": [
@@ -363,6 +368,7 @@
         ]
     },
     "메리온": {
+        "is24h": true,
         "address": "경남 양산시 상북면 외석리 462-1",
         "pricingType": "categorized",
         "prices": [
@@ -419,6 +425,7 @@
         ]
     },
     "씨엘로펫": {
+        "is24h": true,
         "address": "경기 용인시 처인구 백암면 죽양대로 1206",
         "pricingType": "categorized",
         "prices": [
@@ -455,6 +462,7 @@
         ]
     },
     "펫포레스트 경기광주점": {
+        "is24h": true,
         "address": "경기 광주시 오포안로 77",
         "pricingType": "categorized",
         "prices": [
@@ -561,6 +569,7 @@
         ]
     },
     "펫포레스트 남양주점": {
+        "is24h": true,
         "address": "경기 남양주시 일패동 461-1",
         "pricingType": "categorized",
         "prices": [
@@ -614,6 +623,7 @@
         ]
     },
     "아이헤븐": {
+        "is24h": true,
         "address": "경남 김해시 생림면 봉림리 872-1",
         "pricingType": "categorized",
         "prices": [
@@ -666,6 +676,7 @@
         ]
     },
     "굿바이펫": {
+        "is24h": true,
         "address": "충북 제천시 봉양읍 장평리 37-1",
         "pricingType": "categorized",
         "prices": [
@@ -747,6 +758,7 @@
         ]
     },
     "엔젤스톤": {
+        "is24h": true,
         "address": "경기 김포시 하성면 양택리 251-6",
         "pricingType": "categorized",
         "prices": [
