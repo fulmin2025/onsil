@@ -146,8 +146,10 @@ const questions = [
     }
 ];
 
-let currentStep = 0; // 0 is start screen
 let petName = "";
+let petAge = "";
+let petWeight = "";
+let petBreed = "";
 let petType = "";
 let answers = [];
 
@@ -206,9 +208,21 @@ function setPetType(type) {
 }
 
 function startSurvey() {
-    petName = document.getElementById('pet-name').value.trim() || '우리 아이';
+    petName = document.getElementById('pet-name').value.trim();
+    petAge = document.getElementById('pet-age').value.trim();
+    petWeight = document.getElementById('pet-weight').value.trim();
+    petBreed = document.getElementById('pet-breed').value.trim();
+
     if (!petType) {
-        alert('반려동물의 종류를 선택해주세요.');
+        alert('반려동물의 종류(강아지/고양이)를 선택해주세요.');
+        return;
+    }
+    if (!petName) {
+        alert('반려동물의 이름을 입력해주세요.');
+        return;
+    }
+    if (!petAge) {
+        alert('반려동물의 나이를 입력해주세요.');
         return;
     }
 
@@ -283,5 +297,39 @@ function showResult() {
         badge.innerText = "이별을 준비해야 할 시기";
         badge.className = "inline-block px-6 py-2 rounded-full font-bold text-lg mb-6 bg-brand text-white";
         desc.innerHTML = `"${petName}(이)는 현재 많은 고통을 겪고 있으며 삶의 질이 매우 낮은 상태입니다. <br>아이가 더 이상 괴롭지 않도록 평화로운 이별을 고려해볼 시점일 수 있습니다. 호스피스 케어나 안락사에 대해 전문가와 깊이 있는 상담을 나눠보세요."`;
+    }
+
+    // Save to Supabase
+    saveResultToDB(totalScore);
+}
+
+async function saveResultToDB(totalScore) {
+    if (!window.supabase) {
+        console.error("Supabase client not found");
+        return;
+    }
+
+    try {
+        const { data: { user } } = await window.supabase.auth.getUser();
+        const resultData = {
+            user_id: user ? user.id : null,
+            pet_name: petName,
+            pet_age: parseInt(petAge),
+            pet_weight: parseFloat(petWeight) || null,
+            pet_type: petType,
+            pet_breed: petBreed,
+            total_score: totalScore,
+            answers: answers,
+            created_at: new Date().toISOString()
+        };
+
+        const { error } = await window.supabase
+            .from('qol_results')
+            .insert([resultData]);
+
+        if (error) throw error;
+        console.log("Result saved successfully");
+    } catch (error) {
+        console.error("Error saving QOL result:", error.message);
     }
 }
