@@ -10,6 +10,8 @@
     <link rel="apple-touch-icon" href="icons/icon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -35,9 +37,6 @@
         }
     </script>
     <style>
-        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-        @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
-
         .fade-up {
             opacity: 0;
             transform: translateY(20px);
@@ -49,26 +48,65 @@
             transform: translateY(0);
         }
 
-        .no-scrollbar::-webkit-scrollbar {
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .accordion-active .accordion-content {
+            max-height: 500px;
+        }
+
+        .timeline-step::before {
+            content: '';
+            position: absolute;
+            left: 1.5rem;
+            top: 2rem;
+            bottom: -2rem;
+            width: 2px;
+            background: #E5E7EB;
+            z-index: 0;
+        }
+
+        .timeline-step:last-child::before {
             display: none;
         }
 
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .serif {
-            font-family: 'Nanum Myeongjo', serif;
+        @media (max-width: 768px) {
+            .timeline-step::before {
+                left: 1.25rem;
+            }
         }
 
         .mobile-nav-open {
             transform: translateX(0) !important;
         }
+
+        /* Insurance Quiz Styling */
+        .quiz-option {
+            transition: all 0.2s ease;
+        }
+        .quiz-option.selected {
+            border-color: #D4A574;
+            background-color: #FDFBF9;
+            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.1);
+        }
+        .quiz-step {
+            display: none;
+        }
+        .quiz-step.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 
-<body class="bg-white text-brand overflow-x-hidden">
+<body class="bg-brand-cream text-brand overflow-x-hidden">
 
     <!-- Header -->
     <header id="main-header" class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-brand/5 transition-all outline-none">
@@ -117,121 +155,476 @@
         </div>
     </header>
 
-    <main>
-        <!-- Hero Section -->
-        <section class="max-w-4xl mx-auto px-6 py-16 md:py-24 text-center">
-            <div class="fade-up">
-                <span class="inline-block px-4 py-1.5 bg-brand-warm/10 text-brand-warm rounded-full text-xs font-bold tracking-widest mb-6 uppercase">Step-by-Step Guide</span>
-                <h1 class="text-3xl md:text-5xl font-bold mb-8 leading-tight serif">소중한 아이를 위한<br><span class="text-brand-warm">아름다운 이별 준비</span></h1>
-                <p class="text-gray-500 text-lg font-light leading-relaxed mb-12 max-w-2xl mx-auto">
-                    무엇을 해야 할지 몰라 당황하지 마세요.<br>마지막 순간을 평화롭게 보낼 수 있도록 온실이 곁에서 돕겠습니다.
+    <main class="max-w-4xl mx-auto px-6 py-12 pb-32">
+
+        <!-- Section: Farewell Guide (Original Content) -->
+        <div id="guide-farewell-content">
+            <!-- Hero Section -->
+            <section class="text-center mb-20 fade-up">
+                <div
+                    class="inline-flex items-center gap-2 bg-brand-warm/10 text-brand-warm px-4 py-1.5 rounded-full text-xs font-bold mb-6">
+                    <i class="fas fa-heart"></i> ONSIL CARE GUIDE
+                </div>
+                <h2 class="text-2xl md:text-4xl font-bold leading-tight mb-6">
+                    소중한 아이와의 이별,<br>
+                    <span class="text-brand-sage">당황하지 않도록 함께할게요.</span>
+                </h2>
+                <p class="text-gray-500 text-lg font-light max-w-lg mx-auto leading-relaxed">
+                    슬픔에 잠겨있는 보호자님을 위해,<br>
+                    반드시 확인해야 할 일들을 정리했습니다.
                 </p>
+            </section>
+
+
+            <!-- Section 1: Post-mortem Home Care -->
+            <section class="mb-24 fade-up">
+                <div class="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-sm border border-gray-50">
+                    <div class="flex items-center gap-4 mb-10">
+                        <div
+                            class="w-12 h-12 bg-brand-sage/10 rounded-2xl flex items-center justify-center text-brand-sage">
+                            <i class="fas fa-home text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">집에서 할 수 있는 마지막 정돈</h2>
+                    </div>
+
+                    <div class="grid gap-8 md:grid-cols-2">
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-brand-sage text-white flex items-center justify-center font-bold text-sm flex-shrink-0">1</span>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-2">편안한 자세 잡아주기</h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">시간이 지나면 몸이 굳어질 수 있습니다. 다리를 배 쪽으로
+                                        부드럽게
+                                        당겨 웅크린 자세로 눕혀주세요.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-brand-sage text-white flex items-center justify-center font-bold text-sm flex-shrink-0">2</span>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-2">체온 유지 및 배변 조치</h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">근육이 이완되면 분비물이 나올 수 있습니다. 아래에 깨끗한
+                                        패드나
+                                        담요를 갈아주시고 입 주변을 닦아주세요.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-brand-sage text-white flex items-center justify-center font-bold text-sm flex-shrink-0">3</span>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-2">시원한 온도 유지</h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">부패를 늦추기 위해 실내 온도를 낮게 유지해주세요. 배 아래나
+                                        등에
+                                        아이스팩을 수건에 감싸 두시면 좋습니다.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-brand-sage text-white flex items-center justify-center font-bold text-sm flex-shrink-0">4</span>
+                                <div>
+                                    <h3 class="font-bold text-lg mb-2">충분한 인사 나누기</h3>
+                                    <p class="text-gray-500 text-sm leading-relaxed">서둘러 보내지 않으셔도 괜찮습니다. 아이가 가장 사랑했던
+                                        가족들과
+                                        마지막 시간을 차분히 보내주세요.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Preparation Checklist -->
+            <section class="mb-24 fade-up">
+                <div class="flex items-center justify-between mb-10">
+                    <h2 class="text-2xl font-bold flex items-center gap-3">
+                        <i class="fas fa-clipboard-check text-brand-warm"></i>
+                        준비물 체크리스트
+                    </h2>
+                    <span class="text-xs text-gray-400">장례식장 방문 전 꼭 챙겨주세요</span>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Photo -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 flex items-center gap-4 group cursor-pointer hover:border-brand-warm transition-all"
+                        onclick="this.classList.toggle('checked')">
+                        <div
+                            class="w-6 h-6 rounded-md border-2 border-gray-200 flex items-center justify-center text-white bg-white group-hover:border-brand-warm group-[.checked]:bg-brand-warm group-[.checked]:border-brand-warm transition-all">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold">가장 예쁜 사진 (영정용)</h4>
+                            <p class="text-xs text-gray-400 mt-1">핸드폰에 담긴 고화질 원본 사진이면 충분합니다.</p>
+                        </div>
+                        <i class="fas fa-image text-brand-warm/20 text-2xl"></i>
+                    </div>
+
+                    <!-- Blanket -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 flex items-center gap-4 group cursor-pointer hover:border-brand-warm transition-all"
+                        onclick="this.classList.toggle('checked')">
+                        <div
+                            class="w-6 h-6 rounded-md border-2 border-gray-200 flex items-center justify-center text-white bg-white group-hover:border-brand-warm group-[.checked]:bg-brand-warm group-[.checked]:border-brand-warm transition-all">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold">좋아하던 담요나 타올</h4>
+                            <p class="text-xs text-gray-400 mt-1">아이를 감싸거나 이동 시 체온을 보호하기 위해 필요합니다.</p>
+                        </div>
+                        <i class="fas fa-soap text-brand-warm/20 text-2xl"></i>
+                    </div>
+
+                    <!-- Snacks -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 flex items-center gap-4 group cursor-pointer hover:border-brand-warm transition-all"
+                        onclick="this.classList.toggle('checked')">
+                        <div
+                            class="w-6 h-6 rounded-md border-2 border-gray-200 flex items-center justify-center text-white bg-white group-hover:border-brand-warm group-[.checked]:bg-brand-warm group-[.checked]:border-brand-warm transition-all">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold">마지막 간식과 꽃</h4>
+                            <p class="text-xs text-gray-400 mt-1">추모 시 제단에 올려줄 간식이나 작은 꽃 한 송이를 준비해보세요.</p>
+                        </div>
+                        <i class="fas fa-egg text-brand-warm/20 text-2xl"></i>
+                    </div>
+
+                    <!-- Booking -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 flex items-center gap-4 group cursor-pointer hover:border-brand-warm transition-all"
+                        onclick="this.classList.toggle('checked')">
+                        <div
+                            class="w-6 h-6 rounded-md border-2 border-gray-200 flex items-center justify-center text-white bg-white group-hover:border-brand-warm group-[.checked]:bg-brand-warm group-[.checked]:border-brand-warm transition-all">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold">온실 안심 예약 확정</h4>
+                            <p class="text-xs text-gray-400 mt-1">대기 시간 없이 바로 이용할 수 있도록 예약을 확인해주세요.</p>
+                        </div>
+                        <i class="fas fa-calendar-check text-brand-warm/20 text-2xl"></i>
+                    </div>
+                </div>
+            </section>
+
+                                </button>
+                            </div>
+                            <!-- Expert Tip -->
+                            <div class="mt-6 bg-brand-warm/5 p-4 rounded-xl border border-brand-warm/10 flex gap-3">
+                                <i class="fas fa-lightbulb text-brand-warm mt-1"></i>
+                                <p class="text-[11px] text-brand-warm/80 leading-relaxed">
+                                    <span class="font-bold">[설계사 팁]</span> 가입 시기에 따라 사망 위로금 포함 여부가 크게 다릅니다. 특히 3년 전 가입하신 경우 꼭 증권을 확인해야 합니다.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Question 3 -->
+                        <div class="quiz-step" id="quiz-step-3">
+                            <h3 class="font-bold text-center mb-6">Q3. 증권에 '사망 위로금' 혹은 '장례비용' 항목이 보이시나요?</h3>
+                            <div class="flex flex-col gap-3">
+                                <button onclick="selectQuizOption(3, 'yes')" class="quiz-option p-5 bg-white border border-gray-100 rounded-2xl text-sm font-medium hover:border-brand-warm flex items-center gap-4">
+                                    <div class="w-6 h-6 rounded-full bg-brand-sage/10 text-brand-sage flex items-center justify-center"><i class="fas fa-check"></i></div>
+                                    <span>네, 명확히 보입니다.</span>
+                                </button>
+                                <button onclick="selectQuizOption(3, 'no')" class="quiz-option p-5 bg-white border border-gray-100 rounded-2xl text-sm font-medium hover:border-brand-warm flex items-center gap-4">
+                                    <div class="w-6 h-6 rounded-full bg-red-50 text-red-300 flex items-center justify-center"><i class="fas fa-times"></i></div>
+                                    <span>아니오, 없는 것 같아요.</span>
+                                </button>
+                                <button onclick="selectQuizOption(3, 'not_sure')" class="quiz-option p-5 bg-white border border-gray-100 rounded-2xl text-sm font-medium hover:border-brand-warm flex items-center gap-4">
+                                    <div class="w-6 h-6 rounded-full bg-gray-50 text-gray-300 flex items-center justify-center"><i class="fas fa-question text-[10px]"></i></div>
+                                    <span>잘 모르겠음</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Final Result CTA [Step 2 Integration] -->
+                        <div class="quiz-step text-center space-y-6" id="quiz-result">
+                            <div class="w-16 h-16 bg-brand-warm/10 rounded-full flex items-center justify-center mx-auto text-brand-warm mb-6">
+                                <i class="fas fa-file-signature text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-xl">전문가의 1:1 증권 분석이 필요합니다.</h3>
+                            <p class="text-sm text-gray-500 leading-relaxed">
+                                온실의 실장(전문 보험설계사)이 고객님의 보험 증권을 직접 분석하여 <span class="text-brand font-bold underline">보상 가능 여부와 예상 수령액</span>을 알려드립니다.
+                            </p>
+                            
+                            <div class="bg-white p-6 rounded-2xl border border-dashed border-brand/10 text-left space-y-3">
+                                <p class="text-xs font-bold text-brand/60 uppercase tracking-wider">신청 방법</p>
+                                <p class="text-sm font-medium">1. 보험 증권 사진을 촬영합니다.</p>
+                                <p class="text-sm font-medium">2. 아래 버튼을 눌러 카카오톡으로 전송합니다.</p>
+                            </div>
+
+                            <a href="https://pf.kakao.com/_XxcxaMX" target="_blank" class="w-full bg-[#FEE500] hover:bg-[#FEE500]/90 text-brand py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg active:scale-95">
+                                <i class="fas fa-comment text-xl"></i>
+                                카톡으로 무료 증권 분석 신청하기
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Insurance Diagnosis Process [NEW] -->
+            <section class="mb-24 fade-up" id="insurance-diagnosis">
+                <div class="bg-brand/5 rounded-[2.5rem] p-8 md:p-12 border border-brand/5">
+                    <div class="text-center mb-12">
+                        <div class="inline-flex items-center gap-2 bg-brand-warm text-white px-4 py-1.5 rounded-full text-[10px] font-bold mb-4">
+                            STEP 1. 간편 자가 진단
+                        </div>
+                        <h2 class="text-2xl font-bold mb-3">보험 혜택, 혹시 놓치고 계신가요?</h2>
+                        <p class="text-gray-500 text-sm max-w-sm mx-auto">몇 가지 간단한 질문을 통해 장례비용 지원 여부를 확인해보세요.</p>
+                    </div>
+
+                    <div id="quiz-container" class="max-w-md mx-auto space-y-8">
+                        <!-- Question 1 -->
+                        <div class="quiz-step active" id="quiz-step-1">
+                            <h3 class="font-bold text-center mb-6">Q1. 가입하신 보험사가 어디인가요?</h3>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button onclick="selectQuizOption(1, '삼성')" class="quiz-option p-4 bg-white border border-gray-100 rounded-2xl text-sm font-medium hover:border-brand-warm transition-all">삼성화재/생명</button>
+                                <button onclick="selectQuizOption(1, '현대')" class="quiz-option p-4 bg-white border border-gray-100 rounded-2xl text-sm font-medium hover:border-brand-warm transition-all">현대해상</button>
+                                <button onclick="selectQuizOption(1, 'DB')" class="quiz-option p-4 bg-white border border-gray-100 rounded-2xl text-sm font-medium hover:border-brand-warm transition-all">DB손해보험</button>
+                                <button onclick="selectQuizOption(1, 'KB')" class="quiz-option p-4 bg-white border border-gray-100 rounded-2xl text-sm font-medium hover:border-brand-warm transition-all">KB손해보험</button>
+                                <button onclick="selectQuizOption(1, '메리츠')" class="quiz-option p-4 bg-white border border-gray-100 rounded-2xl text-sm font-medium hover:border-brand-warm transition-all">메리츠화재</button>
+                                <button onclick="selectQuizOption(1, '기타')" class="quiz-option p-4 bg-white border border-gray-100 rounded-2xl text-sm font-medium hover:border-brand-warm transition-all">기타/해외</button>
+                            </div>
+                        </div>
+
+                        <!-- Question 2 -->
+                        <div class="quiz-step" id="quiz-step-2">
+                            <h3 class="font-bold text-center mb-6">Q2. 가입 시기가 언제쯤인가요?</h3>
+                            <div class="flex flex-col gap-3">
+                                <button onclick="selectQuizOption(2, 'long')" class="quiz-option p-5 bg-white border border-gray-100 rounded-2xl text-sm font-medium hover:border-brand-warm flex justify-between items-center text-left">
+                                    <span>3년 전 혹은 그 이전</span>
+                                    <i class="fas fa-chevron-right text-gray-200"></i>
+                                </button>
+                                <button onclick="selectQuizOption(2, 'mid')" class="quiz-option p-5 bg-white border border-gray-100 rounded-2xl text-sm font-medium hover:border-brand-warm flex justify-between items-center text-left">
+                                    <span>1년 전 쯤</span>
+                                    <i class="fas fa-chevron-right text-gray-200"></i>
+                                </button>
+                                <button onclick="selectQuizOption(2, 'recent')" class="quiz-option p-5 bg-white border border-gray-100 rounded-2xl text-sm font-medium hover:border-brand-warm flex justify-between items-center text-left">
+                                    <span>최근 (1년 이내)</span>
+                                    <i class="fas fa-chevron-right text-gray-200"></i>
+                                </button>
+                            </div>
+                            <!-- Expert Tip -->
+                            <div class="mt-6 bg-brand-warm/5 p-4 rounded-xl border border-brand-warm/10 flex gap-3">
+                                <i class="fas fa-lightbulb text-brand-warm mt-1"></i>
+                                <p class="text-[11px] text-brand-warm/80 leading-relaxed">
+                                    <span class="font-bold">[설계사 팁]</span> 가입 시기에 따라 사망 위로금 포함 여부가 크게 다릅니다. 특히 3년 전 가입하신 경우 꼭 증권을 확인해야 합니다.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Question 3 -->
+                        <div class="quiz-step" id="quiz-step-3">
+                            <h3 class="font-bold text-center mb-6">Q3. 증권에 '사망 위로금' 혹은 '장례비용' 항목이 보이시나요?</h3>
+                            <div class="flex flex-col gap-3">
+                                <button onclick="selectQuizOption(3, 'yes')" class="quiz-option p-5 bg-white border border-gray-100 rounded-2xl text-sm font-medium hover:border-brand-warm flex items-center gap-4">
+                                    <div class="w-6 h-6 rounded-full bg-brand-sage/10 text-brand-sage flex items-center justify-center"><i class="fas fa-check"></i></div>
+                                    <span>네, 명확히 보입니다.</span>
+                                </button>
+                                <button onclick="selectQuizOption(3, 'no')" class="quiz-option p-5 bg-white border border-gray-100 rounded-2xl text-sm font-medium hover:border-brand-warm flex items-center gap-4">
+                                    <div class="w-6 h-6 rounded-full bg-red-50 text-red-300 flex items-center justify-center"><i class="fas fa-times"></i></div>
+                                    <span>아니오, 없는 것 같아요.</span>
+                                </button>
+                                <button onclick="selectQuizOption(3, 'not_sure')" class="quiz-option p-5 bg-white border border-gray-100 rounded-2xl text-sm font-medium hover:border-brand-warm flex items-center gap-4">
+                                    <div class="w-6 h-6 rounded-full bg-gray-50 text-gray-300 flex items-center justify-center"><i class="fas fa-question text-[10px]"></i></div>
+                                    <span>잘 모르겠음</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Final Result CTA [Step 2 Integration] -->
+                        <div class="quiz-step text-center space-y-6" id="quiz-result">
+                            <div class="w-16 h-16 bg-brand-warm/10 rounded-full flex items-center justify-center mx-auto text-brand-warm mb-6">
+                                <i class="fas fa-file-signature text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-xl">전문가의 1:1 증권 분석이 필요합니다.</h3>
+                            <p class="text-sm text-gray-500 leading-relaxed">
+                                온실의 실장(전문 보험설계사)이 고객님의 보험 증권을 직접 분석하여 <span class="text-brand font-bold underline">보상 가능 여부와 예상 수령액</span>을 알려드립니다.
+                            </p>
+                            
+                            <div class="bg-white p-6 rounded-2xl border border-dashed border-brand/10 text-left space-y-3">
+                                <p class="text-xs font-bold text-brand/60 uppercase tracking-wider">신청 방법</p>
+                                <p class="text-sm font-medium">1. 보험 증권 사진을 촬영합니다.</p>
+                                <p class="text-sm font-medium">2. 아래 버튼을 눌러 카카오톡으로 전송합니다.</p>
+                            </div>
+
+                            <a href="https://pf.kakao.com/_XxcxaMX" target="_blank" class="w-full bg-[#FEE500] hover:bg-[#FEE500]/90 text-brand py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg active:scale-95">
+                                <i class="fas fa-comment text-xl"></i>
+                                카톡으로 무료 증권 분석 신청하기
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Timeline Process -->
+            <section class="mb-24 fade-up">
+                <h2 class="text-2xl font-bold mb-12 text-center">장례 진행 절차</h2>
+
+                <div class="relative space-y-12">
+                    <!-- Step 1 -->
+                    <div class="relative flex items-start gap-6 md:gap-12 timeline-step">
+                        <div
+                            class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-brand text-white flex items-center justify-center font-bold z-10 shrink-0">
+                            1</div>
+                        <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-brand">운구 및 방문</h3>
+                                <span
+                                    class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Arrival</span>
+                            </div>
+                            <p class="text-sm text-gray-500 leading-relaxed font-light">
+                                예약 시간에 맞춰 장례식장에 도착합니다. 이동이 어려운 경우 장례식장 전용 차량 서비스를 이용하실 수 있습니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative flex items-start gap-6 md:gap-12 timeline-step">
+                        <div
+                            class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-brand text-white flex items-center justify-center font-bold z-10 shrink-0">
+                            2</div>
+                        <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-brand">염습 및 입관</h3>
+                                <span
+                                    class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Preparation</span>
+                            </div>
+                            <p class="text-sm text-gray-500 leading-relaxed font-light">
+                                전문 장례 지도사가 정성스럽게 아이의 몸을 닦고 단장(수의/관 선택 시 진행)하여 마지막 잠을 준비합니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative flex items-start gap-6 md:gap-12 timeline-step">
+                        <div
+                            class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-brand text-white flex items-center justify-center font-bold z-10 shrink-0">
+                            3</div>
+                        <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-brand">추모 예식</h3>
+                                <span
+                                    class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Memorial</span>
+                            </div>
+                            <p class="text-sm text-gray-500 leading-relaxed font-light">
+                                단독 추모실에서 가족들만의 시간을 갖습니다. 아이와의 추억이 담긴 영상이나 편지를 나누며 작별 인사를 나눕니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="relative flex items-start gap-6 md:gap-12 timeline-step">
+                        <div
+                            class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-brand text-white flex items-center justify-center font-bold z-10 shrink-0">
+                            4</div>
+                        <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-brand">개별 화장 및 수골</h3>
+                                <span
+                                    class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Cremation</span>
+                            </div>
+                            <p class="text-sm text-gray-500 leading-relaxed font-light">
+                                철저한 개별 화장을 진행하며 전 과정을 참관실에서 확인하실 수 있습니다. 화장 종료 후 유골을 정갈하게 수습합니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="relative flex items-start gap-6 md:gap-12 timeline-step">
+                        <div
+                            class="w-10 md:w-12 h-10 md:h-12 rounded-full bg-brand text-white flex items-center justify-center font-bold z-10 shrink-0">
+                            5</div>
+                        <div class="bg-white p-6 rounded-3xl border border-gray-50 shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-brand">봉안 및 안치</h3>
+                                <span
+                                    class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400 uppercase tracking-widest">Enshrinement</span>
+                            </div>
+                            <p class="text-sm text-gray-500 leading-relaxed font-light">
+                                수습된 유골을 유골함에 담아 인도해 드립니다. 봉안당 안치, 산골, 또는 메모리얼 스톤 제작 중 선택하실 수 있습니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: FAQ -->
+            <section class="mb-24 fade-up">
+                <h2 class="text-2xl font-bold mb-10">자주 묻는 질문</h2>
+
+                <div class="space-y-4">
+                    <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden accordion-item group">
+                        <button
+                            class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                            onclick="toggleAccordion(this)">
+                            <span class="font-bold">장례 진행 시간은 얼마나 걸리나요?</span>
+                            <i
+                                class="fas fa-chevron-down text-gray-300 group-[.accordion-active]:rotate-180 transition-transform"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="px-6 pb-6 text-sm text-gray-500 leading-relaxed">
+                                아이의 몸무게와 선택하신 옵션에 따라 다르지만, 평균적으로 1시간 30분에서 2시간 정도 소요됩니다. 충분한 추모 시간을 원하실 경우 조금 더 여유 있게
+                                계획하시는
+                                것이 좋습니다.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden accordion-item group">
+                        <button
+                            class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                            onclick="toggleAccordion(this)">
+                            <span class="font-bold">다른 아이들과 같이 화장하는 경우도 있나요?</span>
+                            <i
+                                class="fas fa-chevron-down text-gray-300 group-[.accordion-active]:rotate-180 transition-transform"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="px-6 pb-6 text-sm text-gray-500 leading-relaxed">
+                                온실이 안내하는 모든 제휴 장례식장은 **'100% 개별 화장'** 원칙을 준수합니다. 전 과정을 투명하게 참관하실 수 있으니 안심하셔도 됩니다.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden accordion-item group">
+                        <button
+                            class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                            onclick="toggleAccordion(this)">
+                            <span class="font-bold">비용은 언제 결제하나요?</span>
+                            <i
+                                class="fas fa-chevron-down text-gray-300 group-[.accordion-active]:rotate-180 transition-transform"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="px-6 pb-6 text-sm text-gray-500 leading-relaxed">
+                                온실에서 안내드린 견적 금액을 **온라인으로 즉시 결제**하게 되며, 이 경우 **장례식장 현장 결제 금액은 0원**입니다. 추가 옵션을 선택하지 않는 한
+                                현장에서의
+                                추가 비용 발생은 없습니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+        <!-- CTA Section -->
+        <section class="fade-up">
+            <div class="bg-brand py-12 px-8 rounded-[3rem] text-center text-white relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
+                <div class="relative z-10">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6">아이의 상태를 미리 체크해 보세요.</h2>
+                    <p class="text-white/60 mb-10 text-sm font-light">온실은 보호자님의 슬픔을 미리 이해하고 함께 준비하겠습니다.</p>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <a href="self-diagnosis.html?tab=aging"
+                            class="inline-flex items-center gap-3 bg-brand-warm hover:bg-brand-warm/90 text-white px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105">
+                            노화 자가 진단하기
+                        </a>
+                        <a href="self-diagnosis.html?tab=qol"
+                            class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105">
+                            삶의 질 평가하기
+                        </a>
+                    </div>
+                </div>
             </div>
         </section>
-
-        <!-- Main Content Tabs -->
-        <div class="max-w-4xl mx-auto px-6 pb-32">
-            <div class="space-y-16">
-                <!-- 1. After Departure -->
-                <section class="fade-up">
-                    <div class="flex items-center gap-4 mb-8">
-                        <div class="w-12 h-12 rounded-2xl bg-brand-warm flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-brand-warm/20">01</div>
-                        <h2 class="text-2xl font-bold">운명 후, 가장 먼저 해야 할 일</h2>
-                    </div>
-                    <div class="bg-brand-cream rounded-[2.5rem] p-8 md:p-12 space-y-8 border border-brand/5">
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <div class="space-y-4">
-                                <h3 class="font-bold text-lg text-brand-warm">가정에서의 수습</h3>
-                                <p class="text-sm text-gray-500 leading-relaxed">아이가 평소 좋아하던 장소에 편안하게 눕혀주세요. 담요나 패드를 깔아주고, 혀가 나올 경우 부드럽게 안으로 넣어주세요.</p>
-                            </div>
-                            <div class="space-y-4">
-                                <h3 class="font-bold text-lg text-brand-warm">온도 유지 및 보관</h3>
-                                <p class="text-sm text-gray-500 leading-relaxed">체온이 떨어지면서 사후 경직이 발생합니다. 실내 온도를 낮게 유지하고 직접적인 햇빛은 피해주세요. 드라이아이스나 아이스팩을 수건에 싸서 곁에 둡니다.</p>
-                            </div>
-                        </div>
-                        <div class="p-6 bg-white rounded-2xl border border-brand/5">
-                            <h4 class="font-bold text-sm mb-3 flex items-center gap-2"><i class="fas fa-exclamation-circle text-brand-warm"></i> 주의사항</h4>
-                            <ul class="text-xs text-gray-400 space-y-2 leading-relaxed">
-                                <li>• 알코올 솜이나 젖은 타월로 몸을 너무 강하게 닦지 마세요 (피부 손상 위험).</li>
-                                <li>• 눈을 뜨고 있는 경우, 손바닥으로 잠시 가볍게 눌러주면 감길 수 있습니다.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- 2. Procedure -->
-                <section class="fade-up">
-                    <div class="flex items-center gap-4 mb-8">
-                        <div class="w-12 h-12 rounded-2xl bg-brand-sage flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-brand-sage/20">02</div>
-                        <h2 class="text-2xl font-bold">장례 절차 안내</h2>
-                    </div>
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <div class="p-8 bg-white border border-gray-100 rounded-3xl hover:shadow-xl transition-all group">
-                            <div class="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 mb-6 group-hover:bg-brand-sage/10 group-hover:text-brand-sage transition-all"><i class="fas fa-hand-holding-heart text-xl"></i></div>
-                            <h3 class="font-bold mb-3">염습 및 추모</h3>
-                            <p class="text-xs text-gray-400 leading-relaxed">전문 장례 지도사가 아이의 몸을 깨끗하게 닦고 수의를 입힌 후, 전용 추모실에서 가족끼리 마지막 인사를 나눕니다.</p>
-                        </div>
-                        <div class="p-8 bg-white border border-gray-100 rounded-3xl hover:shadow-xl transition-all group">
-                            <div class="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 mb-6 group-hover:bg-brand-sage/10 group-hover:text-brand-sage transition-all"><i class="fas fa-fire text-xl"></i></div>
-                            <h3 class="font-bold mb-3">개별 화장</h3>
-                            <p class="text-xs text-gray-400 leading-relaxed">모든 화장은 철저히 개별적으로 진행됩니다. 보호자는 전 과정을 참관창을 통해 확인하실 수 있습니다.</p>
-                        </div>
-                        <div class="p-8 bg-white border border-gray-100 rounded-3xl hover:shadow-xl transition-all group">
-                            <div class="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 mb-6 group-hover:bg-brand-sage/10 group-hover:text-brand-sage transition-all"><i class="fas fa-box text-xl"></i></div>
-                            <h3 class="font-bold mb-3">유골 수습 및 안치</h3>
-                            <p class="text-xs text-gray-400 leading-relaxed">화장이 끝난 후 유골을 분골하여 유골함에 담아 드립니다. 봉안당 안치, 메모리얼 스톤 제작 등 선택이 가능합니다.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- 3. Insurance Diagnosis (NEW) -->
-                <section id="insurance-diagnosis" class="fade-up scroll-mt-24">
-                    <div class="bg-brand p-8 md:p-16 rounded-[3rem] text-white relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20"></div>
-                        <h2 class="text-2xl md:text-4xl font-bold mb-6 serif leading-tight italic">보험금으로 장례비용<br><span class="text-brand-warm">돌려받을 수 있다는 점, 알고 계셨나요?</span></h2>
-                        <p class="text-white/70 text-lg font-light leading-relaxed mb-10 max-w-lg">가입하신 펫보험에 '사망 위로금'이 포함되어 있는지 전문가가 직접 분석해드립니다. 복잡한 약관 확인, 온실이 대신 해드릴게요.</p>
-                        <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="insurance-diagnosis.html" class="bg-brand-warm text-white px-8 py-4 rounded-2xl font-bold hover:bg-brand-warmDark transition-all text-center">무료 보험 분석 신청</a>
-                            <a href="tel:1551-5052" class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-2xl font-bold hover:bg-white/20 transition-all text-center">전화로 문의하기</a>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- 4. FAQ -->
-                <section class="fade-up">
-                    <h2 class="text-2xl font-bold mb-8 text-center">자주 묻는 질문</h2>
-                    <div class="space-y-4">
-                        <details class="group bg-gray-50 rounded-2xl overflow-hidden p-2 transition-all">
-                            <summary class="list-none p-6 font-bold flex justify-between items-center cursor-pointer">
-                                <span>반려동물 장례 비용은 대략 얼마인가요?</span>
-                                <i class="fas fa-plus text-xs group-open:rotate-45 transition-transform text-gray-400"></i>
-                            </summary>
-                            <div class="px-6 pb-6 text-sm text-gray-500 leading-relaxed">
-                                5kg 미만 소형견 기준, 기본 장례비용은 약 20~25만원 내외입니다. 이는 염습, 추모실 이용, 개별 화장, 기본 유골함이 포함된 비용이며 수의, 관, 기능성 유골함 선택에 따라 비용이 추가될 수 있습니다.
-                            </div>
-                        </details>
-                        <details class="group bg-gray-50 rounded-2xl overflow-hidden p-2 transition-all">
-                            <summary class="list-none p-6 font-bold flex justify-between items-center cursor-pointer">
-                                <span>밤늦게 운명했는데 바로 갈 수 있나요?</span>
-                                <i class="fas fa-plus text-xs group-open:rotate-45 transition-transform text-gray-400"></i>
-                            </summary>
-                            <div class="px-6 pb-6 text-sm text-gray-500 leading-relaxed">
-                                네, 온실과 제휴된 대부분의 장례식장은 24시간 운영 및 예약이 가능합니다. 밤늦은 시간이나 새벽에도 1551-5052로 전화 주시면 즉시 상담 및 픽업 서비스 예약을 도와드립니다.
-                            </div>
-                        </details>
-                        <details class="group bg-gray-50 rounded-2xl overflow-hidden p-2 transition-all">
-                            <summary class="list-none p-6 font-bold flex justify-between items-center cursor-pointer">
-                                <span>장례 후 행정 절차는 어떻게 되나요?</span>
-                                <i class="fas fa-plus text-xs group-open:rotate-45 transition-transform text-gray-400"></i>
-                            </summary>
-                            <div class="px-6 pb-6 text-sm text-gray-500 leading-relaxed">
-                                반려견의 경우 동물등록 대행 업체나 정부24 사이트를 통해 30일 이내에 사망 신고를 해야 합니다. 장례식장에서 발급해드리는 '장례 증명서'가 필요하오니 꼭 챙겨두시기 바랍니다.
-                            </div>
-                        </details>
-                    </div>
-                </section>
-            </div>
-        </div>
     </main>
 
     <footer class="bg-brand-cream border-t border-brand/5 py-16">
@@ -265,73 +658,76 @@
                                 class="hover:text-[#2C3E50] transition-colors font-bold text-brand-warm">제휴문의</a></li>
                         <li><a href="terms.html" class="hover:text-[#2C3E50] transition-colors">이용약관</a></li>
                         <li><a href="privacy.html" class="hover:text-[#2C3E50] transition-colors">개인정보처리방침</a></li>
+                        <li class="pt-2 border-t border-[#2C3E50]/5"><a href="partner-login.html" class="text-xs font-bold text-gray-400 hover:text-partner transition-colors"><i class="fas fa-lock text-[10px] mr-1"></i> 업체 로그인</a></li>
                     </ul>
-                </div>
-            </div>
-            <div
-                class="border-t border-[#2C3E50]/5 mt-10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-                <p class="text-xs text-[#2C3E50]/30">&copy; 2026 The 온실. All rights reserved.</p>
-                <div class="flex gap-4">
-                    <a href="#"
-                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
-                        <i class="fab fa-instagram text-sm"></i>
-                    </a>
-                    <a href="#"
-                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
-                        <i class="fab fa-youtube text-sm"></i>
-                    </a>
-                    <a href="#"
-                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
-                        <i class="fas fa-comment text-sm"></i>
-                    </a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <script>
+        // PWA Service Worker
+        if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js');
+            });
+        }
+    </script>
+
     <!-- Mobile Navigation Overlay -->
     <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
-        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300" id="mobile-nav-panel">
+        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
+            id="mobile-nav-panel">
             <div class="p-6 h-full flex flex-col pt-safe">
                 <div class="flex justify-between items-center mb-8">
                     <span class="font-bold text-lg text-brand">메뉴</span>
-                    <button onclick="toggleMobileNav()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
+                    <button onclick="toggleMobileNav()"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
                         <i class="fas fa-times text-gray-500"></i>
                     </button>
                 </div>
                 <nav class="space-y-1 flex-1">
-                    <a href="search.html?quote=true" class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all bg-brand-cream text-brand font-bold mb-4 hover:shadow-md">
+                    <a href="search.html?quote=true"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all bg-brand-cream text-brand font-bold mb-4 hover:shadow-md">
                         <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
                         <span>바로 견적받기</span>
                     </a>
-                    <a href="search.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                    <a href="search.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
                         <i class="fas fa-search w-5 text-center"></i>
                         <span>장례식장 찾기</span>
                     </a>
-                    <a href="guide.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-brand/5 text-brand font-bold transition-colors">
+                    <a href="guide.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-brand/5 text-brand font-bold transition-colors">
                         <i class="fas fa-book-open w-5 text-center"></i>
                         <span>이별 가이드</span>
                     </a>
-                    <a href="self-diagnosis.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                    <a href="self-diagnosis.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
                         <i class="fas fa-stethoscope w-5 text-center"></i>
                         <span>건강자가진단</span>
                     </a>
-                    <a href="memory.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                    <a href="memory.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
                         <i class="fas fa-heart w-5 text-center"></i>
                         <span>추억 가이드</span>
                     </a>
-                    <a href="community.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                    <a href="community.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
                         <i class="fas fa-comments w-5 text-center"></i>
                         <span>커뮤니티</span>
                     </a>
                 </nav>
                 <!-- Mobile Bottom Actions -->
                 <div class="pt-6 border-t border-brand/5 space-y-3">
-                    <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-full bg-brand-sage text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-sage/90 transition-colors">
+                    <button
+                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                        class="w-full bg-brand-sage text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-sage/90 transition-colors">
                         <i class="fas fa-calendar-check text-sm"></i> 예약하기
                     </button>
-                    <a href="tel:1551-5052" class="w-full bg-brand-warm text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-warmDark transition-colors">
+                    <a href="tel:1551-5052"
+                        class="w-full bg-brand-warm text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-warmDark transition-colors">
                         <i class="fas fa-phone-alt text-sm"></i> 1551-5052 상담원 연결
                     </a>
                 </div>
@@ -344,6 +740,44 @@
     <script src="js/auth.js"></script>
     <script src="js/pwa.js"></script>
     <script>
+        // Intersection Observer for fade-up animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-up').forEach(element => {
+                observer.observe(element);
+            });
+        });
+
+        // Accordion Toggle
+        function toggleAccordion(btn) {
+            const item = btn.closest('.accordion-item');
+            const isActive = item.classList.contains('accordion-active');
+            
+            // Close all
+            document.querySelectorAll('.accordion-item').forEach(el => {
+                el.classList.remove('accordion-active');
+            });
+            
+            // Open clicked
+            if (!isActive) {
+                item.classList.add('accordion-active');
+            }
+        }
+
         function toggleMobileNav() {
             const nav = document.getElementById('mobile-nav');
             const panel = document.getElementById('mobile-nav-panel');
@@ -356,20 +790,32 @@
             }
         }
 
-        // Intersection Observer for scroll animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
+        // Quiz Logic
+        let quizAnswers = {};
+        function selectQuizOption(step, value) {
+            quizAnswers[step] = value;
+            
+            // Highlight selected
+            const currentStepDiv = document.getElementById(`quiz-step-${step}`);
+            if (currentStepDiv) {
+                currentStepDiv.querySelectorAll('.quiz-option').forEach(btn => {
+                    btn.classList.remove('selected');
+                    if (btn.innerText.includes(value) || btn.getAttribute('onclick').includes(`'${value}'`)) {
+                        btn.classList.add('selected');
+                    }
+                });
+            }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-        });
+            // Move to next step with slight delay
+            setTimeout(() => {
+                const current = document.getElementById(`quiz-step-${step}`);
+                const next = document.getElementById(step < 3 ? `quiz-step-${step + 1}` : 'quiz-result');
+                
+                current.classList.remove('active');
+                next.classList.add('active');
+            }, 300);
+        }
     </script>
     <script src="js/channel-talk.js"></script>
 </body>
-
 </html>
