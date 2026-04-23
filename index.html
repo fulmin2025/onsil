@@ -942,9 +942,9 @@
         const HOMES_DATA = [
             { name: "펫포레스트 남양주점", lat: 37.619511, lng: 127.276363, region: "경기 남양주", price: "25만원~", isAlliance: true },
             { name: "21그램 경기광주점", lat: 37.349329, lng: 127.264295, region: "경기 광주", price: "25만원~", isAlliance: false },
-            { name: "어게인", lat: 37.5960, lng: 126.6575, region: "인천 서구", price: "25만원~", isAlliance: false },
-            { name: "씨엘로펫", lat: 37.170072, lng: 127.374925, region: "경기 용인", price: "25만원~", isAlliance: false },
-            { name: "굿바이펫", lat: 37.106320, lng: 128.272492, region: "충북 제천", price: "20만원~", isAlliance: true }
+            { name: "어게인", lat: 37.5960, lng: 126.6575, region: "인천 서구", price: "15만원~", isAlliance: false },
+            { name: "씨엘로펫", lat: 37.170072, lng: 127.374925, region: "경기 용인", price: "20만원~", isAlliance: false },
+            { name: "굿바이펫", lat: 37.106320, lng: 128.272491, region: "충북 제천", price: "20만원~", isAlliance: true }
         ];
 
         function getDistance(lat1, lon1, lat2, lon2) {
@@ -958,18 +958,21 @@
             return R * c;
         }
 
-        function renderNearbyHomes(lat, lng) {
+        function renderNearbyHomes(lat, lng, isDefault = false) {
             const listContainer = document.getElementById('nearby-homes-list');
+            if (!listContainer) return;
+
             const sortedHomes = HOMES_DATA.map(home => ({
                 ...home,
-                distance: getDistance(lat, lng, home.lat, home.lng)
+                distance: lat && lng ? getDistance(lat, lng, home.lat, home.lng) : 9999
             })).sort((a, b) => a.distance - b.distance).slice(0, 3);
 
             let html = '';
             sortedHomes.forEach((home, idx) => {
                 const isFirst = idx === 0;
+                const distanceText = (isDefault || home.distance === 9999) ? '' : ` • ${home.distance.toFixed(1)}km`;
                 html += `
-                    <div class="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-4 ${isFirst ? 'bg-brand-cream' : 'bg-white'} rounded-2xl border border-brand/5">
+                    <div class="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-4 ${isFirst ? 'bg-brand-cream' : 'bg-white'} rounded-2xl border border-brand/5 shadow-sm">
                         <div class="w-12 h-12 sm:w-16 sm:h-16 ${isFirst ? 'bg-brand-warm/10' : 'bg-brand/5'} rounded-xl flex items-center justify-center shrink-0">
                             <i class="fas fa-building ${isFirst ? 'text-brand-warm' : 'text-brand/40'} text-lg sm:text-xl"></i>
                         </div>
@@ -978,7 +981,7 @@
                                 ${home.isAlliance ? '<span class="text-[10px] px-1.5 py-0.5 bg-brand-sage/15 text-brand-sage rounded font-bold">제휴</span>' : ''}
                                 <p class="font-bold text-brand text-sm truncate">${home.name}</p>
                             </div>
-                            <p class="text-xs text-brand/40 mt-0.5">${home.region} • ${home.distance.toFixed(1)}km</p>
+                            <p class="text-xs text-brand/40 mt-0.5">${home.region}${distanceText}</p>
                         </div>
                         <p class="font-bold text-brand text-sm whitespace-nowrap">${home.price}</p>
                     </div>
@@ -987,17 +990,30 @@
             listContainer.innerHTML = html;
         }
 
-        // Initialize Recommendation
-        window.addEventListener('load', () => {
-            if ("geolocation" in navigator) {
+        function initRecommendation() {
+            // 초기 로딩 시 기본값(서울 중심)으로 즉시 렌더링
+            renderNearbyHomes(37.5665, 126.9780, true);
+
+            // 지오로케이션 시도
+            if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
-                    (pos) => renderNearbyHomes(pos.coords.latitude, pos.coords.longitude),
-                    () => renderNearbyHomes(37.5665, 126.9780) // Fallback to Seoul
+                    (pos) => {
+                        renderNearbyHomes(pos.coords.latitude, pos.coords.longitude, false);
+                    },
+                    (err) => {
+                        console.log("GPS 활용 불가, 기본 리스트 유지");
+                    },
+                    { timeout: 5000 }
                 );
-            } else {
-                renderNearbyHomes(37.5665, 126.9780);
             }
-        });
+        }
+
+        // 페이지 로드 시 실행
+        if (document.readyState === 'complete') {
+            initRecommendation();
+        } else {
+            window.addEventListener('load', initRecommendation);
+        }
     </script>
     <script src="js/channel-talk.js"></script>
 </body>
