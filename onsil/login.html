@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그??- The ?�실</title>
+    <title>로그인 - The 온실</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1B2B48">
     <link rel="apple-touch-icon" href="icons/icon.svg">
@@ -38,30 +38,30 @@
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden p-8">
         <div class="text-center mb-10">
             <a href="index.html" class="inline-flex flex-col items-center gap-3 group">
-                <img src="./images/onsil_logo_tr.png" width="80" height="80" class="w-20 h-20 object-contain transition-transform group-hover:scale-105" alt="?�실 캐릭??로고">
-                <span class="text-3xl font-bold text-[#1B2B48]">The ?�실</span>
+                <img src="./images/onsil_logo_tr.png" width="80" height="80" class="w-20 h-20 object-contain transition-transform group-hover:scale-105" alt="온실 캐릭터 로고">
+                <span class="text-3xl font-bold text-[#1B2B48]">The 온실</span>
             </a>
-            <p class="text-gray-500 text-sm mt-4">반려?�물과의 ?�뜻???�별, ?�실???�께?�니??</p>
+            <p class="text-gray-500 text-sm mt-4">반려동물과의 따뜻한 이별, 온실이 함께합니다.</p>
         </div>
 
         <form id="login-form" class="space-y-6" onsubmit="return false;">
             <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">?�메??/label>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">이메일</label>
                 <input type="email" id="email" required
                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all"
                     placeholder="example@email.com">
             </div>
 
             <div>
-                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">비�?번호</label>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">비밀번호</label>
                 <input type="password" id="password" required
                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all"
-                    placeholder="?�••••••�?>
+                    placeholder="••••••••">
             </div>
 
             <button type="button" id="login-btn" onclick="handleLogin()"
                 class="w-full bg-[#1B2B48] text-white py-3 rounded-lg font-bold hover:bg-[#2a4269] transition-colors shadow-md">
-                로그??
+                로그인
             </button>
 
             <div class="relative py-4">
@@ -69,7 +69,7 @@
                     <div class="w-full border-t border-gray-200"></div>
                 </div>
                 <div class="relative flex justify-center text-sm">
-                    <span class="px-2 bg-white text-gray-400 font-medium whitespace-nowrap">?�는 간편 로그??/span>
+                    <span class="px-2 bg-white text-gray-400 font-medium whitespace-nowrap">또는 간편 로그인</span>
                 </div>
             </div>
 
@@ -78,13 +78,20 @@
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 3C6.477 3 2 6.48 2 10.79c0 2.75 1.81 5.15 4.54 6.55l-1.15 4.23c-.05.18.05.37.21.43.05.02.1.03.15.03.12 0 .23-.07.28-.19l4.59-3.04c1.1.13 2.25.2 3.42.2 5.523 0 10-3.48 10-7.79S17.523 3 12 3z"/>
                 </svg>
-                카카?�로 ?�작?�기
+                카카오로 시작하기
             </button>
         </form>
 
-        <div class="mt-6 text-center text-sm text-gray-600">
-            ?�직 계정???�으?��???
-            <a href="signup.html" class="text-[#C5A065] font-bold hover:underline">?�원가??/a>
+        <div class="mt-6 flex flex-col space-y-4">
+            <div class="flex justify-center items-center gap-4 text-sm text-gray-500">
+                <a href="find-account.html?mode=id" class="hover:text-[#1B2B48] transition-colors">아이디 찾기</a>
+                <div class="w-px h-3 bg-gray-300"></div>
+                <a href="find-account.html?mode=pw" class="hover:text-[#1B2B48] transition-colors">비밀번호 찾기</a>
+            </div>
+            <div class="text-center text-sm text-gray-600">
+                아직 계정이 없으신가요?
+                <a href="signup.html" class="text-[#C5A065] font-bold hover:underline">회원가입</a>
+            </div>
         </div>
     </div>
 
@@ -94,7 +101,7 @@
     <script>
         // Global Error Handler
         window.onerror = function (msg, url, line, col, error) {
-            alert("?�바?�크립트 ?�류: " + msg + "\nLine: " + line);
+            alert("자바스크립트 오류: " + msg + "\nLine: " + line);
             return false;
         };
 
@@ -107,7 +114,7 @@
             if (window.supabase && window.supabase.createClient) {
                 console.log('Login Page: Supabase Loaded Successfully');
             } else {
-                alert("?�각???�류: Supabase ?�이브러리�? 불러?????�습?�다. (Login Page)");
+                alert("심각한 오류: Supabase 라이브러리를 불러올 수 없습니다. (Login Page)");
             }
         });
 
@@ -131,17 +138,17 @@
 
             try {
                 submitBtn.disabled = true;
-                submitBtn.innerText = '로그??�?..';
+                submitBtn.innerText = '로그인 중...';
 
                 const email = document.getElementById('email').value.trim();
                 const password = document.getElementById('password').value.trim();
 
                 if (!email || !password) {
-                    throw new Error('?�메?�과 비�?번호�?모두 ?�력?�주?�요.');
+                    throw new Error('이메일과 비밀번호를 모두 입력해주세요.');
                 }
 
                 const sb = getSupabase();
-                if (!sb) throw new Error('?�증 ?�비?��? ?�결?????�습?�다.');
+                if (!sb) throw new Error('인증 서비스를 연결할 수 없습니다.');
 
                 const { data, error } = await sb.auth.signInWithPassword({
                     email: email,
@@ -152,20 +159,20 @@
 
                 if (data?.session) {
                     // Login Success
-                    // alert('로그???�공!'); 
+                    // alert('로그인 성공!'); 
                     window.location.href = 'index.html';
                 } else {
-                    throw new Error('로그???�보�??�인?????�습?�다.');
+                    throw new Error('로그인 정보를 확인할 수 없습니다.');
                 }
 
             } catch (error) {
                 console.error('Login Error:', error);
-                let msg = error.message || "로그?�에 ?�패?�습?�다.";
+                let msg = error.message || "로그인에 실패했습니다.";
 
                 if (msg.includes('Invalid login credentials')) {
-                    msg = "?�메???�는 비�?번호가 ?�치?��? ?�습?�다.";
+                    msg = "이메일 또는 비밀번호가 일치하지 않습니다.";
                 } else if (msg.includes('Email not confirmed')) {
-                    msg = "?�메???�증???�료?��? ?�았?�니??\n가?�하???�메?�로 ?�송???�증 링크�?먼�? ?�릭?�주?�요.\n(?�는 Supabase 관리자 ?�이지?�서 '?�메???�증'??꺼주?�요)";
+                    msg = "이메일 인증이 완료되지 않았습니다.\n가입하신 이메일로 전송된 인증 링크를 먼저 클릭해주세요.\n(또는 Supabase 관리자 페이지에서 '이메일 인증'을 꺼주세요)";
                 }
 
                 alert(msg);
@@ -178,7 +185,7 @@
         async function handleKakaoLogin() {
             try {
                 const sb = getSupabase();
-                if (!sb) throw new Error('?�증 ?�비?��? ?�결?????�습?�다.');
+                if (!sb) throw new Error('인증 서비스를 연결할 수 없습니다.');
 
                 const { data, error } = await sb.auth.signInWithOAuth({
                     provider: 'kakao',
@@ -190,7 +197,7 @@
                 if (error) throw error;
             } catch (error) {
                 console.error('Kakao Login Error:', error);
-                alert('카카??로그??�??�류가 발생?�습?�다: ' + error.message);
+                alert('카카오 로그인 중 오류가 발생했습니다: ' + error.message);
             }
         }
     </script>
@@ -207,4 +214,3 @@
 </body>
 
 </html>
-
