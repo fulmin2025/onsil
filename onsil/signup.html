@@ -95,10 +95,19 @@
                     휴대폰 번호 <span class="text-red-500">*</span> 
                     <span class="text-xs text-red-500 ml-1 font-normal tracking-tight">(- 없이 숫자만 입력)</span>
                 </label>
-                <input type="tel" id="phone" required pattern="[0-9]+" maxlength="11"
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
-                    placeholder="01012345678">
+                <div class="flex gap-2">
+                    <input type="tel" id="phone" required pattern="[0-9]+" maxlength="11"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                        class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all text-black"
+                        placeholder="01012345678">
+                    <button type="button" id="verify-btn"
+                        class="px-4 py-3 bg-[#1B2B48] text-white rounded-lg font-bold text-sm whitespace-nowrap hover:bg-[#2a4269] transition-all disabled:opacity-50">
+                        본인인증
+                    </button>
+                </div>
+                <p id="verify-status" class="hidden text-xs text-green-600 mt-1 font-bold">
+                    <i class="fas fa-check-circle"></i> 본인인증이 완료되었습니다.
+                </p>
             </div>
 
             <div>
@@ -110,82 +119,70 @@
                     <option value="경기">경기</option>
                     <option value="인천">인천</option>
                     <option value="강원">강원</option>
-                    <option value="충청">충청</option>
-                    <option value="전라">전라</option>
-                    <option value="경상">경상</option>
+                    <option value="충북">충북</option>
+                    <option value="충남">충남</option>
+                    <option value="대전">대전</option>
+                    <option value="세종">세종</option>
+                    <option value="전북">전북</option>
+                    <option value="전남">전남</option>
+                    <option value="광주">광주</option>
+                    <option value="경북">경북</option>
+                    <option value="경남">경남</option>
+                    <option value="대구">대구</option>
+                    <option value="울산">울산</option>
+                    <option value="부산">부산</option>
                     <option value="제주">제주</option>
                 </select>
             </div>
 
-            <!-- 약관 동의 섹션 -->
-            <div class="space-y-4 border-t border-gray-100 pt-6">
-                <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl cursor-pointer group" onclick="toggleAllAgree()">
-                    <input type="checkbox" id="agree-all" class="w-5 h-5 rounded border-gray-300 text-[#1B2B48] focus:ring-[#1B2B48] pointer-events-none">
-                    <span class="text-sm font-bold text-gray-700 group-hover:text-[#1B2B48]">전체 동의하기</span>
+            <div class="space-y-4 pt-4 border-t">
+                <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200 cursor-pointer" onclick="toggleAllAgree()">
+                    <input type="checkbox" id="agree-all" class="w-5 h-5 rounded accent-[#1B2B48] pointer-events-none">
+                    <span class="text-sm font-bold text-gray-700">약관 전체 동의하기</span>
                 </div>
                 
                 <div class="space-y-3 px-1">
                     <div class="flex items-center justify-between group">
                         <label class="flex items-center gap-3 cursor-pointer">
-                            <input type="checkbox" id="agree-terms" required class="agree-item w-4 h-4 rounded border-gray-300 text-[#1B2B48] focus:ring-[#1B2B48]">
-                            <span class="text-xs text-gray-600">이용약관 동의 <span class="text-[#1B2B48] font-bold">(필수)</span></span>
+                            <input type="checkbox" id="agree-terms" required class="agree-item w-4 h-4 rounded accent-[#1B2B48]">
+                            <span class="text-sm text-gray-600">[필수] 이용약관 동의</span>
                         </label>
-                        <button type="button" onclick="showPolicy('terms')" class="text-[10px] text-gray-400 hover:underline">보기</button>
+                        <button type="button" onclick="showPolicy('terms')" class="text-xs text-gray-400 hover:text-gray-600 underline">보기</button>
                     </div>
-
                     <div class="flex items-center justify-between group">
                         <label class="flex items-center gap-3 cursor-pointer">
-                            <input type="checkbox" id="agree-privacy" required class="agree-item w-4 h-4 rounded border-gray-300 text-[#1B2B48] focus:ring-[#1B2B48]">
-                            <span class="text-xs text-gray-600">개인정보 수집 및 이용 동의 <span class="text-[#1B2B48] font-bold">(필수)</span></span>
+                            <input type="checkbox" id="agree-privacy" required class="agree-item w-4 h-4 rounded accent-[#1B2B48]">
+                            <span class="text-sm text-gray-600">[필수] 개인정보 처리방침 동의</span>
                         </label>
-                        <button type="button" onclick="showPolicy('privacy')" class="text-[10px] text-gray-400 hover:underline">보기</button>
+                        <button type="button" onclick="showPolicy('privacy')" class="text-xs text-gray-400 hover:text-gray-600 underline">보기</button>
                     </div>
-
                     <div class="flex items-center justify-between group">
                         <label class="flex items-center gap-3 cursor-pointer">
-                            <input type="checkbox" id="agree-marketing" class="agree-item w-4 h-4 rounded border-gray-300 text-[#1B2B48] focus:ring-[#1B2B48]">
-                            <span class="text-xs text-gray-600">마케팅 정보 수신 동의 (선택)</span>
+                            <input type="checkbox" id="agree-marketing" class="agree-item w-4 h-4 rounded accent-[#1B2B48]">
+                            <span class="text-sm text-gray-600">[선택] 마케팅 정보 수신 동의</span>
                         </label>
-                        <button type="button" onclick="showPolicy('marketing')" class="text-[10px] text-gray-400 hover:underline">보기</button>
+                        <button type="button" onclick="showPolicy('marketing')" class="text-xs text-gray-400 hover:text-gray-600 underline">보기</button>
                     </div>
                 </div>
             </div>
 
-            <button type="button" id="signup-btn" onclick="handleSignup()"
-                class="w-full bg-[#1B2B48] text-white py-4 rounded-xl font-bold hover:bg-[#2a4269] transition-all shadow-lg active:scale-[0.98]">
+            <button type="submit" id="signup-btn" onclick="handleSignup()"
+                class="w-full py-4 bg-[#1B2B48] text-white rounded-xl font-bold text-lg shadow-lg hover:bg-[#2a4269] transition-all hover:-translate-y-0.5 active:translate-y-0">
                 가입하기
-            </button>
-
-            <div class="relative py-4">
-                <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t border-gray-200"></div>
-                </div>
-                <div class="relative flex justify-center text-sm">
-                    <span class="px-2 bg-white text-gray-400 font-medium whitespace-nowrap">또는 간편 회원가입</span>
-                </div>
-            </div>
-
-            <button type="button" onclick="handleKakaoLogin()"
-                class="w-full bg-[#FEE500] text-[#191919] py-3 rounded-lg font-bold hover:bg-[#FADA0A] transition-colors shadow-sm flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 3C6.477 3 2 6.48 2 10.79c0 2.75 1.81 5.15 4.54 6.55l-1.15 4.23c-.05.18.05.37.21.43.05.02.1.03.15.03.12 0 .23-.07.28-.19l4.59-3.04c1.1.13 2.25.2 3.42.2 5.523 0 10-3.48 10-7.79S17.523 3 12 3z"/>
-                </svg>
-                카카오로 시작하기
             </button>
         </form>
 
-        <div class="mt-6 text-center text-sm text-gray-600">
-            이미 계정이 있으신가요?
-            <a href="login.html" class="text-[#C5A065] font-bold hover:underline">로그인</a>
+        <div class="mt-8 text-center space-y-4">
+            <p class="text-gray-500 text-sm">이미 회원이신가요? <a href="login.html" class="text-[#1B2B48] font-bold hover:underline">로그인</a></p>
         </div>
     </div>
 
-    <!-- 약관 상세 모달 -->
-    <div id="policy-modal" class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+    <!-- Modal for Policies -->
+    <div id="policy-modal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl">
             <div class="p-6 border-b flex justify-between items-center bg-gray-50">
-                <h3 id="policy-title" class="font-bold text-lg text-[#1B2B48]">약관 상세</h3>
-                <button onclick="closePolicy()" class="text-gray-400 hover:text-gray-600 p-2">
+                <h3 id="policy-title" class="font-bold text-lg text-gray-900">약관 상세</h3>
+                <button onclick="closePolicy()" class="text-gray-400 hover:text-gray-900 transition-colors">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
@@ -216,17 +213,17 @@
             if (e.target.classList.contains('agree-item')) {
                 const agreeAll = document.getElementById('agree-all');
                 const items = document.querySelectorAll('.agree-item');
-                const checkedItems = document.querySelectorAll('.agree-item:checked');
-                agreeAll.checked = items.length === checkedItems.length;
+                const checked = document.querySelectorAll('.agree-item:checked');
+                agreeAll.checked = items.length === checked.length;
             }
         });
 
         const POLICY_DATA = {
             terms: `
-                <h4 class="font-bold text-gray-900">[이용약관]</h4>
-                <p>제 1 조 (목적)<br>이 약관은 "The 온실"(이하 "회사")이 운영하는 서비스의 이용 조건 및 절차에 관한 사항을 규정함을 목적으로 합니다.</p>
-                <p>제 2 조 (회원가입)<br>이용자는 회사가 정한 양식에 따라 정보를 기입하고 약관에 동의함으로써 가입을 신청합니다.</p>
-                <p>제 3 조 (서비스 제공)<br>회사는 반려동물 장례식장 정보 제공 및 예약 중개 서비스를 제공하며, 실제 장례 서비스는 제휴 업체가 수행합니다.</p>
+                <h4 class="font-bold text-gray-900">[서비스 이용약관]</h4>
+                <p>제 1 조 (목적)<br>본 약관은 The 온실이 제공하는 모든 서비스의 이용조건 및 절차, 회원 및 회사의 권리와 의무 등을 규정함을 목적으로 합니다.</p>
+                <p>제 2 조 (회원가입)<br>회원가입은 본 약관에 동의하고 회사가 요청하는 정보를 정확히 기입하여 가입을 신청함으로써 완료됩니다.</p>
+                <p>제 3 조 (서비스의 제공)<br>회사는 회원에게 반려동물 장례 예약 및 상담, 추모 가이드 제공 등 관련된 서비스를 제공합니다.</p>
                 <p>제 4 조 (취소 및 환불)<br>예약 취소 시 환불 기준은 예약일로부터의 남은 기간에 따라 차등 적용됩니다 (2일 전~당일 환불 불가).</p>
             `,
             privacy: `
@@ -274,7 +271,55 @@
             selected.classList.add('bg-[#1B2B48]', 'text-white', 'border-[#1B2B48]');
         }
 
+        let isVerified = false;
+
+        document.getElementById('verify-btn').onclick = async () => {
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            if (!name || !phone) {
+                alert('이름과 휴대폰 번호를 먼저 입력해 주세요.');
+                return;
+            }
+
+            try {
+                const btn = document.getElementById('verify-btn');
+                btn.disabled = true;
+                btn.innerText = '인증 중...';
+
+                const res = await Auth.requestIdentityVerification({
+                    fullName: name,
+                    phoneNumber: phone,
+                    email: email
+                });
+
+                if (res.success) {
+                    isVerified = true;
+                    document.getElementById('verify-status').classList.remove('hidden');
+                    document.getElementById('phone').disabled = true;
+                    btn.classList.add('hidden');
+                    alert('본인인증이 완료되었습니다.');
+                } else {
+                    alert(res.message || '본인인증에 실패했습니다.');
+                }
+            } catch (err) {
+                alert('오류 발생: ' + err.message);
+            } finally {
+                const btn = document.getElementById('verify-btn');
+                if (!isVerified) {
+                    btn.disabled = false;
+                    btn.innerText = '본인인증';
+                }
+            }
+        };
+
         async function handleSignup() {
+            if (!isVerified) {
+                alert('휴대폰 본인인증을 먼저 완료해 주세요.');
+                return;
+            }
+
             const submitBtn = document.getElementById('signup-btn');
             const originalBtnText = submitBtn.innerText;
 
@@ -300,18 +345,6 @@
                     throw new Error('필수 약관에 동의해 주세요.');
                 }
 
-                // Use centralized Auth logic
-                // [PortOne] Identity Verification First
-                const certRes = await Auth.requestIdentityVerification({
-                    fullName: name,
-                    phoneNumber: phone,
-                    email: email
-                });
-
-                if (!certRes.success) {
-                    throw new Error(certRes.message || '본인인증을 완료해 주세요.');
-                }
-
                 const res = await Auth.signup(email, password, name, gender, birthYear, phone, location, marketingAgree);
 
 
@@ -331,24 +364,6 @@
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = originalBtnText;
-            }
-        }
-
-        async function handleKakaoLogin() {
-            try {
-                const client = Auth.getSupabase();
-                if (!client) throw new Error('인증 서비스 연결 실패');
-
-                const { data, error } = await client.auth.signInWithOAuth({
-                    provider: 'kakao',
-                    options: {
-                        redirectTo: window.location.origin + '/index.html'
-                    }
-                });
-                if (error) throw error;
-            } catch (error) {
-                console.error('Kakao Login Error:', error);
-                alert('카카오 로그인 중 오류가 발생했습니다.');
             }
         }
     </script>

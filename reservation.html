@@ -226,10 +226,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="js/auth.js"></script>
     <script>
-        // PortOne V2 식별 정보
-        const STORE_ID = "store-da73189c-c561-4ce0-8354-3de92abc40b9";
-        const CHANNEL_KEY = "channel-key-c871e7bc-cc63-4daf-a74f-2b8b80a9d29c";
-
         // Solapi(알림톡) 연동 정보 - Edge Function을 통해 보안 처리됨
         const SOLAPI_SENDER = "15515052"; 
 
@@ -541,9 +537,10 @@
             const paymentId = `payment-${crypto.randomUUID()}`;
             
             try {
+                // Using Auth centralized PortOne config
                 const response = await PortOne.requestPayment({
-                    storeId: STORE_ID,
-                    channelKey: CHANNEL_KEY,
+                    storeId: Auth.PORTONE_STORE_ID,
+                    channelKey: Auth.PORTONE_CHANNEL_KEY,
                     paymentId: paymentId,
                     orderName: `The 온실: ${resData.selected_service}`,
                     totalAmount: 100, 
