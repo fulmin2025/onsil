@@ -6,6 +6,10 @@
 const SUPABASE_URL = 'https://fkmcanwlcigofjhbfkzs.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_9OyB7n3foIalMmDxq1-_PA_s3xYfcJS';
 
+// PortOne Configuration (Danal Identity Verification V2)
+const PORTONE_STORE_ID = "store-da73189c-c561-4ce0-8354-3de92abc40b9";
+const PORTONE_CHANNEL_KEY = "channel-key-c871e7bc-cc63-4daf-a74f-2b8b80a9d29c";
+
 // Initialize Supabase Client
 let _supabaseInstance = null;
 
@@ -47,10 +51,14 @@ const Auth = {
                 id: user.id,
                 email: user.email,
                 name: metadata.name || user.email.split('@')[0],
+                role: metadata.role || 'member',
+                facility: metadata.facility || null,
+                phone: metadata.phone || null,
+                location: metadata.location || null,
                 gender: metadata.gender || null,
                 birth_year: metadata.birth_year || null,
-                phone: metadata.phone || null,
-                updated_at: new Date().toISOString()
+                marketing_agree: metadata.marketing_agree === true
+                // updated_at 제외
             };
 
             console.log('Syncing profile for:', user.id);
@@ -59,7 +67,8 @@ const Auth = {
                 .upsert(profileData, { onConflict: 'id' });
 
             if (error) {
-                console.warn('Profile sync failed (Table might be missing):', error.message);
+                console.warn('Profile sync failed:', error.message);
+                alert('[시스템 오류 진단] 프로필 테이블에 데이터를 복사할 수 없습니다!\n\n원인: ' + error.message + '\n디테일: ' + (error.details || '없음'));
             } else {
                 console.log('Profile synced successfully');
             }
@@ -71,7 +80,7 @@ const Auth = {
     /**
      * Signup a new user
      */
-    signup: async (email, password, name, gender, birthYear, phone) => {
+    signup: async (email, password, name, gender, birthYear, phone, location, marketingAgree = false) => {
         try {
             const client = getSupabase();
             if (!client) throw new Error('시스템 오류: 서버 연결에 실패했습니다. (SDK 로드 실패)');
@@ -85,6 +94,8 @@ const Auth = {
                         gender: gender,
                         birth_year: String(birthYear), // 서버 트리거가 읽을 필드
                         phone: phone,
+                        location: location, // 지역 정보 추가
+                        marketing_agree: marketingAgree, // 마케팅 수신 동의 추가
                         role: 'member' // 기본 권한
                     }
                 }
@@ -101,6 +112,41 @@ const Auth = {
         } catch (error) {
             console.error('Signup error:', error);
             return { success: false, message: error.message || '회원가입 실패' };
+        }
+    },
+
+    /**
+     * Signup a new partner (Pending Approval)
+     */
+    signupPartner: async (email, password, name, facility, phone, marketingAgree = false) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('시스템 오류: 서버 연결에 실패했습니다.');
+
+            const { data, error } = await client.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        name: name,
+                        facility: facility,
+                        phone: phone,
+                        marketing_agree: marketingAgree, // 마케팅 수신 동의 추가
+                        role: 'pending_partner' // 승인 대기 권한
+                    }
+                }
+            });
+
+            if (error) throw error;
+
+            if (data.user) {
+                await Auth.syncProfile(data.user);
+            }
+
+            return { success: true, message: '입점 신청이 완료되었습니다. 관리자 승인 후 이용 가능합니다.' };
+        } catch (error) {
+            console.error('signupPartner error:', error);
+            return { success: false, message: error.message };
         }
     },
 
@@ -153,8 +199,7 @@ const Auth = {
             const { error: dbError } = await client
                 .from('profiles')
                 .update({
-                    ...metadata,
-                    updated_at: new Date().toISOString()
+                    ...metadata
                 })
                 .eq('id', authData.user.id);
 
@@ -230,8 +275,9 @@ const Auth = {
         if (session && session.user) {
             const metadata = session.user.user_metadata || {};
             // Role detection: Metadata role or hardcoded Admin List
-            const adminEmails = ['theonsil@gmail.com', 'admin@theonsil.co.kr']; // Example admins
+            const adminEmails = ['theonsil@gmail.com', 'admin@theonsil.co.kr', 'theonsilofficial@gmail.com']; // Example admins
             const isSystemAdmin = adminEmails.includes(session.user.email) || metadata.role === 'admin';
+            const isPartner = metadata.role === 'partner';
 
             return {
                 id: session.user.id,
@@ -240,7 +286,8 @@ const Auth = {
                 phone: metadata.phone || '',
                 gender: metadata.gender || '',
                 birth_year: metadata.birth_year || '',
-                role: isSystemAdmin ? 'admin' : 'member'
+                role: isSystemAdmin ? 'admin' : (isPartner ? 'partner' : (metadata.role === 'pending_partner' ? 'pending_partner' : 'member')),
+                facility: metadata.facility || null
             };
         }
         return null;
@@ -283,7 +330,10 @@ const Auth = {
                                 ${isAdmin ? `
                                     <div class="border-t border-brand/5 my-1"></div>
                                     <a href="admin_reservations.html" class="w-full text-left px-4 py-2.5 bg-red-50 hover:bg-red-100 rounded-xl text-red-600 text-sm font-bold transition-all flex items-center gap-3">
-                                        <i class="fas fa-tasks"></i> 관리자 대시보드
+                                        <i class="fas fa-tasks"></i> 예약 현황 관리
+                                    </a>
+                                    <a href="admin_partners.html" class="w-full text-left px-4 py-2.5 bg-partner/5 hover:bg-partner/10 rounded-xl text-partner text-sm font-bold transition-all flex items-center gap-3">
+                                        <i class="fas fa-user-check"></i> 업체 승인 관리
                                     </a>
                                 ` : ''}
 
@@ -297,17 +347,51 @@ const Auth = {
                 </div>
             `;
 
-            // 모바일 메뉴 처리 (mobile-nav 내부 내비게이션 업데이트용 로직이 필요할 수 있음)
+            // 모바일 메뉴 처리
             const mobileNav = document.querySelector('#mobile-nav nav');
-            if (mobileNav && !document.getElementById('mobile-mypage-link')) {
-                 const mpLink = document.createElement('a');
-                 mpLink.id = 'mobile-mypage-link';
-                 mpLink.href = 'mypage.html';
-                 mpLink.className = 'flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium';
-                 mpLink.innerHTML = '<i class="fas fa-id-card w-5 text-center text-brand-warm"></i><span>마이페이지</span>';
-                 mobileNav.prepend(mpLink);
-            }
+            if (mobileNav) {
+                // 기존 모바일 인증 관련 요소 제거
+                const existingAuth = document.getElementById('mobile-auth-section');
+                if (existingAuth) existingAuth.remove();
 
+                const authSection = document.createElement('div');
+                authSection.id = 'mobile-auth-section';
+                authSection.className = 'mb-6 pb-6 border-b border-brand/5';
+                
+                if (user) {
+                    authSection.innerHTML = `
+                        <div class="flex items-center gap-3 px-2 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-brand-sage/10 flex items-center justify-center text-brand-sage">
+                                <i class="fas fa-user-circle text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-brand">${user.name}님 반가워요!</p>
+                                <p class="text-[10px] text-brand/40">${user.email}</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <a href="mypage.html" class="flex items-center justify-center gap-2 py-2.5 bg-brand-cream rounded-xl text-xs font-bold text-brand">
+                                <i class="fas fa-id-card text-brand-warm"></i> 마이페이지
+                            </a>
+                            <button onclick="Auth.logout()" class="flex items-center justify-center gap-2 py-2.5 bg-red-50 rounded-xl text-xs font-bold text-red-500">
+                                <i class="fas fa-sign-out-alt"></i> 로그아웃
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    authSection.innerHTML = `
+                        <div class="grid grid-cols-2 gap-2">
+                            <a href="login.html" class="flex items-center justify-center gap-2 py-3 bg-brand-cream rounded-xl text-sm font-bold text-brand">
+                                <i class="fas fa-sign-in-alt text-brand-warm"></i> 로그인
+                            </a>
+                            <a href="signup.html" class="flex items-center justify-center gap-2 py-3 bg-brand text-white rounded-xl text-sm font-bold shadow-md">
+                                <i class="fas fa-user-plus"></i> 회원가입
+                            </a>
+                        </div>
+                    `;
+                }
+                mobileNav.prepend(authSection);
+            }
         } else {
             authContainer.innerHTML = `
                 <div class="flex items-center gap-1">
@@ -319,9 +403,168 @@ const Auth = {
                     </a>
                 </div>
             `;
-            // 로그아웃 시 모바일 링크 제거
-            const mpLink = document.getElementById('mobile-mypage-link');
-            if (mpLink) mpLink.remove();
+            
+            // 로그아웃 상태의 모바일 메뉴 처리
+            const mobileNav = document.querySelector('#mobile-nav nav');
+            if (mobileNav) {
+                const existingAuth = document.getElementById('mobile-auth-section');
+                if (existingAuth) existingAuth.remove();
+
+                const authSection = document.createElement('div');
+                authSection.id = 'mobile-auth-section';
+                authSection.className = 'mb-6 pb-6 border-b border-brand/5';
+                authSection.innerHTML = `
+                    <div class="grid grid-cols-2 gap-2">
+                        <a href="login.html" class="flex items-center justify-center gap-2 py-3 bg-brand-cream rounded-xl text-sm font-bold text-brand">
+                            <i class="fas fa-sign-in-alt text-brand-warm"></i> 로그인
+                        </a>
+                        <a href="signup.html" class="flex items-center justify-center gap-2 py-3 bg-brand text-white rounded-xl text-sm font-bold shadow-md">
+                            <i class="fas fa-user-plus"></i> 회원가입
+                        </a>
+                    </div>
+                `;
+                mobileNav.prepend(authSection);
+            }
+        }
+    },
+
+    /**
+     * Get Pending Partners List (Admin Only)
+     */
+    /**
+     * Get Pending Partners List (Admin Only) - Using Secure RPC
+     */
+    getPendingPartners: async () => {
+        try {
+            const client = getSupabase();
+            if (!client) return [];
+
+            // profiles 테이블 대신 auth.users를 직접 조회하는 RPC 호출
+            const { data, error } = await client.rpc('get_pending_partners_list');
+
+            if (error) throw error;
+            return data || [];
+        } catch (error) {
+            console.error('getPendingPartners error:', error);
+            return [];
+        }
+    },
+
+    /**
+     * Approve Partner via RPC (Admin Only)
+     */
+    approvePartner: async (userId) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('서버 연결 실패');
+
+            const { error } = await client.rpc('approve_partner_request', { target_user_id: userId });
+            if (error) throw error;
+
+            return { success: true, message: '승인이 완료되었습니다.' };
+        } catch (error) {
+            console.error('approvePartner error:', error);
+            return { success: false, message: error.message };
+        }
+    },
+
+    /**
+     * Find Email by Name and Phone
+     */
+    findEmailByNameAndPhone: async (name, phone) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('서버 연결 실패');
+            const { data, error } = await client
+                .from('profiles')
+                .select('email')
+                .eq('name', name)
+                .eq('phone', phone)
+                .limit(1);
+            if (error) throw error;
+            if (!data || data.length === 0) throw new Error('일치하는 회원 정보가 없습니다.');
+            
+            let email = data[0].email;
+            let parts = email.split('@');
+            if (parts.length === 2 && parts[0].length >= 3) {
+                let maskString = '*'.repeat(parts[0].length - 3);
+                email = parts[0].substring(0, 3) + maskString + '@' + parts[1];
+            } else if (parts.length === 2) {
+                email = parts[0].substring(0, 1) + '***@' + parts[1];
+            }
+            return { success: true, email: email };
+        } catch (error) {
+            console.error('findEmail error:', error);
+            return { success: false, message: error.message };
+        }
+    },
+
+    /**
+     * Send Password Reset Email
+     */
+    sendPasswordResetEmail: async (email) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('서버 연결 실패');
+            const { error } = await client.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + '/reset-password.html'
+            });
+            if (error) throw error;
+            return { success: true, message: '비밀번호 재설정 링크가 발송되었습니다. 이메일을 확인해 주세요.' };
+        } catch (error) {
+            console.error('resetPassword error:', error);
+            let msg = error.message;
+            if (msg.includes('not found') || msg.includes('User not found')) msg = '가입되지 않은 이메일입니다.';
+            return { success: false, message: msg };
+        }
+    },
+
+    /**
+     * Update Password after Reset link clicked
+     */
+    updateNewPassword: async (newPassword) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('서버 연결 실패');
+            const { error } = await client.auth.updateUser({ password: newPassword });
+            if (error) throw error;
+            return { success: true, message: '비밀번호가 성공적으로 변경되었습니다.' };
+        } catch (error) {
+            console.error('updateNewPassword error:', error);
+            return { success: false, message: '링크가 만료되었거나 올바르지 않습니다.' };
+        }
+    },
+
+    /**
+     * Request PortOne Identity Verification (V2)
+     */
+    requestIdentityVerification: async (customerData = {}) => {
+        try {
+            if (typeof PortOne === 'undefined') {
+                throw new Error('PortOne SDK가 로드되지 않았습니다.');
+            }
+
+            const verificationId = `cert-${crypto.randomUUID()}`;
+            const response = await PortOne.requestIdentityVerification({
+                storeId: PORTONE_STORE_ID,
+                channelKey: PORTONE_CHANNEL_KEY,
+                identityVerificationId: verificationId,
+                customer: customerData
+            });
+
+            if (response.code !== undefined) {
+                // Verification failed or canceled
+                throw new Error(response.message || '본인인증을 취소하셨거나 실패했습니다.');
+            }
+
+            return { 
+                success: true, 
+                verificationId: response.identityVerificationId || verificationId,
+                txId: response.txId
+            };
+        } catch (error) {
+            console.error('Identity Verification Error:', error);
+            return { success: false, message: error.message };
         }
     },
 

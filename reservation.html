@@ -158,25 +158,13 @@
                     <input type="tel" id="user-phone" placeholder="010-0000-0000"
                         class="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
                     <button id="request-verify-btn"
-                        class="px-4 py-3 bg-primary text-white font-bold rounded-xl text-sm disabled:opacity-50 transition-all">인증요청</button>
+                        class="px-4 py-3 bg-primary text-white font-bold rounded-xl text-sm disabled:opacity-50 transition-all">본인인증</button>
                 </div>
             </div>
 
-            <!-- Verify Code Section (Hidden) -->
-            <div id="verify-section" class="mt-3 hidden animate-fadeIn">
-                <div class="flex gap-2 relative">
-                    <input type="number" id="verify-code" placeholder="인증번호 6자리"
-                        class="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
-                    <span id="timer"
-                        class="absolute right-24 top-1/2 -translate-y-1/2 text-red-500 text-sm font-medium pr-2">03:00</span>
-                    <button id="confirm-verify-btn"
-                        class="px-4 py-3 bg-gray-900 text-white font-bold rounded-xl text-sm transition-all">확인</button>
-                </div>
-                <p class="text-[11px] text-gray-400 mt-2 px-1">실제 SMS는 발송되지 않습니다. 테스트 인증번호 <span
-                        class="text-primary font-bold">123456</span>을 입력해주세요.</p>
-            </div>
+            <!-- Verify Success Msg -->
             <div id="verify-success" class="mt-3 hidden flex items-center gap-2 text-green-600 font-bold text-sm px-1">
-                <i class="fas fa-check-circle"></i> 인증이 완료되었습니다.
+                <i class="fas fa-check-circle"></i> 본인인증이 완료되었습니다.
             </div>
         </div>
 
@@ -240,7 +228,7 @@
     <script>
         // PortOne V2 식별 정보
         const STORE_ID = "store-da73189c-c561-4ce0-8354-3de92abc40b9";
-        const CHANNEL_KEY = "channel-key-f5a9e74f-4ef2-4fe0-89e8-8e85e65246b4";
+        const CHANNEL_KEY = "channel-key-c871e7bc-cc63-4daf-a74f-2b8b80a9d29c";
 
         // Solapi(알림톡) 연동 정보 - Edge Function을 통해 보안 처리됨
         const SOLAPI_SENDER = "15515052"; 
@@ -309,19 +297,7 @@
                 console.error("Pricing Init Error:", err);
             }
 
-            // Final Data Compensation (Ensures Pet Forest always shows 6 packages regardless of fetch result)
-            if (facilityName.includes('펫포레스트') && currentServices.length < 6) {
-                currentServices = [
-                    { "name": "스탠다드 장례", "price": "350,000원", "desc": "기본 유골함, 고급 보자기 등", "longDesc": "가장 기본적인 장례 서비스로, 개별 화장과 함께 정갈하게 준비된 기본 유골함 및 고급 보자기 포장이 제공됩니다. 합리적인 비용으로 아이의 마지막을 정성스럽게 배웅할 수 있습니다.", "imageUrl": "https://images.unsplash.com/photo-1596230526487-11152a4a754b?w=800", "icon": "fas fa-leaf" },
-                    { "name": "포레스트 장례", "price": "700,000원", "desc": "고급 수의, 고급 오동나무관, 포레스트 유골함 등", "longDesc": "자연을 닮은 포레스트 유골함과 고급 오동나무관, 최고급 수의가 포함된 패키지입니다. 특히 아이의 마지막 모습을 간직할 수 있는 액자와 발도장 클레이 제작이 포함되어 있어 더욱 특별한 추억을 선사합니다.", "imageUrl": "https://images.unsplash.com/photo-1627483262769-04d0a1401487?w=800", "icon": "fas fa-leaf" },
-                    { "name": "프리미엄 장례", "price": "1,400,000원", "desc": "최고급 수의, 최고급 오동나무관, 기능성 유골함 등", "longDesc": "펫포레스트의 모든 노하우가 담긴 최상위 패키지입니다. 최고급 오동나무관과 수의는 물론, 아이의 유골을 안전하게 보관할 수 있는 기능성 유골함, 풍성한 꽃다발 장식, 그리고 전용 포레스트 하우징까지 제공되어 가장 영광스러운 이별을 준비해 드립니다.", "imageUrl": "https://images.unsplash.com/photo-1493863641943-9b68992a8d07?w=800", "icon": "fas fa-crown" },
-                    { "name": "스탠다드 루세떼 장례", "price": "1,000,000원", "desc": "스탠다드 장례 + 루세떼 제작 + 유리병 + 보증서", "longDesc": "스탠다드 장례 서비스에 '루세떼(메모리얼 스톤)' 제작이 포함된 실속형 패키지입니다. 고온 용융 공법으로 영롱하게 제작된 루세떼를 전용 유리병에 담아 평생 곁에 두고 기억하실 수 있습니다.", "imageUrl": "https://images.unsplash.com/photo-1512168221867-02422ecb277f?w=800", "icon": "fas fa-gem" },
-                    { "name": "포레스트 루세떼 장례", "price": "1,350,000원", "desc": "포레스트 장례 + 루세떼 제작 + 유리병 + 보증서", "longDesc": "포레스트 장례의 풍성한 구성에 루세떼 제작을 더했습니다. 정성스러운 입관과 화장 후, 아이를 보석과 같은 루세떼로 다시 만나보실 수 있는 가장 인기 있는 패키지입니다.", "imageUrl": "https://images.unsplash.com/photo-1579722820308-d74e571900a9?w=800", "icon": "fas fa-gem" },
-                    { "name": "프리미엄 루세떼 장례", "price": "1,750,000원", "desc": "프리미엄 장례 + 루세떼 제작 + 유리병 + 보증서", "longDesc": "숭고한 이별의 모든 예우를 갖춘 프리미엄 장례 후, 루세떼 제작까지 이어지는 펫포레스트 상징적인 최고가 패키지입니다. 아이에게 줄 수 있는 최고의 선물과도 같은 영원한 이별의 방법입니다.", "imageUrl": "https://images.unsplash.com/photo-1533418895852-81743a1a0bd1?w=800", "icon": "fas fa-gem" }
-                ];
-            }
-
-            // Global Fallback for missing data
+            // Final Data Compensation
             if (currentServices.length === 0) {
                 const hash = facilityName.split('').reduce((a, b) => { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0);
                 const basePrice = 200000 + (Math.abs(hash) % 6) * 10000;
@@ -366,8 +342,6 @@
             });
         }
 
-
-
         initPricing();
 
         // Generate Dates
@@ -400,13 +374,13 @@
                 btn.classList.remove('bg-white', 'border-gray-200');
                 btn.querySelector('span:first-child').classList.remove('text-gray-400');
                 btn.querySelector('span:first-child').classList.add('text-white/80');
-                checkAvailability(); // 예약 가능 여부 즉시 확인
+                checkAvailability(); 
                 validateForm();
             };
             dateContainer.appendChild(btn);
         }
 
-        // Generate Times
+        // AM/PM Times
         const amContainer = document.getElementById('time-am-container');
         const pmContainer = document.getElementById('time-pm-container');
         const amTimes = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30"];
@@ -427,14 +401,12 @@
         amTimes.forEach(t => amContainer.appendChild(createTimeBtn(t)));
         pmTimes.forEach(t => pmContainer.appendChild(createTimeBtn(t)));
 
-        // Check Availability from DB
         async function checkAvailability() {
             const selectedDate = document.querySelector('.date-btn.active')?.dataset.date;
             const facility = document.getElementById('target-name').textContent;
             
             if (!selectedDate || !facility) return;
 
-            // Reset all buttons first
             document.querySelectorAll('.time-btn').forEach(btn => {
                 btn.disabled = false;
                 btn.classList.remove('opacity-50');
@@ -457,7 +429,7 @@
                     document.querySelectorAll('.time-btn').forEach(btn => {
                         if (bookedTimes.includes(btn.textContent)) {
                             btn.disabled = true;
-                            btn.classList.remove('active'); // Deselect if it was booked
+                            btn.classList.remove('active'); 
                         }
                     });
                 }
@@ -466,13 +438,10 @@
             }
         }
 
-        // Run check on initial load
         setTimeout(checkAvailability, 1500);
 
-        // Form Validation & Verification
         const inputs = ['pet-name', 'pet-weight', 'pet-type', 'user-name', 'user-phone', 'agree-all'];
         let isVerified = false;
-        let timerInterval;
 
         function validateForm() {
             const petName = document.getElementById('pet-name').value;
@@ -496,58 +465,47 @@
             }
         });
 
-        // Phone Verification Logic
+        // PortOne Identity Verification
         const requestBtn = document.getElementById('request-verify-btn');
-        const verifySection = document.getElementById('verify-section');
-        const confirmBtn = document.getElementById('confirm-verify-btn');
-        const timerDisplay = document.getElementById('timer');
         const successMsg = document.getElementById('verify-success');
 
-        function startTimer() {
-            let timeLeft = 180;
-            clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    alert("인증 시간이 만료되었습니다. 다시 요청해주세요.");
-                    verifySection.classList.add('hidden');
-                }
-                timeLeft--;
-            }, 1000);
-        }
-
         if (requestBtn) {
-            requestBtn.onclick = () => {
+            requestBtn.onclick = async () => {
                 const phone = document.getElementById('user-phone').value;
+                const name = document.getElementById('user-name').value;
                 if (!phone || phone.length < 10) {
                     alert("올바른 휴대폰 번호를 입력해주세요.");
                     return;
                 }
-                requestBtn.textContent = "재발송";
-                verifySection.classList.remove('hidden');
-                document.getElementById('verify-code').value = "";
-                startTimer();
-                alert("인증번호(123456)가 발송되었습니다. [테스트용]");
-            };
-        }
+                if (!name) {
+                    alert("성함을 입력해주세요.");
+                    return;
+                }
 
-        if (confirmBtn) {
-            confirmBtn.onclick = () => {
-                const code = document.getElementById('verify-code').value;
-                if (code === "123456") {
-                    clearInterval(timerInterval);
-                    isVerified = true;
-                    verifySection.classList.add('hidden');
-                    successMsg.classList.remove('hidden');
-                    requestBtn.classList.add('hidden');
-                    document.getElementById('user-phone').disabled = true;
-                    validateForm();
-                    alert("인증이 완료되었습니다.");
-                } else {
-                    alert("인증번호가 일치하지 않습니다.");
+                try {
+                    requestBtn.disabled = true;
+                    requestBtn.textContent = "인증 중...";
+                    
+                    const res = await Auth.requestIdentityVerification({
+                        fullName: name,
+                        phoneNumber: phone
+                    });
+
+                    if (res.success) {
+                        isVerified = true;
+                        successMsg.classList.remove('hidden');
+                        requestBtn.classList.add('hidden');
+                        document.getElementById('user-phone').disabled = true;
+                        validateForm();
+                        alert("본인인증이 완료되었습니다.");
+                    } else {
+                        alert(res.message || "본인인증에 실패했습니다.");
+                    }
+                } catch (err) {
+                    alert("오류 발생: " + err.message);
+                } finally {
+                    requestBtn.disabled = false;
+                    requestBtn.textContent = isVerified ? "인증완료" : "본인인증";
                 }
             };
         }
@@ -565,7 +523,6 @@
 
             const selectedBtn = document.querySelector('.service-card.active');
             const priceText = selectedBtn ? selectedBtn.dataset.price : '0원';
-            const priceInt = parseInt(priceText.replace(/[^0-9]/g, '')) || 0;
             
             const resData = {
                 facility_name: document.getElementById('target-name').textContent,
@@ -581,7 +538,6 @@
                 user_id: user.id
             };
 
-            // 1. PortOne V2 Payment Step
             const paymentId = `payment-${crypto.randomUUID()}`;
             
             try {
@@ -590,7 +546,7 @@
                     channelKey: CHANNEL_KEY,
                     paymentId: paymentId,
                     orderName: `The 온실: ${resData.selected_service}`,
-                    totalAmount: 100, // 테스트를 위해 100원 고정
+                    totalAmount: 100, 
                     currency: "CURRENCY_KRW",
                     payMethod: "CARD",
                     customer: {
@@ -601,12 +557,10 @@
                 });
 
                 if (response.code !== undefined) {
-                    // 결제 실패 또는 취소
                     alert(`결제에 실패하였습니다. 사유: ${response.message}`);
                     return;
                 }
 
-                // 2. Payment Successful -> Proceed to DB insertion
                 btn.disabled = true;
                 btn.textContent = "예약 신청 중...";
 
@@ -616,33 +570,15 @@
                 const payload = {
                     ...resData,
                     payment_status: 'paid',
-                    imp_uid: response.txId || paymentId, // V2에서는 txId 사용
+                    imp_uid: response.txId || paymentId, 
                     merchant_uid: paymentId
                 };
 
-                const tryInsertResilient = async (data) => {
-                    const { error: insertError } = await sb.from('reservations').insert([data]);
-                    if (!insertError) return { error: null };
-
-                    const missingColMatch = insertError.message.match(/find the '(.+)' column/);
-                    if (missingColMatch && missingColMatch[1]) {
-                        const missingCol = missingColMatch[1];
-                        if (data[missingCol]) {
-                            data.pet_name = `${data.pet_name} (${missingCol}: ${data[missingCol]})`;
-                        }
-                        delete data[missingCol];
-                        return tryInsertResilient(data);
-                    }
-                    return { error: insertError };
-                };
-
-                let { error } = await tryInsertResilient(payload);
+                const { error } = await sb.from('reservations').insert([payload]);
                 if (error) throw error;
 
-                // 3. Send Alimtalk notification
                 await sendAlimtalk(resData);
 
-                // Success Modal
                 const modal = document.getElementById('success-modal');
                 const content = document.getElementById('success-content');
                 modal.classList.remove('hidden');

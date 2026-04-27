@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
@@ -200,7 +200,9 @@
 
     <!-- Supabase & Auth Logic -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
     <script src="js/auth.js"></script>
+
 
     <script>
         function toggleAllAgree() {
@@ -299,7 +301,19 @@
                 }
 
                 // Use centralized Auth logic
+                // [PortOne] Identity Verification First
+                const certRes = await Auth.requestIdentityVerification({
+                    fullName: name,
+                    phoneNumber: phone,
+                    email: email
+                });
+
+                if (!certRes.success) {
+                    throw new Error(certRes.message || '본인인증을 완료해 주세요.');
+                }
+
                 const res = await Auth.signup(email, password, name, gender, birthYear, phone, location, marketingAgree);
+
 
                 if (res.success) {
                     alert('회원가입이 완료되었습니다. 이메일 인증이 필요할 수 있습니다.\n확인 후 로그인해 주세요.');
