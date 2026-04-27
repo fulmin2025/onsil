@@ -6,6 +6,10 @@
 const SUPABASE_URL = 'https://fkmcanwlcigofjhbfkzs.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_9OyB7n3foIalMmDxq1-_PA_s3xYfcJS';
 
+// PortOne Configuration (Danal Identity Verification V2)
+const PORTONE_STORE_ID = "store-da73189c-c561-4ce0-8354-3de92abc40b9";
+const PORTONE_CHANNEL_KEY = "channel-key-c871e7bc-cc63-4daf-a74f-2b8b80a9d29c";
+
 // Initialize Supabase Client
 let _supabaseInstance = null;
 
@@ -528,6 +532,39 @@ const Auth = {
         } catch (error) {
             console.error('updateNewPassword error:', error);
             return { success: false, message: '링크가 만료되었거나 올바르지 않습니다.' };
+        }
+    },
+
+    /**
+     * Request PortOne Identity Verification (V2)
+     */
+    requestIdentityVerification: async (customerData = {}) => {
+        try {
+            if (typeof PortOne === 'undefined') {
+                throw new Error('PortOne SDK가 로드되지 않았습니다.');
+            }
+
+            const verificationId = `cert-${crypto.randomUUID()}`;
+            const response = await PortOne.requestIdentityVerification({
+                storeId: PORTONE_STORE_ID,
+                channelKey: PORTONE_CHANNEL_KEY,
+                identityVerificationId: verificationId,
+                customer: customerData
+            });
+
+            if (response.code !== undefined) {
+                // Verification failed or canceled
+                throw new Error(response.message || '본인인증을 취소하셨거나 실패했습니다.');
+            }
+
+            return { 
+                success: true, 
+                verificationId: response.identityVerificationId || verificationId,
+                txId: response.txId
+            };
+        } catch (error) {
+            console.error('Identity Verification Error:', error);
+            return { success: false, message: error.message };
         }
     },
 
