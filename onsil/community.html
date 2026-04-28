@@ -166,8 +166,11 @@
                         <button onclick="switchCategory('pet')" class="category-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all" id="tab-pet">
                             <i class="fas fa-paw w-5"></i> 별이된 아이에게
                         </button>
-                        <button onclick="switchCategory('daily')" class="category-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all" id="tab-daily">
-                            <i class="fas fa-heart w-5"></i> 일상공유
+                        <button onclick="switchCategory('parting')" class="category-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all" id="tab-parting">
+                            <i class="fas fa-comment-dots w-5"></i> 이별 준비&경험담
+                        </button>
+                        <button onclick="switchCategory('review')" class="category-tab w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all" id="tab-review">
+                            <i class="fas fa-pen-to-square w-5"></i> 안심 장례 이용 후기
                         </button>
                     </nav>
                 </div>
@@ -215,7 +218,8 @@
                         <select id="post-category" class="w-full px-4 py-3 rounded-xl border border-brand/10 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all appearance-none bg-white">
                             <option value="welcome">가입인사</option>
                             <option value="pet">별이된 아이에게</option>
-                            <option value="daily">일상공유</option>
+                            <option value="parting">이별 준비&경험담</option>
+                            <option value="review">안심 장례 이용 후기</option>
                         </select>
                     </div>
 
@@ -378,7 +382,8 @@
         const categoryData = {
             welcome: { title: '가입인사', desc: '온실 커뮤니티에 오신 것을 환영합니다! 인사를 나눠보세요.' },
             pet: { title: '별이된 아이에게', desc: '우리 아이의 가장 예쁘고 행복한 순간을 공유해주세요.' },
-            daily: { title: '일상공유', desc: '하고 싶은 이야기, 사소한 일상들을 자유롭게 토닥토닥 나눠요.' }
+            parting: { title: '이별 준비&경험담', desc: '반려동물과의 이별 준비 과정과 경험을 나누어 보세요.' },
+            review: { title: '안심 장례 이용 후기', desc: 'The 온실과 함께한 따뜻한 장례식장 이용 후기를 남겨주세요.' }
         };
 
         // Initialize
@@ -480,7 +485,7 @@
                 return;
             }
 
-            if (currentCategory === 'pet' || currentCategory === 'daily') {
+            if (currentCategory === 'pet' || currentCategory === 'parting' || currentCategory === 'review') {
                 container.className = "grid sm:grid-cols-2 gap-6";
                 container.innerHTML = filteredPosts.map(p => renderCardPost(p)).join('');
             } else {
