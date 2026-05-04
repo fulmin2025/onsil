@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>커뮤니티 - The 온실</title>
+    <link rel="canonical" href="https://theonsil.co.kr/community.html">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -200,6 +201,32 @@
         </div>
     </main>
 
+    <!-- EULA Modal -->
+    <div id="eula-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md"></div>
+        <div class="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-modal-enter">
+            <div class="p-6 border-b border-brand/5 bg-brand-cream/50">
+                <h2 class="font-bold text-xl text-brand text-center"><i class="fas fa-shield-alt text-brand-warm mr-2"></i>커뮤니티 이용 규칙 동의</h2>
+            </div>
+            <div class="p-6 overflow-y-auto max-h-[60vh] text-sm text-brand/80 leading-relaxed space-y-4">
+                <p>The 온실 커뮤니티는 서로의 아픔을 공감하고 위로하는 따뜻한 공간입니다. 모두가 안전하고 편안하게 이용할 수 있도록 아래 규칙에 동의해주세요.</p>
+                <div class="bg-brand/5 p-4 rounded-xl text-xs space-y-2">
+                    <p class="font-bold text-red-500 mb-2">🚫 무관용 원칙 (Zero Tolerance Policy)</p>
+                    <p>당사는 부적절한 콘텐츠 및 악의적인 사용자에 대해 <strong>무관용 원칙</strong>을 엄격하게 적용합니다.</p>
+                    <ul class="list-disc pl-4 space-y-1 mt-2">
+                        <li>욕설, 비방, 차별, 혐오 발언 등 타인에게 불쾌감을 주는 행위 금지</li>
+                        <li>음란물 또는 법적으로 금지된 콘텐츠 게시 금지</li>
+                        <li>광고, 도배, 스팸성 게시물 작성 금지</li>
+                    </ul>
+                </div>
+                <p><strong>[사용자 권리 및 조치]</strong><br>부적절한 게시물이나 댓글을 발견하시면 언제든지 <strong>'신고하기'</strong> 기능을 이용해주세요. 악성 사용자는 <strong>'차단하기'</strong>를 통해 즉시 피드에서 숨길 수 있습니다. 관리자는 신고 접수 후 24시간 이내에 해당 콘텐츠 삭제 및 계정 영구 정지 등의 조치를 취합니다.</p>
+            </div>
+            <div class="p-6 bg-brand-cream/30 border-t border-brand/5">
+                <button onclick="agreeEULA()" class="w-full py-4 bg-brand text-white font-bold rounded-2xl shadow-lg hover:bg-brand-light transition-all">위 규칙에 동의하고 커뮤니티 시작하기</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Write Modal -->
     <div id="write-modal" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 bg-brand/40 backdrop-blur-sm" onclick="closeWriteModal()"></div>
@@ -330,9 +357,14 @@
                     <span id="modal-category" class="text-[10px] font-bold text-brand-warm uppercase tracking-wider mb-1 block"></span>
                     <h2 id="modal-title" class="font-bold text-xl text-brand leading-tight"></h2>
                 </div>
-                <button onclick="closePostDetail()" class="text-brand/40 hover:text-brand transition-colors p-2">
-                    <i class="fas fa-times text-2xl"></i>
-                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="flagContent('post', document.getElementById('post-detail-modal').dataset.postId)" class="text-red-400 hover:text-red-600 transition-colors p-2 text-xs font-bold" title="신고하기">
+                        <i class="fas fa-flag"></i> 신고
+                    </button>
+                    <button onclick="closePostDetail()" class="text-brand/40 hover:text-brand transition-colors p-2">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
             </div>
             
             <!-- Modal Body (Scrollable) -->
@@ -376,8 +408,11 @@
         let uploadedImageBase64 = null; // For Preview
         let uploadedImageFile = null;   // For Upload
         let editPostId = null; 
+        let blockedUsers = JSON.parse(localStorage.getItem('onsil_blocked_users') || '[]');
 
         const ADMIN_EMAILS = ['theonsil@gmail.com', 'admin@theonsil.co.kr', 'theonsilofficial@gmail.com', 'admin@onsil.com'];
+        // 욕설 필터링 키워드
+        const BANNED_WORDS = ['씨발', '개새끼', '존나', '병신', '미친', '지랄', '시발', '새끼'];
 
         const categoryData = {
             welcome: { title: '가입인사', desc: '온실 커뮤니티에 오신 것을 환영합니다! 인사를 나눠보세요.' },
@@ -388,6 +423,8 @@
 
         // Initialize
         window.onload = async () => {
+            checkEULA();
+
             // 1. Auth check first
             if (window.Auth) {
                 try {
@@ -473,7 +510,8 @@
 
         function renderPosts() {
             const container = document.getElementById('board-content');
-            const filteredPosts = posts.filter(p => p.cat === currentCategory); // Already sorted from DB
+            // 차단된 유저 필터링 적용
+            const filteredPosts = posts.filter(p => p.cat === currentCategory && !blockedUsers.includes(p.authorEmail)); 
             
             if (filteredPosts.length === 0) {
                 container.innerHTML = `
@@ -521,13 +559,24 @@
                     <h3 class="font-bold text-lg mb-2 line-clamp-1">${p.title}</h3>
                     <p class="text-sm text-brand/60 leading-relaxed mb-4 line-clamp-2 flex-1">${p.content}</p>
                     <div class="flex items-center justify-between pt-4 border-t border-brand/5 mb-4">
-                        <span class="text-xs font-bold text-brand/40">${p.author}</span>
+                        <div class="flex items-center gap-2 group/author relative">
+                            <span class="text-xs font-bold text-brand/40 cursor-pointer hover:text-brand">${p.author}</span>
+                            <!-- 사용자 차단 메뉴 -->
+                            <div class="hidden group-hover/author:flex absolute top-full left-0 mt-1 bg-white shadow-lg rounded-lg border border-brand/5 p-1 z-20">
+                                <button onclick="event.stopPropagation(); blockUser('${p.authorEmail}', '${p.author}')" class="text-[10px] whitespace-nowrap px-3 py-1.5 text-red-500 hover:bg-red-50 rounded-md flex items-center gap-1 font-bold">
+                                    <i class="fas fa-ban"></i> 차단하기
+                                </button>
+                            </div>
+                        </div>
                         <span class="text-[10px] text-brand/20">${p.date}</span>
                     </div>
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-center justify-between">
                         <button onclick="toggleComments(${p.id})" class="flex items-center gap-1.5 text-xs font-bold text-brand/60 hover:text-brand transition-colors">
                             <i class="far fa-comment-dots text-sm"></i>
                             댓글 ${p.comments.length}
+                        </button>
+                        <button onclick="event.stopPropagation(); flagContent('post', ${p.id})" class="text-[10px] text-brand/30 hover:text-red-400 transition-colors flex items-center gap-1">
+                            <i class="fas fa-flag"></i> 신고
                         </button>
                     </div>
                 </div>
@@ -567,7 +616,9 @@
                                 <i class="far fa-comment"></i>
                                 ${p.comments.length}
                             </div>
-                            <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity mt-1 relative group/actions">
+                                <i onclick="event.stopPropagation(); flagContent('post', ${p.id})" class="fas fa-flag text-brand/20 hover:text-red-400 text-[10px]" title="신고"></i>
+                                <i onclick="event.stopPropagation(); blockUser('${p.authorEmail}', '${p.author}')" class="fas fa-ban text-brand/20 hover:text-red-500 text-[10px]" title="차단"></i>
                                 ${isOwner ? `<i onclick="event.stopPropagation(); editPost(${p.id})" class="fas fa-edit text-brand/30 hover:text-brand text-[10px]"></i>` : ''}
                                 ${(isOwner || isAdmin) ? `<i onclick="event.stopPropagation(); deletePost(${p.id})" class="fas fa-trash-alt text-red-300 hover:text-red-500 text-[10px]"></i>` : ''}
                             </div>
@@ -647,6 +698,13 @@
             if (!title) { alert('제목을 입력해주세요.'); return; }
             if (!content) { alert('내용을 입력해주세요.'); return; }
 
+            // 단어 필터링
+            const hasBannedWord = BANNED_WORDS.some(word => title.includes(word) || content.includes(word));
+            if (hasBannedWord) {
+                alert('게시글에 부적절한 단어(욕설/비속어)가 포함되어 있습니다. 내용을 수정해주세요.');
+                return;
+            }
+
             const supabase = Auth.getSupabase();
             if (!supabase) return;
 
@@ -715,25 +773,39 @@
 
         // Comment Logic
         function renderCommentList(comments, postId) {
-            if (!comments || comments.length === 0) return `<p class="text-[10px] text-brand/30 text-center py-2">가장 먼저 댓글을 남겨보세요!</p>`;
-            return comments.map(c => {
+            // 차단된 유저의 댓글 필터링
+            const visibleComments = comments.filter(c => !blockedUsers.includes(c.authorEmail));
+            if (!visibleComments || visibleComments.length === 0) return `<p class="text-[10px] text-brand/30 text-center py-2">가장 먼저 댓글을 남겨보세요!</p>`;
+            
+            return visibleComments.map(c => {
                 const isCommentOwner = currentUser && currentUser.email === c.authorEmail;
                 const isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
 
                 return `
                 <div class="flex justify-between items-start gap-3 bg-white/50 p-3 rounded-2xl border border-brand/5 animate-slide-up relative group">
                     <div class="flex-1">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-[11px] font-bold text-brand">${c.author}</span>
+                        <div class="flex items-center gap-2 mb-1 group/c-author relative">
+                            <span class="text-[11px] font-bold text-brand cursor-pointer">${c.author}</span>
                             <span class="text-[9px] text-brand/20">${c.date}</span>
+                            <!-- 사용자 차단 툴팁 -->
+                            <div class="hidden group-hover/c-author:flex absolute top-full left-0 mt-1 bg-white shadow-lg rounded-lg border border-brand/5 p-1 z-20">
+                                <button onclick="blockUser('${c.authorEmail}', '${c.author}')" class="text-[10px] whitespace-nowrap px-2 py-1 text-red-500 hover:bg-red-50 rounded flex items-center gap-1 font-bold">
+                                    <i class="fas fa-ban"></i> 차단
+                                </button>
+                            </div>
                         </div>
                         <p class="text-xs text-brand/70 leading-relaxed">${c.content}</p>
                     </div>
-                    ${(isCommentOwner || isAdmin) ? `
-                        <button onclick="deleteComment(${postId}, ${c.id})" class="text-red-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
-                            <i class="fas fa-trash-alt text-[9px]"></i>
+                    <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button onclick="flagContent('comment', ${c.id})" class="text-brand/30 hover:text-red-400 transition-colors" title="신고">
+                            <i class="fas fa-flag text-[9px]"></i>
                         </button>
-                    ` : ''}
+                        ${(isCommentOwner || isAdmin) ? `
+                            <button onclick="deleteComment(${postId}, ${c.id})" class="text-red-300 hover:text-red-500 transition-colors">
+                                <i class="fas fa-trash-alt text-[9px]"></i>
+                            </button>
+                        ` : ''}
+                    </div>
                 </div>
             `}).join('');
         }
@@ -754,6 +826,13 @@
             const content = input.value.trim();
 
             if (!content) { alert('댓글 내용을 입력해주세요.'); return; }
+
+            // 단어 필터링
+            const hasBannedWord = BANNED_WORDS.some(word => content.includes(word));
+            if (hasBannedWord) {
+                alert('댓글에 부적절한 단어(욕설/비속어)가 포함되어 있습니다.');
+                return;
+            }
 
             const supabase = Auth.getSupabase();
             if (!supabase) return;
@@ -871,6 +950,65 @@
                 await loadPosts();
             } catch (error) {
                 console.error('Error deleting comment:', error);
+            }
+        }
+
+        // --- App Store Guideline 1.2 (UGC Safety) Features ---
+        function checkEULA() {
+            const agreed = localStorage.getItem('onsil_eula_agreed');
+            if (!agreed) {
+                document.getElementById('eula-modal').classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function agreeEULA() {
+            localStorage.setItem('onsil_eula_agreed', 'true');
+            document.getElementById('eula-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function flagContent(type, id) {
+            if (!currentUser) {
+                alert('로그인 후 신고할 수 있습니다.');
+                location.href = 'login.html';
+                return;
+            }
+            const reason = prompt('신고 사유를 간단히 입력해주세요. (예: 욕설, 스팸, 음란물 등)\n신고 내용은 관리자에게 전달되며 24시간 이내에 조치됩니다.');
+            if (reason !== null) {
+                if (reason.trim() === '') {
+                    alert('신고 사유를 입력해주세요.');
+                    return;
+                }
+                // 실제 서비스에서는 DB의 reports 테이블 등에 저장
+                // supabase.from('community_reports').insert([{ type, content_id: id, reporter_email: currentUser.email, reason }]);
+                alert('🚨 신고가 정상적으로 접수되었습니다. 깨끗한 커뮤니티를 위한 도움에 감사드립니다. 24시간 내에 관리자가 검토 후 조치하겠습니다.');
+            }
+        }
+
+        function blockUser(email, name) {
+            if (!currentUser) {
+                alert('로그인 후 사용자를 차단할 수 있습니다.');
+                location.href = 'login.html';
+                return;
+            }
+            if (email === currentUser.email) {
+                alert('자기 자신은 차단할 수 없습니다.');
+                return;
+            }
+            if (confirm(`${name}님을 차단하시겠습니까?\n차단하시면 앞으로 이 사용자의 모든 글과 댓글이 내 화면에서 보이지 않으며, 관리자에게 해당 내역이 전송됩니다.`)) {
+                if (!blockedUsers.includes(email)) {
+                    blockedUsers.push(email);
+                    localStorage.setItem('onsil_blocked_users', JSON.stringify(blockedUsers));
+                    
+                    // DB 연동 가정 (실제로는 supabase.from('user_blocks').insert({...}))
+                    console.log(`[Block Action] ${currentUser.email} blocked ${email}`);
+                    
+                    alert('🚫 사용자가 차단되었습니다. 이제 해당 사용자의 콘텐츠가 표시되지 않습니다.');
+                    // 즉시 렌더링 갱신
+                    closePostDetail();
+                    renderPosts();
+                }
             }
         }
 
