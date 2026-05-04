@@ -1,0 +1,64 @@
+name: Android Build (Cloud)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Capacitor Sync
+        run: npx cap sync android
+
+      - name: Build Android Release (AAB) & Debug (APK)
+        run: |
+          cd android
+          # 구글 플레이 콘솔용 AAB (서명 전)
+          ./gradlew bundleRelease
+          # 기기 직접 설치 테스트용 APK
+          ./gradlew assembleDebug
+
+      - name: Sign Android Release (AAB)
+        uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDirectory: android/app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          alias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
+      - name: Upload Test APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TheOnsil-Android-Test-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Upload Play Console Signed AAB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TheOnsil-Android-Release-AAB
+          path: ${{steps.sign_app.outputs.signedReleaseFile}}
