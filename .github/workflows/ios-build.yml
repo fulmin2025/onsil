@@ -34,10 +34,11 @@ jobs:
       - name: Capacitor Sync
         run: npx cap sync ios --inline
 
-      - name: Set Build Number
+      - name: Set Build Number and Version
         run: |
           cd ios/App
           xcrun agvtool new-version -all ${{ github.run_number }}
+          xcrun agvtool new-marketing-version 1.0.1
 
       - name: Import Certificates
         uses: apple-actions/import-codesign-certs@v1
