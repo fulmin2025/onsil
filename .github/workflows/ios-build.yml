@@ -10,13 +10,18 @@ permissions:
 
 jobs:
   build:
-    # OS 버전을 macos-14에서 macos-15로 변경하여 Xcode 16(iOS 18 SDK)을 사용합니다.
-    runs-on: macos-15
+    # OS 버전을 macos-latest로 변경하여 최신 Xcode(iOS 26 SDK 이상)를 사용하도록 강제합니다.
+    runs-on: macos-latest
     
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+          
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -72,9 +77,14 @@ jobs:
           path: build/ipa/*.ipa
 
       - name: Upload to App Store Connect
-        uses: apple-actions/upload-testflight-build@v1
-        with:
-          app-path: build/ipa/App.ipa
-          issuer-id: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-          api-key-id: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
-          api-private-key: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+        run: |
+          # 1. API Key 파일 생성
+          mkdir -p ~/.appstoreconnect/private_keys
+          echo "${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}" > ~/.appstoreconnect/private_keys/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8
+          
+          # 2. 최신 xcrun altool을 사용하여 업로드
+          xcrun altool --upload-app \
+                       --file build/ipa/App.ipa \
+                       --type ios \
+                       --apiKey "${{ secrets.APP_STORE_CONNECT_KEY_ID }}" \
+                       --apiIssuer "${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}"
