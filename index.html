@@ -941,13 +941,49 @@
     </script>
     <script>
         // --- Geolocation & Nearby Recommendation ---
-        const HOMES_DATA = [
-            { name: "펫포레스트 남양주점", lat: 37.619511, lng: 127.276363, region: "경기 남양주", price: "25만원~", isAlliance: true },
-            { name: "21그램 경기광주점", lat: 37.349329, lng: 127.264295, region: "경기 광주", price: "25만원~", isAlliance: false },
-            { name: "어게인", lat: 37.5960, lng: 126.6575, region: "인천 서구", price: "15만원~", isAlliance: false },
-            { name: "씨엘로펫", lat: 37.170072, lng: 127.374925, region: "경기 용인", price: "20만원~", isAlliance: false },
-            { name: "굿바이펫", lat: 37.106320, lng: 128.272491, region: "충북 제천", price: "20만원~", isAlliance: true }
-        ];
+        let HOMES_DATA = [];
+
+        async function loadFuneralHomesData() {
+            try {
+                const response = await fetch('funeral_homes.json');
+                const data = await response.json();
+                
+                HOMES_DATA = data.business.map(home => {
+                    return {
+                        name: home.name,
+                        lat: parseFloat(home.latitude),
+                        lng: parseFloat(home.longitude),
+                        region: getRegionName(parseFloat(home.latitude), parseFloat(home.longitude)),
+                        price: "상담 문의", // 기본값
+                        isAlliance: home.isAlliance
+                    };
+                });
+                
+                initRecommendation();
+            } catch (error) {
+                console.error("Failed to load funeral homes data", error);
+                // Fallback data
+                HOMES_DATA = [
+                    { name: "펫포레스트 남양주점", lat: 37.619511, lng: 127.276363, region: "경기 남양주", price: "25만원~", isAlliance: true },
+                    { name: "21그램 경기광주점", lat: 37.349329, lng: 127.264295, region: "경기 광주", price: "25만원~", isAlliance: false },
+                    { name: "어게인", lat: 37.5960, lng: 126.6575, region: "인천 서구", price: "15만원~", isAlliance: false },
+                    { name: "씨엘로펫", lat: 37.170072, lng: 127.374925, region: "경기 용인", price: "20만원~", isAlliance: false },
+                    { name: "굿바이펫", lat: 37.106320, lng: 128.272491, region: "충북 제천", price: "20만원~", isAlliance: true }
+                ];
+                initRecommendation();
+            }
+        }
+
+        function getRegionName(lat, lng) {
+            if (lat > 37.4 && lat < 37.7 && lng > 126.8 && lng < 127.2) return '서울';
+            if (lat > 37.3 && lat < 37.6 && lng > 126.3 && lng < 126.8) return '인천';
+            if (lat > 36.9 && lat < 38.3 && lng > 126.1 && lng < 127.9) return '경기';
+            if (lat > 37.0 && lat < 38.6 && lng > 127.9) return '강원';
+            if (lat < 37.1 && lng < 127.6) return '충청';
+            if (lat < 36.1 && lng < 127.6) return '전라';
+            if (lat < 37.0 && lng > 127.6) return '경상';
+            return '기타';
+        }
 
         function getDistance(lat1, lon1, lat2, lon2) {
             const R = 6371;
@@ -1026,9 +1062,9 @@
 
         // 페이지 로드 시 실행
         if (document.readyState === 'complete') {
-            initRecommendation();
+            loadFuneralHomesData();
         } else {
-            window.addEventListener('load', initRecommendation);
+            window.addEventListener('load', loadFuneralHomesData);
         }
     </script>
     <script src="js/channel-talk.js"></script>
