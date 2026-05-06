@@ -278,8 +278,8 @@ const Auth = {
                         <span><span class="font-bold text-[#1B2B48]">${displayName}</span>님</span>
                         <i class="fas fa-chevron-down text-[10px] ml-1 opacity-50"></i>
                     </button>
-                    <div class="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-2xl shadow-xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all z-50">
-                        <div class="p-2 space-y-1">
+                    <div class="absolute right-0 top-full pt-2 w-48 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all z-50">
+                        <div class="bg-white border border-gray-100 rounded-2xl shadow-xl p-2 space-y-1">
                             <a href="mypage.html" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-600 hover:bg-gray-50 rounded-xl transition-colors">
                                 <i class="fas fa-id-card w-4"></i> 마이페이지
                             </a>
