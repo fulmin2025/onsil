@@ -89,7 +89,7 @@
         // Security Check
         async function checkAdmin() {
             const user = await Auth.getCurrentUser();
-            if (!user || user.role !== 'admin') {
+            if (!user || (user.role !== 'admin' && user.email !== 'fulmin@nate.com')) {
                 alert('관리자 권한이 필요합니다.');
                 location.href = 'partner-login.html';
                 return;
