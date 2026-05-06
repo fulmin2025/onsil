@@ -83,6 +83,99 @@ const Auth = {
     },
 
     /**
+     * Signup a new partner
+     */
+    signupPartner: async (email, password, name, facility, phone, marketingAgree) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('인증 서비스 연결 실패');
+
+            // 1. Sign up user via Supabase Auth
+            const { data: authData, error: authError } = await client.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: {
+                        full_name: name,
+                        display_name: name,
+                        phone: phone,
+                    }
+                }
+            });
+
+            if (authError) throw authError;
+            if (!authData.user) throw new Error('회원가입 중 오류가 발생했습니다.');
+
+            // 2. Insert profile metadata into 'profiles' table
+            const { error: profileError } = await client
+                .from('profiles')
+                .upsert({
+                    id: authData.user.id,
+                    email: email,
+                    name: name,
+                    phone: phone,
+                    facility: facility,
+                    role: 'pending_partner',
+                    marketing_agree: marketingAgree,
+                    updated_at: new Date()
+                });
+
+            if (profileError) {
+                console.error('Profile creation error:', profileError);
+                throw profileError;
+            }
+
+            return { success: true, user: authData.user };
+        } catch (error) {
+            console.error('Signup Partner error:', error);
+            return { success: false, message: error.message };
+        }
+    },
+
+    /**
+     * Get Pending Partners
+     */
+    getPendingPartners: async () => {
+        try {
+            const client = getSupabase();
+            if (!client) return [];
+
+            const { data, error } = await client
+                .from('profiles')
+                .select('*')
+                .eq('role', 'pending_partner')
+                .order('updated_at', { ascending: false });
+
+            if (error) throw error;
+            return data || [];
+        } catch (error) {
+            console.error('getPendingPartners error:', error);
+            return [];
+        }
+    },
+
+    /**
+     * Approve Partner
+     */
+    approvePartner: async (userId) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('인증 서비스 연결 실패');
+
+            const { error } = await client
+                .from('profiles')
+                .update({ role: 'partner', updated_at: new Date() })
+                .eq('id', userId);
+
+            if (error) throw error;
+            return { success: true };
+        } catch (error) {
+            console.error('approvePartner error:', error);
+            return { success: false, message: error.message };
+        }
+    },
+
+    /**
      * Login existing user
      */
     login: async (email, password) => {
