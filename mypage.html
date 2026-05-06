@@ -273,7 +273,7 @@
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-2xl bg-brand-cream/50 text-sm">
                             <div>
                                 <p class="text-brand/40 text-[11px] mb-1">반려동물 명</p>
-                                <p class="font-bold">${res.pet_name}</p>
+                                <p class="font-bold">${res.pet_name.replace(/\(imp_uid.*?\)/g, '').replace(/\(merchant_uid.*?\)/g, '').trim()}</p>
                             </div>
                             <div>
                                 <p class="text-brand/40 text-[11px] mb-1">무게/종류</p>
