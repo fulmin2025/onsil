@@ -434,6 +434,8 @@
             }
         }
 
+        // 초기 화면 로드 시 예약 가능 여부 확인
+        setTimeout(checkAvailability, 500);
         setTimeout(checkAvailability, 1500);
 
         const inputs = ['pet-name', 'pet-weight', 'pet-type', 'user-name', 'user-phone', 'agree-all'];
@@ -537,6 +539,32 @@
             const paymentId = `payment-${crypto.randomUUID()}`;
             
             try {
+                btn.disabled = true;
+                btn.textContent = "예약 가능 여부 확인 중...";
+
+                const sb = (window.Auth && window.Auth.getSupabase) ? window.Auth.getSupabase() : null;
+                if (!sb) throw new Error("서버 연결 실패");
+
+                // 결제창 띄우기 전 예약 중복(Double Booking) 한 번 더 확인
+                const { data: existRes, error: checkErr } = await sb
+                    .from('reservations')
+                    .select('id')
+                    .eq('facility_name', resData.facility_name)
+                    .eq('reservation_date', resData.reservation_date)
+                    .eq('reservation_time', resData.reservation_time);
+
+                if (checkErr) throw checkErr;
+
+                if (existRes && existRes.length > 0) {
+                    alert("죄송합니다. 방금 전 다른 분이 먼저 예약하신 시간입니다.\n다른 시간을 선택해주세요.");
+                    btn.disabled = false;
+                    btn.textContent = "예약 신청하기";
+                    checkAvailability(); // 예약된 시간대 업데이트
+                    return;
+                }
+
+                btn.textContent = "결제창 로딩 중...";
+
                 // Using Auth centralized PortOne config
                 const response = await PortOne.requestPayment({
                     storeId: Auth.PORTONE_STORE_ID,
@@ -555,14 +583,12 @@
 
                 if (response.code !== undefined) {
                     alert(`결제에 실패하였습니다. 사유: ${response.message}`);
+                    btn.disabled = false;
+                    btn.textContent = "예약 신청하기";
                     return;
                 }
 
-                btn.disabled = true;
-                btn.textContent = "예약 신청 중...";
-
-                const sb = (window.Auth && window.Auth.getSupabase) ? window.Auth.getSupabase() : null;
-                if (!sb) throw new Error("서버 연결 실패");
+                btn.textContent = "예약 신청 완료 중...";
 
                 const payload = {
                     ...resData,
