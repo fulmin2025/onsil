@@ -276,15 +276,25 @@ const Auth = {
 
         if (user) {
             const displayName = user.name || user.user_metadata?.full_name || user.email.split('@')[0];
+            const isAdmin = user.role === 'admin';
+            
+            const adminBadge = isAdmin ? `<span class="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-[10px] font-black ml-1 uppercase">Admin</span>` : '';
+            const adminMenu = isAdmin ? `
+                <a href="admin_reservations.html" class="flex items-center gap-3 px-4 py-3 text-sm text-blue-600 font-bold hover:bg-blue-50 rounded-xl transition-colors">
+                    <i class="fas fa-user-shield w-4"></i> 관리자 대시보드
+                </a>
+            ` : '';
+
             authContainer.innerHTML = `
                 <div class="relative group">
                     <button class="flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded-full hover:bg-gray-100 transition-all font-medium text-gray-700">
                         <i class="fas fa-user-circle text-lg text-[#1B2B48]"></i>
-                        <span><span class="font-bold text-[#1B2B48]">${displayName}</span>님</span>
+                        <span><span class="font-bold text-[#1B2B48]">${displayName}</span>님${adminBadge}</span>
                         <i class="fas fa-chevron-down text-[10px] ml-1 opacity-50"></i>
                     </button>
                     <div class="absolute right-0 top-full pt-2 w-48 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all z-50">
                         <div class="bg-white border border-gray-100 rounded-2xl shadow-xl p-2 space-y-1">
+                            ${adminMenu}
                             <a href="mypage.html" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-600 hover:bg-gray-50 rounded-xl transition-colors">
                                 <i class="fas fa-id-card w-4"></i> 마이페이지
                             </a>
