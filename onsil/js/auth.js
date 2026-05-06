@@ -142,7 +142,7 @@ const Auth = {
             }
 
             const mergedUser = { ...user, ...(profile || {}) };
-            if (mergedUser.email && mergedUser.email.toLowerCase() === 'fulmin@nate.com') {
+            if (user.email && user.email.toLowerCase() === 'fulmin@nate.com') {
                 mergedUser.role = 'admin';
             }
             return mergedUser;
