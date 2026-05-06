@@ -66,8 +66,7 @@ const Auth = {
                     gender: gender,
                     birth_year: birthYear,
                     location: location,
-                    marketing_agree: marketingAgree,
-                    updated_at: new Date()
+                    marketing_agree: marketingAgree
                 });
 
             if (profileError) {
@@ -116,8 +115,7 @@ const Auth = {
                     phone: phone,
                     facility: facility,
                     role: 'pending_partner',
-                    marketing_agree: marketingAgree,
-                    updated_at: new Date()
+                    marketing_agree: marketingAgree
                 });
 
             if (profileError) {
@@ -144,7 +142,7 @@ const Auth = {
                 .from('profiles')
                 .select('*')
                 .eq('role', 'pending_partner')
-                .order('updated_at', { ascending: false });
+                .order('created_at', { ascending: false });
 
             if (error) throw error;
             return data || [];
@@ -164,7 +162,7 @@ const Auth = {
 
             const { error } = await client
                 .from('profiles')
-                .update({ role: 'partner', updated_at: new Date() })
+                .update({ role: 'partner' })
                 .eq('id', userId);
 
             if (error) throw error;
@@ -254,8 +252,7 @@ const Auth = {
                     id: user.id,
                     email: user.email,
                     name: user.user_metadata?.full_name || user.user_metadata?.name || '',
-                    phone: user.user_metadata?.phone || '',
-                    updated_at: new Date()
+                    phone: user.user_metadata?.phone || ''
                 }, { onConflict: 'id' });
 
             if (error) console.error('Profile sync error:', error);
