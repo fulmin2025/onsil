@@ -280,9 +280,13 @@ const Auth = {
             
             const adminBadge = isAdmin ? `<span class="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-[10px] font-black ml-1 uppercase">Admin</span>` : '';
             const adminMenu = isAdmin ? `
-                <a href="admin_reservations.html" class="flex items-center gap-3 px-4 py-3 text-sm text-blue-600 font-bold hover:bg-blue-50 rounded-xl transition-colors">
-                    <i class="fas fa-user-shield w-4"></i> 관리자 대시보드
+                <a href="admin_reservations.html" class="flex items-center gap-3 px-4 py-3 text-sm text-blue-600 font-bold hover:bg-blue-50 rounded-t-xl transition-colors">
+                    <i class="fas fa-calendar-alt w-4"></i> 예약 통합 관리
                 </a>
+                <a href="admin_partners.html" class="flex items-center gap-3 px-4 py-3 text-sm text-blue-600 font-bold hover:bg-blue-50 transition-colors">
+                    <i class="fas fa-store w-4"></i> 입점 승인 관리
+                </a>
+                <div class="h-px bg-gray-100 my-1"></div>
             ` : '';
 
             authContainer.innerHTML = `
