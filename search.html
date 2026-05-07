@@ -9,21 +9,28 @@
     <meta name="theme-color" content="#8D7B68">
     <link rel="apple-touch-icon" href="icons/icon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Leaflet Infrastructure -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- SEO Canonical -->
+    <link rel="canonical" href="https://theonsil.co.kr">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: { DEFAULT: "#8D7B68" },
-                        secondary: { DEFAULT: "#FAFAFA" },
-                        accent: { DEFAULT: "#C5A065" },
+                        brand: {
+                            DEFAULT: '#2C3E50',
+                            light: '#34495E',
+                            dark: '#1A252F',
+                            cream: '#F8F6F3',
+                            warm: '#D4A574',
+                            warmDark: '#B8894E',
+                            sage: '#87A08B',
+                            mist: '#E8ECE9'
+                        }
                     },
                     fontFamily: {
-                        sans: ['Pretendard', 'sans-serif'],
+                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
+                        serif: ['Nanum Myeongjo', 'serif'],
                     }
                 }
             }
@@ -107,68 +114,68 @@
             color: #8D7B68;
         }
 
+        .mobile-nav-panel {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
         .mobile-nav-open {
             transform: translateX(0) !important;
         }
     </style>
 </head>
 
-<body class="bg-gray-50 text-gray-900">
+<body class="bg-brand-cream text-brand overflow-x-hidden antialiased">
     <!-- Header -->
-    <header id="main-header" class="fixed top-0 z-50 w-full transition-all duration-500 bg-white border-b">
+    <header id="main-header" class="fixed top-0 z-50 w-full bg-white border-b border-brand/5 transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-2 group">
-                <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
-                    <span class="text-white text-xs font-bold">온</span>
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-2 group flex-shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center transition-transform group-hover:scale-105">
+                    <span class="text-white text-xs font-bold">온실</span>
                 </div>
                 <span class="font-bold text-lg text-brand tracking-tight">온실(Onsil)</span>
             </a>
 
             <!-- Desktop Nav -->
             <nav class="hidden lg:flex items-center gap-1">
-                <a href="search.html"
-                    class="px-4 py-2 text-sm font-medium text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">장례식장 찾기</a>
-                <a href="guide.html"
-                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">이별 가이드</a>
-                <a href="self-diagnosis.html"
-                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">건강자가진단</a>
-                <a href="memory.html"
-                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">추억 가이드</a>
-                <a href="community.html"
-                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">보호자 후기</a>
+                <a href="search.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg">장례식장 찾기</a>
+                <a href="guide.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">이별 가이드</a>
+                <a href="self-diagnosis.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">건강자가진단</a>
+                <a href="memory.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">추억 가이드</a>
+                <a href="community.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">커뮤니티</a>
             </nav>
 
-            <div class="hidden lg:flex items-center gap-1.5 flex-nowrap shrink-0">
+            <!-- Desktop Actions -->
+            <div class="hidden lg:flex items-center gap-2">
                 <div id="auth-container"></div>
-                <a href="search.html?quote=true"
-                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">
-                    <i class="fas fa-calculator"></i> 바로 견적받기
+                <a href="search.html?quote=true" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-calculator"></i> 견적
                 </a>
-                <button id="install-pwa-btn"
-                    class="hidden bg-brand text-white hover:bg-brand-light px-3 py-2.5 rounded-xl text-sm font-medium transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">
-                    <i class="fas fa-download"></i> 앱 설치
+                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-calendar-check text-sm"></i> 예약
                 </button>
-                <button
-                    onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
-                    class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">
-                    <i class="fas fa-calendar-check"></i> 예약하기
-                </button>
-                <a href="tel:1551-5052"
-                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-brand-warm/20 flex items-center gap-1.5 whitespace-nowrap">
+                <a href="tel:1551-5052" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2">
                     <i class="fas fa-phone-alt text-xs"></i> 1551-5052
                 </a>
             </div>
 
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn"
-                class="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors"
-                onclick="toggleMobileNav()">
-                <i class="fas fa-bars text-brand text-lg" id="menu-icon"></i>
-            </button>
+            <!-- Mobile Header Actions -->
+            <div class="flex lg:hidden items-center gap-2">
+                <a href="tel:1551-5052" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand/5 text-brand hover:bg-brand/10 transition-colors" title="전화 상담">
+                    <i class="fas fa-phone-alt text-sm"></i>
+                </a>
+                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand-sage/10 text-brand-sage hover:bg-brand-sage/20 transition-colors" title="예약하기">
+                    <i class="fas fa-calendar-check text-sm"></i>
+                </button>
+                <button id="mobile-menu-btn" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors" onclick="toggleMobileNav()">
+                    <i class="fas fa-bars text-brand text-xl" id="menu-icon"></i>
+                </button>
+            </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-8">
+    <main class="max-w-7xl mx-auto px-4 pt-20 sm:pt-24 pb-12">
         <h1 class="text-3xl font-bold mb-8 text-[#1B2B48]">안심 장례식장 찾기</h1>
         <div class="flex flex-col lg:flex-row justify-between mb-6 gap-4 items-start lg:items-center">
             <span id="result-count" class="text-sm text-gray-600 font-medium whitespace-nowrap">총 <span
@@ -196,7 +203,6 @@
                 </div>
             </div>
         </div>
-
         <div class="flex flex-col md:flex-row gap-8">
             <aside class="w-full md:w-1/4 space-y-6">
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-24">
@@ -223,11 +229,25 @@
                         <h3 class="font-bold text-sm mb-4 text-[#8D7B68]">지역 선택</h3>
                         <div class="space-y-3">
                             <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" value="metropolitan"
+                                <input type="checkbox" value="seoul"
                                     class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
                                 <span
-                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">서울/경기/인천
-                                    <span id="count-metropolitan" class="text-xs text-gray-400">0</span></span>
+                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">서울
+                                    <span id="count-seoul" class="text-xs text-gray-400">0</span></span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" value="gyeonggi"
+                                    class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
+                                <span
+                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">경기
+                                    <span id="count-gyeonggi" class="text-xs text-gray-400">0</span></span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" value="incheon"
+                                    class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
+                                <span
+                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">인천
+                                    <span id="count-incheon" class="text-xs text-gray-400">0</span></span>
                             </label>
                             <label class="flex items-center gap-3 cursor-pointer group">
                                 <input type="checkbox" value="chungcheong"
@@ -324,7 +344,7 @@
                 <!-- Modal Header (Hero Image) -->
                 <div class="relative h-64 bg-gray-200 shrink-0">
                     <img id="modal-image" src="" alt="Facility Image" class="w-full h-full object-cover"
-                        onerror="this.onerror=null; this.src='images/professional_funeral_service.png';">
+                        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1596272875729-ed2ff7d6d9c5?q=80&w=800&auto=format&fit=crop';">
 
                     <!-- Gradient Overlay -->
                     <div
@@ -432,7 +452,7 @@
                         <p id="modal-phone" class="text-gray-600 text-sm mb-4 font-mono"></p>
                         <div class="h-48 bg-gray-200 rounded-lg overflow-hidden relative mb-4 group cursor-pointer"
                             onclick="window.open('https://map.naver.com/v5/search/' + encodeURIComponent(document.getElementById('modal-address').innerText), '_blank')">
-                            <img src="images/professional_funeral_service.png"
+                            <img src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?q=80&w=1000&auto=format&fit=crop"
                                 class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
                                 alt="지도 보기">
                             <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -488,11 +508,23 @@
                 <div>
                     <h3 class="font-bold text-sm text-gray-400 mb-4 uppercase tracking-wider text-center">지역 선택</h3>
                     <div class="grid grid-cols-3 gap-2">
-                        <label class="cursor-pointer col-span-3">
-                            <input type="radio" name="quote-region" value="metropolitan" class="hidden quote-input" checked>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="quote-region" value="seoul" class="hidden quote-input" checked>
                             <div
                                 class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">
-                                서울/경기/인천</div>
+                                서울</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="quote-region" value="gyeonggi" class="hidden quote-input">
+                            <div
+                                class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">
+                                경기</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="quote-region" value="incheon" class="hidden quote-input">
+                            <div
+                                class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">
+                                인천</div>
                         </label>
                         <label class="cursor-pointer">
                             <input type="radio" name="quote-region" value="others" class="hidden quote-input">
@@ -608,10 +640,10 @@
     </div>
 
     <script>
-        // --- Leaflet Map State ---
-        let leafletMap = null;
-        let markerLayer = null;
-        let regionLayer = null;
+        // --- Naver Map State ---
+        let naverMap = null;
+        let naverMarkers = [];
+        let regionMarkers = [];
         let enrichedHomesData = null;
         let currentSortMode = 'recommend';
         let userLocation = { lat: 37.5665, lng: 126.9780 };
@@ -623,14 +655,6 @@
 
         const RAW_JSON = {
             "business": [
-                {
-                    "uuid": "snapplug-uuid-1234-5678-abcdef123456",
-                    "name": "스냅플러그",
-                    "enName": "snapplug",
-                    "latitude": "37.518174",
-                    "longitude": "126.779774",
-                    "isAlliance": true
-                },
                 {
                     "uuid": "43cfcb80-5aab-4750-b4e5-8d84198f83f5",
                     "name": "씨엘로펫",
@@ -1231,7 +1255,7 @@
 
                 // REAL_DATA access safety check
                 const realData = (typeof REAL_DATA !== 'undefined') ? REAL_DATA[item.name] : null;
-                const defaultImage = 'images/professional_funeral_service.png';
+                const defaultImage = 'https://images.unsplash.com/photo-1596230526487-11152a4a754b?w=500';
                 const image = (realData && realData.imageUrl) ? realData.imageUrl : defaultImage;
 
                 let priceText = "상담 문의";
@@ -1286,33 +1310,29 @@
         const MAP_INITIAL_ZOOM = 7.3;
 
         const REGION_CONFIG = {
-            'metropolitan': { name: '서울/경기/인천', coords: [37.5200, 126.9000], zoom: 10 },
+            'seoul': { name: '서울', coords: [37.5665, 126.9780], zoom: 11 },
+            'gyeonggi': { name: '경기도', coords: [37.5500, 127.2500], zoom: 10 },
+            'incheon': { name: '인천', coords: [37.4563, 126.6052], zoom: 11 },
             'gangwon': { name: '강원도', coords: [37.7500, 128.3000], zoom: 9 },
             'chungcheong': { name: '충청도', coords: [36.5500, 127.2000], zoom: 9 },
             'jeolla': { name: '전라도', coords: [35.4000, 127.0000], zoom: 9 },
             'gyeongsang': { name: '경상도', coords: [35.7000, 128.7000], zoom: 9 }
         };
 
-        function initLeafletMap() {
-            if (leafletMap) return;
+        function initNaverMap() {
+            if (naverMap) return;
             console.log('INIT: Map starting...');
             try {
-                leafletMap = L.map('map', {
+                naverMap = new naver.maps.Map('map', {
+                    center: new naver.maps.LatLng(MAP_INITIAL_VIEW[0], MAP_INITIAL_VIEW[1]),
+                    zoom: MAP_INITIAL_ZOOM,
                     zoomControl: false,
-                    attributionControl: false,
-                    scrollWheelZoom: true,
-                    doubleClickZoom: true
-                }).setView(MAP_INITIAL_VIEW, MAP_INITIAL_ZOOM);
+                    scaleControl: true,
+                    mapDataControl: false,
+                    logoControl: true, 
+                });
 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19,
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://www.naver.com">Naver Maps</a>'
-                }).addTo(leafletMap);
-
-                markerLayer = L.layerGroup().addTo(leafletMap);
-                regionLayer = L.layerGroup().addTo(leafletMap);
-
-                leafletMap.on('zoomend', () => {
+                naver.maps.Event.addListener(naverMap, 'zoom_changed', () => {
                     filterItems();
                 });
 
@@ -1330,13 +1350,15 @@
         }
 
         function renderMapPins(items) {
-            if (!leafletMap || !markerLayer) {
-                console.warn('MAP: Map or MarkerLayer not initialized');
+            if (!naverMap) {
+                console.warn('MAP: Map not initialized');
                 return;
             }
-            markerLayer.clearLayers();
+            
+            naverMarkers.forEach(m => m.setMap(null));
+            naverMarkers = [];
 
-            const currentZoom = leafletMap.getZoom();
+            const currentZoom = naverMap.getZoom();
             if (currentZoom < 9) return; // 줌이 9 미만일 때는 개별 마커를 표시하지 않음
 
             console.log(`MAP: Rendering ${items.length} items`);
@@ -1346,37 +1368,40 @@
                 const lng = parseFloat(item.longitude);
                 if (isNaN(lat) || isNaN(lng)) return;
 
-                const marker = L.circleMarker([lat, lng], {
-                    radius: 8,
-                    fillColor: (ON_CONFIG.showPartnership && item.isAlliance) ? '#C5A065' : '#8D7B68',
-                    color: '#fff',
-                    weight: 2,
-                    opacity: 1,
-                    fillOpacity: 0.9,
-                    className: 'map-pulse'
+                const fillColor = (ON_CONFIG.showPartnership && item.isAlliance) ? '#C5A065' : '#8D7B68';
+                
+                const iconHtml = `<div class="relative group cursor-pointer map-pulse-wrapper">
+                    <div class="map-pulse" style="width:16px;height:16px;border-radius:50%;background-color:${fillColor};border:2px solid #fff;box-shadow:0 0 10px rgba(0,0,0,0.3)"></div>
+                    <div class="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 hidden group-hover:block bg-white text-gray-800 text-xs px-2 py-1 rounded shadow-md whitespace-nowrap z-50">${item.name}</div>
+                </div>`;
+
+                const marker = new naver.maps.Marker({
+                    position: new naver.maps.LatLng(lat, lng),
+                    map: naverMap,
+                    icon: {
+                        content: iconHtml,
+                        size: new naver.maps.Size(16, 16),
+                        anchor: new naver.maps.Point(8, 8)
+                    }
                 });
 
-                marker.bindTooltip(item.name, {
-                    permanent: false,
-                    direction: 'top',
-                    className: 'custom-tooltip'
-                });
-
-                marker.on('click', (e) => {
-                    L.DomEvent.stopPropagation(e);
+                naver.maps.Event.addListener(marker, 'click', (e) => {
                     openDetailModal(item);
-                    leafletMap.setView([lat, lng], 13);
+                    naverMap.setCenter(new naver.maps.LatLng(lat, lng));
+                    naverMap.setZoom(13);
                 });
 
-                marker.addTo(markerLayer);
+                naverMarkers.push(marker);
             });
         }
 
         function renderRegionLabels(items) {
-            if (!leafletMap || !regionLayer) return;
-            regionLayer.clearLayers();
+            if (!naverMap) return;
+            
+            regionMarkers.forEach(m => m.setMap(null));
+            regionMarkers = [];
 
-            const currentZoom = leafletMap.getZoom();
+            const currentZoom = naverMap.getZoom();
             if (currentZoom >= 9) return; // 줌이 일정 수준 이상일 때는 권역별 배지를 숨김
 
             const regionCounts = {
@@ -1392,20 +1417,27 @@
             Object.entries(REGION_CONFIG).forEach(([key, config]) => {
                 const count = regionCounts[key];
                 if (count > 0) {
-                    const icon = L.divIcon({
-                        className: 'region-badge-marker',
-                        html: `<div class="region-badge-inner flex flex-col items-center justify-center bg-[#8D7B68] text-white rounded-full border-2 border-white cursor-pointer shadow-lg transform transition-all" style="width: 52px; height: 52px;">
+                    const badgeHtml = `<div class="region-badge-inner flex flex-col items-center justify-center bg-[#8D7B68] text-white rounded-full border-2 border-white cursor-pointer shadow-lg transform transition-all" style="width: 52px; height: 52px;">
                                 <span class="text-[10px] font-medium opacity-80">${config.name}</span>
                                 <span class="text-base font-bold">${count}</span>
-                               </div>`,
-                        iconSize: [52, 52],
-                        iconAnchor: [26, 26]
+                               </div>`;
+
+                    const marker = new naver.maps.Marker({
+                        position: new naver.maps.LatLng(config.coords[0], config.coords[1]),
+                        map: naverMap,
+                        icon: {
+                            content: badgeHtml,
+                            size: new naver.maps.Size(52, 52),
+                            anchor: new naver.maps.Point(26, 26)
+                        }
                     });
 
-                    L.marker(config.coords, { icon: icon }).on('click', (e) => {
-                        L.DomEvent.stopPropagation(e);
-                        leafletMap.setView(config.coords, config.zoom);
-                    }).addTo(regionLayer);
+                    naver.maps.Event.addListener(marker, 'click', (e) => {
+                        naverMap.setCenter(new naver.maps.LatLng(config.coords[0], config.coords[1]));
+                        naverMap.setZoom(config.zoom);
+                    });
+
+                    regionMarkers.push(marker);
                 }
             });
         }
@@ -1427,7 +1459,9 @@
             const lat = parseFloat(item.latitude);
             const lng = parseFloat(item.longitude);
 
-            if (addr.includes('서울') || addr.includes('경기') || addr.includes('인천')) return 'metropolitan';
+            if (addr.includes('서울')) return 'seoul';
+            if (addr.includes('경기')) return 'gyeonggi';
+            if (addr.includes('인천')) return 'incheon';
             if (addr.includes('강원')) return 'gangwon';
             if (addr.includes('충남') || addr.includes('충북') || addr.includes('대전') || addr.includes('세종') || addr.includes('충청')) return 'chungcheong';
             if (addr.includes('경남') || addr.includes('경북') || addr.includes('부산') || addr.includes('대구') || addr.includes('울산') || addr.includes('경상')) return 'gyeongsang';
@@ -1437,13 +1471,15 @@
             if (lat < 37.0 && lng > 127.6) return 'gyeongsang';
             if (lat < 36.1 && lng < 127.6) return 'jeolla';
             if (lat < 37.1 && lng < 127.6) return 'chungcheong';
-            if (lat > 36.9 && lat < 38.3 && lng > 126.1 && lng < 127.9) return 'metropolitan';
+            if (lat > 37.4 && lat < 37.7 && lng > 126.8 && lng < 127.2) return 'seoul';
+            if (lat > 37.3 && lat < 37.6 && lng > 126.3 && lng < 126.8) return 'incheon';
+            if (lat > 36.9 && lat < 38.3 && lng > 126.1 && lng < 127.9) return 'gyeonggi';
             return 'other';
         }
 
         function updateFilterCounts() {
             const counts = {
-                'metropolitan': 0, 'gangwon': 0,
+                'seoul': 0, 'gyeonggi': 0, 'incheon': 0, 'gangwon': 0,
                 'chungcheong': 0, 'jeolla': 0, 'gyeongsang': 0
             };
 
@@ -1542,9 +1578,9 @@
                 btnList.classList.replace('bg-[#8D7B68]', 'bg-white');
                 btnList.classList.replace('text-white', 'text-gray-600');
 
-                initLeafletMap();
+                initNaverMap();
                 filterItems();
-                setTimeout(() => { if (leafletMap) leafletMap.invalidateSize(); }, 200);
+                setTimeout(() => { if (naverMap) window.dispatchEvent(new Event('resize')); }, 200);
             } else {
                 btnList.classList.replace('bg-white', 'bg-[#8D7B68]');
                 btnList.classList.replace('text-white', 'text-white');
@@ -1556,10 +1592,15 @@
         document.getElementById('btn-list-view').onclick = () => showView('list');
         document.getElementById('btn-map-view').onclick = () => showView('map');
 
-        // --- Leaflet Zoom Controls ---
-        document.getElementById('btn-zoom-in').onclick = () => leafletMap && leafletMap.zoomIn();
-        document.getElementById('btn-zoom-out').onclick = () => leafletMap && leafletMap.zoomOut();
-        document.getElementById('btn-zoom-reset').onclick = () => leafletMap && leafletMap.setView(MAP_INITIAL_VIEW, MAP_INITIAL_ZOOM);
+        // --- Naver Map Zoom Controls ---
+        document.getElementById('btn-zoom-in').onclick = () => naverMap && naverMap.setZoom(naverMap.getZoom() + 1);
+        document.getElementById('btn-zoom-out').onclick = () => naverMap && naverMap.setZoom(naverMap.getZoom() - 1);
+        document.getElementById('btn-zoom-reset').onclick = () => {
+            if (naverMap) {
+                naverMap.setCenter(new naver.maps.LatLng(MAP_INITIAL_VIEW[0], MAP_INITIAL_VIEW[1]));
+                naverMap.setZoom(MAP_INITIAL_ZOOM);
+            }
+        };
 
         // --- Real Data Map ---
         // --- 포포즈 서울경기 통합 요금표 ---
@@ -1568,17 +1609,17 @@
                 category: "일반 동물 장례 패키지 (10kg 이하 기준)",
                 items: [
                     { name: "기본 화장", price: "250,000원", desc: "염습, 단독추모, 개별화장, 임시유골함, 추모키트", longDesc: "염습, 단독 추모, 개별 화장 및 수/분골, 임시 유골함 제공. (추모키트: 장례 증명서, 사진 인화, 발도장, 인연의 실, 안내서)" },
-                    { name: "관 장례 패키지", price: "550,000원", desc: "기본화장 + 오동나무 관 + 고급수의 + 꽃다발", longDesc: "기본 화장 + 오동나무 관 + 인견 수의/수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "images/professional_funeral_service.png" },
-                    { name: "요람 장례 패키지", price: "600,000원", desc: "기본화장 + 요람관 + 고급수의 + 목화솜 이불", longDesc: "기본 화장 + 요람관 + 인견 수의 + 목화솜 이불 + 기본 유골함 + 작은 꽃다발", imageUrl: "images/professional_funeral_service.png" },
-                    { name: "자연닮음 장례 패키지", price: "600,000원", desc: "기본화장 + 자연닮음 관/수의 + 한지 수목함", longDesc: "기본 화장 + 자연닮음 관 + 자연닮음 수의/수의보 + 한지 수목함 + 작은 꽃다발", imageUrl: "images/professional_funeral_service.png" },
-                    { name: "ALL IN ONE 패키지", price: "1,360,000원", desc: "최고급관 + 블리스 스톤 전량 + 다담 스톤함", longDesc: "기본 화장 + 오동나무 관 + 면 수의/수의보 + 블리스 스톤(전량) + 호두나무 다담 스톤함 + 작은 꽃다발", imageUrl: "images/professional_funeral_service.png" }
+                    { name: "관 장례 패키지", price: "550,000원", desc: "기본화장 + 오동나무 관 + 고급수의 + 꽃다발", longDesc: "기본 화장 + 오동나무 관 + 인견 수의/수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item01.webp" },
+                    { name: "요람 장례 패키지", price: "600,000원", desc: "기본화장 + 요람관 + 고급수의 + 목화솜 이불", longDesc: "기본 화장 + 요람관 + 인견 수의 + 목화솜 이불 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item02.webp" },
+                    { name: "자연닮음 장례 패키지", price: "600,000원", desc: "기본화장 + 자연닮음 관/수의 + 한지 수목함", longDesc: "기본 화장 + 자연닮음 관 + 자연닮음 수의/수의보 + 한지 수목함 + 작은 꽃다발", imageUrl: "./images/p_item04.webp" },
+                    { name: "ALL IN ONE 패키지", price: "1,360,000원", desc: "최고급관 + 블리스 스톤 전량 + 다담 스톤함", longDesc: "기본 화장 + 오동나무 관 + 면 수의/수의보 + 블리스 스톤(전량) + 호두나무 다담 스톤함 + 작은 꽃다발", imageUrl: "./images/p_item03.webp" }
                 ]
             },
             {
                 category: "소동물 장례 패키지 (1kg 이하 기준)",
                 items: [
                     { name: "소동물 기본 화장", price: "200,000원", desc: "염습 시 특수 칫솔 사용 등 일반 기본 화장과 동일", longDesc: "일반 동물 기본 화장 서비스 구성 100% 동일" },
-                    { name: "소동물 관 장례 패키지", price: "350,000원", desc: "기본화장 + 오동나무 관 + 소동물 수의보", longDesc: "기본 화장 + 오동나무 관 + 면 수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "images/professional_funeral_service.png" }
+                    { name: "소동물 관 장례 패키지", price: "350,000원", desc: "기본화장 + 오동나무 관 + 소동물 수의보", longDesc: "기본 화장 + 오동나무 관 + 면 수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item01_ex_3.webp" }
                 ]
             },
             {
@@ -1595,17 +1636,17 @@
                 category: "일반 동물 장례 패키지 (10kg 이하 기준)",
                 items: [
                     { name: "기본 화장", price: "200,000원", desc: "염습, 단독추모, 개별화장, 임시유골함, 추모키트", longDesc: "염습, 단독 추모, 개별 화장 및 수/분골, 임시 유골함 제공. (추모키트: 장례 증명서, 사진 인화, 발도장, 인연의 실, 안내서)" },
-                    { name: "관 장례 패키지", price: "500,000원", desc: "기본화장 + 오동나무 관 + 고급수의 + 꽃다발", longDesc: "기본 화장 + 오동나무 관 + 인견 수의/수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "images/professional_funeral_service.png" },
-                    { name: "요람 장례 패키지", price: "550,000원", desc: "기본화장 + 요람관 + 고급수의 + 목화솜 이불", longDesc: "기본 화장 + 요람관 + 인견 수의 + 목화솜 이불 + 기본 유골함 + 작은 꽃다발", imageUrl: "images/professional_funeral_service.png" },
-                    { name: "자연닮음 장례 패키지", price: "550,000원", desc: "기본화장 + 자연닮음 관/수의 + 한지 수목함", longDesc: "기본 화장 + 자연닮음 관 + 자연닮음 수의/수의보 + 한지 수목함 + 작은 꽃다발", imageUrl: "images/professional_funeral_service.png" },
-                    { name: "ALL IN ONE 패키지", price: "1,310,000원", desc: "최고급관 + 블리스 스톤 전량 + 다담 스톤함", longDesc: "기본 화장 + 오동나무 관 + 면 수의/수의보 + 블리스 스톤(전량) + 호두나무 다담 스톤함 + 작은 꽃다발", imageUrl: "images/professional_funeral_service.png" }
+                    { name: "관 장례 패키지", price: "500,000원", desc: "기본화장 + 오동나무 관 + 고급수의 + 꽃다발", longDesc: "기본 화장 + 오동나무 관 + 인견 수의/수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item01.webp" },
+                    { name: "요람 장례 패키지", price: "550,000원", desc: "기본화장 + 요람관 + 고급수의 + 목화솜 이불", longDesc: "기본 화장 + 요람관 + 인견 수의 + 목화솜 이불 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item02.webp" },
+                    { name: "자연닮음 장례 패키지", price: "550,000원", desc: "기본화장 + 자연닮음 관/수의 + 한지 수목함", longDesc: "기본 화장 + 자연닮음 관 + 자연닮음 수의/수의보 + 한지 수목함 + 작은 꽃다발", imageUrl: "./images/p_item04.webp" },
+                    { name: "ALL IN ONE 패키지", price: "1,310,000원", desc: "최고급관 + 블리스 스톤 전량 + 다담 스톤함", longDesc: "기본 화장 + 오동나무 관 + 면 수의/수의보 + 블리스 스톤(전량) + 호두나무 다담 스톤함 + 작은 꽃다발", imageUrl: "./images/p_item03.webp" }
                 ]
             },
             {
                 category: "소동물 장례 패키지 (1kg 이하 기준)",
                 items: [
                     { name: "소동물 기본 화장", price: "150,000원", desc: "염습 시 특수 칫솔 사용 등 일반 기본 화장과 동일", longDesc: "일반 동물 기본 화장 서비스 구성 100% 동일" },
-                    { name: "소동물 관 장례 패키지", price: "300,000원", desc: "기본화장 + 오동나무 관 + 소동물 수의보", longDesc: "기본 화장 + 오동나무 관 + 면 수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "images/professional_funeral_service.png" }
+                    { name: "소동물 관 장례 패키지", price: "300,000원", desc: "기본화장 + 오동나무 관 + 소동물 수의보", longDesc: "기본 화장 + 오동나무 관 + 면 수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item01_ex_3.webp" }
                 ]
             },
             {
@@ -1929,38 +1970,6 @@
         ];
 
         const REAL_DATA = {
-            "스냅플러그": {
-                "name": "스냅플러그",
-                "address": "부천시 도당동 121-2",
-                "lat": 37.518174,
-                "lng": 126.779774,
-                "phone": "1551-5051",
-                "prices": [
-                    {
-                        "category": "스냅플러그 장례 비용",
-                        "items": [
-                            { "name": "기본 장례", "price": "200,000원", "desc": "개별 화장, 추모실 이용 등 포함" }
-                        ]
-                    }
-                ],
-                "isAlliance": true
-            },
-            "스냅플러그": {
-                "name": "스냅플러그",
-                "address": "부천시 도당동 121-2",
-                "lat": 37.518174,
-                "lng": 126.779774,
-                "phone": "1551-5051",
-                "prices": [
-                    {
-                        "category": "스냅플러그 장례 비용",
-                        "items": [
-                            { "name": "기본 장례", "price": "200,000원", "desc": "개별 화장, 추모실 이용 등 포함" }
-                        ]
-                    }
-                ],
-                "isAlliance": true
-            },
             "펫오케스트라": {
                 "pricingType": "categorized",
                 "address": "경기 화성시 비봉면 양노리 755-5",
@@ -2033,7 +2042,7 @@
                 "pricingType": "categorized",
                 "prices": FOUR_PAWS_PRICES,
                 "address": "경기 화성시 팔탄면 창곡리 925-6",
-                "imageUrl": "images/professional_funeral_service.png"
+                "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000&auto=format&fit=crop"
             },
             "스윗드림펫": {
                 "pricingType": "categorized",
@@ -2209,7 +2218,7 @@
                     }
                 ],
                 "address": "경남 김해시 생림면 봉림리 872-1",
-                "imageUrl": "images/professional_funeral_service.png"
+                "imageUrl": "https://images.unsplash.com/photo-1501630834273-4b5604d2ee31?q=80&w=1000&auto=format&fit=crop"
             },
             "한별리멤버파크": {
                 "pricingType": "categorized",
@@ -2952,7 +2961,7 @@
 
             document.getElementById('modal-title').textContent = details.name;
             document.getElementById('modal-subtitle').textContent = details.enName;
-            document.getElementById('modal-image').src = details.imageUrl || `images/professional_funeral_service.png`;
+            document.getElementById('modal-image').src = details.imageUrl || `https://images.unsplash.com/photo-1596272875729-ed2ff7d6d9c5?q=80&w=800&auto=format&fit=crop`;
 
             document.getElementById('modal-rating-score').textContent = details.rating;
             document.getElementById('modal-rating-count').textContent = `(${details.reviewCount})`;
@@ -3166,7 +3175,7 @@
 
                     const isFallback = !item.imageUrl;
                     // 반려동물 장례/추모 분위기를 위한 로컬 기본 이미지 파일 (오프라인 브라우저 차단 완벽 회피)
-                    const defaultImg = 'images/professional_funeral_service.png';
+                    const defaultImg = './fallback.jpg';
                     const imgSrc = item.imageUrl || defaultImg;
                     const card = document.createElement('div');
                     card.className = "mb-8 last:mb-0 border-b border-gray-100 last:border-0 pb-8 last:pb-0";
@@ -3372,12 +3381,7 @@
                     <p class="text-sm text-[#2C3E50]/40 mb-4 leading-relaxed max-w-sm">
                         반려동물 장례식장 비교부터 예약까지.<br>어려운 결정에 늘 온실이 함께합니다.
                     </p>
-                <div class="space-y-1 text-xs text-[#2C3E50]/30">
-                    <p>상호명: (주)더온실 | 대표자: 조영호 | 개인정보관리책임자: 조영호</p>
-                    <p>사업자등록번호: 181-18-02826 | 통신판매업신고: 제 2024-부천원미-2126호</p>
-                    <p>주소: 경기도 부천시 삼작로 280번길 53-9, 행우라폴리움 502호</p>
-                    <p>이메일: master@theonsil.com | 전화: 1551-5052</p>
-                </div>
+                    <p class="text-xs text-[#2C3E50]/30">더온실 | 대표 조영호 | 문의 1551-5052<br>사업자등록번호 : 181-18-02826<br>주소 : 부천시 삼작로 280번길 53-9 행우라폴리움 502호</p>
                 </div>
                 <div>
                     <h3 class="font-bold text-sm text-[#2C3E50] mb-4">서비스</h3>
@@ -3386,7 +3390,7 @@
                         <li><a href="guide.html" class="hover:text-[#2C3E50] transition-colors">이별 가이드</a></li>
                         <li><a href="self-diagnosis.html" class="hover:text-[#2C3E50] transition-colors">건강자가진단</a></li>
                         <li><a href="memory.html" class="hover:text-[#2C3E50] transition-colors">추억 가이드</a></li>
-                        <li><a href="community.html" class="hover:text-[#2C3E50] transition-colors">보호자 후기</a></li>
+                        <li><a href="community.html" class="hover:text-[#2C3E50] transition-colors">커뮤니티</a></li>
                     </ul>
                 </div>
                 <div>
@@ -3397,11 +3401,6 @@
                                 class="hover:text-[#2C3E50] transition-colors font-bold text-[#D4A574]">제휴문의</a></li>
                         <li><a href="terms.html" class="hover:text-[#2C3E50] transition-colors">이용약관</a></li>
                         <li><a href="privacy.html" class="hover:text-[#2C3E50] transition-colors">개인정보처리방침</a></li>
-                        <li class="pt-2 border-t border-[#2C3E50]/5">
-                            <a href="partner-login.html" class="text-xs font-bold text-gray-400 hover:text-partner transition-colors">
-                                <i class="fas fa-lock text-[10px] mr-1"></i> 업체 로그인
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -3426,53 +3425,85 @@
         </div>
     </footer>
     <!-- Mobile Navigation Overlay -->
+    <!-- Mobile Navigation Overlay -->
     <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
         <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
             id="mobile-nav-panel">
-            <div class="p-6">
+            <div class="p-6 h-full flex flex-col pt-safe">
                 <div class="flex justify-between items-center mb-8">
-                    <span class="font-bold text-lg text-[#2C3E50]">메뉴</span>
+                    <span class="font-bold text-lg text-brand">메뉴</span>
                     <button onclick="toggleMobileNav()"
-                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
                         <i class="fas fa-times text-gray-500"></i>
                     </button>
                 </div>
-                <nav class="space-y-1">
-                    <a href="javascript:void(0)" onclick="toggleMobileNav(); openQuoteModal();"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-[#F8F6F3] transition-colors bg-[#F9F5F0]">
-                        <i class="fas fa-calculator text-[#C5A065] w-5 text-center"></i>
-                        <span class="font-bold text-[#2C3E50]">바로 견적받기</span>
+                <nav class="space-y-1 flex-1">
+                    <a href="search.html?quote=true"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all bg-brand-cream text-brand font-bold mb-4 hover:shadow-md">
+                        <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
+                        <span>바로 견적받기</span>
                     </a>
                     <a href="search.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-[#F8F6F3] transition-colors">
-                        <i class="fas fa-search text-[#D4A574] w-5 text-center"></i>
-                        <span class="font-medium text-[#2C3E50]">장례식장 찾기</span>
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-brand/5 text-brand font-bold transition-colors">
+                        <i class="fas fa-search w-5 text-center"></i>
+                        <span>장례식장 찾기</span>
                     </a>
                     <a href="guide.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-[#F8F6F3] transition-colors">
-                        <i class="fas fa-book-open text-[#D4A574] w-5 text-center"></i>
-                        <span class="font-medium text-[#2C3E50]">이별 가이드</span>
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-book-open w-5 text-center"></i>
+                        <span>이별 가이드</span>
                     </a>
                     <a href="self-diagnosis.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-[#F8F6F3] transition-colors">
-                        <i class="fas fa-heartbeat text-[#D4A574] w-5 text-center"></i>
-                        <span class="font-medium text-[#2C3E50]">건강자가진단</span>
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-stethoscope w-5 text-center"></i>
+                        <span>건강자가진단</span>
                     </a>
                     <a href="memory.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-[#F8F6F3] transition-colors">
-                        <i class="fas fa-paw text-[#D4A574] w-5 text-center"></i>
-                        <span class="font-medium text-[#2C3E50]">추억 가이드</span>
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-heart w-5 text-center"></i>
+                        <span>추억 가이드</span>
                     </a>
                     <a href="community.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-[#F8F6F3] transition-colors">
-                        <i class="fas fa-comment-dots text-[#D4A574] w-5 text-center"></i>
-                        <span class="font-medium text-[#2C3E50]">보호자 후기</span>
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
+                        <i class="fas fa-comments w-5 text-center"></i>
+                        <span>커뮤니티</span>
                     </a>
                 </nav>
+                <!-- Mobile Bottom Actions -->
+                <div class="pt-6 border-t border-brand/5 space-y-3">
+                    <button
+                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                        class="w-full bg-brand-sage text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-sage/90 transition-colors">
+                        <i class="fas fa-calendar-check text-sm"></i> 예약하기
+                    </button>
+                    <a href="tel:1551-5052"
+                        class="w-full bg-brand-warm text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-warmDark transition-colors">
+                        <i class="fas fa-phone-alt text-sm"></i> 1551-5052 상담원 연결
+                    </a>
+                </div>
             </div>
         </div>
     </div>
+    <!-- Scripts -->
+    <!-- Naver Maps API: Moved to bottom to prevent blocking the top navigation execution -->
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=5tiwbscjvi" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/pwa.js"></script>
+    <script>
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            const panel = document.getElementById('mobile-nav-panel');
+            if (nav.classList.contains('hidden')) {
+                nav.classList.remove('hidden');
+                setTimeout(() => panel.classList.remove('translate-x-full'), 10);
+            } else {
+                panel.classList.add('translate-x-full');
+                setTimeout(() => nav.classList.add('hidden'), 300);
+            }
+        }
+    </script>
 </body>
 
 </html>
