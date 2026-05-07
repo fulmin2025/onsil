@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>커뮤니티 - The 온실</title>
-    <link rel="canonical" href="https://theonsil.co.kr/memory.html">
+    <title>추억 가이드 - 온실(Onsil)</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1B2B48">
     <link rel="apple-touch-icon" href="icons/icon.svg">
@@ -16,16 +15,9 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            DEFAULT: '#2C3E50',
-                            light: '#34495E',
-                            dark: '#1A252F',
-                            cream: '#F8F6F3',
-                            warm: '#D4A574',
-                            warmDark: '#B8894E',
-                            sage: '#87A08B',
-                            mist: '#E8ECE9'
-                        }
+                        primary: { DEFAULT: "#1B2B48" },
+                        secondary: { DEFAULT: "#FAFAFA" },
+                        accent: { DEFAULT: "#C5A065" },
                     },
                     fontFamily: {
                         sans: ['Pretendard', 'sans-serif'],
@@ -81,49 +73,42 @@
 <body class="bg-gray-50 text-gray-900 font-sans overflow-x-hidden">
 
     <!-- Header -->
-    <header id="main-header" class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-brand/5 transition-all outline-none">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
-            <!-- Logo -->
-            <a href="index.html" class="flex items-center gap-2 group flex-shrink-0">
-                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="온실 캐릭터 로고">
-                <span class="font-bold text-lg text-brand tracking-tight">The 온실</span>
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <div
+                    class="w-8 h-8 rounded-lg bg-[#2C3E50] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <span class="text-white text-xs font-bold font-sans">온</span>
+                </div>
+                <span class="font-bold text-lg text-[#2C3E50] tracking-tight">온실(Onsil)</span>
             </a>
-
-            <!-- Desktop Nav -->
-            <nav class="hidden lg:flex items-center gap-1">
-                <a href="search.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">장례식장 찾기</a>
-                <a href="guide.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">이별 가이드</a>
-                <a href="self-diagnosis.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">건강자가진단</a>
-                <a href="memory.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg">추억 가이드</a>
-                <a href="community.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">커뮤니티</a>
+            <nav class="hidden md:flex gap-8">
+                <a href="search.html"
+                    class="text-sm font-medium text-gray-500 hover:text-[#1B2B48] transition-colors">장례식장 찾기</a>
+                <a href="guide.html" class="text-sm font-medium text-gray-500 hover:text-[#1B2B48] transition-colors">이별
+                    가이드</a>
+                <a href="self-diagnosis.html"
+                    class="text-sm font-medium text-gray-500 hover:text-[#1B2B48] transition-colors">건강자가진단</a>
+                <a href="memory.html" class="text-sm font-bold text-[#1B2B48] border-b-2 border-[#C5A065] pb-1">추억
+                    가이드</a>
+                <a href="community.html"
+                    class="text-sm font-medium text-gray-500 hover:text-[#1B2B48] transition-colors">보호자 후기</a>
             </nav>
-
-            <!-- Desktop Actions -->
-            <div class="hidden lg:flex items-center gap-2">
-                <div id="auth-container"></div>
-                <a href="search.html?quote=true" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
-                    <i class="fas fa-calculator"></i> 견적
+            <div id="auth-container" class="hidden md:flex items-center gap-2">
+                <a href="search.html?quote=true"
+                    class="bg-[#C5A065] text-white hover:bg-[#B08D55] px-4 py-2 rounded-md text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-calculator"></i> 바로 견적받기
                 </a>
-                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
-                    <i class="fas fa-calendar-check text-sm"></i> 예약
-                </button>
-                <a href="tel:1551-5052" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2">
-                    <i class="fas fa-phone-alt text-xs"></i> 1551-5052
-                </a>
+                <div class="flex items-center ml-2">
+                    <!-- Auth UI injected by JS -->
+                </div>
             </div>
-
-            <!-- Mobile Header Actions -->
-            <div class="flex lg:hidden items-center gap-2">
-                <a href="tel:1551-5052" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand/5 text-brand hover:bg-brand/10 transition-colors" title="전화 상담">
-                    <i class="fas fa-phone-alt text-sm"></i>
-                </a>
-                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand-sage/10 text-brand-sage hover:bg-brand-sage/20 transition-colors" title="예약하기">
-                    <i class="fas fa-calendar-check text-sm"></i>
-                </button>
-                <button id="mobile-menu-btn" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors" onclick="toggleMobileNav()">
-                    <i class="fas fa-bars text-brand text-xl" id="menu-icon"></i>
-                </button>
-            </div>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn"
+                class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
+                onclick="toggleMobileNav()">
+                <i class="fas fa-bars text-[#1B2B48] text-lg" id="menu-icon"></i>
+            </button>
         </div>
     </header>
 
@@ -131,7 +116,7 @@
         <!-- Hero Section -->
         <section class="relative py-32 bg-[#1B2B48] text-white overflow-hidden">
             <div
-                class="absolute inset-0 opacity-25 bg-[url('https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=2669&auto=format&fit=crop')] bg-cover bg-center scale-110">
+                class="absolute inset-0 opacity-25 bg-[url('images/professional_funeral_service.png')] bg-cover bg-center scale-110">
             </div>
             <div class="relative max-w-7xl mx-auto px-4 text-center">
                 <span
@@ -183,7 +168,7 @@
                     </div>
                 </div>
                 <div class="rounded-[2.5rem] overflow-hidden shadow-2xl h-[450px] bg-gray-200 relative group">
-                    <img src="https://images.unsplash.com/photo-1535930749574-1399327ce78f?q=80&w=2536&auto=format&fit=crop"
+                    <img src="images/memory_professional_kit.png"
                         alt="Bucket List"
                         class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
                 </div>
@@ -193,8 +178,8 @@
             <section class="grid md:grid-cols-2 gap-16 items-center md:flex-row-reverse fade-up">
                 <div
                     class="order-2 md:order-1 rounded-[2.5rem] overflow-hidden shadow-2xl h-[450px] bg-gray-200 relative group">
-                    <img src="https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?q=80&w=1200&auto=format&fit=crop"
-                        alt="Traces"
+                    <img src="images/professional_funeral_service.png"
+                        alt="반려동물과의 따뜻한 추억"
                         class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
                 </div>
                 <div class="space-y-8 order-1 md:order-2">
@@ -213,9 +198,9 @@
                             <i class="fas fa-box-open text-[#C5A065]"></i> 보존 아이디어
                         </h4>
                         <ul class="space-y-2 text-sm text-gray-500">
-                            <li>? 부드러운 빗질 후 나온 털을 실크 리본으로 묶어 보관</li>
-                            <li>? 자연스럽게 빠진 수염이나 이빨을 작고 투명한 유리병에 담기</li>
-                            <li>? 아이가 가장 아끼던 낡은 장난감이나 애착 담요</li>
+                            <li>• 부드러운 빗질 후 나온 털을 실크 리본으로 묶어 보관</li>
+                            <li>• 자연스럽게 빠진 수염이나 이빨을 작고 투명한 유리병에 담기</li>
+                            <li>• 아이가 가장 아끼던 낡은 장난감이나 애착 담요</li>
                         </ul>
                     </div>
                 </div>
@@ -291,7 +276,7 @@
                     </div>
                 </div>
                 <div class="rounded-[2.5rem] overflow-hidden shadow-2xl h-[450px] bg-gray-200 relative group">
-                    <img src="images/memorial_art_premium.jpg"
+                    <img src="images/professional_funeral_service.png"
                         alt="Memorial Jewel"
                         class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
                 </div>
@@ -375,13 +360,15 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
                 <div class="col-span-2 md:col-span-2">
                     <div class="flex items-center gap-2 mb-4">
-                        <img src="./images/onsil_logo_tr.png" width="32" height="32" class="w-8 h-8 object-contain" alt="The 온실 로고">
-                        <span class="font-bold text-lg text-[#2C3E50]">The 온실</span>
+                        <div class="w-8 h-8 rounded-lg bg-[#2C3E50] flex items-center justify-center">
+                            <span class="text-white text-xs font-bold">온</span>
+                        </div>
+                        <span class="font-bold text-lg text-[#2C3E50]">온실(Onsil)</span>
                     </div>
                     <p class="text-sm text-[#2C3E50]/40 mb-4 leading-relaxed max-w-sm">
                         반려동물 장례식장 비교부터 예약까지.<br>어려운 결정에 늘 온실이 함께합니다.
                     </p>
-                    <p class="text-xs text-[#2C3E50]/30">The 온실 | 대표 조영호 | 문의 1551-5052<br>사업자등록번호 : 181-18-02826 | 통신판매업 : 제 2026-부천원미-0815 호<br>주소 : 부천시 삼작로 280번길 53-9 행우라폴리움 502호</p>
+                    <p class="text-xs text-[#2C3E50]/30">(주)더온실 | 대표: 조영호 | 문의: 1668-5165</p>
                 </div>
                 <div>
                     <h3 class="font-bold text-sm text-[#2C3E50] mb-4">서비스</h3>
@@ -390,7 +377,7 @@
                         <li><a href="guide.html" class="hover:text-[#2C3E50] transition-colors">이별 가이드</a></li>
                         <li><a href="self-diagnosis.html" class="hover:text-[#2C3E50] transition-colors">건강자가진단</a></li>
                         <li><a href="memory.html" class="hover:text-[#2C3E50] transition-colors">추억 가이드</a></li>
-                        <li><a href="community.html" class="hover:text-[#2C3E50] transition-colors">커뮤니티</a></li>
+                        <li><a href="community.html" class="hover:text-[#2C3E50] transition-colors">보호자 후기</a></li>
                     </ul>
                 </div>
                 <div>
@@ -401,13 +388,12 @@
                                 class="hover:text-[#2C3E50] transition-colors font-bold text-accent">제휴문의</a></li>
                         <li><a href="terms.html" class="hover:text-[#2C3E50] transition-colors">이용약관</a></li>
                         <li><a href="privacy.html" class="hover:text-[#2C3E50] transition-colors">개인정보처리방침</a></li>
-                        <li class="pt-2 border-t border-[#2C3E50]/5"><a href="partner-login.html" class="text-xs font-bold text-gray-400 hover:text-partner transition-colors"><i class="fas fa-lock text-[10px] mr-1"></i> 업체 로그인</a></li>
                     </ul>
                 </div>
             </div>
             <div
                 class="border-t border-[#2C3E50]/5 mt-10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-                <p class="text-xs text-[#2C3E50]/30">&copy; 2026 The 온실. All rights reserved.</p>
+                <p class="text-xs text-[#2C3E50]/30">&copy; 2026 온실(Onsil). All rights reserved.</p>
                 <div class="flex gap-4">
                     <a href="#"
                         class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
@@ -493,7 +479,7 @@
                             "${msg.content}"
                         </p>
                         <div class="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between ${isRight ? 'flex-row-reverse' : ''}">
-                            <span class="text-[10px] text-gray-400 font-medium">${msg.nickname} ? ${msg.time}</span>
+                            <span class="text-[10px] text-gray-400 font-medium">${msg.nickname} • ${msg.time}</span>
                             <div class="flex items-center gap-2 text-[10px] text-[#C5A065]">
                                 <i class="fas fa-heart"></i>
                                 <span>위로해요</span>
@@ -577,9 +563,11 @@
             const panel = document.getElementById('mobile-nav-panel');
             if (nav.classList.contains('hidden')) {
                 nav.classList.remove('hidden');
-                setTimeout(() => panel.classList.remove('translate-x-full'), 10);
+                requestAnimationFrame(() => panel.classList.add('mobile-nav-open'));
+                document.body.style.overflow = 'hidden';
             } else {
-                panel.classList.add('translate-x-full');
+                panel.classList.remove('mobile-nav-open');
+                document.body.style.overflow = '';
                 setTimeout(() => nav.classList.add('hidden'), 300);
             }
         }
@@ -590,64 +578,48 @@
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
         <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
             id="mobile-nav-panel">
-            <div class="p-6 h-full flex flex-col pt-safe">
+            <div class="p-6">
                 <div class="flex justify-between items-center mb-8">
-                    <span class="font-bold text-lg text-brand">메뉴</span>
+                    <span class="font-bold text-lg text-[#1B2B48]">메뉴</span>
                     <button onclick="toggleMobileNav()"
-                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
                         <i class="fas fa-times text-gray-500"></i>
                     </button>
                 </div>
-                <nav class="space-y-1 flex-1">
+                <nav class="space-y-1">
                     <a href="search.html?quote=true"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all bg-brand-cream text-brand font-bold mb-4 hover:shadow-md">
-                        <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
-                        <span>바로 견적받기</span>
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-gray-50 transition-colors bg-gray-50">
+                        <i class="fas fa-calculator text-[#C5A065] w-5 text-center"></i>
+                        <span class="font-bold text-[#1B2B48]">바로 견적받기</span>
                     </a>
                     <a href="search.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-search w-5 text-center"></i>
-                        <span>장례식장 찾기</span>
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-search text-[#C5A065] w-5 text-center"></i>
+                        <span class="font-medium text-[#1B2B48]">장례식장 찾기</span>
                     </a>
                     <a href="guide.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-book-open w-5 text-center"></i>
-                        <span>이별 가이드</span>
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-book-open text-[#C5A065] w-5 text-center"></i>
+                        <span class="font-medium text-[#1B2B48]">이별 가이드</span>
                     </a>
                     <a href="self-diagnosis.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-stethoscope w-5 text-center"></i>
-                        <span>건강자가진단</span>
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-heartbeat text-[#C5A065] w-5 text-center"></i>
+                        <span class="font-medium text-[#1B2B48]">건강자가진단</span>
                     </a>
                     <a href="memory.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-brand/5 text-brand font-bold transition-colors">
-                        <i class="fas fa-heart w-5 text-center"></i>
-                        <span>추억 가이드</span>
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-paw text-[#C5A065] w-5 text-center"></i>
+                        <span class="font-medium text-[#1B2B48]">추억 가이드</span>
                     </a>
                     <a href="community.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-comments w-5 text-center"></i>
-                        <span>커뮤니티</span>
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-comment-dots text-[#C5A065] w-5 text-center"></i>
+                        <span class="font-medium text-[#1B2B48]">보호자 후기</span>
                     </a>
-                </nav>
-                <!-- Mobile Bottom Actions -->
-                <div class="pt-6 border-t border-brand/5 space-y-3">
-                    <button
-                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
-                        class="w-full bg-brand-sage text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-sage/90 transition-colors">
-                        <i class="fas fa-calendar-check text-sm"></i> 예약하기
-                    </button>
-                    <a href="tel:1551-5052"
-                        class="w-full bg-brand-warm text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-warmDark transition-colors">
-                        <i class="fas fa-phone-alt text-sm"></i> 1551-5052 상담원 연결
-                    </a>
-                </div>
             </div>
         </div>
     </div>
-    <script src="js/auth.js"></script>
-    <script src="js/pwa.js"></script>
-    <script src="js/channel-talk.js"></script>
 </body>
 
 </html>
