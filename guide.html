@@ -110,33 +110,46 @@
 <body class="bg-brand-cream text-brand overflow-x-hidden">
 
     <!-- Header -->
-    <header id="main-header" class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-brand/5 transition-all outline-none">
+    <header id="main-header" class="fixed top-0 z-50 w-full transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
-            <!-- Logo -->
-            <a href="index.html" class="flex items-center gap-2 group flex-shrink-0">
-                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="온실 캐릭터 로고">
-                <span class="font-bold text-lg text-brand tracking-tight">The 온실</span>
+            <a href="index.html" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
+                    <span class="text-white text-xs font-bold">온</span>
+                </div>
+                <span class="font-bold text-lg text-brand tracking-tight">온실(Onsil)</span>
             </a>
 
             <!-- Desktop Nav -->
             <nav class="hidden lg:flex items-center gap-1">
-                <a href="search.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">장례식장 찾기</a>
-                <a href="guide.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg">이별 가이드</a>
-                <a href="self-diagnosis.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">건강자가진단</a>
-                <a href="memory.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">추억 가이드</a>
-                <a href="community.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">커뮤니티</a>
+                <a href="search.html"
+                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">장례식장 찾기</a>
+                <a href="guide.html"
+                    class="px-4 py-2 text-sm font-medium text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">이별 가이드</a>
+                <a href="self-diagnosis.html"
+                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">건강자가진단</a>
+                <a href="memory.html"
+                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">추억 가이드</a>
+                <a href="community.html"
+                    class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">보호자 후기</a>
             </nav>
 
-            <!-- Desktop Actions -->
-            <div class="hidden lg:flex items-center gap-2">
+            <div class="hidden lg:flex items-center gap-1.5 flex-nowrap shrink-0">
                 <div id="auth-container"></div>
-                <a href="search.html?quote=true" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
-                    <i class="fas fa-calculator"></i> 견적
+                <a href="search.html?quote=true"
+                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">
+                    <i class="fas fa-calculator"></i> 바로 견적받기
                 </a>
-                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
-                    <i class="fas fa-calendar-check text-sm"></i> 예약
+                <button id="install-pwa-btn"
+                    class="hidden bg-brand text-white hover:bg-brand-light px-3 py-2.5 rounded-xl text-sm font-medium transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">
+                    <i class="fas fa-download"></i> 앱 설치
                 </button>
-                <a href="tel:1551-5052" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2">
+                <button
+                    onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                    class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">
+                    <i class="fas fa-calendar-check"></i> 예약하기
+                </button>
+                <a href="tel:1551-5052"
+                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-brand-warm/20 flex items-center gap-1.5 whitespace-nowrap">
                     <i class="fas fa-phone-alt text-xs"></i> 1551-5052
                 </a>
             </div>
@@ -817,6 +830,72 @@
             }, 300);
         }
     </script>
+    <!-- Footer -->
+    <footer class="bg-brand-cream border-t border-brand/5 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+                <div class="col-span-2 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
+                            <span class="text-white text-xs font-bold">온</span>
+                        </div>
+                        <span class="font-bold text-lg text-brand">온실(Onsil)</span>
+                    </div>
+                    <p class="text-sm text-brand/40 mb-6 leading-relaxed max-w-sm">
+                        반려동물 장례식장 비교부터 예약까지.<br>어려운 결정에 늘 온실이 함께합니다.
+                    </p>
+                    <div class="space-y-1 text-xs text-brand/30">
+                        <p>상호명: (주)더온실 | 대표자: 조영호 | 개인정보관리책임자: 조영호</p>
+                        <p>사업자등록번호: 181-18-02826 | 통신판매업신고: 제 2024-부천원미-2126호</p>
+                        <p>주소: 경기도 부천시 삼작로 280번길 53-9, 행우라폴리움 502호</p>
+                        <p>이메일: master@theonsil.com | 전화: 1551-5052</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-brand mb-4">서비스</h3>
+                    <ul class="space-y-3 text-sm text-brand/50">
+                        <li><a href="search.html" class="hover:text-brand transition-colors">장례식장 찾기</a></li>
+                        <li><a href="guide.html" class="hover:text-brand transition-colors">장례 가이드</a></li>
+                        <li><a href="memory.html" class="hover:text-brand transition-colors">추억 가이드</a></li>
+                        <li><a href="community.html" class="hover:text-brand transition-colors">보호자 후기</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-brand mb-4">고객지원</h3>
+                    <ul class="space-y-3 text-sm text-brand/50">
+                        <li><a href="contact.html" class="hover:text-brand transition-colors">문의하기</a></li>
+                        <li><a href="partnership.html"
+                                class="hover:text-brand transition-colors font-bold text-brand-warm">제휴문의</a></li>
+                        <li><a href="terms.html" class="hover:text-brand transition-colors">이용약관</a></li>
+                        <li><a href="privacy.html" class="hover:text-brand transition-colors">개인정보처리방침</a></li>
+                        <li class="pt-2 border-t border-brand/5">
+                            <a href="partner-login.html" class="text-xs font-bold text-gray-400 hover:text-partner transition-colors">
+                                <i class="fas fa-lock text-[10px] mr-1"></i> 업체 로그인
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="border-t border-brand/5 mt-10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-brand/30">&copy; 2026 온실(Onsil). All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="w-9 h-9 bg-brand/5 rounded-full flex items-center justify-center text-brand/30 hover:text-brand hover:bg-brand/10 transition-all font-sans">
+                        <i class="fab fa-instagram text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 bg-brand/5 rounded-full flex items-center justify-center text-brand/30 hover:text-brand hover:bg-brand/10 transition-all font-sans">
+                        <i class="fab fa-youtube text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 bg-brand/5 rounded-full flex items-center justify-center text-brand/30 hover:text-brand hover:bg-brand/10 transition-all font-sans">
+                        <i class="fas fa-comment text-sm"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
     <script src="js/channel-talk.js"></script>
 </body>
 </html>

@@ -15,6 +15,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <script>
+        const HOMES_DATA = [
+            { name: "스냅플러그", lat: 37.518174, lng: 126.779774, region: "경기 부천", price: "20만원~", isAlliance: true },
+            { name: "펫포레스트 남양주점", lat: 37.619511, lng: 127.276363, region: "경기 남양주", price: "25만원~", isAlliance: true },
+        ];
         tailwind.config = {
             theme: {
                 extend: {
@@ -307,10 +311,9 @@
                     <h1 class="text-4xl md:text-5xl lg:text-7xl font-black text-brand leading-[1.1] hero-title">
                         반려동물 장례식장,<br class="hidden md:block">비교부터 예약까지
                     </h1>
-                    <p class="text-lg md:text-xl text-brand/60 font-light leading-relaxed max-w-xl">
-                        50여 곳의 정식 등록 장례식장을 한눈에 비교하고<br class="hidden sm:block">
-                        투명한 가격으로 안심하고 예약하세요.
-                    </p>
+                        <p class="text-brand/60 mb-8 text-sm sm:text-base leading-relaxed">
+                            상담없이, 직접 견적받기 또는 채널톡을 통해<br class="hidden sm:block"> 장례식장을 추천받아 예약하세요.
+                        </p>
 
                     <div class="flex flex-col sm:flex-row gap-3 pt-2">
                         <a href="search.html"
@@ -346,6 +349,23 @@
                         <div class="space-y-2.5">
                             <div
                                 class="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-4 bg-brand-cream rounded-2xl border border-brand/5">
+                                <div
+                                    class="w-12 h-12 sm:w-16 sm:h-16 bg-brand-warm/10 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fas fa-building text-brand-warm text-lg sm:text-xl"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="text-[10px] px-1.5 py-0.5 bg-brand-warm/15 text-brand-warm rounded font-bold">제휴</span>
+                                        <p class="font-bold text-brand text-sm truncate">스냅플러그</p>
+                                    </div>
+                                    <p class="text-xs text-brand/40 mt-0.5">경기 부천 · 5.0★</p>
+                                </div>
+                                <p class="font-bold text-brand text-sm whitespace-nowrap">20만원~</p>
+                            </div>
+
+                            <div
+                                class="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-4 bg-white rounded-2xl border border-brand/5">
                                 <div
                                     class="w-12 h-12 sm:w-16 sm:h-16 bg-brand-warm/10 rounded-xl flex items-center justify-center shrink-0">
                                     <i class="fas fa-building text-brand-warm text-lg sm:text-xl"></i>
@@ -817,7 +837,12 @@
                         <li><a href="partnership.html"
                                 class="hover:text-brand transition-colors font-bold text-brand-warm">제휴문의</a></li>
                         <li><a href="terms.html" class="hover:text-brand transition-colors">이용약관</a></li>
-                        <li><a href="terms.html" class="hover:text-brand transition-colors">개인정보처리방침</a></li>
+                        <li><a href="privacy.html" class="hover:text-brand transition-colors">개인정보처리방침</a></li>
+                        <li class="pt-2 border-t border-brand/5">
+                            <a href="partner-login.html" class="text-xs font-bold text-gray-400 hover:text-partner transition-colors">
+                                <i class="fas fa-lock text-[10px] mr-1"></i> 업체 로그인
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
