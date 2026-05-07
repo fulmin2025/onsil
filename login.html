@@ -182,6 +182,25 @@
             }
         }
 
+        async function handleAppleLogin() {
+            try {
+                const sb = getSupabase();
+                if (!sb) throw new Error('인증 서비스를 연결할 수 없습니다.');
+
+                const { data, error } = await sb.auth.signInWithOAuth({
+                    provider: 'apple',
+                    options: {
+                        redirectTo: window.location.origin + '/index.html'
+                    }
+                });
+
+                if (error) throw error;
+            } catch (error) {
+                console.error('Apple Login Error:', error);
+                alert('Apple 로그인 중 오류가 발생했습니다: ' + error.message);
+            }
+        }
+
         async function handleKakaoLogin() {
             try {
                 const sb = getSupabase();
