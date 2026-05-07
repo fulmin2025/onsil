@@ -15,12 +15,19 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: { DEFAULT: "#1B2B48" },
-                        secondary: { DEFAULT: "#FAFAFA" },
-                        accent: { DEFAULT: "#C5A065" },
+                        brand: {
+                            DEFAULT: '#2C3E50',
+                            light: '#34495E',
+                            dark: '#1A252F',
+                            cream: '#F8F6F3',
+                            warm: '#D4A574',
+                            warmDark: '#B8894E',
+                            sage: '#87A08B',
+                            mist: '#E8ECE9'
+                        }
                     },
                     fontFamily: {
-                        sans: ['Pretendard', 'sans-serif'],
+                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
                         serif: ['Nanum Myeongjo', 'serif'],
                     }
                 }
@@ -33,7 +40,7 @@
     </style>
 </head>
 
-<body class="bg-gray-50 font-sans flex items-center justify-center min-h-screen">
+<body class="bg-brand-cream font-sans flex items-center justify-center min-h-screen p-4 sm:p-6 antialiased text-brand">
 
 
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden p-8">
