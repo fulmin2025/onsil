@@ -182,24 +182,24 @@
                     class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">보호자 후기</a>
             </nav>
 
-            <div class="hidden lg:flex items-center gap-3">
+            <div class="hidden lg:flex items-center gap-1.5 flex-nowrap shrink-0">
                 <div id="auth-container"></div>
                 <a href="search.html?quote=true"
-                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-2">
+                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">
                     <i class="fas fa-calculator"></i> 바로 견적받기
                 </a>
                 <button id="install-pwa-btn"
-                    class="hidden bg-brand text-white hover:bg-brand-light px-4 py-2.5 rounded-xl text-sm font-medium transition-colors shadow-md flex items-center gap-2">
+                    class="hidden bg-brand text-white hover:bg-brand-light px-3 py-2.5 rounded-xl text-sm font-medium transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">
                     <i class="fas fa-download"></i> 앱 설치
                 </button>
                 <button
                     onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
-                    class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-2">
+                    class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">
                     <i class="fas fa-calendar-check"></i> 예약하기
                 </button>
-                <a href="tel:1668-5165"
-                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-brand-warm/20 flex items-center gap-2">
-                    <i class="fas fa-phone-alt text-xs"></i> 1668-5165
+                <a href="tel:1551-5052"
+                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-brand-warm/20 flex items-center gap-1.5 whitespace-nowrap">
+                    <i class="fas fa-phone-alt text-xs"></i> 1551-5052
                 </a>
             </div>
 
@@ -268,9 +268,9 @@
                         class="w-full flex items-center justify-center gap-2 bg-brand-sage text-white py-3.5 rounded-xl font-bold shadow-lg mb-3 hover:bg-[#87A08B]/90 transition-colors">
                         <i class="fas fa-calendar-check"></i> 예약하기
                     </button>
-                    <a href="tel:1668-5165"
+                    <a href="tel:1551-5052"
                         class="flex items-center justify-center gap-2 bg-brand-warm text-white py-3.5 rounded-xl font-bold shadow-lg">
-                        <i class="fas fa-phone-alt"></i> 상담전화 1668-5165
+                        <i class="fas fa-phone-alt"></i> 상담전화 1551-5052
                     </a>
                     <div class="flex gap-2 mt-3">
                         <a href="login.html"
@@ -770,9 +770,9 @@
                             class="bg-white text-brand hover:bg-brand-cream px-8 py-4 rounded-2xl font-bold transition-all shadow-lg inline-flex items-center justify-center gap-2">
                             <i class="fas fa-search"></i> 장례식장 찾기
                         </a>
-                        <a href="tel:1668-5165"
+                        <a href="tel:1551-5052"
                             class="bg-brand-warm hover:bg-brand-warmDark text-white px-8 py-4 rounded-2xl font-bold transition-all shadow-lg inline-flex items-center justify-center gap-2">
-                            <i class="fas fa-phone-alt"></i> 1668-5165
+                            <i class="fas fa-phone-alt"></i> 1551-5052
                         </a>
                     </div>
                 </div>
@@ -791,10 +791,15 @@
                         </div>
                         <span class="font-bold text-lg text-brand">온실(Onsil)</span>
                     </div>
-                    <p class="text-sm text-brand/40 mb-4 leading-relaxed max-w-sm">
+                    <p class="text-sm text-brand/40 mb-6 leading-relaxed max-w-sm">
                         반려동물 장례식장 비교부터 예약까지.<br>어려운 결정에 늘 온실이 함께합니다.
                     </p>
-                    <p class="text-xs text-brand/30">(주)더온실 | 대표: 조영호 | 문의: 1668-5165</p>
+                    <div class="space-y-1 text-xs text-brand/30">
+                        <p>상호명: (주)더온실 | 대표자: 조영호 | 개인정보관리책임자: 조영호</p>
+                        <p>사업자등록번호: 181-18-02826 | 통신판매업신고: 제 2024-부천원미-2126호</p>
+                        <p>주소: 경기도 부천시 삼작로 280번길 53-9, 행우라폴리움 502호</p>
+                        <p>이메일: master@theonsil.com | 전화: 1551-5052</p>
+                    </div>
                 </div>
                 <div>
                     <h3 class="font-bold text-sm text-brand mb-4">서비스</h3>
@@ -876,7 +881,7 @@
 
     <!-- Floating Buttons (Mobile/Adjusted) -->
     <div class="fixed bottom-32 sm:bottom-40 right-6 z-40 flex flex-col gap-3">
-        <a href="tel:1668-5165"
+        <a href="tel:1551-5052"
             class="lg:hidden w-14 h-14 bg-brand text-white rounded-full shadow-xl shadow-brand/30 flex items-center justify-center hover:scale-110 transition-transform">
             <i class="fas fa-phone-alt text-lg"></i>
         </a>

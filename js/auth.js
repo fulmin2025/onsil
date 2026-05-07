@@ -291,10 +291,10 @@ const Auth = {
 
             authContainer.innerHTML = `
                 <div class="relative group">
-                    <button class="flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded-full hover:bg-gray-100 transition-all font-medium text-gray-700">
+                    <button class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full hover:bg-gray-100 transition-all font-medium text-gray-700">
                         <i class="fas fa-user-circle text-lg text-[#1B2B48]"></i>
-                        <span><span class="font-bold text-[#1B2B48]">${displayName}</span>님${adminBadge}</span>
-                        <i class="fas fa-chevron-down text-[10px] ml-1 opacity-50"></i>
+                        <span class="text-xs"><span class="font-bold text-[#1B2B48]">${displayName}</span>님${adminBadge}</span>
+                        <i class="fas fa-chevron-down text-[8px] ml-0.5 opacity-50"></i>
                     </button>
                     <div class="absolute right-0 top-full pt-2 w-48 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all z-50">
                         <div class="bg-white border border-gray-100 rounded-2xl shadow-xl p-2 space-y-1">
