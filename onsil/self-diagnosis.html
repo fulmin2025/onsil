@@ -125,10 +125,6 @@
                     class="bg-brand-warm hover:bg-brand-warmDark text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">
                     <i class="fas fa-calculator"></i> 바로 견적받기
                 </a>
-                <button id="install-pwa-btn"
-                    class="hidden bg-brand text-white hover:bg-brand-light px-3 py-2.5 rounded-xl text-sm font-medium transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">
-                    <i class="fas fa-download"></i> 앱 설치
-                </button>
                 <button
                     onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
                     class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">
