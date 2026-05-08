@@ -134,7 +134,7 @@
 
 <body class="bg-gray-50 text-gray-900">
     <!-- Header -->
-    <header id="main-header" class="sticky top-0 z-50 w-full bg-white border-b border-brand/5 transition-all outline-none">
+    <header id="main-header" class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-brand/5 transition-all outline-none">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
             <!-- Logo -->
             <a href="index.html" class="flex items-center gap-2 group flex-shrink-0">
@@ -181,7 +181,7 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-8 text-[#1B2B48]">장례식장 찾기</h1>
+        <h1 class="text-3xl font-bold mb-8 text-[#1B2B48]">안심 장례식장 찾기</h1>
         <div class="flex flex-col lg:flex-row justify-between mb-6 gap-4 items-start lg:items-center">
             <span id="result-count" class="text-sm text-gray-600 font-medium whitespace-nowrap">총 <span
                     class="text-[#C5A065] font-bold">0</span>개</span>
@@ -194,7 +194,7 @@
                 </select>
                 <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar flex-nowrap w-full lg:w-auto">
                     <button id="btn-open-filter" onclick="openFilterModal()"
-                        class="flex-shrink-0 whitespace-nowrap px-3 py-2 bg-white text-[#8D7B68] border-2 border-[#8D7B68] rounded-md text-xs sm:text-sm font-bold shadow-sm hover:bg-[#F9F5F0] flex items-center gap-1.5 transition-colors">
+                        class="md:hidden flex-shrink-0 whitespace-nowrap px-3 py-2 bg-white text-[#8D7B68] border-2 border-[#8D7B68] rounded-md text-xs sm:text-sm font-bold shadow-sm hover:bg-[#F9F5F0] flex items-center gap-1.5 transition-colors">
                         <i class="fas fa-filter text-[10px] sm:text-xs"></i> 필터
                     </button>
                     <button id="btn-instant-quote"
@@ -213,7 +213,7 @@
             </div>
         </div>
         <div class="flex flex-col md:flex-row gap-8">
-            <aside class="hidden w-1/4 space-y-6">
+            <aside class="hidden md:flex flex-col w-1/4 space-y-6">
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-24">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="font-bold text-lg text-[#8D7B68]">필터</h2>
@@ -495,30 +495,26 @@
                 <!-- Step 1: Region -->
                 <div>
                     <h3 class="font-bold text-sm text-gray-400 mb-4 uppercase tracking-wider text-center">지역 선택</h3>
-                    <div class="grid grid-cols-3 gap-2">
+                    <div class="grid grid-cols-2 gap-2">
                         <label class="cursor-pointer">
-                            <input type="radio" name="quote-region" value="seoul" class="hidden quote-input" checked>
-                            <div
-                                class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">
-                                서울</div>
+                            <input type="radio" name="quote-region" value="sudogwon" class="hidden quote-input" checked>
+                            <div class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">서울/경기/인천</div>
                         </label>
                         <label class="cursor-pointer">
-                            <input type="radio" name="quote-region" value="gyeonggi" class="hidden quote-input">
-                            <div
-                                class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">
-                                경기</div>
+                            <input type="radio" name="quote-region" value="chungcheong" class="hidden quote-input">
+                            <div class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">충청/대전/세종</div>
                         </label>
                         <label class="cursor-pointer">
-                            <input type="radio" name="quote-region" value="incheon" class="hidden quote-input">
-                            <div
-                                class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">
-                                인천</div>
+                            <input type="radio" name="quote-region" value="gyeongsang" class="hidden quote-input">
+                            <div class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">경상/부산/대구</div>
                         </label>
                         <label class="cursor-pointer">
-                            <input type="radio" name="quote-region" value="others" class="hidden quote-input">
-                            <div
-                                class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">
-                                기타</div>
+                            <input type="radio" name="quote-region" value="jeolla" class="hidden quote-input">
+                            <div class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">전라/광주</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="quote-region" value="gangwon" class="hidden quote-input">
+                            <div class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">강원</div>
                         </label>
                     </div>
                 </div>
@@ -3337,23 +3333,55 @@
         // Attach event listeners to radios
         document.querySelectorAll('input[name="quote-weight"]').forEach(r => r.addEventListener('change', updateEstimatedQuote));
 
+        // --- Sync Filters (Sidebar & Modal) ---
+        document.addEventListener('change', (e) => {
+            if (e.target.classList.contains('filter-checkbox') || e.target.id === 'filter-alliance' || e.target.id === 'mobile-filter-alliance') {
+                const isAlliance = e.target.id === 'filter-alliance' || e.target.id === 'mobile-filter-alliance';
+                if (isAlliance) {
+                    const otherId = (e.target.id === 'filter-alliance') ? 'mobile-filter-alliance' : 'filter-alliance';
+                    const other = document.getElementById(otherId);
+                    if (other) other.checked = e.target.checked;
+                } else {
+                    const val = e.target.value;
+                    document.querySelectorAll(`.filter-checkbox[value="${val}"]`).forEach(cb => {
+                        cb.checked = e.target.checked;
+                    });
+                }
+                filterItems();
+            }
+        });
+
         function applyQuoteFilter() {
             const region = document.querySelector('input[name="quote-region"]:checked').value;
             const total = updateEstimatedQuote();
+            const regionName = {
+                'sudogwon': '서울/경기/인천',
+                'chungcheong': '충청/대전/세종',
+                'gyeongsang': '경상/부산/대구',
+                'jeolla': '전라/광주',
+                'gangwon': '강원'
+            }[region] || region;
 
             // Apply standard filters
             const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
             filterCheckboxes.forEach(cb => {
                 cb.checked = (cb.value === region);
             });
-            document.getElementById('filter-alliance').checked = true; // Always show alliance only for quote results
+            
+            // Sync alliance checkboxes
+            const allianceCb = document.getElementById('filter-alliance');
+            const mobileAllianceCb = document.getElementById('mobile-filter-alliance');
+            if(allianceCb) allianceCb.checked = true;
+            if(mobileAllianceCb) mobileAllianceCb.checked = true;
 
             // Trigger search filter and switch view
             setTimeout(() => {
-                filterItems(); // Correct function name
-                showView('list'); // Automatically switch to List View
+                filterItems();
+                showView('list');
                 closeQuoteModal();
-                alert(`선택하신 예산(약 ${total.toLocaleString()}원)과 ${REGION_CONFIG[region]?.name || region} 지역에 기반한 추천 결과입니다.`);
+                setTimeout(() => {
+                    alert(`선택하신 지역(${regionName})에 기반한 추천 결과입니다.`);
+                }, 300);
             }, 100);
         }
 
@@ -3638,6 +3666,98 @@
             const content = document.getElementById('filter-modal-content');
             content.classList.add('translate-x-full');
             setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+    </script>
+    <!-- Filter Modal (Mobile Only) -->
+    <div id="filter-modal" class="fixed inset-0 z-[150] hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeFilterModal()"></div>
+        <div id="filter-modal-content" class="absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-white shadow-2xl flex flex-col translate-x-full transition-transform duration-300">
+            <div class="flex items-center justify-between p-5 border-b">
+                <h3 class="text-lg font-bold text-[#8D7B68]">필터 설정</h3>
+                <button onclick="closeFilterModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-5 space-y-8">
+                <!-- Alliance Filter -->
+                <div class="p-4 bg-[#8D7B68]/5 rounded-xl border border-[#8D7B68]/10">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="checkbox" id="mobile-filter-alliance" class="w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
+                        <span class="text-sm font-bold text-[#8D7B68]">온실 제휴 업체만 보기</span>
+                    </label>
+                </div>
+
+                <!-- Region Filter -->
+                <div>
+                    <h4 class="font-bold text-sm mb-4 text-gray-400">지역 선택</h4>
+                    <div class="grid grid-cols-1 gap-3">
+                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="checkbox" value="sudogwon" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
+                            <span class="text-gray-700 text-sm">서울 / 경기 / 인천</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="checkbox" value="chungcheong" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
+                            <span class="text-gray-700 text-sm">충청 / 대전 / 세종</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="checkbox" value="gyeongsang" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
+                            <span class="text-gray-700 text-sm">경상 / 부산 / 대구</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="checkbox" value="jeolla" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
+                            <span class="text-gray-700 text-sm">전라 / 광주</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="checkbox" value="gangwon" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
+                            <span class="text-gray-700 text-sm">강원</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Facility Filter -->
+                <div>
+                    <h4 class="font-bold text-sm mb-4 text-gray-400">보유 시설</h4>
+                    <div class="grid grid-cols-1 gap-3">
+                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="checkbox" value="memorial" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
+                            <span class="text-gray-700 text-sm">개별추모실</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="checkbox" value="ossuary" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
+                            <span class="text-gray-700 text-sm">납골당</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="checkbox" value="burial" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
+                            <span class="text-gray-700 text-sm">수목장</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-5 border-t bg-gray-50 flex gap-3">
+                <button onclick="document.querySelectorAll('.filter-checkbox').forEach(cb => cb.checked = false); filterItems();" class="flex-1 py-4 text-gray-500 font-bold border border-gray-200 rounded-2xl bg-white transition-all active:scale-[0.98]">초기화</button>
+                <button onclick="closeFilterModal()" class="flex-[2] py-4 bg-[#8D7B68] text-white font-bold rounded-2xl shadow-lg shadow-[#8D7B68]/30 transition-all active:scale-[0.98]">결과 보기</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openFilterModal() {
+            const modal = document.getElementById('filter-modal');
+            const content = document.getElementById('filter-modal-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => content.classList.remove('translate-x-full'), 10);
+            document.body.style.overflow = 'hidden';
+        }
+        function closeFilterModal() {
+            const modal = document.getElementById('filter-modal');
+            const content = document.getElementById('filter-modal-content');
+            content.classList.add('translate-x-full');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300);
         }
     </script>
 </body>
