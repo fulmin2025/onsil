@@ -18,7 +18,7 @@
             });
         }
     </script>
-    <script src="js/auth.js?v=debug_v15_onsil"></script>
+    <script src="js/auth.js?v=v16_final_onsil"></script>
     <script>
         tailwind.config = { theme: { extend: { colors: { brand: "#2C3E50", partner: "#1B2B48", accent: "#D4A574" }, fontFamily: { sans: ["Pretendard", "sans-serif"] } } } }
     </script>
@@ -83,7 +83,7 @@
                     <tbody id="home-list" class="divide-y divide-gray-50">
                         <tr><td colspan="3" class="px-8 py-20 text-center text-gray-400">
                             <i class="fas fa-spinner fa-spin text-2xl mb-4 block"></i>
-                            <p id="loading-text" class="text-sm font-medium">데이터 수신 및 렌더링 중... (v15)</p>
+                            <p id="loading-text" class="text-sm font-medium">최종 로딩 중입니다... (v16)</p>
                         </td></tr>
                     </tbody>
                 </table>
@@ -355,7 +355,7 @@
         }
 
         async function deleteHome(id, name) {
-            if (!confirm("[" + name + ] 정보를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) return;
+            if (!confirm("[" + name + "] 정보를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) return;
             const res = await Auth.deleteFuneralHome(id);
             if (res.success) { alert("삭제되었습니다."); loadFuneralHomes(); }
             else { alert("삭제 실패: " + res.message); }
