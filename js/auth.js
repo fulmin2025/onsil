@@ -226,30 +226,27 @@ const Auth = {
      */
     getCurrentUser: async () => {
         try {
-            console.log('Fetching current user...');
+            console.log('Auth.getCurrentUser: Attempting to fetch session...');
             const client = getSupabase();
-            if (!client) return null;
+            if (!client) {
+                console.error('Auth.getCurrentUser: Supabase client is NULL');
+                return null;
+            }
 
-            // Wait up to 3 seconds for session
-            const userPromise = client.auth.getUser();
-            const timeoutPromise = new Promise((_, reject) => 
-                setTimeout(() => reject(new Error('Auth Timeout')), 3000)
-            );
-
-            const { data, error } = await Promise.race([userPromise, timeoutPromise]);
+            const { data, error } = await client.auth.getUser();
             
             if (error) {
-                console.warn('Auth getUser error:', error);
+                console.warn('Auth.getCurrentUser: getUser error:', error.message);
                 return null;
             }
             
             const user = data?.user;
             if (!user) {
-                console.log('No active session found.');
+                console.log('Auth.getCurrentUser: No user in session.');
                 return null;
             }
 
-            console.log('Session user found:', user.email);
+            console.log('Auth.getCurrentUser: User identified:', user.email);
 
             let profile = null;
             try {
@@ -260,7 +257,7 @@ const Auth = {
                     .maybeSingle();
                 if (!profileError) profile = profileData;
             } catch (e) {
-                console.warn('Profile fetch failed:', e);
+                console.warn('Auth.getCurrentUser: Profile fetch failed:', e);
             }
 
             const mergedUser = { ...user, ...(profile || {}) };
@@ -276,7 +273,7 @@ const Auth = {
             }
             return mergedUser;
         } catch (error) {
-            console.error('getCurrentUser error:', error);
+            console.error('Auth.getCurrentUser: CRITICAL ERROR:', error);
             return null;
         }
     },
@@ -453,26 +450,29 @@ const Auth = {
      */
     getAllFuneralHomes: async () => {
         try {
+            console.log('Auth.getAllFuneralHomes: Starting fetch...');
             const client = getSupabase();
-            if (!client) return [];
+            if (!client) {
+                console.error('Auth.getAllFuneralHomes: Client not found');
+                return [];
+            }
 
-            // Add timeout for data fetch
-            const fetchPromise = client
+            console.log('Auth.getAllFuneralHomes: Sending query to public.funeral_homes...');
+            const { data, error } = await client
                 .from('funeral_homes')
                 .select('*')
                 .order('is_alliance', { ascending: false })
                 .order('name', { ascending: true });
             
-            const timeoutPromise = new Promise((_, reject) => 
-                setTimeout(() => reject(new Error('Data Fetch Timeout')), 5000)
-            );
+            if (error) {
+                console.error('Auth.getAllFuneralHomes: Query Error:', error.message);
+                throw error;
+            }
 
-            const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
-            
-            if (error) throw error;
+            console.log('Auth.getAllFuneralHomes: Fetch complete. Count:', data ? data.length : 0);
             return data || [];
         } catch (error) {
-            console.error('getAllFuneralHomes error:', error);
+            console.error('Auth.getAllFuneralHomes: EXCEPTION:', error);
             return [];
         }
     },

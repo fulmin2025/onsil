@@ -224,30 +224,21 @@ const Auth = {
      */
     getCurrentUser: async () => {
         try {
-            console.log('Fetching current user (onsil)...');
+            console.log('Auth.getCurrentUser (onsil): Attempting fetch...');
             const client = getSupabase();
             if (!client) return null;
 
-            // Wait up to 3 seconds for session
-            const userPromise = client.auth.getUser();
-            const timeoutPromise = new Promise((_, reject) => 
-                setTimeout(() => reject(new Error('Auth Timeout')), 3000)
-            );
-
-            const { data, error } = await Promise.race([userPromise, timeoutPromise]);
+            const { data, error } = await client.auth.getUser();
             
             if (error) {
-                console.warn('Auth getUser error:', error);
+                console.warn('Auth.getCurrentUser (onsil): error:', error.message);
                 return null;
             }
             
             const user = data?.user;
-            if (!user) {
-                console.log('No active session found.');
-                return null;
-            }
+            if (!user) return null;
 
-            console.log('Session user found:', user.email);
+            console.log('Auth.getCurrentUser (onsil): User found:', user.email);
 
             let profile = null;
             try {
@@ -451,25 +442,25 @@ const Auth = {
      */
     getAllFuneralHomes: async () => {
         try {
+            console.log('Auth.getAllFuneralHomes (onsil): Starting fetch...');
             const client = getSupabase();
             if (!client) return [];
 
-            const fetchPromise = client
+            const { data, error } = await client
                 .from('funeral_homes')
                 .select('*')
                 .order('is_alliance', { ascending: false })
                 .order('name', { ascending: true });
             
-            const timeoutPromise = new Promise((_, reject) => 
-                setTimeout(() => reject(new Error('Data Fetch Timeout')), 5000)
-            );
+            if (error) {
+                console.error('Auth.getAllFuneralHomes (onsil): Query error:', error.message);
+                throw error;
+            }
 
-            const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
-            
-            if (error) throw error;
+            console.log('Auth.getAllFuneralHomes (onsil): Complete. Count:', data ? data.length : 0);
             return data || [];
         } catch (error) {
-            console.error('getAllFuneralHomes error:', error);
+            console.error('Auth.getAllFuneralHomes (onsil): EXCEPTION:', error);
             return [];
         }
     },

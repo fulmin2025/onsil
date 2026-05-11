@@ -18,7 +18,7 @@
             });
         }
     </script>
-    <script src="js/auth.js?v=bypass_v14"></script>
+    <script src="js/auth.js?v=debug_v15"></script>
     <script>
         tailwind.config = { theme: { extend: { colors: { brand: "#2C3E50", partner: "#1B2B48", accent: "#D4A574" }, fontFamily: { sans: ["Pretendard", "sans-serif"] } } } }
     </script>
@@ -83,7 +83,7 @@
                     <tbody id="home-list" class="divide-y divide-gray-50">
                         <tr><td colspan="3" class="px-8 py-20 text-center text-gray-400">
                             <i class="fas fa-spinner fa-spin text-2xl mb-4 block"></i>
-                            <p id="loading-text" class="text-sm font-medium">데이터 로딩 강제 시도 중... (v14)</p>
+                            <p id="loading-text" class="text-sm font-medium">데이터 수신 및 렌더링 중... (v15)</p>
                         </td></tr>
                     </tbody>
                 </table>
@@ -225,14 +225,23 @@
         }
 
         async function loadFuneralHomes() {
+            console.log('Admin Page: Calling Auth.getAllFuneralHomes()...');
             allHomes = await Auth.getAllFuneralHomes();
+            console.log('Admin Page: Received homes:', allHomes ? allHomes.length : 0);
             renderTable(allHomes);
         }
 
         function renderTable(items) {
+            console.log('Admin Page: renderTable started with items:', items ? items.length : 0);
             const container = document.getElementById("home-list");
+            if (!container) {
+                console.error('Admin Page: container (home-list) NOT FOUND!');
+                return;
+            }
+            
             try {
                 if (!items || items.length === 0) {
+                    console.log('Admin Page: No items to display');
                     container.innerHTML = '<tr><td colspan="3" class="px-8 py-20 text-center text-gray-400">등록된 데이터가 없습니다.</td></tr>';
                     return;
                 }
