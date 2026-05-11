@@ -686,31 +686,25 @@
             items.forEach(item => {
                 const el = document.createElement('div');
                 el.className = "search-item bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row gap-6 cursor-pointer group";
-                el.onclick = () => openDetailModal(item);
+                el.onclick = () => location.href = 'detail.html?id=' + (item.id || item.external_uuid || item.uuid);
 
-                // REAL_DATA access safety check
-                const realData = (typeof REAL_DATA !== 'undefined') ? REAL_DATA[item.name] : null;
+                const details = getExtendedDetails(item);
                 const defaultImage = 'https://images.unsplash.com/photo-1596230526487-11152a4a754b?w=500';
-                const image = (realData && realData.imageUrl) ? realData.imageUrl : defaultImage;
+                const image = details.imageUrl || defaultImage;
 
-                let priceText = "상담 문의";
-                if (realData && realData.prices && realData.prices.length > 0) {
-                    try {
-                        const firstCategory = realData.prices[0];
-                        if (firstCategory.items && firstCategory.items.length > 0) {
-                            priceText = firstCategory.items[0].price;
-                        }
-                    } catch (e) { }
-                }
+                let minPrice = parsePrice(details);
+                let priceText = minPrice >= 99999999 ? "상담 문의" : `${minPrice.toLocaleString()}원~`;
 
-                const rating = (realData && realData.rating) ? realData.rating : (4.5 + Math.random() * 0.5).toFixed(1);
-                const reviewCount = (realData && realData.reviewCount) ? realData.reviewCount : Math.floor(Math.random() * 100) + 10;
+                const rating = details.rating;
+                const reviewCount = details.reviewCount;
 
                 let badgesHtml = '';
-                if (ON_CONFIG.showPartnership && item.isAlliance) badgesHtml += '<span class="bg-[#8D7B68] text-white text-xs px-2 py-1 rounded mr-2">제휴</span>';
+                if (ON_CONFIG.showPartnership && details.isAlliance) {
+                    badgesHtml += '<span class="bg-[#8D7B68] text-white text-xs px-2 py-1 rounded mr-2 font-bold uppercase">제휴</span>';
+                }
 
                 el.innerHTML = `
-                        <div class="w-full md:w-48 h-32 bg-gray-200 rounded-lg bg-cover bg-center shrink-0" style="background-image: url('${image}')"></div>
+                        <div class="w-full md:w-48 h-32 bg-gray-200 rounded-lg bg-cover bg-center shrink-0 shadow-inner" style="background-image: url('${image}')"></div>
                         <div class="flex-1 flex flex-col justify-between">
                             <div>
                                 <div class="flex justify-between items-start mb-1">
@@ -719,10 +713,11 @@
                                         <h3 class="text-xl font-bold mt-1 inline-block align-middle group-hover:text-[#8D7B68] transition-colors">${item.name}</h3>
                                     </div>
                                 </div>
-                                <p class="text-gray-400 text-xs mb-3">${item.address || (item.enName || '')}</p>
-                                <div class="flex gap-2 text-[11px] text-gray-500 mb-4">
+                                <p class="text-gray-400 text-xs mb-3">${details.address || (item.enName || '')}</p>
+                                <div class="flex gap-2 text-[10px] text-gray-500 mb-4">
                                     <span class="px-2 py-0.5 bg-gray-50 rounded-full border border-gray-100">개별 추모실</span>
                                     <span class="px-2 py-0.5 bg-gray-50 rounded-full border border-gray-100">박스관 포함</span>
+                                    ${item.is_24h ? '<span class="px-2 py-0.5 bg-blue-50 text-blue-500 rounded-full border border-blue-100">24시간 운영</span>' : ''}
                                 </div>
                             </div>
                             <div class="flex justify-between items-center border-t border-gray-50 pt-3">
@@ -823,7 +818,7 @@
                 });
 
                 naver.maps.Event.addListener(marker, 'click', (e) => {
-                    openDetailModal(item);
+                    location.href = 'detail.html?id=' + (item.external_uuid || item.id || item.uuid);
                     naverMap.setCenter(new naver.maps.LatLng(lat, lng));
                     naverMap.setZoom(13);
                 });
@@ -2380,8 +2375,9 @@
         }
 
         function getExtendedDetails(item) {
-            let realInfo = REAL_DATA[item.name];
-            if (!realInfo) {
+            // Priority: item (Supabase) > REAL_DATA (Local Fallback)
+            let realInfo = (typeof REAL_DATA !== 'undefined') ? REAL_DATA[item.name] : null;
+            if (!realInfo && typeof REAL_DATA !== 'undefined') {
                 const foundKey = Object.keys(REAL_DATA).find(k => item.name.includes(k));
                 if (foundKey) realInfo = REAL_DATA[foundKey];
             }
@@ -2410,7 +2406,8 @@
             const dynamicRating = (4.5 + seededRandom() * 0.5).toFixed(1);
             const dynamicReviewCount = Math.floor(seededRandom() * 200) + 10;
 
-            let address = realInfo?.address;
+            // Use Supabase data if available
+            let address = item.address || realInfo?.address;
             if (!address) {
                 const region = getRegion(item);
                 const regionMap = {
@@ -2422,18 +2419,21 @@
                 address = `${city} 지역`;
             }
 
-            let prices = realInfo?.prices || STANDARD_PRICES;
-            let pricingType = realInfo?.pricingType || 'categorized';
-            let imageUrl = realInfo?.imageUrl || null;
+            let prices = item.prices || realInfo?.prices || STANDARD_PRICES;
+            let pricingType = item.pricing_type || realInfo?.pricingType || 'categorized';
+            let imageUrl = item.image_url || realInfo?.imageUrl || null;
+            let phone = item.phone || (typeof PHONE_DATA !== 'undefined' ? PHONE_DATA[item.name] : null) || `0507-${Math.floor(Math.random() * 9000) + 1000}-${Math.floor(Math.random() * 9000) + 1000}`;
+            let description = item.description || realInfo?.description || `${item.name}은(는) 보호자님의 슬픔을 깊이 위로하며, 정성을 다해 반려동물의 마지막 가는 길을 함께합니다.`;
 
             return {
                 ...item,
+                isAlliance: item.is_alliance !== undefined ? item.is_alliance : (item.isAlliance || false),
                 rating: realInfo ? dynamicRating : (4.0 + Math.random() * 1.0).toFixed(1),
                 reviewCount: realInfo ? dynamicReviewCount : Math.floor(Math.random() * 50) + 5,
                 address: address,
                 hours: '24시간 연중무휴',
-                phone: PHONE_DATA[item.name] || `0507-${Math.floor(Math.random() * 9000) + 1000}-${Math.floor(Math.random() * 9000) + 1000}`,
-                description: `${item.name}은(는) 보호자님의 슬픔을 깊이 위로하며, 정성을 다해 반려동물의 마지막 가는 길을 함께합니다.`,
+                phone: phone,
+                description: description,
                 facilities: facilities,
                 prices: prices,
                 pricingType: pricingType,
@@ -2719,13 +2719,50 @@
 
 
         // --- Initial Load ---
-        // Initialize data safely (Moved to bottom to avoid TDZ errors with REAL_DATA)
-        const funeralHomesData = (RAW_JSON && RAW_JSON.business) ? RAW_JSON.business : [];
-        console.log(`DATA: Loaded ${funeralHomesData.length} items`);
+        let funeralHomesData = [];
 
-        // Initial filter counts & rendering
-        updateFilterCounts();
-        filterItems();
+        async function initData() {
+            try {
+                // Show loading state
+                const listContainer = document.getElementById('result-list');
+                if (listContainer) {
+                    listContainer.innerHTML = `
+                        <div class="col-span-full py-32 text-center animate-pulse">
+                            <div class="w-20 h-20 bg-[#8D7B68]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i class="fas fa-spinner fa-spin text-3xl text-[#8D7B68]"></i>
+                            </div>
+                            <p class="text-gray-900 font-bold text-xl mb-2">장례식장 정보를 불러오는 중</p>
+                            <p class="text-gray-400 text-sm">전국의 반려동물 장례 시설 데이터를 최신화하고 있습니다.</p>
+                        </div>
+                    `;
+                }
+
+                // Fetch from Supabase
+                const data = await Auth.getAllFuneralHomes();
+                if (data && data.length > 0) {
+                    funeralHomesData = data;
+                } else {
+                    // Fallback to RAW_JSON if DB is empty
+                    funeralHomesData = (typeof RAW_JSON !== 'undefined' && RAW_JSON.business) ? RAW_JSON.business : [];
+                }
+
+                console.log(`DATA: Loaded ${funeralHomesData.length} items from ${data && data.length > 0 ? 'Supabase' : 'Fallback'}`);
+                
+                // Reset enriched data to force refresh
+                enrichedHomesData = null;
+                
+                updateFilterCounts();
+                filterItems();
+            } catch (err) {
+                console.error("Initialization Error:", err);
+                // Fallback
+                funeralHomesData = (typeof RAW_JSON !== 'undefined' && RAW_JSON.business) ? RAW_JSON.business : [];
+                filterItems();
+            }
+        }
+
+        // Initialize on load
+        initData();
 
         // Handle URL parameters
         window.addEventListener('load', () => {

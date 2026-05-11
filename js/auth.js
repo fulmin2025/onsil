@@ -286,6 +286,9 @@ const Auth = {
                 <a href="admin_partners.html" class="flex items-center gap-3 px-4 py-3 text-sm text-blue-600 font-bold hover:bg-blue-50 transition-colors">
                     <i class="fas fa-store w-4"></i> 입점 승인 관리
                 </a>
+                <a href="admin_funeral_homes.html" class="flex items-center gap-3 px-4 py-3 text-sm text-blue-600 font-bold hover:bg-blue-50 transition-colors">
+                    <i class="fas fa-h-square w-4"></i> 장례식장 관리
+                </a>
                 <div class="h-px bg-gray-100 my-1"></div>
             ` : '';
 
@@ -406,6 +409,101 @@ const Auth = {
      */
     getSupabase: () => {
         return getSupabase();
+    },
+
+    /**
+     * Funeral Home Data Helpers
+     */
+    getAllFuneralHomes: async () => {
+        try {
+            const client = getSupabase();
+            if (!client) return [];
+            const { data, error } = await client
+                .from('funeral_homes')
+                .select('*')
+                .order('is_alliance', { ascending: false })
+                .order('name', { ascending: true });
+            if (error) throw error;
+            return data || [];
+        } catch (error) {
+            console.error('getAllFuneralHomes error:', error);
+            return [];
+        }
+    },
+
+    getFuneralHomeById: async (id) => {
+        try {
+            const client = getSupabase();
+            if (!client) return null;
+            
+            // Try searching by external_uuid first, then by id
+            let query = client.from('funeral_homes').select('*');
+            
+            // Check if id is a UUID format
+            const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id);
+            
+            if (isUUID) {
+                const { data, error } = await query.or(`id.eq.${id},external_uuid.eq.${id}`).maybeSingle();
+                if (error) throw error;
+                return data;
+            } else {
+                const { data, error } = await query.eq('id', id).maybeSingle();
+                if (error) throw error;
+                return data;
+            }
+        } catch (error) {
+            console.error('getFuneralHomeById error:', error);
+            return null;
+        }
+    },
+
+    updateFuneralHome: async (id, updateData) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('클라이언트 연결 실패');
+            const { data, error } = await client
+                .from('funeral_homes')
+                .update(updateData)
+                .eq('id', id)
+                .select();
+            if (error) throw error;
+            return { success: true, data };
+        } catch (error) {
+            console.error('updateFuneralHome error:', error);
+            return { success: false, message: error.message };
+        }
+    },
+
+    createFuneralHome: async (formData) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('클라이언트 연결 실패');
+            const { data, error } = await client
+                .from('funeral_homes')
+                .insert([formData])
+                .select();
+            if (error) throw error;
+            return { success: true, data };
+        } catch (error) {
+            console.error('createFuneralHome error:', error);
+            return { success: false, message: error.message };
+        }
+    },
+
+    deleteFuneralHome: async (id) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('클라이언트 연결 실패');
+            const { error } = await client
+                .from('funeral_homes')
+                .delete()
+                .eq('id', id);
+            if (error) throw error;
+            return { success: true };
+        } catch (error) {
+            console.error('deleteFuneralHome error:', error);
+            return { success: false, message: error.message };
+        }
     }
 };
 

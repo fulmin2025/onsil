@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장례식장 상세 - 온실(Onsil)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { DEFAULT: "#8D7B68" },
+                        secondary: { DEFAULT: "#FAFAFA" },
+                        accent: { DEFAULT: "#C5A065" },
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .animate-slideUp { animation: slideUp 0.3s ease-out forwards; }
+    </style>
+</head>
+
+<body class="bg-gray-100 text-gray-900 pb-24">
+
+    <div id="loading-spinner" class="fixed inset-0 z-50 flex items-center justify-center bg-white">
+        <div class="flex flex-col items-center gap-4">
+            <i class="fas fa-circle-notch fa-spin text-4xl text-primary"></i>
+            <p class="text-sm font-medium text-gray-500">정보를 불러오는 중...</p>
+        </div>
+    </div>
+
+    <div id="main-content" class="max-w-md mx-auto bg-white min-h-screen shadow-2xl overflow-hidden relative hidden">
+        <!-- Header / Hero Image -->
+        <div class="relative h-72 bg-gray-200">
+            <img id="detail-image" src="https://images.unsplash.com/photo-1596272875729-ed2ff7d6d9c5?q=80&w=800&auto=format&fit=crop"
+                alt="장례식장 이미지" class="w-full h-full object-cover">
+            <div class="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-black/50 to-transparent pointer-events-none"></div>
+            <button onclick="history.back()"
+                class="absolute top-4 left-4 text-white z-10 w-10 h-10 flex items-center justify-center rounded-full active:bg-white/20">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Title Section -->
+        <div class="px-5 py-6 bg-white">
+            <div id="badges-container" class="flex flex-wrap gap-2 mb-3">
+                <!-- Badges will be inserted here -->
+            </div>
+            <h1 id="detail-name" class="text-2xl font-bold mb-2 leading-tight">장례식장명</h1>
+            <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+                <i class="fas fa-map-marker-alt text-gray-400"></i>
+                <span id="detail-address-text">주소 정보</span>
+            </div>
+        </div>
+
+        <div class="h-2 bg-gray-100"></div>
+
+        <!-- Quick Info Tabs -->
+        <div class="sticky top-0 bg-white z-40 border-b border-gray-100 flex text-center">
+            <a href="#info" class="flex-1 py-3 text-sm font-bold text-primary border-b-2 border-primary">시설 정보</a>
+            <a href="#price" class="flex-1 py-3 text-sm font-medium text-gray-500 hover:text-gray-800">요금 안내</a>
+            <a href="#location" class="flex-1 py-3 text-sm font-medium text-gray-500 hover:text-gray-800">위치</a>
+        </div>
+
+        <!-- Facility Info -->
+        <div id="info" class="px-5 py-8">
+            <h3 class="font-bold text-lg mb-4">시설 소개</h3>
+            <p id="detail-description" class="text-gray-600 text-sm leading-relaxed mb-6">
+                장례식장 소개 내용이 표시됩니다.
+            </p>
+            <div id="facilities-grid" class="grid grid-cols-4 gap-4 text-center">
+                <!-- Facilities will be inserted here -->
+            </div>
+        </div>
+
+        <div class="h-2 bg-gray-100"></div>
+
+        <!-- Price Info -->
+        <div id="price" class="px-5 py-8">
+            <h3 class="font-bold text-lg mb-4">장례 요금 안내</h3>
+            <div id="prices-container" class="space-y-4">
+                <!-- Prices will be inserted here -->
+            </div>
+        </div>
+
+        <div class="h-2 bg-gray-100"></div>
+
+        <!-- Location Info -->
+        <div id="location" class="px-5 py-8">
+            <h3 class="font-bold text-lg mb-4">위치</h3>
+            <p id="detail-address-full" class="text-gray-600 text-sm mb-4">상세 주소</p>
+            <div id="map-container" class="h-48 bg-gray-200 rounded-lg overflow-hidden relative mb-4">
+                <!-- Map will be inserted here -->
+            </div>
+        </div>
+
+        <div class="bg-gray-50 px-5 py-8 text-xs text-gray-400 text-center leading-relaxed">
+            온실은 통신판매중개자로서 장례 서비스의 주거래 당사자가 아니며,<br>
+            각 장례식장의 서비스 정보 및 거래에 대한 책임은 각 제공자에게 있습니다.
+        </div>
+
+        <!-- Sticky Bottom CTA -->
+        <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t p-4 z-50 safe-area-bottom">
+            <div class="flex gap-3">
+                <button id="call-btn"
+                    class="flex-1 py-3.5 border border-primary text-primary rounded-lg font-bold text-base hover:bg-[#F9F5F0] transition-colors flex items-center justify-center gap-2">
+                    <i class="fas fa-phone-alt"></i> 전화문의
+                </button>
+                <button id="reserve-btn"
+                    class="flex-[2] py-3.5 bg-primary text-white rounded-lg font-bold text-base shadow-lg hover:bg-[#7A6A59] transition-colors flex items-center justify-center gap-2">
+                    <i class="fas fa-calendar-check"></i> 예약하기
+                </button>
+            </div>
+        </div>
+        <input type="hidden" id="modal-phone-hidden">
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const homeId = params.get('id');
+
+        async function loadDetail() {
+            if (!homeId) {
+                alert('잘못된 접근입니다.');
+                history.back();
+                return;
+            }
+
+            const data = await Auth.getFuneralHomeById(homeId);
+            if (!data) {
+                alert('장례식장 정보를 찾을 수 없습니다.');
+                history.back();
+                return;
+            }
+
+            renderDetail(data);
+        }
+
+        function renderDetail(data) {
+            document.title = `${data.name} - 온실(Onsil)`;
+            document.getElementById('detail-name').textContent = data.name;
+            document.getElementById('detail-address-text').textContent = data.address;
+            document.getElementById('detail-address-full').textContent = data.address;
+            document.getElementById('modal-phone-hidden').value = data.phone;
+            
+            if (data.image_url) {
+                document.getElementById('detail-image').src = data.image_url;
+            }
+
+            // Call Button
+            document.getElementById('call-btn').onclick = () => {
+                if (data.phone) {
+                    window.location.href = 'tel:' + data.phone;
+                } else {
+                    alert('연락처 정보가 없습니다.');
+                }
+            };
+
+            // Badges
+            const badges = document.getElementById('badges-container');
+            badges.innerHTML = '';
+            if (data.is_alliance) {
+                badges.innerHTML += '<span class="bg-primary text-white text-[10px] px-2 py-1 rounded-sm font-bold tracking-wider">안심 장례식장</span>';
+            }
+            if (data.is_24h) {
+                badges.innerHTML += '<span class="bg-gray-100 text-gray-600 text-[10px] px-2 py-1 rounded-sm font-medium">24시간 운영</span>';
+            }
+
+            // Description
+            document.getElementById('detail-description').textContent = data.description || `${data.name}은(는) 보호자님의 슬픔을 깊이 위로하며, 정성을 다해 반려동물의 마지막 가는 길을 함께합니다.`;
+
+            // Facilities
+            const facilities = [
+                { name: '주차가능', icon: 'fa-parking' },
+                { name: '참관가능', icon: 'fa-eye' },
+                { name: '추모실', icon: 'fa-praying-hands' },
+                { name: '대기실', icon: 'fa-couch' }
+            ];
+            const facilitiesGrid = document.getElementById('facilities-grid');
+            facilitiesGrid.innerHTML = facilities.map(f => `
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-12 h-12 bg-[#F9F5F0] rounded-full flex items-center justify-center text-primary">
+                        <i class="fas ${f.icon}"></i>
+                    </div>
+                    <span class="text-xs text-gray-500">${f.name}</span>
+                </div>
+            `).join('');
+
+            // Prices
+            const pricesContainer = document.getElementById('prices-container');
+            pricesContainer.innerHTML = '';
+            if (data.prices && data.prices.length > 0) {
+                data.prices.forEach(category => {
+                    const catEl = document.createElement('div');
+                    catEl.innerHTML = `<h4 class="font-bold text-sm text-gray-400 mb-2 mt-4">${category.category}</h4>`;
+                    
+                    category.items.forEach(item => {
+                        const itemEl = document.createElement('div');
+                        itemEl.className = "border rounded-lg overflow-hidden mb-2 shadow-sm";
+                        itemEl.innerHTML = `
+                            <div class="flex justify-between items-center p-4 bg-white">
+                                <span class="font-medium text-gray-700">${item.name}</span>
+                                <span class="font-bold text-primary">${item.price}</span>
+                            </div>
+                            ${item.desc ? `<div class="px-4 pb-4 bg-white text-xs text-gray-400">${item.desc}</div>` : ''}
+                        `;
+                        catEl.appendChild(itemEl);
+                    });
+                    pricesContainer.appendChild(catEl);
+                });
+            } else {
+                pricesContainer.innerHTML = '<p class="text-gray-400 text-sm italic">등록된 요금 정보가 없습니다. 전화로 문의해 주세요.</p>';
+            }
+
+            // Map
+            const mapContainer = document.getElementById('map-container');
+            const query = encodeURIComponent(data.address);
+            mapContainer.innerHTML = `
+                <div class="relative w-full h-full group cursor-pointer" onclick="window.open('https://map.naver.com/v5/search/${query}', '_blank')">
+                    <iframe width="100%" height="100%" frameborder="0" style="border:0" 
+                        src="https://maps.google.com/maps?q=${data.latitude},${data.longitude}&hl=ko&z=17&output=embed" 
+                        allowfullscreen>
+                    </iframe>
+                    <div class="absolute inset-0 z-10 bg-transparent flex items-center justify-center group-hover:bg-black/5 transition-colors">
+                        <span class="bg-[#03C75A] text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg flex items-center gap-2 transform transition-transform group-hover:scale-105">
+                            <span class="font-extrabold">N</span> 네이버 지도로 보기
+                        </span>
+                    </div>
+                </div>`;
+
+            // Reserve Button
+            document.getElementById('reserve-btn').onclick = async () => {
+                const user = await Auth.getCurrentUser();
+                if (user) {
+                    location.href = `reservation.html?id=${encodeURIComponent(data.name)}`;
+                } else {
+                    alert('예약은 로그인 후 이용 가능합니다.');
+                    location.href = 'login.html';
+                }
+            };
+
+            // Show Content
+            document.getElementById('loading-spinner').classList.add('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDetail);
+    </script>
+</body>
+</html>

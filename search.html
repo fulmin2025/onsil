@@ -686,7 +686,7 @@
             items.forEach(item => {
                 const el = document.createElement('div');
                 el.className = "search-item bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row gap-6 cursor-pointer group";
-                el.onclick = () => openDetailModal(item);
+                el.onclick = () => location.href = 'detail.html?id=' + (item.external_uuid || item.id || item.uuid);
 
                 // REAL_DATA access safety check
                 const realData = (typeof REAL_DATA !== 'undefined') ? REAL_DATA[item.name] : null;
@@ -823,7 +823,7 @@
                 });
 
                 naver.maps.Event.addListener(marker, 'click', (e) => {
-                    openDetailModal(item);
+                    location.href = 'detail.html?id=' + (item.external_uuid || item.id || item.uuid);
                     naverMap.setCenter(new naver.maps.LatLng(lat, lng));
                     naverMap.setZoom(13);
                 });

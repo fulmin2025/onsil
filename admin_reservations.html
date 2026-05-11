@@ -30,20 +30,20 @@
 <body class="bg-gray-50 font-sans text-gray-900 min-h-screen">
     <!-- Header -->
     <header class="bg-white border-b border-brand/5 fixed top-0 z-50 w-full transition-all">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between py-4">
             <div class="flex items-center gap-4">
-                <a href="index.html" class="font-bold text-xl text-primary flex items-center gap-2">
-                    <span class="text-onsil">The 온실</span> <span
-                        class="text-xs bg-gray-100 px-2 py-1 rounded text-gray-500 font-normal">Admin</span>
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <img src="./images/onsil_logo_tr.png" width="36" height="36" class="w-9 h-9 object-contain" alt="온실 로고">
+                    <span class="font-bold text-lg text-brand tracking-tight">The 온실 <span class="text-xs font-black text-red-500 ml-1">ADMIN</span></span>
                 </a>
+                <div class="h-6 w-px bg-gray-200 mx-2"></div>
+                <h1 class="font-bold text-gray-600">예약 통합 관리</h1>
             </div>
-            <div class="flex items-center gap-4">
-                <div id="auth-container"></div>
-                <button
-                    onclick="Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } })"
-                    class="bg-[#C5A065] text-white hover:bg-[#B08D55] px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-md flex items-center gap-2">
-                    <i class="fas fa-calendar-check"></i> 예약하기
-                </button>
+            <div class="flex items-center gap-3">
+                <a href="admin_reservations.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">예약 관리</a>
+                <a href="admin_partners.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">파트너 관리</a>
+                <a href="admin_funeral_homes.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">장례식장 관리</a>
+                <button onclick="Auth.logout()" class="text-sm font-bold text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all">로그아웃</button>
             </div>
         </div>
     </header>
