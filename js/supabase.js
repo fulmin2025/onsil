@@ -1,4 +1,3 @@
-
 /**
  * Supabase Integration for Contact Form
  */

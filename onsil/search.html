@@ -684,24 +684,31 @@
             resultCount.innerHTML = `총 <span class="text-[#C5A065] font-bold">${items.length}</span>개 장례식장`;
 
             items.forEach(item => {
+                const realData = (typeof REAL_DATA !== 'undefined') ? REAL_DATA[item.name] : null;
+                const defaultImage = 'https://images.unsplash.com/photo-1596230526487-11152a4a754b?w=500';
+                const image = item.image_url || (realData && realData.imageUrl) ? (item.image_url || realData.imageUrl) : defaultImage;
+
+                let priceText = "상담 문의";
+                const itemPrices = item.prices || (realData ? realData.prices : null);
+                if (itemPrices && itemPrices.length > 0) {
+                    try {
+                        const firstCategory = itemPrices[0];
+                        if (firstCategory.items && firstCategory.items.length > 0) {
+                            priceText = firstCategory.items[0].price + '원~';
+                        }
+                    } catch (e) { }
+                }
+
+                const rating = item.rating || (realData && realData.rating) ? (item.rating || realData.rating) : (4.5 + Math.random() * 0.5).toFixed(1);
+                const reviewCount = item.review_count || (realData && realData.reviewCount) ? (item.review_count || realData.reviewCount) : Math.floor(Math.random() * 100) + 10;
+
+                let badgesHtml = '';
+                const isAlliance = item.is_alliance || item.isAlliance;
+                if (ON_CONFIG.showPartnership && isAlliance) badgesHtml += '<span class="bg-[#8D7B68] text-white text-xs px-2 py-1 rounded mr-2 font-bold uppercase">제휴</span>';
+
                 const el = document.createElement('div');
                 el.className = "search-item bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row gap-6 cursor-pointer group";
                 el.onclick = () => location.href = 'detail.html?id=' + (item.id || item.external_uuid || item.uuid);
-
-                const details = getExtendedDetails(item);
-                const defaultImage = 'https://images.unsplash.com/photo-1596230526487-11152a4a754b?w=500';
-                const image = details.imageUrl || defaultImage;
-
-                let minPrice = parsePrice(details);
-                let priceText = minPrice >= 99999999 ? "상담 문의" : `${minPrice.toLocaleString()}원~`;
-
-                const rating = details.rating;
-                const reviewCount = details.reviewCount;
-
-                let badgesHtml = '';
-                if (ON_CONFIG.showPartnership && details.isAlliance) {
-                    badgesHtml += '<span class="bg-[#8D7B68] text-white text-xs px-2 py-1 rounded mr-2 font-bold uppercase">제휴</span>';
-                }
 
                 el.innerHTML = `
                         <div class="w-full md:w-48 h-32 bg-gray-200 rounded-lg bg-cover bg-center shrink-0 shadow-inner" style="background-image: url('${image}')"></div>
@@ -713,19 +720,26 @@
                                         <h3 class="text-xl font-bold mt-1 inline-block align-middle group-hover:text-[#8D7B68] transition-colors">${item.name}</h3>
                                     </div>
                                 </div>
-                                <p class="text-gray-400 text-xs mb-3">${details.address || (item.enName || '')}</p>
+                                <p class="text-gray-400 text-xs mb-3">${item.address || (item.enName || '')}</p>
                                 <div class="flex gap-2 text-[10px] text-gray-500 mb-4">
                                     <span class="px-2 py-0.5 bg-gray-50 rounded-full border border-gray-100">개별 추모실</span>
-                                    <span class="px-2 py-0.5 bg-gray-50 rounded-full border border-gray-100">박스관 포함</span>
-                                    ${item.is_24h ? '<span class="px-2 py-0.5 bg-blue-50 text-blue-500 rounded-full border border-blue-100">24시간 운영</span>' : ''}
+                                    <span class="px-2 py-0.5 bg-gray-50 rounded-full border border-gray-100">24시간 운영</span>
                                 </div>
                             </div>
                             <div class="flex justify-between items-center border-t border-gray-50 pt-3">
-                                <span class="font-bold text-gray-900 border-b-2 border-[#C5A065]/30">최저 ${priceText}</span>
-                                <button class="bg-[#8D7B68] text-white px-5 py-2 rounded-xl text-sm font-bold shadow-sm hover:brightness-110 active:scale-95 transition-all" onclick="event.stopPropagation(); handleReservation('${item.name}')">예약하기</button>
+                                <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-1 text-[#C5A065]">
+                                        <i class="fas fa-star text-[10px]"></i>
+                                        <span class="text-xs font-bold">${rating}</span>
+                                    </div>
+                                    <span class="text-[10px] text-gray-300">리뷰 ${reviewCount}</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-lg font-black text-[#8D7B68]">${priceText}</span>
+                                </div>
                             </div>
                         </div>
-                    `;
+                `;
                 resultList.appendChild(el);
             });
         }
@@ -800,7 +814,8 @@
                 const lng = parseFloat(item.longitude);
                 if (isNaN(lat) || isNaN(lng)) return;
 
-                const fillColor = (ON_CONFIG.showPartnership && item.isAlliance) ? '#C5A065' : '#8D7B68';
+                const isAlliance = item.is_alliance || item.isAlliance;
+                const fillColor = (ON_CONFIG.showPartnership && isAlliance) ? '#C5A065' : '#8D7B68';
                 
                 const iconHtml = `<div class="relative group cursor-pointer map-pulse-wrapper">
                     <div class="map-pulse" style="width:16px;height:16px;border-radius:50%;background-color:${fillColor};border:2px solid #fff;box-shadow:0 0 10px rgba(0,0,0,0.3)"></div>
@@ -955,9 +970,10 @@
             const mobileAllianceCheckbox = document.getElementById('mobile-filter-alliance');
             const showOnlyAlliance = (allianceCheckbox && allianceCheckbox.checked) || (mobileAllianceCheckbox && mobileAllianceCheckbox.checked);
 
-            const filteredItems = enrichedHomesData.filter(item => {
+            const filteredItems = (enrichedHomesData || []).filter(item => {
                 // 제휴 업체 필터
-                if (showOnlyAlliance && !item.isAlliance) return false;
+                const isAlliance = item.is_alliance || item.isAlliance;
+                if (showOnlyAlliance && !isAlliance) return false;
 
                 // 지역 필터
                 if (checkedRegions.length > 0) {

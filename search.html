@@ -675,6 +675,7 @@
         const resultCount = document.getElementById('result-count');
         const mapPinsContainer = document.getElementById('pins-container');
 
+
         function renderListItems(items) {
             const resultList = document.getElementById('result-list');
             const resultCount = document.getElementById('result-count');
@@ -688,26 +689,27 @@
                 el.className = "search-item bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row gap-6 cursor-pointer group";
                 el.onclick = () => location.href = 'detail.html?id=' + (item.external_uuid || item.id || item.uuid);
 
-                // REAL_DATA access safety check
                 const realData = (typeof REAL_DATA !== 'undefined') ? REAL_DATA[item.name] : null;
                 const defaultImage = 'https://images.unsplash.com/photo-1596230526487-11152a4a754b?w=500';
-                const image = (realData && realData.imageUrl) ? realData.imageUrl : defaultImage;
+                const image = item.image_url || (realData && realData.imageUrl) ? (item.image_url || realData.imageUrl) : defaultImage;
 
                 let priceText = "상담 문의";
-                if (realData && realData.prices && realData.prices.length > 0) {
+                const itemPrices = item.prices || (realData ? realData.prices : null);
+                if (itemPrices && itemPrices.length > 0) {
                     try {
-                        const firstCategory = realData.prices[0];
+                        const firstCategory = itemPrices[0];
                         if (firstCategory.items && firstCategory.items.length > 0) {
                             priceText = firstCategory.items[0].price;
                         }
                     } catch (e) { }
                 }
 
-                const rating = (realData && realData.rating) ? realData.rating : (4.5 + Math.random() * 0.5).toFixed(1);
-                const reviewCount = (realData && realData.reviewCount) ? realData.reviewCount : Math.floor(Math.random() * 100) + 10;
+                const rating = item.rating || (realData && realData.rating) ? (item.rating || realData.rating) : (4.5 + Math.random() * 0.5).toFixed(1);
+                const reviewCount = item.review_count || (realData && realData.reviewCount) ? (item.review_count || realData.reviewCount) : Math.floor(Math.random() * 100) + 10;
 
                 let badgesHtml = '';
-                if (ON_CONFIG.showPartnership && item.isAlliance) badgesHtml += '<span class="bg-[#8D7B68] text-white text-xs px-2 py-1 rounded mr-2">제휴</span>';
+                const isAlliance = item.is_alliance || item.isAlliance;
+                if (ON_CONFIG.showPartnership && isAlliance) badgesHtml += '<span class="bg-[#8D7B68] text-white text-xs px-2 py-1 rounded mr-2">제휴</span>';
 
                 el.innerHTML = `
                         <div class="w-full md:w-48 h-32 bg-gray-200 rounded-lg bg-cover bg-center shrink-0" style="background-image: url('${image}')"></div>
@@ -805,7 +807,8 @@
                 const lng = parseFloat(item.longitude);
                 if (isNaN(lat) || isNaN(lng)) return;
 
-                const fillColor = (ON_CONFIG.showPartnership && item.isAlliance) ? '#C5A065' : '#8D7B68';
+                const isAlliance = item.is_alliance || item.isAlliance;
+                const fillColor = (ON_CONFIG.showPartnership && isAlliance) ? '#C5A065' : '#8D7B68';
                 
                 const iconHtml = `<div class="relative group cursor-pointer map-pulse-wrapper">
                     <div class="map-pulse" style="width:16px;height:16px;border-radius:50%;background-color:${fillColor};border:2px solid #fff;box-shadow:0 0 10px rgba(0,0,0,0.3)"></div>
@@ -960,9 +963,10 @@
             const mobileAllianceCheckbox = document.getElementById('mobile-filter-alliance');
             const showOnlyAlliance = (allianceCheckbox && allianceCheckbox.checked) || (mobileAllianceCheckbox && mobileAllianceCheckbox.checked);
 
-            const filteredItems = enrichedHomesData.filter(item => {
+            const filteredItems = (enrichedHomesData || []).filter(item => {
                 // 제휴 업체 필터
-                if (showOnlyAlliance && !item.isAlliance) return false;
+                const isAlliance = item.is_alliance || item.isAlliance;
+                if (showOnlyAlliance && !isAlliance) return false;
 
                 // 지역 필터
                 if (checkedRegions.length > 0) {
@@ -999,7 +1003,11 @@
                 filteredItems.sort((a, b) => parsePrice(a) - parsePrice(b));
             } else {
                 if (ON_CONFIG.showPartnership) {
-                    filteredItems.sort((a, b) => (b.isAlliance ? 1 : 0) - (a.isAlliance ? 1 : 0));
+                    filteredItems.sort((a, b) => {
+                        const allianceA = a.is_alliance || a.isAlliance ? 1 : 0;
+                        const allianceB = b.is_alliance || b.isAlliance ? 1 : 0;
+                        return allianceB - allianceA;
+                    });
                 } else {
                     // 기본 정렬: 이름순 또는 등록역순 (현재는 데이터 순서 유지)
                 }
@@ -2719,13 +2727,50 @@
 
 
         // --- Initial Load ---
-        // Initialize data safely (Moved to bottom to avoid TDZ errors with REAL_DATA)
-        const funeralHomesData = (RAW_JSON && RAW_JSON.business) ? RAW_JSON.business : [];
-        console.log(`DATA: Loaded ${funeralHomesData.length} items`);
+        let funeralHomesData = [];
 
-        // Initial filter counts & rendering
-        updateFilterCounts();
-        filterItems();
+        async function initData() {
+            try {
+                // Show loading state
+                const listContainer = document.getElementById('result-list');
+                if (listContainer) {
+                    listContainer.innerHTML = `
+                        <div class="col-span-full py-32 text-center animate-pulse">
+                            <div class="w-20 h-20 bg-[#8D7B68]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i class="fas fa-spinner fa-spin text-3xl text-[#8D7B68]"></i>
+                            </div>
+                            <p class="text-gray-900 font-bold text-xl mb-2">장례식장 정보를 불러오는 중</p>
+                            <p class="text-gray-400 text-sm">전국의 반려동물 장례 시설 데이터를 최신화하고 있습니다.</p>
+                        </div>
+                    `;
+                }
+
+                // Fetch from Supabase
+                const data = await Auth.getAllFuneralHomes();
+                if (data && data.length > 0) {
+                    funeralHomesData = data;
+                } else {
+                    // Fallback to RAW_JSON if DB is empty
+                    funeralHomesData = (typeof RAW_JSON !== 'undefined' && RAW_JSON.business) ? RAW_JSON.business : [];
+                }
+
+                console.log(`DATA: Loaded ${funeralHomesData.length} items from ${data && data.length > 0 ? 'Supabase' : 'Fallback'}`);
+                
+                // Reset enriched data to force refresh
+                enrichedHomesData = null;
+                
+                updateFilterCounts();
+                filterItems();
+            } catch (err) {
+                console.error("Initialization Error:", err);
+                // Fallback
+                funeralHomesData = (typeof RAW_JSON !== 'undefined' && RAW_JSON.business) ? RAW_JSON.business : [];
+                filterItems();
+            }
+        }
+
+        // Initialize on load
+        initData();
 
         // Handle URL parameters
         window.addEventListener('load', () => {

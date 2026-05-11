@@ -233,7 +233,14 @@ const Auth = {
             }
 
             const mergedUser = { ...user, ...(profile || {}) };
-            if (user.email && user.email.toLowerCase() === 'fulmin@nate.com') {
+            const adminEmails = [
+                'fulmin@nate.com', 
+                'theonsil@gmail.com', 
+                'admin@theonsil.co.kr', 
+                'theonsilofficial@gmail.com', 
+                'admin@onsil.com'
+            ];
+            if (user.email && adminEmails.includes(user.email.toLowerCase())) {
                 mergedUser.role = 'admin';
             }
             return mergedUser;
