@@ -1,4 +1,4 @@
-const CACHE_NAME = 'onsil-v10';
+const CACHE_NAME = 'onsil-v11';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',

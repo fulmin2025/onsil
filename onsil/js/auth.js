@@ -18,17 +18,27 @@ console.log('Auth.js loading...');
 function getSupabase() {
     if (_supabaseInstance) return _supabaseInstance;
 
-    if (typeof supabase === 'undefined') {
-        console.error('Supabase SDK not loaded');
+    if (typeof supabase === 'undefined' || !supabase.createClient) {
+        console.error('Supabase SDK not loaded or invalid');
         return null;
     }
 
-    _supabaseInstance = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-        db: {
-            schema: 'public'
-        }
-    });
-    return _supabaseInstance;
+    try {
+        _supabaseInstance = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+            db: {
+                schema: 'public'
+            },
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true
+            }
+        });
+        console.log('Supabase client created successfully (onsil).');
+        return _supabaseInstance;
+    } catch (e) {
+        console.error('Failed to create Supabase client:', e);
+        return null;
+    }
 }
 
 const Auth = {
@@ -43,7 +53,6 @@ const Auth = {
             const client = getSupabase();
             if (!client) throw new Error('인증 서비스 연결 실패');
 
-            // 1. Sign up user via Supabase Auth
             const { data: authData, error: authError } = await client.auth.signUp({
                 email,
                 password,
@@ -59,7 +68,6 @@ const Auth = {
             if (authError) throw authError;
             if (!authData.user) throw new Error('회원가입 중 오류가 발생했습니다.');
 
-            // 2. Insert profile metadata into 'profiles' table
             const { error: profileError } = await client
                 .from('profiles')
                 .upsert({
@@ -70,18 +78,103 @@ const Auth = {
                     gender: gender,
                     birth_year: birthYear,
                     location: location,
-                    marketing_agree: marketingAgree,
-                    updated_at: new Date()
+                    marketing_agree: marketingAgree
                 });
 
             if (profileError) {
                 console.error('Profile creation error:', profileError);
-                // Note: Auth user exists even if profile fails, but we want to know
             }
 
             return { success: true, user: authData.user };
         } catch (error) {
             console.error('Signup error:', error);
+            return { success: false, message: error.message };
+        }
+    },
+
+    /**
+     * Signup a new partner
+     */
+    signupPartner: async (email, password, name, facility, phone, marketingAgree) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('인증 서비스 연결 실패');
+
+            const { data: authData, error: authError } = await client.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: {
+                        full_name: name,
+                        display_name: name,
+                        phone: phone,
+                    }
+                }
+            });
+
+            if (authError) throw authError;
+            if (!authData.user) throw new Error('회원가입 중 오류가 발생했습니다.');
+
+            const { error: profileError } = await client
+                .from('profiles')
+                .upsert({
+                    id: authData.user.id,
+                    email: email,
+                    name: name,
+                    phone: phone,
+                    facility: facility,
+                    role: 'pending_partner',
+                    marketing_agree: marketingAgree
+                });
+
+            if (profileError) throw profileError;
+
+            return { success: true, user: authData.user };
+        } catch (error) {
+            console.error('Signup Partner error:', error);
+            return { success: false, message: error.message };
+        }
+    },
+
+    /**
+     * Get Pending Partners
+     */
+    getPendingPartners: async () => {
+        try {
+            const client = getSupabase();
+            if (!client) return [];
+
+            const { data, error } = await client
+                .from('profiles')
+                .select('*')
+                .eq('role', 'pending_partner')
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+            return data || [];
+        } catch (error) {
+            console.error('getPendingPartners error:', error);
+            return [];
+        }
+    },
+
+    /**
+     * Approve Partner
+     */
+    approvePartner: async (userId) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('인증 서비스 연결 실패');
+
+            const { error } = await client
+                .from('profiles')
+                .update({ role: 'partner' })
+                .eq('id', userId);
+
+            if (error) throw error;
+            return { success: true };
+        } catch (error) {
+            console.error('approvePartner error:', error);
             return { success: false, message: error.message };
         }
     },
@@ -131,28 +224,39 @@ const Auth = {
      */
     getCurrentUser: async () => {
         try {
-            console.log('Fetching current user...');
+            console.log('Fetching current user (onsil)...');
             const client = getSupabase();
-            if (!client) {
-                console.error('Supabase client not available');
+            if (!client) return null;
+
+            // Wait up to 3 seconds for session
+            const userPromise = client.auth.getUser();
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Auth Timeout')), 3000)
+            );
+
+            const { data, error } = await Promise.race([userPromise, timeoutPromise]);
+            
+            if (error) {
+                console.warn('Auth getUser error:', error);
+                return null;
+            }
+            
+            const user = data?.user;
+            if (!user) {
+                console.log('No active session found.');
                 return null;
             }
 
-            const { data: { user }, error: authError } = await client.auth.getUser();
-            if (authError) {
-                console.warn('Auth getUser error:', authError);
-                return null;
-            }
-            if (!user) {
-                console.log('No user session found');
-                return null;
-            }
-            console.log('User found:', user.email);
+            console.log('Session user found:', user.email);
 
             let profile = null;
             try {
-                const res = await client.from('profiles').select('*').eq('id', user.id).single();
-                profile = res.data;
+                const { data: profileData, error: profileError } = await client
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', user.id)
+                    .maybeSingle();
+                if (!profileError) profile = profileData;
             } catch (e) {
                 console.warn('Profile fetch failed:', e);
             }
@@ -170,6 +274,7 @@ const Auth = {
             }
             return mergedUser;
         } catch (error) {
+            console.error('getCurrentUser error:', error);
             return null;
         }
     },
@@ -189,8 +294,7 @@ const Auth = {
                     id: user.id,
                     email: user.email,
                     name: user.user_metadata?.full_name || user.user_metadata?.name || '',
-                    phone: user.user_metadata?.phone || '',
-                    updated_at: new Date()
+                    phone: user.user_metadata?.phone || ''
                 }, { onConflict: 'id' });
 
             if (error) console.error('Profile sync error:', error);
@@ -227,13 +331,13 @@ const Auth = {
 
             authContainer.innerHTML = `
                 <div class="relative group">
-                    <button class="flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded-full hover:bg-gray-100 transition-all font-medium text-gray-700">
+                    <button class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full hover:bg-gray-100 transition-all font-medium text-gray-700">
                         <i class="fas fa-user-circle text-lg text-[#1B2B48]"></i>
-                        <span><span class="font-bold text-[#1B2B48]">${displayName}</span>님${adminBadge}</span>
-                        <i class="fas fa-chevron-down text-[10px] ml-1 opacity-50"></i>
+                        <span class="text-xs"><span class="font-bold text-[#1B2B48]">${displayName}</span>님${adminBadge}</span>
+                        <i class="fas fa-chevron-down text-[8px] ml-0.5 opacity-50"></i>
                     </button>
-                    <div class="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-2xl shadow-xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all z-50">
-                        <div class="p-2 space-y-1">
+                    <div class="absolute right-0 top-full pt-2 w-48 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all z-50">
+                        <div class="bg-white border border-gray-100 rounded-2xl shadow-xl p-2 space-y-1">
                             ${adminMenu}
                             <a href="mypage.html" class="flex items-center gap-3 px-4 py-3 text-sm text-gray-600 hover:bg-gray-50 rounded-xl transition-colors">
                                 <i class="fas fa-id-card w-4"></i> 마이페이지
@@ -304,7 +408,6 @@ const Auth = {
                 throw new Error('PortOne SDK가 로드되지 않았습니다.');
             }
 
-            // Fallback for crypto.randomUUID()
             const getUUID = () => {
                 if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
                 return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -322,7 +425,6 @@ const Auth = {
             });
 
             if (response.code !== undefined) {
-                // Verification failed or canceled
                 throw new Error(response.message || '본인인증을 취소하셨거나 실패했습니다.');
             }
 
@@ -351,11 +453,19 @@ const Auth = {
         try {
             const client = getSupabase();
             if (!client) return [];
-            const { data, error } = await client
+
+            const fetchPromise = client
                 .from('funeral_homes')
                 .select('*')
                 .order('is_alliance', { ascending: false })
                 .order('name', { ascending: true });
+            
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Data Fetch Timeout')), 5000)
+            );
+
+            const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
+            
             if (error) throw error;
             return data || [];
         } catch (error) {
@@ -369,10 +479,7 @@ const Auth = {
             const client = getSupabase();
             if (!client) return null;
             
-            // Try searching by external_uuid first, then by id
             let query = client.from('funeral_homes').select('*');
-            
-            // Check if id is a UUID format
             const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id);
             
             if (isUUID) {
@@ -447,13 +554,11 @@ window.Auth = Auth;
 document.addEventListener('DOMContentLoaded', () => {
     Auth.updateHeaderUI();
 
-    // Check for session in case SDK didn't trigger immediately
     setTimeout(async () => {
         const client = getSupabase();
         if (client) {
             const { data: { user } } = await client.auth.getUser();
             if (user) {
-                // Background sync
                 Auth.syncProfile(user);
             }
 

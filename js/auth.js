@@ -18,17 +18,27 @@ console.log('Auth.js loading...');
 function getSupabase() {
     if (_supabaseInstance) return _supabaseInstance;
 
-    if (typeof supabase === 'undefined') {
-        console.error('Supabase SDK not loaded');
+    if (typeof supabase === 'undefined' || !supabase.createClient) {
+        console.error('Supabase SDK not loaded or invalid');
         return null;
     }
 
-    _supabaseInstance = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-        db: {
-            schema: 'public'
-        }
-    });
-    return _supabaseInstance;
+    try {
+        _supabaseInstance = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+            db: {
+                schema: 'public'
+            },
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true
+            }
+        });
+        console.log('Supabase client created successfully.');
+        return _supabaseInstance;
+    } catch (e) {
+        console.error('Failed to create Supabase client:', e);
+        return null;
+    }
 }
 
 const Auth = {
@@ -75,7 +85,6 @@ const Auth = {
 
             if (profileError) {
                 console.error('Profile creation error:', profileError);
-                // Note: Auth user exists even if profile fails, but we want to know
             }
 
             return { success: true, user: authData.user };
@@ -93,7 +102,6 @@ const Auth = {
             const client = getSupabase();
             if (!client) throw new Error('인증 서비스 연결 실패');
 
-            // 1. Sign up user via Supabase Auth
             const { data: authData, error: authError } = await client.auth.signUp({
                 email,
                 password,
@@ -109,7 +117,6 @@ const Auth = {
             if (authError) throw authError;
             if (!authData.user) throw new Error('회원가입 중 오류가 발생했습니다.');
 
-            // 2. Insert profile metadata into 'profiles' table
             const { error: profileError } = await client
                 .from('profiles')
                 .upsert({
@@ -122,10 +129,7 @@ const Auth = {
                     marketing_agree: marketingAgree
                 });
 
-            if (profileError) {
-                console.error('Profile creation error:', profileError);
-                throw profileError;
-            }
+            if (profileError) throw profileError;
 
             return { success: true, user: authData.user };
         } catch (error) {
@@ -222,28 +226,39 @@ const Auth = {
      */
     getCurrentUser: async () => {
         try {
-            console.log('Fetching current user (root)...');
+            console.log('Fetching current user...');
             const client = getSupabase();
-            if (!client) {
-                console.error('Supabase client not available');
+            if (!client) return null;
+
+            // Wait up to 3 seconds for session
+            const userPromise = client.auth.getUser();
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Auth Timeout')), 3000)
+            );
+
+            const { data, error } = await Promise.race([userPromise, timeoutPromise]);
+            
+            if (error) {
+                console.warn('Auth getUser error:', error);
+                return null;
+            }
+            
+            const user = data?.user;
+            if (!user) {
+                console.log('No active session found.');
                 return null;
             }
 
-            const { data: { user }, error: authError } = await client.auth.getUser();
-            if (authError) {
-                console.warn('Auth getUser error:', authError);
-                return null;
-            }
-            if (!user) {
-                console.log('No user session found');
-                return null;
-            }
-            console.log('User found:', user.email);
+            console.log('Session user found:', user.email);
 
             let profile = null;
             try {
-                const res = await client.from('profiles').select('*').eq('id', user.id).single();
-                profile = res.data;
+                const { data: profileData, error: profileError } = await client
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', user.id)
+                    .maybeSingle();
+                if (!profileError) profile = profileData;
             } catch (e) {
                 console.warn('Profile fetch failed:', e);
             }
@@ -261,7 +276,7 @@ const Auth = {
             }
             return mergedUser;
         } catch (error) {
-            console.error('getCurrentUser root error:', error);
+            console.error('getCurrentUser error:', error);
             return null;
         }
     },
@@ -395,7 +410,6 @@ const Auth = {
                 throw new Error('PortOne SDK가 로드되지 않았습니다.');
             }
 
-            // Fallback for crypto.randomUUID()
             const getUUID = () => {
                 if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
                 return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -413,7 +427,6 @@ const Auth = {
             });
 
             if (response.code !== undefined) {
-                // Verification failed or canceled
                 throw new Error(response.message || '본인인증을 취소하셨거나 실패했습니다.');
             }
 
@@ -442,11 +455,20 @@ const Auth = {
         try {
             const client = getSupabase();
             if (!client) return [];
-            const { data, error } = await client
+
+            // Add timeout for data fetch
+            const fetchPromise = client
                 .from('funeral_homes')
                 .select('*')
                 .order('is_alliance', { ascending: false })
                 .order('name', { ascending: true });
+            
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Data Fetch Timeout')), 5000)
+            );
+
+            const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
+            
             if (error) throw error;
             return data || [];
         } catch (error) {
@@ -460,10 +482,7 @@ const Auth = {
             const client = getSupabase();
             if (!client) return null;
             
-            // Try searching by external_uuid first, then by id
             let query = client.from('funeral_homes').select('*');
-            
-            // Check if id is a UUID format
             const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id);
             
             if (isUUID) {
@@ -538,13 +557,11 @@ window.Auth = Auth;
 document.addEventListener('DOMContentLoaded', () => {
     Auth.updateHeaderUI();
 
-    // Check for session in case SDK didn't trigger immediately
     setTimeout(async () => {
         const client = getSupabase();
         if (client) {
             const { data: { user } } = await client.auth.getUser();
             if (user) {
-                // Background sync
                 Auth.syncProfile(user);
             }
 
