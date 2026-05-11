@@ -4,24 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¹®ÀÇÇÏ±â - The ¿Â½Ç</title>
+    <title>ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ - The ï¿½Â½ï¿½</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1B2B48">
     <link rel="apple-touch-icon" href="icons/icon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script>
+        <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: { DEFAULT: "#1B2B48" },
-                        secondary: { DEFAULT: "#FAFAFA" },
-                        accent: { DEFAULT: "#C5A065" },
+                        brand: {
+                            DEFAULT: '#2C3E50',
+                            light: '#34495E',
+                            dark: '#1A252F',
+                            cream: '#F8F6F3',
+                            warm: '#D4A574',
+                            warmDark: '#B8894E',
+                            sage: '#87A08B',
+                            mist: '#E8ECE9'
+                        },
+                        partner: "#1B2B48",
+                        primary: "#1B2B48",
+                        accent: "#D4A574",
+                        onsil: "#8D7B68"
                     },
                     fontFamily: {
-                        sans: ['Pretendard', 'sans-serif'],
-                        serif: ['Nanum Myeongjo', 'serif'],
+                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
                     }
                 }
             }
@@ -35,18 +45,32 @@
 
 <body class="bg-gray-50 font-sans text-gray-900">
 
-    <!-- Header -->
-    <header class="sticky top-0 z-50 bg-white border-b">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <a href="index.html" class="font-bold text-xl text-[#1B2B48]">The ¿Â½Ç</a>
-            <nav class="hidden md:flex gap-6">
-                <a href="search.html" class="font-medium text-gray-600 hover:text-[#1B2B48]">Àå·Ê½ÄÀå Ã£±â</a>
-                <a href="guide.html" class="font-medium text-gray-600 hover:text-[#1B2B48]">Àå·Ê °¡ÀÌµå</a>
-                <a href="memory.html" class="font-medium text-gray-600 hover:text-[#1B2B48]">Ãß¾ï °¡ÀÌµå</a>
-                <a href="community.html" class="font-medium text-gray-600 hover:text-[#1B2B48]">ÈÄ±â</a>
+        <!-- Header -->
+    <header id="main-header" class="fixed top-0 z-50 w-full bg-white border-b border-brand/5 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
+                    <span class="text-white text-xs font-bold">ì˜¨</span>
+                </div>
+                <span class="font-bold text-lg text-brand tracking-tight">ì˜¨ì‹¤(Onsil)</span>
+            </a>
+            <nav class="hidden lg:flex items-center gap-1">
+                <a href="search.html" class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all">ìž¥ë¡€ì‹ìž¥ ì°¾ê¸°</a>
+                <a href="guide.html" class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all">ì´ë³„ ê°€ì´ë“œ</a>
+                <a href="self-diagnosis.html" class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all">ê±´ê°•ìžê°€ì§„ë‹¨</a>
+                <a href="memory.html" class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all">ì¶”ì–µ ê°€ì´ë“œ</a>
+                <a href="community.html" class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all">ì»¤ë®¤ë‹ˆí‹°</a>
             </nav>
-            <div id="auth-container" class="hidden md:flex items-center">
-                <!-- Auth UI injected by JS -->
+            <div class="hidden lg:flex items-center gap-1.5">
+                <div id="auth-container"></div>
+                <a href="search.html?quote=true" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2"><i class="fas fa-calculator"></i> ê²¬ì ë°›ê¸°</a>
+                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('ì˜ˆì•½ì€ ë¡œê·¸ì¸ í›„ ì´ìš© ê°€ëŠ¥í•©ë‹ˆë‹¤.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2"><i class="fas fa-calendar-check text-sm"></i> ì˜ˆì•½í•˜ê¸°</button>
+                <a href="tel:1551-5052" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-brand-warm/20 flex items-center gap-2"><i class="fas fa-phone-alt text-xs"></i> 1551-5052</a>
+            </div>
+            <div class="flex lg:hidden items-center gap-2">
+                <a href="tel:1551-5052" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand/5 text-brand hover:bg-brand/10 transition-colors"><i class="fas fa-phone-alt text-sm"></i></a>
+                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('ì˜ˆì•½ì€ ë¡œê·¸ì¸ í›„ ì´ìš© ê°€ëŠ¥í•©ë‹ˆë‹¤.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand-sage/10 text-brand-sage hover:bg-brand-sage/20 transition-colors"><i class="fas fa-calendar-check text-sm"></i></button>
+                <button id="mobile-menu-btn" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors" onclick="toggleMobileNav()"><i class="fas fa-bars text-brand text-xl" id="menu-icon"></i></button>
             </div>
         </div>
     </header>
@@ -54,10 +78,10 @@
     <!-- Main Content -->
     <main class="max-w-3xl mx-auto px-4 py-16">
         <div class="text-center mb-12">
-            <h1 class="text-3xl md:text-4xl font-bold text-[#1B2B48] mb-4">¹®ÀÇÇÏ±â</h1>
+            <h1 class="text-3xl md:text-4xl font-bold text-[#1B2B48] mb-4">ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½</h1>
             <p class="text-gray-600">
-                ±Ã±ÝÇÑ Á¡ÀÌ³ª µµ¿òÀÌ ÇÊ¿äÇÏ½Å°¡¿ä?<br>
-                ¾Æ·¡ ¾ç½ÄÀ» ÀÛ¼ºÇØÁÖ½Ã¸é ºü¸£°í Ä£ÀýÇÏ°Ô ´äº¯ µå¸®°Ú½À´Ï´Ù.
+                ï¿½Ã±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½Ï½Å°ï¿½ï¿½ï¿½?<br>
+                ï¿½Æ·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Û¼ï¿½ï¿½ï¿½ï¿½Ö½Ã¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä£ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½äº¯ ï¿½å¸®ï¿½Ú½ï¿½ï¿½Ï´ï¿½.
             </p>
         </div>
 
@@ -65,13 +89,13 @@
             <form id="contact-form" class="space-y-6">
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">ÀÌ¸§</label>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">ï¿½Ì¸ï¿½</label>
                         <input type="text" id="name" required
                             class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all"
-                            placeholder="È«±æµ¿">
+                            placeholder="È«ï¿½æµ¿">
                     </div>
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">ÀÌ¸ÞÀÏ</label>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">ï¿½Ì¸ï¿½ï¿½ï¿½</label>
                         <input type="email" id="email" required
                             class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all"
                             placeholder="example@email.com">
@@ -79,16 +103,16 @@
                 </div>
 
                 <div>
-                    <label for="message" class="block text-sm font-medium text-gray-700 mb-1">¹®ÀÇ ³»¿ë</label>
+                    <label for="message" class="block text-sm font-medium text-gray-700 mb-1">ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½</label>
                     <textarea id="message" rows="6" required
                         class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#1B2B48] focus:border-transparent outline-none transition-all resize-none"
-                        placeholder="¹®ÀÇÇÏ½Ç ³»¿ëÀ» ÀÚÀ¯·Ó°Ô ÀÛ¼ºÇØÁÖ¼¼¿ä."></textarea>
+                        placeholder="ï¿½ï¿½ï¿½ï¿½ï¿½Ï½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ ï¿½Û¼ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½."></textarea>
                 </div>
 
                 <div class="pt-4">
                     <button type="submit" id="submit-btn"
                         class="w-full bg-[#1B2B48] text-white py-4 rounded-lg font-bold text-lg hover:bg-[#2a4269] transition-colors shadow-md flex items-center justify-center gap-2">
-                        <span>¹®ÀÇ º¸³»±â</span>
+                        <span>ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</span>
                         <i class="fas fa-paper-plane"></i>
                     </button>
                     <p id="form-status" class="mt-4 text-center text-sm font-medium hidden"></p>
@@ -102,11 +126,11 @@
                     class="w-12 h-12 bg-[#F5F5F0] rounded-full flex items-center justify-center mx-auto mb-4 text-[#1B2B48]">
                     <i class="fas fa-handshake"></i>
                 </div>
-                <h3 class="font-bold text-[#1B2B48] mb-1">Á¦ÈÞ ¹®ÀÇ</h3>
-                <p class="text-xs text-gray-400 mt-1 mb-3">ÆÄÆ®³Ê Á¦¾È ¹× Çù¾÷</p>
+                <h3 class="font-bold text-[#1B2B48] mb-1">ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½</h3>
+                <p class="text-xs text-gray-400 mt-1 mb-3">ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½</p>
                 <a href="partnership.html"
                     class="inline-block px-4 py-2 bg-[#1B2B48] text-white text-xs font-bold rounded-lg hover:bg-[#2a4269] transition-colors">
-                    Á¦ÈÞ °Ô½ÃÆÇ ÀÌµ¿
+                    ï¿½ï¿½ï¿½ï¿½ ï¿½Ô½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
                 </a>
             </div>
             <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
@@ -114,16 +138,16 @@
                     class="w-12 h-12 bg-[#F5F5F0] rounded-full flex items-center justify-center mx-auto mb-4 text-[#1B2B48]">
                     <i class="fas fa-phone-alt"></i>
                 </div>
-                <h3 class="font-bold text-[#1B2B48] mb-1">ÀüÈ­ ¹®ÀÇ</h3>
+                <h3 class="font-bold text-[#1B2B48] mb-1">ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½</h3>
                 <p class="text-gray-600">1551-5052</p>
-                <p class="text-xs text-gray-400 mt-1">ÆòÀÏ 09:00 - 18:00</p>
+                <p class="text-xs text-gray-400 mt-1">ï¿½ï¿½ï¿½ï¿½ 09:00 - 18:00</p>
             </div>
             <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
                 <div
                     class="w-12 h-12 bg-[#F5F5F0] rounded-full flex items-center justify-center mx-auto mb-4 text-[#1B2B48]">
                     <i class="fas fa-envelope"></i>
                 </div>
-                <h3 class="font-bold text-[#1B2B48] mb-1">ÀÌ¸ÞÀÏ ¹®ÀÇ</h3>
+                <h3 class="font-bold text-[#1B2B48] mb-1">ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½</h3>
                 <p class="text-gray-600">contact@petnight.co.kr</p>
             </div>
             <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
@@ -131,8 +155,8 @@
                     class="w-12 h-12 bg-[#F5F5F0] rounded-full flex items-center justify-center mx-auto mb-4 text-[#1B2B48]">
                     <i class="fas fa-comments"></i>
                 </div>
-                <h3 class="font-bold text-[#1B2B48] mb-1">Ã¤ÆÃ »ó´ã</h3>
-                <p class="text-gray-600">Ä«Ä«¿ÀÅå Ã¤³Î 'The ¿Â½Ç'</p>
+                <h3 class="font-bold text-[#1B2B48] mb-1">Ã¤ï¿½ï¿½ ï¿½ï¿½ï¿½</h3>
+                <p class="text-gray-600">Ä«Ä«ï¿½ï¿½ï¿½ï¿½ Ã¤ï¿½ï¿½ 'The ï¿½Â½ï¿½'</p>
             </div>
         </div>
     </main>
@@ -140,23 +164,23 @@
     <footer class="bg-gray-50 border-t py-12 mt-12">
         <div class="max-w-7xl mx-auto px-4 grid gap-8 md:grid-cols-4">
             <div class="col-span-1 md:col-span-2">
-                <span class="font-bold text-xl text-[#1B2B48] mb-4 block">The ¿Â½Ç</span>
-                <p class="text-sm text-gray-500 mb-4">The ¿Â½Ç | ´ëÇ¥ Á¶¿µÈ£ | ¹®ÀÇ 1551-5052<br>»ç¾÷ÀÚµî·Ï¹øÈ£ : 181-18-02826 | Åë½ÅÆÇ¸Å¾÷ : Á¦ 2026-ºÎÃµ¿ø¹Ì-0815 È£<br>ÁÖ¼Ò : ºÎÃµ½Ã »ïÀÛ·Î 280¹ø±æ 53-9 Çà¿ì¶óÆú¸®¿ò 502È£</p>
+                <span class="font-bold text-xl text-[#1B2B48] mb-4 block">The ï¿½Â½ï¿½</span>
+                <p class="text-sm text-gray-500 mb-4">The ï¿½Â½ï¿½ | ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½È£ | ï¿½ï¿½ï¿½ï¿½ 1551-5052<br>ï¿½ï¿½ï¿½ï¿½Úµï¿½Ï¹ï¿½È£ : 181-18-02826 | ï¿½ï¿½ï¿½ï¿½Ç¸Å¾ï¿½ : ï¿½ï¿½ 2026-ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½-0815 È£<br>ï¿½Ö¼ï¿½ : ï¿½ï¿½Ãµï¿½ï¿½ ï¿½ï¿½ï¿½Û·ï¿½ 280ï¿½ï¿½ï¿½ï¿½ 53-9 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 502È£</p>
             </div>
             <div>
-                <h3 class="font-semibold mb-4 text-sm">¼­ºñ½º</h3>
+                <h3 class="font-semibold mb-4 text-sm">ï¿½ï¿½ï¿½ï¿½</h3>
                 <ul class="space-y-2 text-sm text-gray-600">
-                    <li><a href="search.html">Àå·Ê½ÄÀå Ã£±â</a></li>
-                    <li><a href="guide.html">Àå·Ê °¡ÀÌµå</a></li>
-                    <li><a href="memory.html">Ãß¾ï °¡ÀÌµå</a></li>
+                    <li><a href="search.html">ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½</a></li>
+                    <li><a href="guide.html">ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½</a></li>
+                    <li><a href="memory.html">ï¿½ß¾ï¿½ ï¿½ï¿½ï¿½Ìµï¿½</a></li>
                 </ul>
             </div>
             <div>
-                <h3 class="font-semibold mb-4 text-sm">°í°´Áö¿ø</h3>
+                <h3 class="font-semibold mb-4 text-sm">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</h3>
                 <ul class="space-y-2 text-sm text-gray-600">
-                    <li><a href="contact.html">¹®ÀÇÇÏ±â</a></li>
-                    <li><a href="terms.html">ÀÌ¿ë¾à°ü</a></li>
-                    <li><a href="privacy.html">°³ÀÎÁ¤º¸Ã³¸®¹æÄ§</a></li>
+                    <li><a href="contact.html">ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½</a></li>
+                    <li><a href="terms.html">ï¿½Ì¿ï¿½ï¿½ï¿½</a></li>
+                    <li><a href="privacy.html">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½ï¿½ï¿½Ä§</a></li>
                 </ul>
             </div>
         </div>

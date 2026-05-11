@@ -4,22 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>?�약 관�??�?�보??- The ?�실 Admin</title>
+    <title>?�약 관�??�?�보??- The ?�실 Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin
         href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    <script>
+        <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
+                        brand: {
+                            DEFAULT: '#2C3E50',
+                            light: '#34495E',
+                            dark: '#1A252F',
+                            cream: '#F8F6F3',
+                            warm: '#D4A574',
+                            warmDark: '#B8894E',
+                            sage: '#87A08B',
+                            mist: '#E8ECE9'
+                        },
+                        partner: "#1B2B48",
                         primary: "#1B2B48",
-                        accent: "#C5A065",
-                        onsil: "#8D7B68",
+                        accent: "#D4A574",
+                        onsil: "#8D7B68"
                     },
                     fontFamily: {
-                        sans: ['Pretendard', 'sans-serif'],
+                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
                     }
                 }
             }
@@ -28,22 +39,26 @@
 </head>
 
 <body class="bg-gray-50 font-sans text-gray-900 min-h-screen">
-    <!-- Header -->
-    <header class="bg-white border-b border-brand/5 fixed top-0 z-50 w-full transition-all">
-        <div class="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between py-4">
-            <div class="flex items-center gap-4">
+        <!-- Header -->
+    <header id="main-header" class="fixed top-0 z-50 w-full bg-white border-b border-brand/5 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
+            <div class="flex items-center gap-6">
                 <a href="index.html" class="flex items-center gap-2 group">
-                    <img src="./images/onsil_logo_tr.png" width="36" height="36" class="w-9 h-9 object-contain" alt="?�실 로고">
-                    <span class="font-bold text-lg text-brand tracking-tight">The ?�실 <span class="text-xs font-black text-red-500 ml-1">ADMIN</span></span>
+                    <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
+                        <span class="text-white text-xs font-bold">온</span>
+                    </div>
+                    <span class="font-bold text-lg text-brand tracking-tight">온실(Onsil) <span class="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded ml-1">ADMIN</span></span>
                 </a>
-                <div class="h-6 w-px bg-gray-200 mx-2"></div>
-                <h1 class="font-bold text-gray-600">?�약 ?�합 관�?/h1>
+                
+                <nav class="hidden md:flex items-center gap-1 border-l border-gray-100 pl-6 ml-2">
+                    <a href="admin_reservations.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg transition-all">예약 관리</a>
+                    <a href="admin_partners.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">파트너 관리</a>
+                    <a href="admin_funeral_homes.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">장례식장 관리</a>
+                </nav>
             </div>
             <div class="flex items-center gap-3">
-                <a href="admin_reservations.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?�약 관�?/a>
-                <a href="admin_partners.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?�트??관�?/a>
-                <a href="admin_funeral_homes.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?��??�장 관�?/a>
-                <button onclick="Auth.logout()" class="text-sm font-bold text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all">로그?�웃</button>
+                <div id="auth-container"></div>
+                <button onclick="Auth.logout()" class="hidden sm:block px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50 rounded-xl transition-all">로그아웃</button>
             </div>
         </div>
     </header>
@@ -51,13 +66,13 @@
     <main class="max-w-7xl mx-auto px-4 py-24">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div>
-                <h1 id="dashboard-title" class="text-2xl font-bold text-gray-900">?�약 ?�합 관�?/h1>
-                <p class="text-gray-500 mt-1">?�수??모든 ?��? ?�약 ?�역???�시간으�??�인?�고 관리할 ???�습?�다.</p>
+                <h1 id="dashboard-title" class="text-2xl font-bold text-gray-900">?�약 ?�합 관�?/h1>
+                <p class="text-gray-500 mt-1">?�수??모든 ?��? ?�약 ?�역???�시간으�??�인?�고 관리할 ???�습?�다.</p>
             </div>
             <div class="flex gap-2">
                 <button onclick="openAddModal()"
                     class="inline-flex items-center gap-2 bg-onsil text-white px-5 py-2.5 rounded-xl font-bold hover:bg-[#7A6A59] transition-all shadow-lg active:scale-95">
-                    <i class="fas fa-plus"></i> ?�규 ?�약 ?�록
+                    <i class="fas fa-plus"></i> ?�규 ?�약 ?�록
                 </button>
                 <button onclick="loadReservations()"
                     class="inline-flex items-center gap-2 bg-white border border-gray-200 px-4 py-2.5 rounded-xl hover:bg-gray-50 transition-colors shadow-sm text-gray-600">
@@ -72,13 +87,13 @@
                 <table class="w-full text-left">
                     <thead class="bg-gray-50/50 border-b border-gray-100">
                         <tr>
-                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">?�수??/th>
-                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">?��??�장</th>
-                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">?�약 ?�정</th>
-                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">?�비??금액</th>
-                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">반려?�물 ?�보</th>
-                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">보호???�락�?/th>
-                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">?�업</th>
+                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">?�수??/th>
+                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">?��??�장</th>
+                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">?�약 ?�정</th>
+                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">?�비??금액</th>
+                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">반려?�물 ?�보</th>
+                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">보호???�락�?/th>
+                            <th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">?�업</th>
                         </tr>
                     </thead>
                     <tbody id="reservation-list" class="divide-y divide-gray-50">
@@ -86,7 +101,7 @@
                         <tr>
                             <td colspan="7" class="px-6 py-20 text-center">
                                 <i class="fas fa-spinner fa-spin text-onsil text-2xl mb-3"></i>
-                                <p class="text-gray-400 text-sm">?�이?��? ?�전?�게 불러?�는 중입?�다...</p>
+                                <p class="text-gray-400 text-sm">?�이?��? ?�전?�게 불러?�는 중입?�다...</p>
                             </td>
                         </tr>
                     </tbody>
@@ -100,7 +115,7 @@
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeAddModal()"></div>
         <div class="bg-white w-full max-w-xl rounded-3xl p-8 relative z-10 shadow-2xl overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-gray-900">?�규 ?�약 ?�동 ?�록</h2>
+                <h2 class="text-xl font-bold text-gray-900">?�규 ?�약 ?�동 ?�록</h2>
                 <button onclick="closeAddModal()" class="text-gray-400 hover:text-gray-600">
                     <i class="fas fa-times text-xl"></i>
                 </button>
@@ -109,23 +124,23 @@
             <form id="add-res-form" class="space-y-5">
                 <div class="grid grid-cols-2 gap-4">
                     <div class="col-span-2">
-                        <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">?��??�장 ?�택</label>
+                        <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">?��??�장 ?�택</label>
                         <select id="res-facility" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20 focus:border-onsil transition-all">
-                            <option value="">?�설???�택?�주?�요</option>
-                            <option value="?�포?�스???�양주점">?�포?�스???�양주점</option>
+                            <option value="">?�설???�택?�주?�요</option>
+                            <option value="?�포?�스???�양주점">?�포?�스???�양주점</option>
                             <option value="21그램 경기광주??>21그램 경기광주??/option>
-                            <option value="?�이?�븐">?�이?�븐</option>
-                            <option value="?�늘??>?�늘??/option>
-                            <option value="?�포�?>?�포�?/option>
-                            <option value="?�냅?�러�?>?�냅?�러�?/option>
+                            <option value="?�이?�븐">?�이?�븐</option>
+                            <option value="?�늘??>?�늘??/option>
+                            <option value="?�포�?>?�포�?/option>
+                            <option value="?�냅?�러�?>?�냅?�러�?/option>
                             </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">?�약 ?�짜</label>
+                        <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">?�약 ?�짜</label>
                         <input type="date" id="res-date" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">?�약 ?�간</label>
+                        <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">?�약 ?�간</label>
                         <select id="res-time" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20">
                             <option value="09:00">09:00</option><option value="09:30">09:30</option>
                             <option value="10:00">10:00</option><option value="10:30">10:30</option>
@@ -140,12 +155,12 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="col-span-2">
-                        <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">고객 ?�함</label>
-                        <input type="text" id="res-user-name" placeholder="?�약???�함" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20">
+                        <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">고객 ?�함</label>
+                        <input type="text" id="res-user-name" placeholder="?�약???�함" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">?�이 ?�름</label>
-                        <input type="text" id="res-pet-name" placeholder="?�름" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20">
+                        <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">?�이 ?�름</label>
+                        <input type="text" id="res-pet-name" placeholder="?�름" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">종류 (강아지/고양????</label>
@@ -154,13 +169,13 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">보호???�락�?/label>
+                    <label class="block text-xs font-bold text-gray-500 mb-1.5 ml-1">보호???�락�?/label>
                     <input type="tel" id="res-phone" placeholder="010-0000-0000" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20">
                 </div>
 
                 <div class="pt-4 flex gap-3">
                     <button type="button" onclick="closeAddModal()" class="flex-1 py-4 bg-gray-100 text-gray-600 rounded-2xl font-bold hover:bg-gray-200 transition-all">취소</button>
-                    <button type="submit" class="flex-[2] py-4 bg-onsil text-white rounded-2xl font-bold hover:bg-[#7A6A59] transition-all shadow-lg active:scale-[0.98]">?�약 ?�록</button>
+                    <button type="submit" class="flex-[2] py-4 bg-onsil text-white rounded-2xl font-bold hover:bg-[#7A6A59] transition-all shadow-lg active:scale-[0.98]">?�약 ?�록</button>
                 </div>
             </form>
         </div>
@@ -174,7 +189,7 @@
             try {
                 const user = await Auth.getCurrentUser();
                 if (!user || (user.role !== 'admin' && user.role !== 'partner' && user.email !== 'fulmin@nate.com')) {
-                    alert('관리자 ?��? ?�트???�용 ?�?�보?�입?�다.');
+                    alert('관리자 ?��? ?�트???�용 ?�?�보?�입?�다.');
                     location.href = 'index.html';
                 }
             } catch (err) {
@@ -190,16 +205,16 @@
             const listContainer = document.getElementById('reservation-list');
             try {
                 const sb = Auth.getSupabase();
-                if (!sb) throw new Error("?�버 ?�결 ?�패");
+                if (!sb) throw new Error("?�버 ?�결 ?�패");
 
                 const user = await Auth.getCurrentUser();
-                if (!user) throw new Error("로그?�이 ?�요?�니??");
+                if (!user) throw new Error("로그?�이 ?�요?�니??");
 
                 // Dashboard Title & Facility Select Fix
                 const facilitySelect = document.getElementById('res-facility');
                 if (user.role === 'partner' && user.facility) {
-                    document.getElementById('dashboard-title').textContent = `${user.facility} 관�??�?�보??;
-                    // ?�트?�는 본인 ?�설�??�택 가?�하?�록 ?�한
+                    document.getElementById('dashboard-title').textContent = `${user.facility} 관�??�?�보??;
+                    // ?�트?�는 본인 ?�설�??�택 가?�하?�록 ?�한
                     facilitySelect.innerHTML = `<option value="${user.facility}">${user.facility}</option>`;
                     facilitySelect.value = user.facility;
                 }
@@ -211,7 +226,7 @@
                     if (user.facility) {
                         query = query.eq('facility_name', user.facility);
                     } else {
-                        throw new Error("?�당???�설 ?�보가 ?�습?�다. 관리자?�게 문의?�세??");
+                        throw new Error("?�당???�설 ?�보가 ?�습?�다. 관리자?�게 문의?�세??");
                     }
                 }
 
@@ -220,20 +235,20 @@
                 if (error) throw error;
 
                 if (!data || data.length === 0) {
-                    listContainer.innerHTML = '<tr><td colspan="7" class="px-6 py-20 text-center text-gray-400">?�록???�약 ?�역???�습?�다.</td></tr>';
+                    listContainer.innerHTML = '<tr><td colspan="7" class="px-6 py-20 text-center text-gray-400">?�록???�약 ?�역???�습?�다.</td></tr>';
                     return;
                 }
 
                 listContainer.innerHTML = data.map(res => {
                     const createdDate = new Date(res.created_at).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-                    const isManual = !res.user_id || res.user_id.length < 10; // ?�동 ?�력 ?��? ?�단
+                    const isManual = !res.user_id || res.user_id.length < 10; // ?�동 ?�력 ?��? ?�단
 
                     return `
                         <tr class="hover:bg-gray-50/50 transition-colors">
                             <td class="px-6 py-5 text-xs text-gray-500 font-medium">${createdDate}</td>
                             <td class="px-6 py-5">
                                 <span class="font-bold text-gray-900">${res.facility_name}</span>
-                                ${isManual ? '<span class="ml-2 text-[9px] bg-blue-50 text-blue-500 px-1.5 py-0.5 rounded font-black">?�장�?/span>' : ''}
+                                ${isManual ? '<span class="ml-2 text-[9px] bg-blue-50 text-blue-500 px-1.5 py-0.5 rounded font-black">?�장�?/span>' : ''}
                             </td>
                             <td class="px-6 py-5">
                                 <div class="text-sm">
@@ -243,13 +258,13 @@
                             </td>
                             <td class="px-6 py-5">
                                 <div class="flex flex-col gap-1">
-                                    <span class="text-xs font-bold text-gray-700">${res.selected_service || '?�담 ?��?}</span>
+                                    <span class="text-xs font-bold text-gray-700">${res.selected_service || '?�담 ?��?}</span>
                                     <span class="text-[10px] text-accent font-bold">${res.service_price || '-'}</span>
                                 </div>
                             </td>
                             <td class="px-6 py-5">
                                 <div class="text-sm">
-                                    <span class="px-2 py-0.5 bg-onsil/5 text-onsil rounded text-[10px] font-bold mr-1 border border-onsil/10">${res.pet_type || '?�보?�음'}</span>
+                                    <span class="px-2 py-0.5 bg-onsil/5 text-onsil rounded text-[10px] font-bold mr-1 border border-onsil/10">${res.pet_type || '?�보?�음'}</span>
                                     <span class="font-bold text-gray-800">${res.pet_name || '미입??}</span>
                                     <span class="text-[11px] text-gray-400">(${res.pet_weight || '0.0'}kg)</span>
                                 </div>
@@ -269,7 +284,7 @@
             }
         }
 
-        // ?�림??발송 ?�수 (Edge Function ?�출 방식)
+        // ?�림??발송 ?�수 (Edge Function ?�출 방식)
         async function sendAlimtalk(resData) {
             try {
                 const sb = Auth.getSupabase();
@@ -288,20 +303,20 @@
         }
 
         async function deleteReservation(id) {
-            if (!confirm('?�당 ?�약???�말 ??��?�시겠습?�까? (복구 불�???')) return;
+            if (!confirm('?�당 ?�약???�말 ??��?�시겠습?�까? (복구 불�???')) return;
             try {
                 const sb = Auth.getSupabase();
                 const { error } = await sb.from('reservations').delete().eq('id', id);
                 if (error) throw error;
                 loadReservations();
-            } catch (err) { alert('??�� ?�패: ' + err.message); }
+            } catch (err) { alert('??�� ?�패: ' + err.message); }
         }
 
         document.getElementById('add-res-form').onsubmit = async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button[type="submit"]');
             btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>처리 �?..';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>처리 �?..';
 
             try {
                 const sb = Auth.getSupabase();
@@ -315,13 +330,13 @@
                     pet_name: document.getElementById('res-pet-name').value,
                     pet_type: document.getElementById('res-pet-type').value,
                     user_phone: document.getElementById('res-phone').value,
-                    user_id: user.id, // ?�효??UUID ?�식?�로 관리자??ID ?�??
+                    user_id: user.id, // ?�효??UUID ?�식?�로 관리자??ID ?�??
                     payment_status: 'manual'
                 };
 
-                if (!payload.facility_name || !payload.reservation_date) throw new Error("?�수 ?�보�??�력?�주?�요.");
+                if (!payload.facility_name || !payload.reservation_date) throw new Error("?�수 ?�보�??�력?�주?�요.");
 
-                // 중복 ?�약 검�?
+                // 중복 ?�약 검�?
                 const { data: existRes, error: checkErr } = await sb
                     .from('reservations')
                     .select('id')
@@ -332,27 +347,27 @@
                 if (checkErr) throw checkErr;
                 
                 if (existRes && existRes.length > 0) {
-                    throw new Error("?��? ?�약???�간?�니?? ?�른 ?�간???�택?�주?�요.");
+                    throw new Error("?��? ?�약???�간?�니?? ?�른 ?�간???�택?�주?�요.");
                 }
 
                 const { error } = await sb.from('reservations').insert([payload]);
                 if (error) throw error;
 
-                // ?�림??발송 (?�동 ?�록 ?�에??발송)
+                // ?�림??발송 (?�동 ?�록 ?�에??발송)
                 await sendAlimtalk({
                     ...payload,
                     service_price: payload.service_price || "0??
                 });
 
-                alert('?�규 ?�약???�공?�으�??�록?�었?�니??');
+                alert('?�규 ?�약???�공?�으�??�록?�었?�니??');
                 closeAddModal();
                 loadReservations();
                 e.target.reset();
             } catch (err) {
-                alert('?�록 ?�류: ' + err.message);
+                alert('?�록 ?�류: ' + err.message);
             } finally {
                 btn.disabled = false;
-                btn.textContent = '?�약 ?�록';
+                btn.textContent = '?�약 ?�록';
             }
         };
 

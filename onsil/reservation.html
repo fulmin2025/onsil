@@ -9,17 +9,28 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin
         href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    <script>
+        <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: "#8D7B68",
-                        accent: "#C5A065",
-                        secondary: "#FAFAFA",
+                        brand: {
+                            DEFAULT: '#2C3E50',
+                            light: '#34495E',
+                            dark: '#1A252F',
+                            cream: '#F8F6F3',
+                            warm: '#D4A574',
+                            warmDark: '#B8894E',
+                            sage: '#87A08B',
+                            mist: '#E8ECE9'
+                        },
+                        partner: "#1B2B48",
+                        primary: "#1B2B48",
+                        accent: "#D4A574",
+                        onsil: "#8D7B68"
                     },
                     fontFamily: {
-                        sans: ['Pretendard', 'sans-serif'],
+                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
                     }
                 }
             }
@@ -65,12 +76,34 @@
 </head>
 
 <body class="bg-gray-50 font-sans text-gray-900 pb-32">
-    <!-- Header -->
-    <header class="sticky top-0 z-50 bg-white border-b px-4 h-14 flex items-center">
-        <button onclick="history.back()" class="w-10 h-10 flex items-center justify-center -ml-2">
-            <i class="fas fa-chevron-left text-lg"></i>
-        </button>
-        <h1 class="flex-1 text-center font-bold text-lg mr-8">예약하기</h1>
+        <!-- Header -->
+    <header id="main-header" class="fixed top-0 z-50 w-full bg-white border-b border-brand/5 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
+                    <span class="text-white text-xs font-bold">온</span>
+                </div>
+                <span class="font-bold text-lg text-brand tracking-tight">온실(Onsil)</span>
+            </a>
+            <nav class="hidden lg:flex items-center gap-1">
+                <a href="search.html" class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all">장례식장 찾기</a>
+                <a href="guide.html" class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all">이별 가이드</a>
+                <a href="self-diagnosis.html" class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all">건강자가진단</a>
+                <a href="memory.html" class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all">추억 가이드</a>
+                <a href="community.html" class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all">커뮤니티</a>
+            </nav>
+            <div class="hidden lg:flex items-center gap-1.5">
+                <div id="auth-container"></div>
+                <a href="search.html?quote=true" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2"><i class="fas fa-calculator"></i> 견적받기</a>
+                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2"><i class="fas fa-calendar-check text-sm"></i> 예약하기</button>
+                <a href="tel:1551-5052" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-brand-warm/20 flex items-center gap-2"><i class="fas fa-phone-alt text-xs"></i> 1551-5052</a>
+            </div>
+            <div class="flex lg:hidden items-center gap-2">
+                <a href="tel:1551-5052" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand/5 text-brand hover:bg-brand/10 transition-colors"><i class="fas fa-phone-alt text-sm"></i></a>
+                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand-sage/10 text-brand-sage hover:bg-brand-sage/20 transition-colors"><i class="fas fa-calendar-check text-sm"></i></button>
+                <button id="mobile-menu-btn" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors" onclick="toggleMobileNav()"><i class="fas fa-bars text-brand text-xl" id="menu-icon"></i></button>
+            </div>
+        </div>
     </header>
 
     <main class="max-w-md mx-auto">

@@ -21,8 +21,32 @@
         }
     </script>
     <script src="js/auth.js?v=v17_force_onsil"></script>
-    <script>
-        tailwind.config = { theme: { extend: { colors: { brand: "#2C3E50", partner: "#1B2B48", accent: "#D4A574" }, fontFamily: { sans: ["Pretendard", "sans-serif"] } } } }
+        <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#2C3E50',
+                            light: '#34495E',
+                            dark: '#1A252F',
+                            cream: '#F8F6F3',
+                            warm: '#D4A574',
+                            warmDark: '#B8894E',
+                            sage: '#87A08B',
+                            mist: '#E8ECE9'
+                        },
+                        partner: "#1B2B48",
+                        primary: "#1B2B48",
+                        accent: "#D4A574",
+                        onsil: "#8D7B68"
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
     </script>
     <style>
         .modal-backdrop { background-color: rgba(0,0,0,0.5); backdrop-filter: blur(4px); }
@@ -32,20 +56,26 @@
     </style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-900 min-h-screen flex flex-col">
-    <header class="bg-white border-b fixed top-0 z-50 w-full shadow-sm">
-        <div class="max-w-7xl mx-auto px-6 flex items-center justify-between py-4">
-            <div class="flex items-center gap-4">
-                <a href="index.html" class="flex items-center gap-2">
-                    <img src="./images/onsil_logo_tr.png" width="36" height="36" class="w-9 h-9 object-contain" alt="온실 로고">
-                    <span class="font-bold text-lg text-brand">The 온실 <span class="text-xs font-black text-red-500 ml-1">ADMIN</span></span>
+        <!-- Header -->
+    <header id="main-header" class="fixed top-0 z-50 w-full bg-white border-b border-brand/5 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
+            <div class="flex items-center gap-6">
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
+                        <span class="text-white text-xs font-bold">온</span>
+                    </div>
+                    <span class="font-bold text-lg text-brand tracking-tight">온실(Onsil) <span class="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded ml-1">ADMIN</span></span>
                 </a>
-                <div class="h-6 w-px bg-gray-200 mx-2"></div>
-                <h1 class="font-bold text-gray-600">장례식장 정보 관리</h1>
+                
+                <nav class="hidden md:flex items-center gap-1 border-l border-gray-100 pl-6 ml-2">
+                    <a href="admin_reservations.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">예약 관리</a>
+                    <a href="admin_partners.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">파트너 관리</a>
+                    <a href="admin_funeral_homes.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg transition-all">장례식장 관리</a>
+                </nav>
             </div>
             <div class="flex items-center gap-3">
-                <a href="admin_reservations.html" class="text-sm font-medium text-gray-500 hover:text-brand">예약 관리</a>
-                <a href="admin_partners.html" class="text-sm font-medium text-gray-500 hover:text-brand">파트너 관리</a>
-                <button onclick="Auth.logout()" class="text-sm font-bold text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg">로그아웃</button>
+                <div id="auth-container"></div>
+                <button onclick="Auth.logout()" class="hidden sm:block px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50 rounded-xl transition-all">로그아웃</button>
             </div>
         </div>
     </header>

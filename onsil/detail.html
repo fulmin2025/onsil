@@ -11,17 +11,28 @@
         href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/auth.js"></script>
-    <script>
+        <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: { DEFAULT: "#8D7B68" },
-                        secondary: { DEFAULT: "#FAFAFA" },
-                        accent: { DEFAULT: "#C5A065" },
+                        brand: {
+                            DEFAULT: '#2C3E50',
+                            light: '#34495E',
+                            dark: '#1A252F',
+                            cream: '#F8F6F3',
+                            warm: '#D4A574',
+                            warmDark: '#B8894E',
+                            sage: '#87A08B',
+                            mist: '#E8ECE9'
+                        },
+                        partner: "#1B2B48",
+                        primary: "#1B2B48",
+                        accent: "#D4A574",
+                        onsil: "#8D7B68"
                     },
                     fontFamily: {
-                        sans: ['Pretendard', 'sans-serif'],
+                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
                     }
                 }
             }
