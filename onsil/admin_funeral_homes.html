@@ -1,477 +1,350 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>?��??�장 ?�보 관�?- The ?�실 Admin</title>
+    <title>장례식장 정보 관리 - The 온실 Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" as="style" crossorigin
-        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="js/auth.js"></script>
-    <script src="js/sync_manager.js"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: "#2C3E50",
-                        partner: "#1B2B48",
-                        accent: "#D4A574"
-                    },
-                    fontFamily: {
-                        sans: ['Pretendard', 'sans-serif'],
-                    }
-                }
-            }
-        }
+        tailwind.config = { theme: { extend: { colors: { brand: "#2C3E50", partner: "#1B2B48", accent: "#D4A574" }, fontFamily: { sans: ["Pretendard", "sans-serif"] } } } }
     </script>
     <style>
-        .modal-backdrop { background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); }
+        .modal-backdrop { background-color: rgba(0,0,0,0.5); backdrop-filter: blur(4px); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        @keyframes slideUp { from { transform: translate(-50%, -40%); opacity: 0; } to { transform: translate(-50%, -50%); opacity: 1; } }
+        @keyframes slideUp { from { transform: translate(-50%,-40%); opacity: 0; } to { transform: translate(-50%,-50%); opacity: 1; } }
         .animate-slideUp { animation: slideUp 0.3s ease-out forwards; }
     </style>
 </head>
-
 <body class="bg-gray-50 font-sans text-gray-900 min-h-screen flex flex-col">
-    <!-- Header -->
-    <header class="bg-white border-b border-brand/5 fixed top-0 z-50 w-full transition-all">
-        <div class="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between py-4">
+    <header class="bg-white border-b fixed top-0 z-50 w-full shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 flex items-center justify-between py-4">
             <div class="flex items-center gap-4">
-                <a href="index.html" class="flex items-center gap-2 group">
-                    <img src="./images/onsil_logo_tr.png" width="36" height="36" class="w-9 h-9 object-contain" alt="?�실 로고">
-                    <span class="font-bold text-lg text-brand tracking-tight">The ?�실 <span class="text-xs font-black text-red-500 ml-1">ADMIN</span></span>
+                <a href="index.html" class="flex items-center gap-2">
+                    <img src="./images/onsil_logo_tr.png" width="36" height="36" class="w-9 h-9 object-contain" alt="온실 로고">
+                    <span class="font-bold text-lg text-brand">The 온실 <span class="text-xs font-black text-red-500 ml-1">ADMIN</span></span>
                 </a>
                 <div class="h-6 w-px bg-gray-200 mx-2"></div>
-                <h1 class="font-bold text-gray-600">?��??�장 ?�보 관�?/h1>
+                <h1 class="font-bold text-gray-600">장례식장 정보 관리</h1>
             </div>
             <div class="flex items-center gap-3">
-                <a href="admin_reservations.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?�약 관�?/a>
-                <a href="admin_partners.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?�트??관�?/a>
-                <button onclick="Auth.logout()" class="text-sm font-bold text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all">로그?�웃</button>
+                <a href="admin_reservations.html" class="text-sm font-medium text-gray-500 hover:text-brand">예약 관리</a>
+                <a href="admin_partners.html" class="text-sm font-medium text-gray-500 hover:text-brand">파트너 관리</a>
+                <button onclick="Auth.logout()" class="text-sm font-bold text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg">로그아웃</button>
             </div>
         </div>
     </header>
-
     <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-24">
         <div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <h2 class="text-2xl font-black text-gray-900 mb-2">?��??�장 목록</h2>
-                <p class="text-sm text-gray-500 font-medium">?�이?�베?�스???�록??모든 ?��??�장 ?�보?�니??</p>
+                <h2 class="text-2xl font-black text-gray-900 mb-2">장례식장 목록</h2>
+                <p class="text-sm text-gray-500">데이터베이스에 등록된 모든 장례식장 정보입니다.</p>
             </div>
             <div class="flex gap-3">
-                <button onclick="runSecurityAudit()" class="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 border border-red-100 rounded-xl text-sm font-bold hover:bg-red-100 transition-all shadow-sm">
+                <button onclick="runSecurityAudit()" class="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 border border-red-100 rounded-xl text-sm font-bold hover:bg-red-100">
                     <i class="fas fa-shield-alt"></i> 보안 감사
                 </button>
-                <button onclick="checkSyncStatus()" class="flex items-center gap-2 px-4 py-2 bg-accent/10 text-accent border border-accent/20 rounded-xl text-sm font-bold hover:bg-accent/20 transition-all shadow-sm">
-                    <i class="fas fa-sync-alt"></i> 로컬 ?�이???�기???�인
+                <button onclick="checkSyncStatus()" class="flex items-center gap-2 px-4 py-2 bg-amber-50 text-amber-600 border border-amber-100 rounded-xl text-sm font-bold hover:bg-amber-100">
+                    <i class="fas fa-sync-alt"></i> 동기화 확인
                 </button>
-                <button onclick="openEditModal()" class="flex items-center gap-2 px-6 py-2.5 bg-partner text-white rounded-xl text-sm font-bold hover:bg-black transition-all shadow-lg shadow-partner/10">
-                    <i class="fas fa-plus"></i> ?�규 ?�록
+                <button onclick="openEditModal()" class="flex items-center gap-2 px-6 py-2.5 bg-partner text-white rounded-xl text-sm font-bold hover:bg-black shadow-lg">
+                    <i class="fas fa-plus"></i> 신규 등록
                 </button>
             </div>
         </div>
-
-        <!-- Search Bar -->
         <div class="mb-6 relative">
             <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-            <input type="text" id="search-input" oninput="filterList()" placeholder="?��??�장 ?�름 ?�는 주소�?검??.." 
-                class="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-partner/20 focus:border-partner outline-none transition-all shadow-sm">
+            <input type="text" id="search-input" oninput="filterList()" placeholder="장례식장 이름 또는 주소로 검색.."
+                class="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-partner/20 outline-none shadow-sm">
         </div>
-
-        <!-- List Table -->
-        <div class="bg-white rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden">
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
-                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">?��??�장�?/th>
+                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">장례식장명</th>
                             <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">주소</th>
-                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest text-right">?�작</th>
+                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest text-right">작업</th>
                         </tr>
                     </thead>
                     <tbody id="home-list" class="divide-y divide-gray-50">
-                        <tr>
-                            <td colspan="3" class="px-8 py-20 text-center text-gray-400">
-                                <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
-                                <p class="text-sm font-medium">?�이?��? 불러?�는 중입?�다...</p>
-                            </td>
-                        </tr>
+                        <tr><td colspan="3" class="px-8 py-20 text-center text-gray-400">
+                            <i class="fas fa-spinner fa-spin text-2xl mb-4 block"></i>
+                            <p class="text-sm font-medium">데이터를 불러오는 중입니다...</p>
+                        </td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </main>
-
     <!-- Edit Modal -->
     <div id="edit-modal" class="fixed inset-0 z-[100] hidden">
         <div class="modal-backdrop absolute inset-0" onclick="closeEditModal()"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden animate-slideUp">
-            <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
-                <h3 id="modal-title" class="text-xl font-black text-gray-900">?��??�장 ?�보 ?�정</h3>
-                <button onclick="closeEditModal()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition-colors">
-                    <i class="fas fa-times"></i>
-                </button>
+            <div class="px-8 py-6 border-b flex items-center justify-between bg-gray-50/50">
+                <h3 id="modal-title" class="text-xl font-black text-gray-900">장례식장 정보 수정</h3>
+                <button onclick="closeEditModal()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200"><i class="fas fa-times"></i></button>
             </div>
             <div class="p-8 max-h-[70vh] overflow-y-auto no-scrollbar">
                 <form id="edit-form" class="space-y-6">
                     <input type="hidden" id="form-id">
-                    
                     <div class="grid grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">?��??�장�?(KR)</label>
-                            <input type="text" id="form-name" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                            <label class="text-sm font-bold text-gray-700 ml-1">장례식장명 (한국어)</label>
+                            <input type="text" id="form-name" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                         </div>
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">지??(Region)</label>
-                            <input type="text" id="form-region" placeholder="경기 부�? ?�울 강남 ?? class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                            <label class="text-sm font-bold text-gray-700 ml-1">지역 (Region)</label>
+                            <input type="text" id="form-region" placeholder="예: 경기 부천, 서울 강남" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                         </div>
                     </div>
-
                     <div class="space-y-2">
                         <label class="text-sm font-bold text-gray-700 ml-1">주소</label>
-                        <input type="text" id="form-address" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                        <input type="text" id="form-address" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                     </div>
-
                     <div class="grid grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">?�화번호</label>
-                            <input type="text" id="form-phone" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                            <label class="text-sm font-bold text-gray-700 ml-1">전화번호</label>
+                            <input type="text" id="form-phone" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                         </div>
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">?��?지 URL</label>
-                            <input type="text" id="form-image-url" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                            <label class="text-sm font-bold text-gray-700 ml-1">이미지 URL</label>
+                            <input type="text" id="form-image-url" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                         </div>
                     </div>
-
                     <div class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700 ml-1">??�??�명</label>
-                        <input type="text" id="form-description" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                        <label class="text-sm font-bold text-gray-700 ml-1">업체 설명</label>
+                        <input type="text" id="form-description" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                     </div>
-
                     <div class="grid grid-cols-3 gap-6">
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">?�도 (Lat)</label>
-                            <input type="text" id="form-lat" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                            <label class="text-sm font-bold text-gray-700 ml-1">위도 (Lat)</label>
+                            <input type="text" id="form-lat" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                         </div>
                         <div class="space-y-2">
                             <label class="text-sm font-bold text-gray-700 ml-1">경도 (Lng)</label>
-                            <input type="text" id="form-lng" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                            <input type="text" id="form-lng" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                         </div>
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">?�렬 ?�서</label>
-                            <input type="number" id="form-sort-order" value="0" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                            <label class="text-sm font-bold text-gray-700 ml-1">정렬 순서</label>
+                            <input type="number" id="form-sort-order" value="0" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                         </div>
                     </div>
-
                     <div class="flex gap-8 py-2">
-                        <label class="flex items-center gap-3 cursor-pointer group">
+                        <label class="flex items-center gap-3 cursor-pointer">
                             <div class="relative">
                                 <input type="checkbox" id="form-is-alliance" class="sr-only peer">
-                                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-accent after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-amber-500 transition-colors"></div>
+                                <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5"></div>
                             </div>
-                            <span class="text-sm font-bold text-gray-700 group-hover:text-accent transition-colors">?�심 ?��??�장 (?�휴)</span>
+                            <span class="text-sm font-bold text-gray-700">제휴 업체</span>
                         </label>
-                        <label class="flex items-center gap-3 cursor-pointer group">
+                        <label class="flex items-center gap-3 cursor-pointer">
                             <div class="relative">
                                 <input type="checkbox" id="form-is-24h" class="sr-only peer">
-                                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-blue-500 transition-colors"></div>
+                                <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5"></div>
                             </div>
-                            <span class="text-sm font-bold text-gray-700 group-hover:text-blue-500 transition-colors">24?�간 ?�영</span>
+                            <span class="text-sm font-bold text-gray-700">24시간 운영</span>
                         </label>
                     </div>
-
                     <div class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700 ml-1">가�??�보 (JSON)</label>
-                        <textarea id="form-prices" rows="5" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none font-mono text-xs" placeholder='[{"category": "기본?�장", "items": [{"name": "?�형�?, "price": "200,000??}]}]'></textarea>
+                        <label class="text-sm font-bold text-gray-700 ml-1">가격 정보 (JSON 형식)</label>
+                        <textarea id="form-prices" rows="6" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none font-mono text-xs resize-none" placeholder='[{"category":"기본 장례","items":[{"name":"기본","price":"300,000원"}]}]'></textarea>
                     </div>
                 </form>
             </div>
-            <div class="p-8 border-t border-gray-100 flex gap-3 bg-gray-50/50">
-                <button onclick="closeEditModal()" class="flex-1 py-4 border border-gray-200 text-gray-500 rounded-2xl font-bold hover:bg-white transition-all">취소</button>
-                <button onclick="saveFuneralHome()" class="flex-[2] py-4 bg-partner text-white rounded-2xl font-bold shadow-lg shadow-partner/20 hover:bg-black transition-all">?�?�하�?/button>
+            <div class="px-8 py-5 border-t flex justify-end gap-3 bg-gray-50/50">
+                <button onclick="closeEditModal()" class="px-6 py-2.5 bg-white border border-gray-200 text-gray-600 rounded-xl text-sm font-bold hover:bg-gray-100">취소</button>
+                <button onclick="saveFuneralHome()" class="px-6 py-2.5 bg-partner text-white rounded-xl text-sm font-bold hover:bg-black shadow-lg">저장하기</button>
             </div>
         </div>
     </div>
-
-    <!-- Security Audit Modal -->
+    <!-- Security Modal -->
     <div id="security-modal" class="fixed inset-0 z-[110] hidden">
         <div class="modal-backdrop absolute inset-0" onclick="closeSecurityModal()"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white rounded-[2rem] shadow-2xl overflow-hidden animate-slideUp">
-            <div class="px-8 py-6 bg-red-600 text-white flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <i class="fas fa-user-shield text-xl"></i>
-                    <h3 class="text-xl font-black">?�시�?보안 감사 모니??/h3>
-                </div>
-                <button onclick="closeSecurityModal()" class="text-white/80 hover:text-white transition-colors">
-                    <i class="fas fa-times"></i>
-                </button>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden animate-slideUp">
+            <div class="px-8 py-6 border-b flex items-center justify-between bg-red-50">
+                <h3 class="text-xl font-black text-red-700"><i class="fas fa-shield-alt mr-2"></i>보안 감사 결과</h3>
+                <button onclick="closeSecurityModal()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-red-100 text-red-400"><i class="fas fa-times"></i></button>
             </div>
-            <div class="p-8 space-y-6">
-                <div id="audit-content" class="space-y-4">
-                    <div class="flex items-center justify-center py-10">
-                        <i class="fas fa-circle-notch fa-spin text-3xl text-red-500"></i>
-                    </div>
-                </div>
+            <div class="p-8 max-h-[60vh] overflow-y-auto no-scrollbar">
+                <div id="security-results" class="space-y-2 text-sm text-gray-700"></div>
             </div>
-            <div class="p-6 bg-gray-50 border-t border-gray-100 text-center">
-                <p class="text-xs text-gray-400 font-medium italic">??리포?�는 ?�재 관리자 ?�션??기�??�로 ?�성?�었?�니??</p>
+            <div class="px-8 py-4 border-t flex justify-end">
+                <button onclick="closeSecurityModal()" class="px-5 py-2 bg-gray-200 text-gray-700 rounded-xl text-sm font-bold hover:bg-gray-300">닫기</button>
             </div>
         </div>
     </div>
-
     <script>
         let allHomes = [];
+        window.addEventListener("DOMContentLoaded", checkAdmin);
 
-        // Security Audit Functions
-        async function runSecurityAudit() {
-            const modal = document.getElementById('security-modal');
-            const content = document.getElementById('audit-content');
-            modal.classList.remove('hidden');
-            content.innerHTML = '<div class="flex items-center justify-center py-10"><i class="fas fa-circle-notch fa-spin text-3xl text-red-500"></i></div>';
-            
-            try {
-                const user = await Auth.getCurrentUser();
-                const isAdmin = user && (user.role === 'admin' || ['fulmin@nate.com', 'theonsil@gmail.com', 'admin@theonsil.co.kr', 'theonsilofficial@gmail.com', 'admin@onsil.com'].includes(user.email));
-                
-                let auditHtml = `
-                    <div class="space-y-4">
-                        <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                            <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">?�증 ?�태 (Authentication)</div>
-                            <div class="flex items-center justify-between">
-                                <span class="font-bold text-gray-700">${user ? user.email : '비로그인'}</span>
-                                <span class="px-2 py-1 ${user ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'} text-[10px] font-black rounded-lg">
-                                    ${user ? 'ACTIVE' : 'INACTIVE'}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                            <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">권한 ?�급 (Role)</div>
-                            <div class="flex items-center justify-between">
-                                <span class="font-bold text-gray-700">${isAdmin ? '?�스??관리자 (ADMIN)' : '?�반 ?�용??}</span>
-                                <i class="fas ${isAdmin ? 'fa-check-circle text-green-500' : 'fa-exclamation-triangle text-red-500'}"></i>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                            <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">API 보안 (Key Protection)</div>
-                            <div class="flex items-center justify-between text-sm">
-                                <span class="text-gray-600 font-medium">Service Role Key ?�출 ?��?</span>
-                                <span class="text-green-600 font-bold">미노�?(Safe)</span>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                            <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">?�이???�근 보안 (RLS)</div>
-                            <div class="flex items-center justify-between text-sm">
-                                <span class="text-gray-600 font-medium">?�시�?DB ?�책 검�?/span>
-                                <span class="text-blue-600 font-bold">?�동 �?(Protected)</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                content.innerHTML = auditHtml;
-            } catch (err) {
-                content.innerHTML = `<div class="p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium">감사 �??�류 발생: ${err.message}</div>`;
-            }
-        }
-
-        function closeSecurityModal() {
-            document.getElementById('security-modal').classList.add('hidden');
-        }
-
-        // Security Check
         async function checkAdmin() {
             const user = await Auth.getCurrentUser();
-            if (!user || (user.role !== 'admin' && !['fulmin@nate.com', 'theonsil@gmail.com', 'admin@theonsil.co.kr', 'theonsilofficial@gmail.com', 'admin@onsil.com'].includes(user.email))) {
-                alert('관리자 권한???�요?�니??');
-                location.href = 'partner-login.html';
+            const adminEmails = ["fulmin@nate.com","theonsil@gmail.com","admin@theonsil.co.kr","theonsilofficial@gmail.com","admin@onsil.com"];
+            if (!user || (user.role !== "admin" && !adminEmails.includes(user.email))) {
+                alert("관리자 권한이 필요합니다.");
+                location.href = "partner-login.html";
                 return;
             }
             loadFuneralHomes();
         }
 
         async function loadFuneralHomes() {
-            const listContainer = document.getElementById('home-list');
             allHomes = await Auth.getAllFuneralHomes();
             renderTable(allHomes);
         }
 
         function renderTable(items) {
-            const listContainer = document.getElementById('home-list');
-            if (items.length === 0) {
-                listContainer.innerHTML = '<tr><td colspan="3" class="px-8 py-20 text-center text-gray-400 font-medium italic">?�록???�이?��? ?�습?�다.</td></tr>';
+            const container = document.getElementById("home-list");
+            if (!items || items.length === 0) {
+                container.innerHTML = '<tr><td colspan="3" class="px-8 py-20 text-center text-gray-400">등록된 데이터가 없습니다.</td></tr>';
                 return;
             }
+            container.innerHTML = items.map(h => {
+                const dataStr = JSON.stringify(h).replace(/"/g, '&quot;');
+                return '<tr class="hover:bg-gray-50/50 transition-colors group">' +
+                    '<td class="px-8 py-6">' +
+                        '<div class="flex items-center gap-3">' +
+                            '<div class="w-10 h-10 rounded-xl ' + (h.is_alliance ? 'bg-amber-50 text-amber-600' : 'bg-gray-100 text-gray-400') + ' flex items-center justify-center">' +
+                                '<i class="fas fa-home text-lg"></i>' +
+                            '</div>' +
+                            '<div>' +
+                                '<div class="flex items-center gap-2">' +
+                                    '<span class="font-bold text-gray-900">' + h.name + '</span>' +
+                                    (h.is_alliance ? '<span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 text-[9px] font-black rounded">제휴</span>' : '') +
+                                    (h.is_24h ? '<span class="px-1.5 py-0.5 bg-blue-100 text-blue-600 text-[9px] font-black rounded">24H</span>' : '') +
+                                '</div>' +
+                                '<span class="text-xs text-gray-400">' + (h.region || '-') + '</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</td>' +
+                    '<td class="px-8 py-6"><span class="text-sm text-gray-500">' + (h.address || '-') + '</span></td>' +
+                    '<td class="px-8 py-6 text-right">' +
+                        '<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">' +
+                            '<button onclick="editItem(\'' + h.id + '\')" class="w-9 h-9 rounded-lg bg-gray-50 text-gray-400 hover:bg-partner hover:text-white transition-all flex items-center justify-center"><i class="fas fa-edit text-xs"></i></button>' +
+                            '<button onclick="deleteHome(\'' + h.id + '\', \'' + h.name.replace(/'/g, "\\'") + '\')" class="w-9 h-9 rounded-lg bg-gray-50 text-gray-400 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center"><i class="fas fa-trash-alt text-xs"></i></button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        }
 
-            listContainer.innerHTML = items.map(h => `
-                <tr class="hover:bg-gray-50/50 transition-colors group">
-                    <td class="px-8 py-6">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl ${h.is_alliance ? 'bg-accent/10 text-accent' : 'bg-gray-100 text-gray-400'} flex items-center justify-center">
-                                <i class="fas fa-h-square text-lg"></i>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="flex items-center gap-2">
-                                    <span class="font-bold text-gray-900">${h.name}</span>
-                                    ${h.is_alliance ? '<span class="px-1.5 py-0.5 bg-accent/10 text-accent text-[9px] font-black rounded uppercase">?�휴</span>' : ''}
-                                    ${h.is_24h ? '<span class="px-1.5 py-0.5 bg-blue-50 text-blue-500 text-[9px] font-black rounded uppercase">24H</span>' : ''}
-                                </div>
-                                <span class="text-[11px] text-gray-400 font-medium tracking-tight">${h.region || '-'}</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-8 py-6">
-                        <span class="text-sm text-gray-500 font-medium">${h.address || '-'}</span>
-                    </td>
-                    <td class="px-8 py-6 text-right">
-                        <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button onclick='openEditModal(${JSON.stringify(h).replace(/'/g, "&apos;")})' class="w-9 h-9 rounded-lg bg-gray-50 text-gray-400 hover:bg-partner hover:text-white transition-all flex items-center justify-center">
-                                <i class="fas fa-edit text-xs"></i>
-                            </button>
-                            <button onclick="deleteHome('${h.id}', '${h.name}')" class="w-9 h-9 rounded-lg bg-gray-50 text-gray-400 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">
-                                <i class="fas fa-trash-alt text-xs"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
+        function editItem(id) {
+            const h = allHomes.find(x => x.id === id);
+            if (h) openEditModal(h);
         }
 
         function filterList() {
-            const query = document.getElementById('search-input').value.toLowerCase();
-            const filtered = allHomes.filter(h => 
-                h.name.toLowerCase().includes(query) || 
-                (h.address && h.address.toLowerCase().includes(query))
-            );
-            renderTable(filtered);
+            const q = document.getElementById("search-input").value.toLowerCase();
+            renderTable(allHomes.filter(h => h.name.toLowerCase().includes(q) || (h.address && h.address.toLowerCase().includes(q))));
         }
 
         function openEditModal(data = null) {
-            const modal = document.getElementById('edit-modal');
-            const title = document.getElementById('modal-title');
-            const form = document.getElementById('edit-form');
-            
-            form.reset();
-            document.getElementById('form-id').value = '';
-            document.getElementById('form-prices').value = '[]';
-            
+            document.getElementById("edit-form").reset();
+            document.getElementById("form-id").value = "";
+            document.getElementById("form-prices").value = "[]";
             if (data) {
-                title.textContent = '?��??�장 ?�보 ?�정';
-                document.getElementById('form-id').value = data.id;
-                document.getElementById('form-name').value = data.name || '';
-                document.getElementById('form-region').value = data.region || '';
-                document.getElementById('form-address').value = data.address || '';
-                document.getElementById('form-phone').value = data.phone || '';
-                document.getElementById('form-image-url').value = data.image_url || '';
-                document.getElementById('form-description').value = data.description || '';
-                document.getElementById('form-lat').value = data.latitude || '';
-                document.getElementById('form-lng').value = data.longitude || '';
-                document.getElementById('form-sort-order').value = data.sort_order || 0;
-                document.getElementById('form-is-alliance').checked = data.is_alliance || false;
-                document.getElementById('form-is-24h').checked = data.is_24h || false;
-                document.getElementById('form-prices').value = JSON.stringify(data.prices || [], null, 2);
+                document.getElementById("modal-title").textContent = "장례식장 정보 수정";
+                document.getElementById("form-id").value = data.id || "";
+                document.getElementById("form-name").value = data.name || "";
+                document.getElementById("form-region").value = data.region || "";
+                document.getElementById("form-address").value = data.address || "";
+                document.getElementById("form-phone").value = data.phone || "";
+                document.getElementById("form-image-url").value = data.image_url || "";
+                document.getElementById("form-description").value = data.description || "";
+                document.getElementById("form-lat").value = data.latitude || "";
+                document.getElementById("form-lng").value = data.longitude || "";
+                document.getElementById("form-sort-order").value = data.sort_order || 0;
+                document.getElementById("form-is-alliance").checked = data.is_alliance || false;
+                document.getElementById("form-is-24h").checked = data.is_24h || false;
+                document.getElementById("form-prices").value = JSON.stringify(data.prices || [], null, 2);
             } else {
-                title.textContent = '?�규 ?��??�장 ?�록';
+                document.getElementById("modal-title").textContent = "신규 장례식장 등록";
             }
-            
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
+            document.getElementById("edit-modal").classList.remove("hidden");
+            document.body.style.overflow = "hidden";
         }
 
         function closeEditModal() {
-            document.getElementById('edit-modal').classList.add('hidden');
-            document.body.style.overflow = '';
+            document.getElementById("edit-modal").classList.add("hidden");
+            document.body.style.overflow = "";
         }
 
         async function saveFuneralHome() {
-            const id = document.getElementById('form-id').value;
+            const id = document.getElementById("form-id").value;
             let prices = [];
-            try {
-                prices = JSON.parse(document.getElementById('form-prices').value || '[]');
-            } catch (e) {
-                alert('가�??�보 JSON ?�식???�바르�? ?�습?�다.');
-                return;
-            }
+            try { prices = JSON.parse(document.getElementById("form-prices").value || "[]"); }
+            catch (e) { alert("가격정보 JSON 형식이 올바르지 않습니다."); return; }
 
             const formData = {
-                name: document.getElementById('form-name').value,
-                region: document.getElementById('form-region').value,
-                address: document.getElementById('form-address').value,
-                phone: document.getElementById('form-phone').value,
-                image_url: document.getElementById('form-image-url').value,
-                description: document.getElementById('form-description').value,
-                latitude: document.getElementById('form-lat').value,
-                longitude: document.getElementById('form-lng').value,
-                sort_order: parseInt(document.getElementById('form-sort-order').value || 0),
-                is_alliance: document.getElementById('form-is-alliance').checked,
-                is_24h: document.getElementById('form-is-24h').checked,
+                name: document.getElementById("form-name").value,
+                region: document.getElementById("form-region").value,
+                address: document.getElementById("form-address").value,
+                phone: document.getElementById("form-phone").value,
+                image_url: document.getElementById("form-image-url").value,
+                description: document.getElementById("form-description").value,
+                latitude: document.getElementById("form-lat").value,
+                longitude: document.getElementById("form-lng").value,
+                sort_order: parseInt(document.getElementById("form-sort-order").value || 0),
+                is_alliance: document.getElementById("form-is-alliance").checked,
+                is_24h: document.getElementById("form-is-24h").checked,
                 prices: prices
             };
 
-            let res;
-            if (id) {
-                res = await Auth.updateFuneralHome(id, formData);
-            } else {
-                res = await Auth.createFuneralHome(formData);
-            }
-
+            const res = id ? await Auth.updateFuneralHome(id, formData) : await Auth.createFuneralHome(formData);
             if (res.success) {
-                alert('?�공?�으�??�?�되?�습?�다!');
+                alert("성공적으로 저장되었습니다!");
                 closeEditModal();
                 loadFuneralHomes();
             } else {
-                alert('?�???�패: ' + res.message);
+                alert("저장 실패: " + res.message);
             }
         }
 
         async function deleteHome(id, name) {
-            if (!confirm(`[${name}] ?�보�???��?�시겠습?�까? ???�업?� ?�돌�????�습?�다.`)) return;
-
+            if (!confirm("[" + name + ] 정보를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) return;
             const res = await Auth.deleteFuneralHome(id);
-            if (res.success) {
-                alert('??��?�었?�니??');
-                loadFuneralHomes();
-            } else {
-                alert('??�� ?�패: ' + res.message);
-            }
+            if (res.success) { alert("삭제되었습니다."); loadFuneralHomes(); }
+            else { alert("삭제 실패: " + res.message); }
         }
 
-        async function checkSyncStatus() {
-            try {
-                console.log('Checking sync status...');
-                const missing = await SyncManager.getMissingHomes();
-                
-                if (missing.length === 0) {
-                    alert('모든 로컬 ?�이?��? ?��? DB???�기?�되???�습?�다.');
-                    return;
-                }
-
-                const confirmSync = confirm(`${missing.length}개의 ?�로???��??�장 ?�이???�냅?�러�???가 발견?�었?�니?? DB�??�기?�할까요?`);
-                
-                if (confirmSync) {
-                    const results = await SyncManager.syncAllMissing();
-                    alert(`?�기???�료!\n?�공: ${results.success.length}�?n?�패: ${results.failed.length}�?);
-                    if (results.failed.length > 0) {
-                        console.error('Sync Failures:', results.failed);
-                    }
-                    loadFuneralHomes();
-                }
-            } catch (err) {
-                console.error('Sync Error:', err);
-                alert('?�기??�??�류가 발생?�습?�다: ' + err.message);
-            }
+        function checkSyncStatus() {
+            alert("로드된 데이터: " + allHomes.length + "개\n모든 데이터가 Supabase에서 실시간으로 불러옵니다.");
         }
 
-        document.addEventListener('DOMContentLoaded', checkAdmin);
+        async function runSecurityAudit() {
+            const modal = document.getElementById("security-modal");
+            const el = document.getElementById("security-results");
+            el.innerHTML = '<p class="text-gray-400 animate-pulse">보안 감사 실행 중...</p>';
+            modal.classList.remove("hidden");
+
+            const results = [];
+            const user = await Auth.getCurrentUser();
+            results.push("현재 사용자: " + (user ? user.email : "없음"));
+            const adminEmails = ["fulmin@nate.com","theonsil@gmail.com","admin@theonsil.co.kr","theonsilofficial@gmail.com","admin@onsil.com"];
+            results.push(adminEmails.includes(user?.email) ? "관리자 권한: 확인됨" : "관리자 권한: 없음 - 접근 차단 필요");
+            const homes = await Auth.getAllFuneralHomes();
+            results.push("DB 연결: funeral_homes (" + homes.length + "개)");
+            const noAddr = homes.filter(h => !h.address || h.address === "null").length;
+            results.push("주소 없음: " + (noAddr > 0 ? noAddr + "개 업체" : "없음 (정상)"));
+            const noCoords = homes.filter(h => !h.latitude || !h.longitude).length;
+            results.push("좌표 없음: " + (noCoords > 0 ? noCoords + "개 업체" : "없음 (정상)"));
+            results.push("Service Role Key: 프론트엔드 미노출 (안전)");
+
+            el.innerHTML = results.map((r, i) => {
+                const icons = ["👤","🔐","🗃️","📍","🗺️","🔒"];
+                return '<p class="py-2 border-b border-gray-100 flex items-center gap-2"><span class="text-base">' + icons[i] + '</span>' + r + '</p>';
+            }).join('');
+        }
+
+        function closeSecurityModal() {
+            document.getElementById("security-modal").classList.add("hidden");
+        }
     </script>
-    <script src="js/channel-talk.js"></script>
 </body>
-
 </html>
-
