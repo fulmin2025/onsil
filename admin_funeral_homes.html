@@ -8,7 +8,17 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script src="js/auth.js"></script>
+    <script>
+        // Force unregister service worker for admin pages to bypass cache
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+    </script>
+    <script src="js/auth.js?v=final_fix"></script>
     <script>
         tailwind.config = { theme: { extend: { colors: { brand: "#2C3E50", partner: "#1B2B48", accent: "#D4A574" }, fontFamily: { sans: ["Pretendard", "sans-serif"] } } } }
     </script>
@@ -73,7 +83,7 @@
                     <tbody id="home-list" class="divide-y divide-gray-50">
                         <tr><td colspan="3" class="px-8 py-20 text-center text-gray-400">
                             <i class="fas fa-spinner fa-spin text-2xl mb-4 block"></i>
-                            <p class="text-sm font-medium">데이터를 불러오는 중입니다...</p>
+                            <p id="loading-text" class="text-sm font-medium">시스템 최적화 중입니다... (v13)</p>
                         </td></tr>
                     </tbody>
                 </table>
