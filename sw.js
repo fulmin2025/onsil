@@ -1,4 +1,4 @@
-const CACHE_NAME = 'onsil-v11';
+const CACHE_NAME = 'onsil-v12';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -8,6 +8,9 @@ const ASSETS_TO_CACHE = [
     './contact.html',
     './login.html',
     './signup.html',
+    './admin_funeral_homes.html',
+    './admin_reservations.html',
+    './admin_partners.html',
     './manifest.json',
     './js/auth.js',
     './js/supabase.js',
