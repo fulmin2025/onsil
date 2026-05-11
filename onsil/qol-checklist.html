@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>우리아이 삶의 질(QOL) 평가 - The 온실</title>
+    <title>?�리?�이 ?�의 �?QOL) ?��? - The ?�실</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1B2B48">
     <link rel="apple-touch-icon" href="icons/icon.svg">
@@ -73,17 +73,17 @@
     <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2">
-                <span class="font-bold text-xl tracking-tighter text-brand">The 온실</span>
+                <span class="font-bold text-xl tracking-tighter text-brand">The ?�실</span>
             </a>
             <nav class="hidden md:flex gap-8">
-                <a href="search.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">장례식장
+                <a href="search.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?��??�장
                     찾기</a>
-                <a href="guide.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">이별
-                    가이드</a>
+                <a href="guide.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?�별
+                    가?�드</a>
                 <a href="memory.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">추억
-                    가이드</a>
+                    가?�드</a>
                 <a href="community.html"
-                    class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">커뮤니티</a>
+                    class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">커�??�티</a>
             </nav>
             <div id="auth-container" class="hidden md:flex items-center gap-4"></div>
         </div>
@@ -92,10 +92,10 @@
     <main class="max-w-4xl mx-auto px-6 py-12 pb-32">
         <!-- Hero -->
         <section class="text-center mb-16 fade-up">
-            <h1 class="text-3xl md:text-5xl font-bold mb-6">우리아이 삶의 질(QOL) 평가</h1>
+            <h1 class="text-3xl md:text-5xl font-bold mb-6">?�리?�이 ?�의 �?QOL) ?��?</h1>
             <p class="text-gray-500 text-lg font-light leading-relaxed">
-                HHHHHMM 척도는 반려견의 호스피스 관리 상태를 평가하는 도구입니다.<br>
-                아이의 현재 상태에 가장 가까운 점수를 부여해 주세요. (총합 35점 이상 권장)
+                HHHHHMM 척도??반려견의 ?�스?�스 관�??�태�??��??�는 ?�구?�니??<br>
+                ?�이???�재 ?�태??가??가까운 ?�수�?부?�해 주세?? (총합 35???�상 권장)
             </p>
         </section>
 
@@ -106,91 +106,91 @@
                     <!-- Hurt, Hunger, Hydration, Hygiene, Happiness, Mobility, More Good Days -->
                     <div class="qol-item">
                         <div class="flex justify-between items-center mb-4">
-                            <label class="font-bold text-lg">Hurt (통증)</label>
+                            <label class="font-bold text-lg">Hurt (?�증)</label>
                             <span class="text-brand-warm font-bold text-xl score-display">5</span>
                         </div>
                         <input type="range" min="0" max="10" step="1" value="5"
                             class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer score-slider"
                             oninput="updateScore(this)">
                         <div class="flex justify-between mt-3 text-[10px] text-gray-400">
-                            <span>지속적 통증/비명</span>
-                            <span>간헐적 통증</span>
-                            <span>통증 없음/정상</span>
+                            <span>지?�적 ?�증/비명</span>
+                            <span>간헐???�증</span>
+                            <span>?�증 ?�음/?�상</span>
                         </div>
                     </div>
                     <hr class="border-gray-50">
                     <div class="qol-item">
                         <div class="flex justify-between items-center mb-4">
-                            <label class="font-bold text-lg">Hunger (배고픔)</label>
+                            <label class="font-bold text-lg">Hunger (배고??</label>
                             <span class="text-brand-warm font-bold text-xl score-display">5</span>
                         </div>
                         <input type="range" min="0" max="10" step="1" value="5"
                             class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer score-slider"
                             oninput="updateScore(this)">
                         <div class="flex justify-between mt-3 text-[10px] text-gray-400">
-                            <span>식욕 전무</span>
-                            <span>지원 시 섭취</span>
-                            <span>식욕 매우 양호</span>
+                            <span>?�욕 ?�무</span>
+                            <span>지??????��</span>
+                            <span>?�욕 매우 ?�호</span>
                         </div>
                     </div>
                     <hr class="border-gray-50">
                     <div class="qol-item">
                         <div class="flex justify-between items-center mb-4">
-                            <label class="font-bold text-lg">Hydration (물 먹기)</label>
+                            <label class="font-bold text-lg">Hydration (�?먹기)</label>
                             <span class="text-brand-warm font-bold text-xl score-display">5</span>
                         </div>
                         <input type="range" min="0" max="10" step="1" value="5"
                             class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer score-slider"
                             oninput="updateScore(this)">
                         <div class="flex justify-between mt-3 text-[10px] text-gray-400">
-                            <span>음수 불가</span>
-                            <span>배뇨/탄력 저조</span>
-                            <span>충분한 음수</span>
+                            <span>?�수 불�?</span>
+                            <span>배뇨/?�력 ?��?/span>
+                            <span>충분???�수</span>
                         </div>
                     </div>
                     <hr class="border-gray-50">
                     <div class="qol-item">
                         <div class="flex justify-between items-center mb-4">
-                            <label class="font-bold text-lg">Hygiene (위생)</label>
+                            <label class="font-bold text-lg">Hygiene (?�생)</label>
                             <span class="text-brand-warm font-bold text-xl score-display">5</span>
                         </div>
                         <input type="range" min="0" max="10" step="1" value="5"
                             class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer score-slider"
                             oninput="updateScore(this)">
                         <div class="flex justify-between mt-3 text-[10px] text-gray-400">
-                            <span>괴로움/오염</span>
-                            <span>위생 불량/냄새</span>
-                            <span>매우 깨끗함</span>
+                            <span>괴로?�/?�염</span>
+                            <span>?�생 불량/?�새</span>
+                            <span>매우 깨끗??/span>
                         </div>
                     </div>
                     <hr class="border-gray-50">
                     <div class="qol-item">
                         <div class="flex justify-between items-center mb-4">
-                            <label class="font-bold text-lg">Happiness (행복감)</label>
+                            <label class="font-bold text-lg">Happiness (?�복�?</label>
                             <span class="text-brand-warm font-bold text-xl score-display">5</span>
                         </div>
                         <input type="range" min="0" max="10" step="1" value="5"
                             class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer score-slider"
                             oninput="updateScore(this)">
                         <div class="flex justify-between mt-3 text-[10px] text-gray-400">
-                            <span>반응 전무/침울</span>
-                            <span>간혹 우울/일부 반응</span>
-                            <span>즐겁고 사교적</span>
+                            <span>반응 ?�무/침울</span>
+                            <span>간혹 ?�울/?��? 반응</span>
+                            <span>즐겁�??�교??/span>
                         </div>
                     </div>
                     <hr class="border-gray-50">
                     <div class="qol-item">
                         <div class="flex justify-between items-center mb-4">
-                            <label class="font-bold text-lg">Mobility (운동성)</label>
+                            <label class="font-bold text-lg">Mobility (?�동??</label>
                             <span class="text-brand-warm font-bold text-xl score-display">5</span>
                         </div>
                         <input type="range" min="0" max="10" step="1" value="5"
                             class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer score-slider"
                             oninput="updateScore(this)">
                         <div class="flex justify-between mt-3 text-[10px] text-gray-400">
-                            <span>거동 불가/발작</span>
-                            <span>도움 필요</span>
-                            <span>자유로운 활동</span>
+                            <span>거동 불�?/발작</span>
+                            <span>?��? ?�요</span>
+                            <span>?�유로운 ?�동</span>
                         </div>
                     </div>
                     <hr class="border-gray-50">
@@ -203,9 +203,9 @@
                             class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer score-slider"
                             oninput="updateScore(this)">
                         <div class="flex justify-between mt-3 text-[10px] text-gray-400">
-                            <span>기력 매우 저조</span>
-                            <span>주 절반 지침</span>
-                            <span>정상적/양호</span>
+                            <span>기력 매우 ?��?/span>
+                            <span>�??�반 지�?/span>
+                            <span>?�상???�호</span>
                         </div>
                     </div>
                 </div>
@@ -229,14 +229,14 @@
                         class="w-12 h-12 bg-brand-warm/10 rounded-2xl flex items-center justify-center text-brand-warm shrink-0">
                         <i class="fas fa-question"></i></div>
                     <div class="flex-1">
-                        <h3 class="font-bold">합산 점수가 35점 미만인 경우 어떻게 대처해야 하나요?</h3>
+                        <h3 class="font-bold">?�산 ?�수가 35??미만??경우 ?�떻�??�처해???�나??</h3>
                     </div>
                 </button>
                 <div class="expand-content">
                     <div class="px-8 pb-8 text-sm text-gray-500 space-y-4">
-                        <p class="font-medium text-brand">합산 점수가 35점 미만일 경우, 일반적으로 삶의 질을 크게 떨어뜨리는 요인(통증, 식욕 부진 등)이 있음을
-                            의미하며, 호스피스 치료 방향의 재조정이 필요할 수 있습니다.</p>
-                        <p>수의사님과 상담하여 통증 완화 등의 추가적인 의학적 조치를 논의하는 것이 중요합니다. (이 정보는 일반적인 지침이므로 반드시 전문가의 진단을 따르시길 바랍니다.)
+                        <p class="font-medium text-brand">?�산 ?�수가 35??미만??경우, ?�반?�으�??�의 질을 ?�게 ?�어?�리???�인(?�증, ?�욕 부�??????�음??
+                            ?��??�며, ?�스?�스 치료 방향???�조?�이 ?�요?????�습?�다.</p>
+                        <p>?�의?�님�??�담?�여 ?�증 ?�화 ?�의 추�??�인 ?�학??조치�??�의?�는 것이 중요?�니?? (???�보???�반?�인 지침이므�?반드???�문가??진단???�르?�길 바랍?�다.)
                         </p>
                     </div>
                 </div>
@@ -249,24 +249,24 @@
                         class="w-12 h-12 bg-brand-sage/10 rounded-2xl flex items-center justify-center text-brand-sage shrink-0">
                         <i class="fas fa-brain"></i></div>
                     <div class="flex-1">
-                        <h3 class="font-bold">노령견의 인지 기능을 자극하는 놀이나 마사지 방법</h3>
+                        <h3 class="font-bold">?�령견의 ?��? 기능???�극?�는 ?�?�나 마사지 방법</h3>
                     </div>
                 </button>
                 <div class="expand-content">
                     <div class="px-8 pb-8 text-sm text-gray-500 space-y-8 mt-4">
                         <div>
-                            <h4 class="font-bold text-brand mb-3"># 감각과 판단력을 깨우는 실내 놀이</h4>
+                            <h4 class="font-bold text-brand mb-3"># 감각�??�단?�을 깨우???�내 ?�??/h4>
                             <ul class="space-y-3 list-disc list-inside">
-                                <li><strong>퍼즐 장난감</strong>: 간식을 찾아 먹게 하여 감각과 판단력을 자극합니다.</li>
-                                <li><strong>숨바꼭질 게임</strong>: 뇌에 긍정적인 자극을 주어 인지 기능을 유지합니다.</li>
+                                <li><strong>?�즐 ?�난�?/strong>: 간식??찾아 먹게 ?�여 감각�??�단?�을 ?�극?�니??</li>
+                                <li><strong>?�바�?�� 게임</strong>: ?�에 긍정?�인 ?�극??주어 ?��? 기능???��??�니??</li>
                             </ul>
                         </div>
                         <div>
-                            <h4 class="font-bold text-brand mb-3"># 불안을 줄여주는 마사지와 터치</h4>
+                            <h4 class="font-bold text-brand mb-3"># 불안??줄여주는 마사지?� ?�치</h4>
                             <ul class="space-y-3 list-disc list-inside">
-                                <li><strong>고유 수용성 터치 마사지</strong>: 스스로 몸의 움직임을 인지하게 하여 치매 예방을 돕습니다.</li>
-                                <li><strong>목·앞가슴 마사지</strong>: 고개를 들기 수월하게 하여 시야를 넓히고 주변 인지력을 높입니다.</li>
-                                <li><strong>부드러운 스킨십</strong>: 시·청각 저하에서 오는 불안감을 줄여주고 유대감을 강화합니다.</li>
+                                <li><strong>고유 ?�용???�치 마사지</strong>: ?�스�?몸의 ?�직임???��??�게 ?�여 치매 ?�방???�습?�다.</li>
+                                <li><strong>목·앞가??마사지</strong>: 고개�??�기 ?�월?�게 ?�여 ?�야�??�히�?주�? ?��??�을 ?�입?�다.</li>
+                                <li><strong>부?�러???�킨??/strong>: ?�·청�??�?�에???�는 불안감을 줄여주고 ?��?감을 강화?�니??</li>
                             </ul>
                         </div>
                     </div>
@@ -275,7 +275,7 @@
 
             <a href="guide.html"
                 class="w-full bg-white border border-gray-100 py-6 rounded-[2rem] flex items-center justify-center gap-3 font-bold text-brand mt-8">
-                <i class="fas fa-arrow-left"></i> 이별 가이드로 돌아가기
+                <i class="fas fa-arrow-left"></i> ?�별 가?�드�??�아가�?
             </a>
         </section>
     </main>
@@ -289,9 +289,9 @@
 
             const feedback = document.getElementById('total-feedback');
             if (sum >= 35) {
-                feedback.innerHTML = "<span class='text-brand-warm font-bold'>양호:</span> 현재 반려동물의 삶의 질이 양호하게 관리되고 있습니다.";
+                feedback.innerHTML = "<span class='text-brand-warm font-bold'>?�호:</span> ?�재 반려?�물???�의 질이 ?�호?�게 관리되�??�습?�다.";
             } else {
-                feedback.innerHTML = "<span class='text-brand-warm font-bold'>주의:</span> 삶의 질을 떨어뜨리는 요인이 관찰됩니다. 전문가와의 상담을 추천합니다.";
+                feedback.innerHTML = "<span class='text-brand-warm font-bold'>주의:</span> ?�의 질을 ?�어?�리???�인??관찰됩?�다. ?�문가?�???�담??추천?�니??";
             }
         }
 
@@ -312,6 +312,7 @@
 
         window.onload = () => document.querySelectorAll('.score-slider').forEach(s => updateScore(s));
     </script>
+    <script src="js/channel-talk.js"></script>
 </body>
 
 </html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>업체 승인 관리 - The 온실 Admin</title>
+    <title>?�체 ?�인 관�?- The ?�실 Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin
@@ -33,16 +33,16 @@
         <div class="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between py-4">
             <div class="flex items-center gap-4">
                 <a href="index.html" class="flex items-center gap-2 group">
-                    <img src="./images/onsil_logo_tr.png" width="36" height="36" class="w-9 h-9 object-contain" alt="온실 로고">
-                    <span class="font-bold text-lg text-brand tracking-tight">The 온실 <span class="text-xs font-black text-red-500 ml-1">ADMIN</span></span>
+                    <img src="./images/onsil_logo_tr.png" width="36" height="36" class="w-9 h-9 object-contain" alt="?�실 로고">
+                    <span class="font-bold text-lg text-brand tracking-tight">The ?�실 <span class="text-xs font-black text-red-500 ml-1">ADMIN</span></span>
                 </a>
                 <div class="h-6 w-px bg-gray-200 mx-2"></div>
-                <h1 class="font-bold text-gray-600">업체 승인 관리</h1>
+                <h1 class="font-bold text-gray-600">?�체 ?�인 관�?/h1>
             </div>
             <div class="flex items-center gap-3">
-                <a href="admin_reservations.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">예약 관리</a>
-                <a href="admin_funeral_homes.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">장례식장 관리</a>
-                <button onclick="Auth.logout()" class="text-sm font-bold text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all">로그아웃</button>
+                <a href="admin_reservations.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?�약 관�?/a>
+                <a href="admin_funeral_homes.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?��??�장 관�?/a>
+                <button onclick="Auth.logout()" class="text-sm font-bold text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all">로그?�웃</button>
             </div>
         </div>
     </header>
@@ -50,11 +50,11 @@
     <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-12">
         <div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <h2 class="text-2xl font-black text-gray-900 mb-2">입점 신청 내역</h2>
-                <p class="text-sm text-gray-500 font-medium">승인 대기 중인 신규 파트너 목록입니다.</p>
+                <h2 class="text-2xl font-black text-gray-900 mb-2">?�점 ?�청 ?�역</h2>
+                <p class="text-sm text-gray-500 font-medium">?�인 ?��?중인 ?�규 ?�트??목록?�니??</p>
             </div>
             <button onclick="loadPendingPartners()" class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-600 hover:bg-gray-50 transition-all shadow-sm">
-                <i class="fas fa-sync-alt"></i> 새로고침
+                <i class="fas fa-sync-alt"></i> ?�로고침
             </button>
         </div>
 
@@ -64,10 +64,10 @@
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
-                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">신청 일시</th>
-                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">장례식장명</th>
-                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">담당자 / 연락처</th>
-                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest text-center">동작</th>
+                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">?�청 ?�시</th>
+                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">?��??�장�?/th>
+                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">?�당??/ ?�락�?/th>
+                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest text-center">?�작</th>
                         </tr>
                     </thead>
                     <tbody id="pending-list" class="divide-y divide-gray-50">
@@ -75,7 +75,7 @@
                         <tr>
                             <td colspan="4" class="px-8 py-20 text-center text-gray-400">
                                 <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
-                                <p class="text-sm font-medium">데이터를 불러오는 중입니다...</p>
+                                <p class="text-sm font-medium">?�이?��? 불러?�는 중입?�다...</p>
                             </td>
                         </tr>
                     </tbody>
@@ -91,7 +91,7 @@
         async function checkAdmin() {
             const user = await Auth.getCurrentUser();
             if (!user || (user.role !== 'admin' && user.email !== 'fulmin@nate.com')) {
-                alert('관리자 권한이 필요합니다.');
+                alert('관리자 권한???�요?�니??');
                 location.href = 'partner-login.html';
                 return;
             }
@@ -109,7 +109,7 @@
                             <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-300">
                                 <i class="fas fa-inbox text-2xl"></i>
                             </div>
-                            <p class="text-sm font-bold text-gray-400 uppercase tracking-tighter italic">현재 승인 대기 중인 신청 건이 없습니다.</p>
+                            <p class="text-sm font-bold text-gray-400 uppercase tracking-tighter italic">?�재 ?�인 ?��?중인 ?�청 건이 ?�습?�다.</p>
                         </td>
                     </tr>
                 `;
@@ -127,20 +127,20 @@
                                 <i class="fas fa-building"></i>
                             </div>
                             <div class="flex flex-col">
-                                <span class="font-bold text-gray-900">${p.facility || '미지정 업체'}</span>
+                                <span class="font-bold text-gray-900">${p.facility || '미�????�체'}</span>
                                 <span class="text-xs text-gray-400">${p.email}</span>
                             </div>
                         </div>
                     </td>
                     <td class="px-8 py-6">
                         <div class="flex flex-col">
-                            <span class="text-sm font-bold text-gray-700">${p.name || '미입력'}</span>
-                            <span class="text-xs text-gray-400">${p.phone || '연락처 없음'}</span>
+                            <span class="text-sm font-bold text-gray-700">${p.name || '미입??}</span>
+                            <span class="text-xs text-gray-400">${p.phone || '?�락�??�음'}</span>
                         </div>
                     </td>
                     <td class="px-8 py-6 text-center">
                         <button onclick="approveRequest('${p.id}', '${p.facility}')" class="px-6 py-2.5 bg-partner text-white rounded-xl text-xs font-bold shadow-lg shadow-partner/10 hover:bg-black transition-all active:scale-95">
-                            최종 승인
+                            최종 ?�인
                         </button>
                     </td>
                 </tr>
@@ -148,23 +148,25 @@
         }
 
         async function approveRequest(userId, facility) {
-            if (!confirm(`[${facility}] 업체의 입점을 승인하시겠습니까?`)) return;
+            if (!confirm(`[${facility}] ?�체???�점???�인?�시겠습?�까?`)) return;
 
             try {
                 const res = await Auth.approvePartner(userId);
                 if (res.success) {
-                    alert('성공적으로 승인되었습니다!');
+                    alert('?�공?�으�??�인?�었?�니??');
                     loadPendingPartners();
                 } else {
-                    alert('승인 실패: ' + res.message);
+                    alert('?�인 ?�패: ' + res.message);
                 }
             } catch (err) {
-                alert('오류 발생: ' + err.message);
+                alert('?�류 발생: ' + err.message);
             }
         }
 
         document.addEventListener('DOMContentLoaded', checkAdmin);
     </script>
+    <script src="js/channel-talk.js"></script>
 </body>
 
 </html>
+
