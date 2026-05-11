@@ -1,631 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
 
-<head>
-    <meta charset="UTF-8">
-    <script>
-        // Naver Map Domain Fix: Force non-www to match Naver Console registration
-        if (window.location.hostname === 'www.theonsil.co.kr') {
-            window.location.replace('https://theonsil.co.kr' + window.location.pathname + window.location.search);
-        }
-    </script>
-    <meta name="referrer" content="origin">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>장례식장 찾기 - The 온실</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#8D7B68">
-    <link rel="apple-touch-icon" href="icons/icon.svg">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- SEO Canonical -->
-    <link rel="canonical" href="https://theonsil.co.kr">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script src="js/auth.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            DEFAULT: '#2C3E50',
-                            light: '#34495E',
-                            dark: '#1A252F',
-                            cream: '#F8F6F3',
-                            warm: '#D4A574',
-                            warmDark: '#B8894E',
-                            sage: '#87A08B',
-                            mist: '#E8ECE9'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
-                        serif: ['Nanum Myeongjo', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .map-pin {
-            transition: transform 0.2s;
-            transform: translate(-50%, -50%) scale(calc(1 / var(--map-scale, 1)));
-        }
-
-        .map-pin:hover {
-            transform: translate(-50%, -50%) scale(calc(1.2 / var(--map-scale, 1)));
-            z-index: 50;
-        }
-
-        #map-view {
-            cursor: grab;
-            user-select: none;
-        }
-
-        #map-view:active {
-            cursor: grabbing;
-        }
-
-        #map-content svg text {
-            fill: white;
-            font-family: 'Pretendard', sans-serif;
-            font-size: 4px;
-            pointer-events: none;
-        }
-
-        #map-content svg path {
-            fill: #8D7B68;
-            fill-opacity: 0.5;
-            stroke: white;
-            stroke-width: 0.5px;
-            transition: fill 0.2s;
-        }
-
-        #map-content svg path:hover {
-            fill: #C5A065;
-            fill-opacity: 1;
-            cursor: pointer;
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(100%);
-            }
-
-            to {
-                transform: translateY(0);
-            }
-        }
-
-        .animate-slideUp {
-            animation: slideUp 0.3s ease-out forwards;
-        }
-
-        .region-badge-inner {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
-        }
-
-        .region-badge-inner:hover {
-            background-color: #C5A065 !important;
-            transform: scale(1.1);
-        }
-
-        /* Quote Modal Styles */
-        .quote-modal-backdrop {
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(8px);
-        }
-
-        .quote-input:checked+.quote-label {
-            border-color: #8D7B68;
-            background-color: #F9F5F0;
-            color: #8D7B68;
-        }
-
-        .mobile-nav-panel {
-            transform: translateX(100%);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .mobile-nav-open {
-            transform: translateX(0) !important;
-        }
-    </style>
-</head>
-
-<body class="bg-gray-50 text-gray-900">
-    <!-- Header -->
-    <header id="main-header" class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-brand/5 transition-all outline-none">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
-            <!-- Logo -->
-            <a href="../index.html" class="flex items-center gap-2 group flex-shrink-0">
-                <img src="./../images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="온실 캐릭터 로고">
-                <span class="font-bold text-lg text-brand tracking-tight">The 온실</span>
-            </a>
-
-            <!-- Desktop Nav -->
-            <nav class="hidden lg:flex items-center gap-1">
-                <a href="search.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg">장례식장 찾기</a>
-                <a href="guide.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">이별 가이드</a>
-                <a href="self-diagnosis.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">건강자가진단</a>
-                <a href="memory.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">추억 가이드</a>
-                <a href="community.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">커뮤니티</a>
-            </nav>
-
-            <!-- Desktop Actions -->
-            <div class="hidden lg:flex items-center gap-2">
-                <div id="auth-container"></div>
-                <a href="search.html?quote=true" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
-                    <i class="fas fa-calculator"></i> 견적
-                </a>
-                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm flex items-center gap-2">
-                    <i class="fas fa-calendar-check text-sm"></i> 예약
-                </button>
-                <a href="tel:1551-5052" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2">
-                    <i class="fas fa-phone-alt text-xs"></i> 1551-5052
-                </a>
-            </div>
-
-            <!-- Mobile Header Actions -->
-            <div class="flex lg:hidden items-center gap-2">
-                <a href="tel:1551-5052" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand/5 text-brand hover:bg-brand/10 transition-colors" title="전화 상담">
-                    <i class="fas fa-phone-alt text-sm"></i>
-                </a>
-                <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand-sage/10 text-brand-sage hover:bg-brand-sage/20 transition-colors" title="예약하기">
-                    <i class="fas fa-calendar-check text-sm"></i>
-                </button>
-                <button id="mobile-menu-btn" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors" onclick="toggleMobileNav()">
-                    <i class="fas fa-bars text-brand text-xl" id="menu-icon"></i>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-8 text-[#1B2B48]">안심 장례식장 찾기</h1>
-        <div class="flex flex-col lg:flex-row justify-between mb-6 gap-4 items-start lg:items-center">
-            <span id="result-count" class="text-sm text-gray-600 font-medium whitespace-nowrap">총 <span
-                    class="text-[#C5A065] font-bold">0</span>개</span>
-            <div class="flex flex-wrap lg:flex-nowrap gap-2 items-center w-full lg:w-auto">
-                <select id="sort-select"
-                    class="px-3 py-2 border rounded-md text-sm font-medium text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#8D7B68] bg-white">
-                    <option value="recommend">추천순</option>
-                    <option value="distance">거리순</option>
-                    <option value="price">가격순</option>
-                </select>
-                <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar flex-nowrap w-full lg:w-auto">
-                    <button id="btn-open-filter" onclick="openFilterModal()"
-                        class="md:hidden flex-shrink-0 whitespace-nowrap px-3 py-2 bg-white text-[#8D7B68] border-2 border-[#8D7B68] rounded-md text-xs sm:text-sm font-bold shadow-sm hover:bg-[#F9F5F0] flex items-center gap-1.5 transition-colors">
-                        <i class="fas fa-filter text-[10px] sm:text-xs"></i> 필터
-                    </button>
-                    <button id="btn-instant-quote"
-                        class="flex-shrink-0 whitespace-nowrap px-3 py-2 bg-[#C5A065] text-white rounded-md text-xs sm:text-sm font-bold shadow-md hover:bg-[#B08D55] transition-all flex items-center gap-1.5">
-                        <i class="fas fa-calculator text-[10px] sm:text-xs"></i> 바로견적 받기
-                    </button>
-                    <button id="btn-list-view"
-                        class="flex-shrink-0 whitespace-nowrap px-3 py-2 bg-[#8D7B68] text-white rounded-md text-xs sm:text-sm font-bold shadow-sm flex items-center gap-1.5">
-                        <i class="fas fa-list text-[10px] sm:text-xs"></i> 목록 보기
-                    </button>
-                    <button id="btn-map-view"
-                        class="flex-shrink-0 whitespace-nowrap px-3 py-2 bg-white text-gray-600 border rounded-md text-xs sm:text-sm font-bold shadow-sm hover:bg-gray-50 flex items-center gap-1.5 transition-colors">
-                        <i class="fas fa-map-marker-alt text-[10px] sm:text-xs"></i> 지도 보기
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-col md:flex-row gap-8">
-            <aside class="hidden md:flex flex-col w-1/4 space-y-6">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-24">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="font-bold text-lg text-[#8D7B68]">필터</h2>
-                        <button
-                            onclick="document.querySelectorAll('.filter-checkbox').forEach(cb => cb.checked = false);"
-                            class="text-xs text-gray-400 hover:text-[#C5A065] flex items-center gap-1">
-                            <i class="fas fa-undo"></i> 초기화
-                        </button>
-                    </div>
-
-                    <!-- Alliance Filter -->
-                    <div class="mb-8 p-4 bg-[#8D7B68]/5 rounded-xl border border-[#8D7B68]/10">
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" id="filter-alliance"
-                                class="w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
-                            <span class="text-sm font-bold text-[#8D7B68] group-hover:underline">온실 제휴 업체만 보기</span>
-                        </label>
-                    </div>
-
-                    <!-- Region Filter -->
-                    <div class="mb-8">
-                        <h3 class="font-bold text-sm mb-4 text-[#8D7B68]">지역 선택</h3>
-                        <div class="space-y-3">
-                            <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" value="sudogwon"
-                                    class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
-                                <span
-                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">서울/경기/인천
-                                    <span id="count-sudogwon" class="text-xs text-gray-400">0</span></span>
-                            </label>
-                            <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" value="chungcheong"
-                                    class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
-                                <span
-                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">충청/대전/세종
-                                    <span id="count-chungcheong" class="text-xs text-gray-400">0</span></span>
-                            </label>
-                            <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" value="gyeongsang"
-                                    class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
-                                <span
-                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">경상/부산/대구
-                                    <span id="count-gyeongsang" class="text-xs text-gray-400">0</span></span>
-                            </label>
-                            <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" value="jeolla"
-                                    class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
-                                <span
-                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">전라/광주
-                                    <span id="count-jeolla" class="text-xs text-gray-400">0</span></span>
-                            </label>
-                            <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" value="gangwon"
-                                    class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
-                                <span
-                                    class="text-gray-600 group-hover:text-[#8D7B68] transition-colors flex justify-between w-full">강원
-                                    <span id="count-gangwon" class="text-xs text-gray-400">0</span></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Facility Filter -->
-                    <div>
-                        <h3 class="font-bold text-sm mb-4 text-[#8D7B68]">보유 시설</h3>
-                        <div class="space-y-3">
-                            <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" value="memorial"
-                                    class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
-                                <span class="text-gray-600 group-hover:text-[#8D7B68] transition-colors">개별추모실</span>
-                            </label>
-                            <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" value="ossuary"
-                                    class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
-                                <span class="text-gray-600 group-hover:text-[#8D7B68] transition-colors">납골당</span>
-                            </label>
-                            <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" value="burial"
-                                    class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
-                                <span class="text-gray-600 group-hover:text-[#8D7B68] transition-colors">수목장</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-
-            <div class="flex-1">
-                <div id="result-list" class="space-y-6">
-                    <!-- Dynamic List Items -->
-                </div>
-
-                <div id="map-view" class="hidden h-[600px] rounded-xl relative overflow-hidden border">
-                    <!-- Leaflet MAP Container -->
-                    <div id="map" class="w-full h-full z-10 bg-[#f8f9fa]"></div>
-
-                    <div class="absolute bottom-6 right-6 flex flex-col gap-2 z-50">
-                        <button id="btn-zoom-in"
-                            class="w-10 h-10 bg-white rounded-lg shadow-md flex items-center justify-center text-gray-600 hover:bg-gray-50 border active:bg-gray-100">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <button id="btn-zoom-reset"
-                            class="w-10 h-10 bg-white rounded-lg shadow-md flex items-center justify-center text-gray-600 hover:bg-gray-50 border active:bg-gray-100">
-                            <i class="fas fa-compress"></i>
-                        </button>
-                        <button id="btn-zoom-out"
-                            class="w-10 h-10 bg-white rounded-lg shadow-md flex items-center justify-center text-gray-600 hover:bg-gray-50 border active:bg-gray-100">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Detail Modal (Yanolja Style) -->
-    <div id="detail-modal" class="fixed inset-0 z-[100] hidden">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity opacity-0" id="modal-backdrop">
-        </div>
-        <div
-            class="absolute inset-x-0 bottom-0 md:inset-0 md:flex md:items-center md:justify-center p-0 md:p-4 pointer-events-none">
-            <div class="bg-white w-full md:w-[480px] h-[90vh] md:h-[800px] md:max-h-[90vh] rounded-t-2xl md:rounded-2xl shadow-2xl overflow-hidden transform transition-all translate-y-full md:translate-y-10 opacity-0 pointer-events-auto flex flex-col relative"
-                id="modal-content">
-
-                <!-- Modal Header (Hero Image) -->
-                <div class="relative h-64 bg-gray-200 shrink-0">
-                    <img id="modal-image" src="" alt="Facility Image" class="w-full h-full object-cover"
-                        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1596272875729-ed2ff7d6d9c5?q=80&w=800&auto=format&fit=crop';">
-
-                    <!-- Gradient Overlay -->
-                    <div
-                        class="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-black/50 to-transparent pointer-events-none">
-                    </div>
-
-                    <!-- Close Button -->
-                    <button id="modal-close-btn"
-                        class="absolute top-4 right-4 text-white z-50 w-10 h-10 flex items-center justify-center rounded-full active:bg-white/20 hover:bg-white/10 transition-colors">
-                        <i class="fas fa-times text-2xl"></i>
-                    </button>
-
-                    <!-- Share/Like Buttons (Visual Only) -->
-                    <div class="absolute top-4 right-14 flex gap-2 z-10">
-                        <button
-                            class="text-white w-10 h-10 flex items-center justify-center rounded-full active:bg-white/20 hover:bg-white/10 transition-colors">
-                            <i class="far fa-heart text-xl"></i>
-                        </button>
-                        <button
-                            class="text-white w-10 h-10 flex items-center justify-center rounded-full active:bg-white/20 hover:bg-white/10 transition-colors">
-                            <i class="fas fa-share-alt text-xl"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Modal Body (Scrollable) -->
-                <div class="flex-1 overflow-y-auto bg-white pb-20 no-scrollbar">
-
-                    <!-- Title Section -->
-                    <div class="px-5 py-6 bg-white">
-                        <div id="modal-badges" class="flex flex-wrap gap-2 mb-3"></div>
-                        <h1 id="modal-title" class="text-2xl font-bold mb-1 leading-tight text-gray-900"></h1>
-                        <p id="modal-subtitle" class="text-sm text-gray-500 mb-2"></p>
-
-                        <div class="flex items-center gap-1 text-sm text-gray-500 mb-4">
-                            <i class="fas fa-map-marker-alt text-gray-400"></i>
-                            <span id="modal-address-short"></span>
-                        </div>
-
-                        <div class="border-t border-gray-100 pt-4 hidden">
-                            <!-- 별점 및 후기 제거됨 -->
-                        </div>
-                    </div>
-
-                    <!-- Divider -->
-                    <div class="h-2 bg-gray-100"></div>
-
-                    <!-- Quick Info Tabs -->
-                    <div class="sticky top-0 bg-white z-40 border-b border-gray-100 flex text-center">
-                        <a href="#info"
-                            class="flex-1 py-3 text-sm font-bold text-[#8D7B68] border-b-2 border-[#8D7B68]">시설 예약</a>
-                        <a href="#info" class="flex-1 py-3 text-sm font-medium text-gray-500 hover:text-gray-800">시설
-                            정보</a>
-                        <a href="#location"
-                            class="flex-1 py-3 text-sm font-medium text-gray-500 hover:text-gray-800">위치</a>
-                    </div>
-
-                    <!-- Room/Price Info -->
-                    <div class="px-5 py-8">
-                        <h3 class="font-bold text-lg mb-4 text-gray-900">장례 비용 안내</h3>
-                        <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-                            <div class="flex justify-between items-center p-4 border-b border-gray-100 bg-gray-50">
-                                <span class="font-bold text-gray-800">기본 장례 (5kg 미만)</span>
-                                <span id="modal-min-price" class="font-bold text-[#8D7B68] text-lg"></span>
-                            </div>
-                            <div class="p-4 bg-white text-sm text-gray-600 space-y-2">
-                                <ul id="modal-prices-list" class="space-y-2">
-                                    <!-- Dynamic Prices -->
-                                </ul>
-                            </div>
-                        </div>
-                        <button onclick="openServiceDetails()"
-                            class="w-full mt-4 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
-                            요금 자세히 보기 <i class="fas fa-chevron-down ml-1"></i>
-                        </button>
-                    </div>
-
-                    <!-- Divider -->
-                    <div class="h-2 bg-gray-100"></div>
-
-                    <!-- Facility Info -->
-                    <div id="info" class="px-5 py-8">
-                        <h3 class="font-bold text-lg mb-4 text-gray-900">시설 소개</h3>
-                        <p id="modal-desc" class="text-gray-600 text-sm leading-relaxed mb-6 whitespace-pre-line"></p>
-
-                        <div id="modal-facilities-icons" class="grid grid-cols-4 gap-4 text-center">
-                            <!-- Dynamic Icons -->
-                        </div>
-                    </div>
-
-                    <!-- Divider -->
-                    <div class="h-2 bg-gray-100"></div>
-
-                    <!-- Location Info -->
-                    <div id="location" class="px-5 py-8">
-                        <h3 class="font-bold text-lg mb-4 text-gray-900">위치</h3>
-                        <p id="modal-address" class="text-gray-600 text-sm mb-4"></p>
-                        <p id="modal-phone" class="text-gray-600 text-sm mb-4 font-mono"></p>
-                        <div class="h-48 bg-gray-200 rounded-lg overflow-hidden relative mb-4 group cursor-pointer"
-                            onclick="window.open('https://map.naver.com/v5/search/' + encodeURIComponent(document.getElementById('modal-address').innerText), '_blank')">
-                            <img src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?q=80&w=1000&auto=format&fit=crop"
-                                class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
-                                alt="지도 보기">
-                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                <span
-                                    class="bg-white/90 px-4 py-2 rounded-full text-sm font-bold shadow-sm text-gray-700 flex items-center gap-2">
-                                    <i class="fas fa-map-marked-alt text-[#8D7B68]"></i> 지도 보기
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="flex gap-4 text-sm">
-                            <button
-                                onclick="navigator.clipboard.writeText(document.getElementById('modal-address').innerText)"
-                                class="flex-1 bg-gray-50 p-3 rounded-lg flex items-center justify-center gap-2 cursor-pointer hover:bg-gray-100 transition-colors text-gray-700">
-                                <i class="far fa-copy"></i> 주소 복사
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sticky Bottom CTA -->
-                <div
-                    class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-4 z-50 safe-area-bottom shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
-                    <div class="flex gap-3">
-                        <button
-                            class="flex-1 py-3.5 border border-[#8D7B68] text-[#8D7B68] rounded-xl font-bold text-base hover:bg-[#F9F5F0] transition-colors">
-                            문의하기
-                        </button>
-                        <button id="modal-call-btn"
-                            class="flex-[2] py-3.5 bg-[#8D7B68] text-white rounded-xl font-bold text-base shadow-lg hover:bg-[#7A6A59] transition-colors flex items-center justify-center gap-2 active:scale-[0.98] transition-transform">
-                            <i class="fas fa-calendar-check animate-pulse"></i> 예약하기
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- Instant Quote Modal -->
-    <div id="quote-modal" class="fixed inset-0 z-[110] hidden">
-        <div class="absolute inset-0 quote-modal-backdrop" onclick="closeQuoteModal()"></div>
-        <div class="absolute inset-y-0 right-0 w-full md:w-[450px] bg-white shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300"
-            id="quote-modal-content">
-            <div class="p-6 border-b flex justify-between items-center bg-gray-50">
-                <h2 class="text-xl font-bold text-[#8D7B68]">바로견적 받기</h2>
-                <button onclick="closeQuoteModal()" class="text-gray-400 hover:text-gray-600">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            <div class="flex-1 overflow-y-auto p-6 space-y-8">
-                <!-- Step 1: Region -->
-                <div>
-                    <h3 class="font-bold text-sm text-gray-400 mb-4 uppercase tracking-wider text-center">지역 선택</h3>
-                    <div class="grid grid-cols-2 gap-2">
-                        <label class="cursor-pointer">
-                            <input type="radio" name="quote-region" value="sudogwon" class="hidden quote-input" checked>
-                            <div class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">서울/경기/인천</div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="quote-region" value="chungcheong" class="hidden quote-input">
-                            <div class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">충청/대전/세종</div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="quote-region" value="gyeongsang" class="hidden quote-input">
-                            <div class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">경상/부산/대구</div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="quote-region" value="jeolla" class="hidden quote-input">
-                            <div class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">전라/광주</div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="quote-region" value="gangwon" class="hidden quote-input">
-                            <div class="quote-label py-3 text-center border rounded-xl text-sm font-medium hover:border-[#8D7B68] transition-all">강원</div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Step 2: Weight -->
-                <div>
-                    <h3 class="font-bold text-sm text-gray-400 mb-4 uppercase tracking-wider text-center">반려동물 무게</h3>
-                    <div class="grid grid-cols-4 gap-2">
-                        <label class="cursor-pointer">
-                            <input type="radio" name="quote-weight" value="5" class="hidden quote-input" checked>
-                            <div
-                                class="quote-label py-3 text-center border rounded-xl text-xs font-medium hover:border-[#8D7B68] transition-all">
-                                5kg 미만</div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="quote-weight" value="10" class="hidden quote-input">
-                            <div
-                                class="quote-label py-3 text-center border rounded-xl text-xs font-medium hover:border-[#8D7B68] transition-all">
-                                10kg 미만</div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="quote-weight" value="20" class="hidden quote-input">
-                            <div
-                                class="quote-label py-3 text-center border rounded-xl text-xs font-medium hover:border-[#8D7B68] transition-all">
-                                20kg 미만</div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="quote-weight" value="30" class="hidden quote-input">
-                            <div
-                                class="quote-label py-3 text-center border rounded-xl text-xs font-medium hover:border-[#8D7B68] transition-all">
-                                20kg 이상</div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Step 3: Options -->
-                <div>
-                    <h3 class="font-bold text-sm text-gray-400 mb-4 uppercase tracking-wider text-center">추가 옵션 선택</h3>
-                    <div class="space-y-3">
-                        <label
-                            class="flex items-center justify-between p-4 border rounded-2xl cursor-pointer hover:bg-gray-50 transition-all group">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-10 h-10 bg-brand-sage/10 rounded-xl flex items-center justify-center text-brand-sage group-hover:bg-brand-sage group-hover:text-white transition-all">
-                                    <i class="fas fa-tshirt"></i>
-                                </div>
-                                <div>
-                                    <p class="font-bold text-sm text-gray-900">수의 선택</p>
-                                    <p class="text-xs text-gray-400">마지막을 정갈하게 (+10만원)</p>
-                                </div>
-                            </div>
-                            <input type="checkbox" id="opt-shroud"
-                                class="quote-checkbox w-6 h-6 rounded-full text-[#8D7B68] focus:ring-[#8D7B68]"
-                                onchange="updateEstimatedQuote()">
-                        </label>
-                        <label
-                            class="flex items-center justify-between p-4 border rounded-2xl cursor-pointer hover:bg-gray-50 transition-all group">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-10 h-10 bg-[#8D7B68]/10 rounded-xl flex items-center justify-center text-[#8D7B68] group-hover:bg-[#8D7B68] group-hover:text-white transition-all">
-                                    <i class="fas fa-box"></i>
-                                </div>
-                                <div>
-                                    <p class="font-bold text-sm text-gray-900">관 선택</p>
-                                    <p class="text-xs text-gray-400">안락한 안식을 위한 관 (+15만원)</p>
-                                </div>
-                            </div>
-                            <input type="checkbox" id="opt-coffin"
-                                class="quote-checkbox w-6 h-6 rounded-full text-[#8D7B68] focus:ring-[#8D7B68]"
-                                onchange="updateEstimatedQuote()">
-                        </label>
-                        <label
-                            class="flex items-center justify-between p-4 border rounded-2xl cursor-pointer hover:bg-gray-50 transition-all group">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-10 h-10 bg-brand-warm/10 rounded-xl flex items-center justify-center text-brand-warm group-hover:bg-brand-warm group-hover:text-white transition-all">
-                                    <i class="fas fa-gem"></i>
-                                </div>
-                                <div>
-                                    <p class="font-bold text-sm text-gray-900">메모리얼 스톤</p>
-                                    <p class="text-xs text-gray-400">영원히 기억하기 위한 보석 (+25만원)</p>
-                                </div>
-                            </div>
-                            <input type="checkbox" id="opt-stone"
-                                class="quote-checkbox w-6 h-6 rounded-full text-[#8D7B68] focus:ring-[#8D7B68]"
-                                onchange="updateEstimatedQuote()">
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer Quote Summary -->
-            <div class="p-6 bg-white border-t space-y-4 shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
-                <div class="flex justify-between items-end">
-                    <span class="text-sm font-medium text-gray-500">예상 견적 총액</span>
-                    <div class="text-right">
-                        <span id="quote-total" class="text-3xl font-bold text-[#8D7B68]">200,000</span>
-                        <span class="font-bold text-gray-900 ml-1">원</span>
-                    </div>
-                </div>
-                <button onclick="applyQuoteFilter()"
-                    class="w-full py-4 bg-[#8D7B68] text-white rounded-2xl font-bold text-lg shadow-lg hover:bg-[#7A6A59] transition-all transform active:scale-[0.98]">
-                    맞춤 장례식장 결과 보기
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script>
         // --- Naver Map State ---
         let naverMap = null;
         let naverMarkers = [];
@@ -636,13 +9,45 @@
 
         // --- Global Configuration ---
         const ON_CONFIG = {
-            showPartnership: false
+            showPartnership: false // 제휴 기능 활성화 여부 (현재는 제휴 업체가 없어 비활성화)
         };
 
+                    "latitude": "35.539481",
+                    "longitude": "127.348529",
+                    "isAlliance": true
+                },
+                {
+                    "uuid": "92214225-1ebc-4ae9-b9d9-8542fa57f8f6",
+                    "name": "21그램 천안아산점",
+                    "enName": "21gram-cheonanasan",
+                    "latitude": "36.767385",
+                    "longitude": "127.143840",
+                    "isAlliance": false
+                },
+                {
+                    "uuid": "60d0c960-2978-4227-8dcd-874dff22cadd",
+                    "name": "아리아펫",
+                    "enName": "ariapet",
+                    "latitude": "37.279416",
+                    "longitude": "127.390312",
+                    "isAlliance": false
+                },
+                {
+                    "uuid": "86a8ce3d-69dd-4bcf-b393-eb377c5f2f26",
+                    "name": "포포즈 김포점",
+                    "enName": "pofos-kyungigimpo",
+                    "latitude": "37.730195",
+                    "longitude": "126.575600",
+                    "isAlliance": false
+                }
+            ]
+        }
+            ;
         // --- Core Application Logic ---
         const resultList = document.getElementById('result-list');
         const resultCount = document.getElementById('result-count');
         const mapPinsContainer = document.getElementById('pins-container');
+
 
         function renderListItems(items) {
             const resultList = document.getElementById('result-list');
@@ -653,6 +58,10 @@
             resultCount.innerHTML = `총 <span class="text-[#C5A065] font-bold">${items.length}</span>개 장례식장`;
 
             items.forEach(item => {
+                const el = document.createElement('div');
+                el.className = "search-item bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row gap-6 cursor-pointer group";
+                el.onclick = () => location.href = 'detail.html?id=' + (item.external_uuid || item.id || item.uuid);
+
                 const realData = (typeof REAL_DATA !== 'undefined') ? REAL_DATA[item.name] : null;
                 const defaultImage = 'https://images.unsplash.com/photo-1596230526487-11152a4a754b?w=500';
                 const image = item.image_url || (realData && realData.imageUrl) ? (item.image_url || realData.imageUrl) : defaultImage;
@@ -663,7 +72,7 @@
                     try {
                         const firstCategory = itemPrices[0];
                         if (firstCategory.items && firstCategory.items.length > 0) {
-                            priceText = firstCategory.items[0].price + '원~';
+                            priceText = firstCategory.items[0].price;
                         }
                     } catch (e) { }
                 }
@@ -673,14 +82,10 @@
 
                 let badgesHtml = '';
                 const isAlliance = item.is_alliance || item.isAlliance;
-                if (ON_CONFIG.showPartnership && isAlliance) badgesHtml += '<span class="bg-[#8D7B68] text-white text-xs px-2 py-1 rounded mr-2 font-bold uppercase">제휴</span>';
-
-                const el = document.createElement('div');
-                el.className = "search-item bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row gap-6 cursor-pointer group";
-                el.onclick = () => location.href = 'detail.html?id=' + (item.id || item.external_uuid || item.uuid);
+                if (ON_CONFIG.showPartnership && isAlliance) badgesHtml += '<span class="bg-[#8D7B68] text-white text-xs px-2 py-1 rounded mr-2">제휴</span>';
 
                 el.innerHTML = `
-                        <div class="w-full md:w-48 h-32 bg-gray-200 rounded-lg bg-cover bg-center shrink-0 shadow-inner" style="background-image: url('${image}')"></div>
+                        <div class="w-full md:w-48 h-32 bg-gray-200 rounded-lg bg-cover bg-center shrink-0" style="background-image: url('${image}')"></div>
                         <div class="flex-1 flex flex-col justify-between">
                             <div>
                                 <div class="flex justify-between items-start mb-1">
@@ -690,25 +95,17 @@
                                     </div>
                                 </div>
                                 <p class="text-gray-400 text-xs mb-3">${item.address || (item.enName || '')}</p>
-                                <div class="flex gap-2 text-[10px] text-gray-500 mb-4">
+                                <div class="flex gap-2 text-[11px] text-gray-500 mb-4">
                                     <span class="px-2 py-0.5 bg-gray-50 rounded-full border border-gray-100">개별 추모실</span>
-                                    <span class="px-2 py-0.5 bg-gray-50 rounded-full border border-gray-100">24시간 운영</span>
+                                    <span class="px-2 py-0.5 bg-gray-50 rounded-full border border-gray-100">박스관 포함</span>
                                 </div>
                             </div>
                             <div class="flex justify-between items-center border-t border-gray-50 pt-3">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex items-center gap-1 text-[#C5A065]">
-                                        <i class="fas fa-star text-[10px]"></i>
-                                        <span class="text-xs font-bold">${rating}</span>
-                                    </div>
-                                    <span class="text-[10px] text-gray-300">리뷰 ${reviewCount}</span>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-lg font-black text-[#8D7B68]">${priceText}</span>
-                                </div>
+                                <span class="font-bold text-gray-900 border-b-2 border-[#C5A065]/30">최저 ${priceText}</span>
+                                <button class="bg-[#8D7B68] text-white px-5 py-2 rounded-xl text-sm font-bold shadow-sm hover:brightness-110 active:scale-95 transition-all" onclick="event.stopPropagation(); handleReservation('${item.name}')">예약하기</button>
                             </div>
                         </div>
-                `;
+                    `;
                 resultList.appendChild(el);
             });
         }
@@ -979,7 +376,11 @@
                 filteredItems.sort((a, b) => parsePrice(a) - parsePrice(b));
             } else {
                 if (ON_CONFIG.showPartnership) {
-                    filteredItems.sort((a, b) => (b.isAlliance ? 1 : 0) - (a.isAlliance ? 1 : 0));
+                    filteredItems.sort((a, b) => {
+                        const allianceA = a.is_alliance || a.isAlliance ? 1 : 0;
+                        const allianceB = b.is_alliance || b.isAlliance ? 1 : 0;
+                        return allianceB - allianceA;
+                    });
                 } else {
                     // 기본 정렬: 이름순 또는 등록역순 (현재는 데이터 순서 유지)
                 }
@@ -1080,17 +481,17 @@
                 category: "일반 동물 장례 패키지 (10kg 이하 기준)",
                 items: [
                     { name: "기본 화장", price: "250,000원", desc: "염습, 단독추모, 개별화장, 임시유골함, 추모키트", longDesc: "염습, 단독 추모, 개별 화장 및 수/분골, 임시 유골함 제공. (추모키트: 장례 증명서, 사진 인화, 발도장, 인연의 실, 안내서)" },
-                    { name: "관 장례 패키지", price: "550,000원", desc: "기본화장 + 오동나무 관 + 고급수의 + 꽃다발", longDesc: "기본 화장 + 오동나무 관 + 인견 수의/수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "./../images/p_item01.webp" },
-                    { name: "요람 장례 패키지", price: "600,000원", desc: "기본화장 + 요람관 + 고급수의 + 목화솜 이불", longDesc: "기본 화장 + 요람관 + 인견 수의 + 목화솜 이불 + 기본 유골함 + 작은 꽃다발", imageUrl: "./../images/p_item02.webp" },
-                    { name: "자연닮음 장례 패키지", price: "600,000원", desc: "기본화장 + 자연닮음 관/수의 + 한지 수목함", longDesc: "기본 화장 + 자연닮음 관 + 자연닮음 수의/수의보 + 한지 수목함 + 작은 꽃다발", imageUrl: "./../images/p_item04.webp" },
-                    { name: "ALL IN ONE 패키지", price: "1,360,000원", desc: "최고급관 + 블리스 스톤 전량 + 다담 스톤함", longDesc: "기본 화장 + 오동나무 관 + 면 수의/수의보 + 블리스 스톤(전량) + 호두나무 다담 스톤함 + 작은 꽃다발", imageUrl: "./../images/p_item03.webp" }
+                    { name: "관 장례 패키지", price: "550,000원", desc: "기본화장 + 오동나무 관 + 고급수의 + 꽃다발", longDesc: "기본 화장 + 오동나무 관 + 인견 수의/수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item01.webp" },
+                    { name: "요람 장례 패키지", price: "600,000원", desc: "기본화장 + 요람관 + 고급수의 + 목화솜 이불", longDesc: "기본 화장 + 요람관 + 인견 수의 + 목화솜 이불 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item02.webp" },
+                    { name: "자연닮음 장례 패키지", price: "600,000원", desc: "기본화장 + 자연닮음 관/수의 + 한지 수목함", longDesc: "기본 화장 + 자연닮음 관 + 자연닮음 수의/수의보 + 한지 수목함 + 작은 꽃다발", imageUrl: "./images/p_item04.webp" },
+                    { name: "ALL IN ONE 패키지", price: "1,360,000원", desc: "최고급관 + 블리스 스톤 전량 + 다담 스톤함", longDesc: "기본 화장 + 오동나무 관 + 면 수의/수의보 + 블리스 스톤(전량) + 호두나무 다담 스톤함 + 작은 꽃다발", imageUrl: "./images/p_item03.webp" }
                 ]
             },
             {
                 category: "소동물 장례 패키지 (1kg 이하 기준)",
                 items: [
                     { name: "소동물 기본 화장", price: "200,000원", desc: "염습 시 특수 칫솔 사용 등 일반 기본 화장과 동일", longDesc: "일반 동물 기본 화장 서비스 구성 100% 동일" },
-                    { name: "소동물 관 장례 패키지", price: "350,000원", desc: "기본화장 + 오동나무 관 + 소동물 수의보", longDesc: "기본 화장 + 오동나무 관 + 면 수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "./../images/p_item01_ex_3.webp" }
+                    { name: "소동물 관 장례 패키지", price: "350,000원", desc: "기본화장 + 오동나무 관 + 소동물 수의보", longDesc: "기본 화장 + 오동나무 관 + 면 수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item01_ex_3.webp" }
                 ]
             },
             {
@@ -1107,17 +508,17 @@
                 category: "일반 동물 장례 패키지 (10kg 이하 기준)",
                 items: [
                     { name: "기본 화장", price: "200,000원", desc: "염습, 단독추모, 개별화장, 임시유골함, 추모키트", longDesc: "염습, 단독 추모, 개별 화장 및 수/분골, 임시 유골함 제공. (추모키트: 장례 증명서, 사진 인화, 발도장, 인연의 실, 안내서)" },
-                    { name: "관 장례 패키지", price: "500,000원", desc: "기본화장 + 오동나무 관 + 고급수의 + 꽃다발", longDesc: "기본 화장 + 오동나무 관 + 인견 수의/수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "./../images/p_item01.webp" },
-                    { name: "요람 장례 패키지", price: "550,000원", desc: "기본화장 + 요람관 + 고급수의 + 목화솜 이불", longDesc: "기본 화장 + 요람관 + 인견 수의 + 목화솜 이불 + 기본 유골함 + 작은 꽃다발", imageUrl: "./../images/p_item02.webp" },
-                    { name: "자연닮음 장례 패키지", price: "550,000원", desc: "기본화장 + 자연닮음 관/수의 + 한지 수목함", longDesc: "기본 화장 + 자연닮음 관 + 자연닮음 수의/수의보 + 한지 수목함 + 작은 꽃다발", imageUrl: "./../images/p_item04.webp" },
-                    { name: "ALL IN ONE 패키지", price: "1,310,000원", desc: "최고급관 + 블리스 스톤 전량 + 다담 스톤함", longDesc: "기본 화장 + 오동나무 관 + 면 수의/수의보 + 블리스 스톤(전량) + 호두나무 다담 스톤함 + 작은 꽃다발", imageUrl: "./../images/p_item03.webp" }
+                    { name: "관 장례 패키지", price: "500,000원", desc: "기본화장 + 오동나무 관 + 고급수의 + 꽃다발", longDesc: "기본 화장 + 오동나무 관 + 인견 수의/수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item01.webp" },
+                    { name: "요람 장례 패키지", price: "550,000원", desc: "기본화장 + 요람관 + 고급수의 + 목화솜 이불", longDesc: "기본 화장 + 요람관 + 인견 수의 + 목화솜 이불 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item02.webp" },
+                    { name: "자연닮음 장례 패키지", price: "550,000원", desc: "기본화장 + 자연닮음 관/수의 + 한지 수목함", longDesc: "기본 화장 + 자연닮음 관 + 자연닮음 수의/수의보 + 한지 수목함 + 작은 꽃다발", imageUrl: "./images/p_item04.webp" },
+                    { name: "ALL IN ONE 패키지", price: "1,310,000원", desc: "최고급관 + 블리스 스톤 전량 + 다담 스톤함", longDesc: "기본 화장 + 오동나무 관 + 면 수의/수의보 + 블리스 스톤(전량) + 호두나무 다담 스톤함 + 작은 꽃다발", imageUrl: "./images/p_item03.webp" }
                 ]
             },
             {
                 category: "소동물 장례 패키지 (1kg 이하 기준)",
                 items: [
                     { name: "소동물 기본 화장", price: "150,000원", desc: "염습 시 특수 칫솔 사용 등 일반 기본 화장과 동일", longDesc: "일반 동물 기본 화장 서비스 구성 100% 동일" },
-                    { name: "소동물 관 장례 패키지", price: "300,000원", desc: "기본화장 + 오동나무 관 + 소동물 수의보", longDesc: "기본 화장 + 오동나무 관 + 면 수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "./../images/p_item01_ex_3.webp" }
+                    { name: "소동물 관 장례 패키지", price: "300,000원", desc: "기본화장 + 오동나무 관 + 소동물 수의보", longDesc: "기본 화장 + 오동나무 관 + 면 수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item01_ex_3.webp" }
                 ]
             },
             {
@@ -1157,16 +558,16 @@
             {
                 "category": "21그램 장례 패키지",
                 "items": [
-                    { "name": "베이직 장례", "price": "15kg 미만 35만원 / 대형견 65만원", "desc": "가장 기본적인 장례 절차", "imageUrl": "./../images/21gram_basic.jpg", "longDesc": "모든 서비스에 엽습, 단독추모실, 개별화장, 유골함, 보자기, 추모 예식 서비스(편지, 발도장, 본, 털 보관 등)가 포함된 기본 장례 서비스입니다." },
-                    { "name": "21그램 장례 I", "price": "15kg 미만 70만원 / 대형견 111만원", "desc": "베이직 + 시그니처 요람 + 헌화 꽃다발", "imageUrl": "./../images/21gram_type1.jpg", "longDesc": "베이직 구성에 21그램 시그니처 요람(M/L)과 헌화 꽃다발이 추가로 제공되는 패키지입니다." },
-                    { "name": "21그램 장례 II", "price": "15kg 미만 75만원 / 대형견 120만원", "desc": "베이직 + 오동나무관 + 고급 수의 + 헌화 꽃다발", "imageUrl": "./../images/21gram_type2.jpg", "longDesc": "베이직 구성에 오동나무관(M/L), 고급 수의, 헌화 꽃다발이 추가로 제공되는 패키지입니다. (1kg 미만 소동물 전용 65만원)" },
-                    { "name": "프리미엄 소풍 장례", "price": "1,350,000원", "desc": "최상급 프리미엄 장례 (15kg 미만 전용)", "imageUrl": "./../images/21gram_premium.jpg", "longDesc": "베이직 구성에 프리미엄 관 M, 최고급 수의, 무지개 다리 특별 예식, 소풍 가방, 들꽃 바구니가 모두 포함된 최고급 예우 패키지입니다." }
+                    { "name": "베이직 장례", "price": "15kg 미만 35만원 / 대형견 65만원", "desc": "가장 기본적인 장례 절차", "imageUrl": "./images/21gram_basic.jpg", "longDesc": "모든 서비스에 엽습, 단독추모실, 개별화장, 유골함, 보자기, 추모 예식 서비스(편지, 발도장, 본, 털 보관 등)가 포함된 기본 장례 서비스입니다." },
+                    { "name": "21그램 장례 I", "price": "15kg 미만 70만원 / 대형견 111만원", "desc": "베이직 + 시그니처 요람 + 헌화 꽃다발", "imageUrl": "./images/21gram_type1.jpg", "longDesc": "베이직 구성에 21그램 시그니처 요람(M/L)과 헌화 꽃다발이 추가로 제공되는 패키지입니다." },
+                    { "name": "21그램 장례 II", "price": "15kg 미만 75만원 / 대형견 120만원", "desc": "베이직 + 오동나무관 + 고급 수의 + 헌화 꽃다발", "imageUrl": "./images/21gram_type2.jpg", "longDesc": "베이직 구성에 오동나무관(M/L), 고급 수의, 헌화 꽃다발이 추가로 제공되는 패키지입니다. (1kg 미만 소동물 전용 65만원)" },
+                    { "name": "프리미엄 소풍 장례", "price": "1,350,000원", "desc": "최상급 프리미엄 장례 (15kg 미만 전용)", "imageUrl": "./images/21gram_premium.jpg", "longDesc": "베이직 구성에 프리미엄 관 M, 최고급 수의, 무지개 다리 특별 예식, 소풍 가방, 들꽃 바구니가 모두 포함된 최고급 예우 패키지입니다." }
                 ]
             },
             {
                 "category": "부가 서비스 및 선택 용품",
                 "items": [
-                    { "name": "루세떼 (메모리얼 스톤)", "price": "별도 문의", "desc": "유골분을 보석 형태로 제작", "imageUrl": "./../images/21gram_lucete.jpg", "longDesc": "유골분을 영원히 변치않는 아름다운 보석 형태의 메모리얼 스톤(루세떼)으로 가공하는 서비스입니다." },
+                    { "name": "루세떼 (메모리얼 스톤)", "price": "별도 문의", "desc": "유골분을 보석 형태로 제작", "imageUrl": "./images/21gram_lucete.jpg", "longDesc": "유골분을 영원히 변치않는 아름다운 보석 형태의 메모리얼 스톤(루세떼)으로 가공하는 서비스입니다." },
                     { "name": "운구 서비스 / 비동행 장례", "price": "별도 문의", "desc": "상황에 따라 맞춤 진행", "longDesc": "보호자 참석이 어려운 경우 비동행 장례가 가능하며, 장례식장 이동을 위한 운송 서비스도 지원됩니다. 자세한 비용은 병원 문의바랍니다." }
                 ]
             }
@@ -1246,28 +647,28 @@
                         "price": "550,000원",
                         "desc": "염습, 오동나무관, 추모실, 개별화장, 아리움유골함, 발도장 등",
                         "longDesc": "염습 + 오동나무관 + 단독추모실 + 개별화장 + 아리움유골함 + 고급액자 + 발도장",
-                        "imageUrl": "./../images/arium_pkg_1.png"
+                        "imageUrl": "./images/arium_pkg_1.png"
                     },
                     {
                         "name": "프리미엄 장례 패키지",
                         "price": "850,000원",
                         "desc": "염습, 관, 수의, 생화장식, 호두나무유골함, 액자 등",
                         "longDesc": "염습 + 오동나무관 + 수의 + 생화장식 + 단독추모실 + 개별화장 + 호두나무유골함 + 고급액자 + 발도장",
-                        "imageUrl": "./../images/arium_pkg_2.png"
+                        "imageUrl": "./images/arium_pkg_2.png"
                     },
                     {
                         "name": "스탠다드 루세떼 패키지",
                         "price": "850,000원",
                         "desc": "기본 장례 + 루세떼 제작(1판) + 기본함 등",
                         "longDesc": "염습 + 단독추모실 + 개별화장 + 루세떼제작(1판) + 기본루세떼함 + 고급액자 + 발도장",
-                        "imageUrl": "./../images/arium_pkg_3.png"
+                        "imageUrl": "./images/arium_pkg_3.png"
                     },
                     {
                         "name": "프리미엄 루세떼 패키지",
                         "price": "1,600,000원",
                         "desc": "프리미엄 장례 + 루세떼 제작(1판) + 다담함 등",
                         "longDesc": "염습 + 오동나무관 + 수의 + 생화장식 + 단독추모실 + 개별화장 + 루세떼제작(1판) + 다담루세떼함 + 고급액자 + 발도장",
-                        "imageUrl": "./../images/arium_pkg_4.png"
+                        "imageUrl": "./images/arium_pkg_4.png"
                     }
                 ]
             }
@@ -1292,7 +693,7 @@
             {
                 "category": "일반 장례 패키지 (10kg 미만 기준)",
                 "items": [
-                    { "name": "기본 장례", "price": "200,000원", "desc": "개별화장, 단독 추모실, 기본 유골함 등 포함", "longDesc": "단독 추모실, 국화 헌화, 개별 화장, 보자기, 장례 확인서, 편지지, 붉은 실, 발 도장 키트, 털 간직 키트, 기본 유골함, 유골 주머니가 포함된 기본 장례 서비스입니다.", "imageUrl": "./../images/haneul_basic.png" },
+                    { "name": "기본 장례", "price": "200,000원", "desc": "개별화장, 단독 추모실, 기본 유골함 등 포함", "longDesc": "단독 추모실, 국화 헌화, 개별 화장, 보자기, 장례 확인서, 편지지, 붉은 실, 발 도장 키트, 털 간직 키트, 기본 유골함, 유골 주머니가 포함된 기본 장례 서비스입니다.", "imageUrl": "./images/haneul_basic.png" },
                     { "name": "스카이 장례", "price": "450,000원", "desc": "소동물 35만원 / 기본 장례 + 최고급 수의 및 관", "longDesc": "기본 장례 구성에 염습, 최고급 수의, 최고급 관, 도자기 유골함, 원목 액자가 추가로 제공됩니다.", "imageUrl": "https://cdn.imweb.me/thumbnail/20250810/6bece5aaa1b19.jpg" },
                     { "name": "요람 장례", "price": "700,000원", "desc": "최고급 요람 세트 및 무지개 유골함 등", "longDesc": "기본 장례 구성에 염습, 요람 침구 세트, 최고급 요람, 생화 꽃 장식(소량), 무지개 유골함, 원목 액자가 모두 포함된 품격 있는 서비스입니다.", "imageUrl": "https://cdn.imweb.me/thumbnail/20250810/12607cb830076.jpg" },
                     { "name": "프리미엄 장례", "price": "900,000원", "desc": "최상위 수의/관 세트 및 기능성 유골함 등", "longDesc": "기본 장례 구성에 염습, 최상위 수의 세트, 최상위 관, 생화 꽃 장식(소량), 기능성 유골함, 아크릴 액자가 포함된 프리미엄 서비스입니다.", "imageUrl": "https://cdn.imweb.me/thumbnail/20250810/0a5e1d569f503.jpg" },
@@ -1302,11 +703,11 @@
             {
                 "category": "스톤 장례 패키지 (메모리얼 스톤 포함)",
                 "items": [
-                    { "name": "기본 스톤 장례", "price": "500,000원", "desc": "소동물 30만원 / 기본 장례 + 메모리얼 스톤", "longDesc": "기본 장례 패키지에 아이의 유골을 아름답게 간직할 수 있는 메모리얼 스톤 제작과 유리 스톤함이 포함됩니다.", "imageUrl": "./../images/haneul_stone_basic.png" },
-                    { "name": "스카이 스톤 장례", "price": "750,000원", "desc": "소동물 45만원 / 스카이 장례 + 메모리얼 스톤", "longDesc": "스카이 장례 패키지(최고급 수의/관 등)에 메모리얼 스톤 제작과 유리 스톤함이 포함됩니다.", "imageUrl": "./../images/haneul_stone_sky.png" },
-                    { "name": "요람 스톤 장례", "price": "1,000,000원", "desc": "요람 장례 + 메모리얼 스톤 및 원목 스톤함", "longDesc": "요람 장례(최고급 요람 등) 패키지에 더해 메모리얼 스톤 제작과 고급스러운 원목 스톤함이 제공됩니다.", "imageUrl": "./../images/haneul_stone_cradle.png" },
-                    { "name": "프리미엄 스톤 장례", "price": "1,300,000원", "desc": "프리미엄 장례 + 메모리얼 스톤 및 원목 스톤함", "longDesc": "프리미엄 장례(최상위 수의/관 등)에 메모리얼 스톤 제작과 고급 원목 스톤함이 함께 제공되는 고품격 패키지입니다.", "imageUrl": "./../images/haneul_stone_premium.jpg" },
-                    { "name": "VIP 스톤 장례", "price": "1,650,000원", "desc": "VIP 장례 + 상위 기능성 유골함 또는 원목 스톤함", "longDesc": "가장 고귀한 예우를 위한 VIP 장례 패키지에 메모리얼 스톤 제작과 상위 기능성 고도자 유골함(또는 원목 스톤함)이 포함된 최고급 옵션입니다.", "imageUrl": "./../images/haneul_stone_vip.jpg" }
+                    { "name": "기본 스톤 장례", "price": "500,000원", "desc": "소동물 30만원 / 기본 장례 + 메모리얼 스톤", "longDesc": "기본 장례 패키지에 아이의 유골을 아름답게 간직할 수 있는 메모리얼 스톤 제작과 유리 스톤함이 포함됩니다.", "imageUrl": "./images/haneul_stone_basic.png" },
+                    { "name": "스카이 스톤 장례", "price": "750,000원", "desc": "소동물 45만원 / 스카이 장례 + 메모리얼 스톤", "longDesc": "스카이 장례 패키지(최고급 수의/관 등)에 메모리얼 스톤 제작과 유리 스톤함이 포함됩니다.", "imageUrl": "./images/haneul_stone_sky.png" },
+                    { "name": "요람 스톤 장례", "price": "1,000,000원", "desc": "요람 장례 + 메모리얼 스톤 및 원목 스톤함", "longDesc": "요람 장례(최고급 요람 등) 패키지에 더해 메모리얼 스톤 제작과 고급스러운 원목 스톤함이 제공됩니다.", "imageUrl": "./images/haneul_stone_cradle.png" },
+                    { "name": "프리미엄 스톤 장례", "price": "1,300,000원", "desc": "프리미엄 장례 + 메모리얼 스톤 및 원목 스톤함", "longDesc": "프리미엄 장례(최상위 수의/관 등)에 메모리얼 스톤 제작과 고급 원목 스톤함이 함께 제공되는 고품격 패키지입니다.", "imageUrl": "./images/haneul_stone_premium.jpg" },
+                    { "name": "VIP 스톤 장례", "price": "1,650,000원", "desc": "VIP 장례 + 상위 기능성 유골함 또는 원목 스톤함", "longDesc": "가장 고귀한 예우를 위한 VIP 장례 패키지에 메모리얼 스톤 제작과 상위 기능성 고도자 유골함(또는 원목 스톤함)이 포함된 최고급 옵션입니다.", "imageUrl": "./images/haneul_stone_vip.jpg" }
                 ]
             },
             {
@@ -1704,11 +1105,11 @@
                     {
                         "category": "장례 패키지",
                         "items": [
-                            { "name": "기본장례 45 (5kg 미만)", "price": "450,000원", "desc": "입관, 개방관, 삼베 이불, 꽃장식 등", "longDesc": "염/습, 추모식, 입관, 개방관, 삼베 이불 덮기, 입관 꽃장식, 화장, 기본 목함", "imageUrl": "./../images/hanbyul_basic_custom.jpg" },
-                            { "name": "장례A 55 (5kg 미만)", "price": "550,000원", "desc": "오동나무관, 삼베 수의, 수국 장식", "longDesc": "개방관 대비 오동나무관과 삼베 수의, 수국 덮기가 곁들여지는 패키지", "imageUrl": "./../images/hanbyul_package_A55_new.png" },
-                            { "name": "라탄꽃 장례 60 (5kg 미만)", "price": "600,000원", "desc": "라탄관 덮기, 삼베, 수국 장식", "longDesc": "라탄관과 삼베, 수국으로 아름답게 꾸며지는 꽃 장례 패키지", "imageUrl": "./../images/hanbyul_package_60_rattan.jpg" },
-                            { "name": "장례B 65 (5kg 미만)", "price": "650,000원", "desc": "천사관, 삼베 수의, 꽃장식", "longDesc": "천사관이 적용된 고급 장례 패키지", "imageUrl": "./../images/hanbyul_package_65_angel.jpg" },
-                            { "name": "장례C 95 (5kg 미만)", "price": "950,000원", "desc": "최고급관, 최고급 수의, 고급 꽃장식", "longDesc": "최고급 관과 최고급 수의가 적용된 VVIP 패키지", "imageUrl": "./../images/hanbyul_package_95_premium.jpg" }
+                            { "name": "기본장례 45 (5kg 미만)", "price": "450,000원", "desc": "입관, 개방관, 삼베 이불, 꽃장식 등", "longDesc": "염/습, 추모식, 입관, 개방관, 삼베 이불 덮기, 입관 꽃장식, 화장, 기본 목함", "imageUrl": "./images/hanbyul_basic_custom.jpg" },
+                            { "name": "장례A 55 (5kg 미만)", "price": "550,000원", "desc": "오동나무관, 삼베 수의, 수국 장식", "longDesc": "개방관 대비 오동나무관과 삼베 수의, 수국 덮기가 곁들여지는 패키지", "imageUrl": "./images/hanbyul_package_A55_new.png" },
+                            { "name": "라탄꽃 장례 60 (5kg 미만)", "price": "600,000원", "desc": "라탄관 덮기, 삼베, 수국 장식", "longDesc": "라탄관과 삼베, 수국으로 아름답게 꾸며지는 꽃 장례 패키지", "imageUrl": "./images/hanbyul_package_60_rattan.jpg" },
+                            { "name": "장례B 65 (5kg 미만)", "price": "650,000원", "desc": "천사관, 삼베 수의, 꽃장식", "longDesc": "천사관이 적용된 고급 장례 패키지", "imageUrl": "./images/hanbyul_package_65_angel.jpg" },
+                            { "name": "장례C 95 (5kg 미만)", "price": "950,000원", "desc": "최고급관, 최고급 수의, 고급 꽃장식", "longDesc": "최고급 관과 최고급 수의가 적용된 VVIP 패키지", "imageUrl": "./images/hanbyul_package_95_premium.jpg" }
                         ]
                     },
                     {
@@ -2146,7 +1547,7 @@
             "포포즈 김해점": { "pricingType": "categorized", "prices": FOUR_PAWS_PRICES_SEJONG_BUSAN, "address": "경상남도 김해시 한림면 안하로 102", "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/pofos-gimhae.webp" },
             "하얀민들레": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경북 청도군 화양읍 남성현로 852" },
             "아이드림펫": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경기 김포시 하성면 양택리 161-1" },
-            "펫노블레스": { "pricingType": "categorized", "prices": PETNOBLESSE_PRICES, "address": "경남 양산시 상북면 상삼리 807", "imageUrl": "./../images/petnoblesse_main.png" },
+            "펫노블레스": { "pricingType": "categorized", "prices": PETNOBLESSE_PRICES, "address": "경남 양산시 상북면 상삼리 807", "imageUrl": "./images/petnoblesse_main.png" },
             "서래안펫타운": { "pricingType": "categorized", "prices": SEORAEAN_PRICES, "address": "전북 군산시 경암동 570-39" },
             "하늘소풍": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경남 고성군 회화면 봉동리 608-3" },
             "리멤버": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경기 용인시 처인구 남사읍 방아리 883-3" },
@@ -2185,26 +1586,26 @@
                     {
                         "category": "장례 예식 안내 (5kg 기준)",
                         "items": [
-                            { "name": "기본 예식", "price": "300,000원", "desc": "염습, 추모실, 단독화장, 목관함, 액자 제공", "longDesc": "모든 장례는 5kg 기준 초과 시 추가요금이 발생합니다. 포함 내역: 염습 + 단독 추모실 사용 + 단독화장 + 목관함 제공 + 액자 제공", "imageUrl": "./../images/petsalang_1.png" },
-                            { "name": "펫사랑 예식", "price": "350,000원", "desc": "기본 예식 + 오동나무관, 삼베이불, 생화 소량", "longDesc": "보호자의 필요와 상황에 맞춘 펫사랑의 기본 패키지 장례 서비스입니다. (공통예식 포함)", "imageUrl": "./../images/petsalang_2.png" },
-                            { "name": "품격 예식", "price": "450,000원", "desc": "기본 예식 + 오동나무관, 인견수의보/삼베수의 중 택 1, 생화", "longDesc": "반려동물의 품격을 더 높여드리기 위한 고급 수의 옵션이 포함된 품격 있는 장례 예식입니다.", "imageUrl": "./../images/petsalang_3.png" },
-                            { "name": "고급 예식", "price": "550,000원", "desc": "기본 예식 + 오동나무관, 삼베수의, 고급 린넨수의보 등", "longDesc": "최고급 린넨 수의보 등을 구성한 고급 예식 패키지입니다.", "imageUrl": "./../images/petsalang_4.png" },
-                            { "name": "최고급 예식", "price": "650,000원", "desc": "기본 예식 + 요람관, 최고급 목화솜수의보, 생화 등", "longDesc": "안락한 요람관과 최고급 목화솜 소재의 수의보를 제공하는 프리미엄 최고급 예식입니다.", "imageUrl": "./../images/petsalang_5.png" }
+                            { "name": "기본 예식", "price": "300,000원", "desc": "염습, 추모실, 단독화장, 목관함, 액자 제공", "longDesc": "모든 장례는 5kg 기준 초과 시 추가요금이 발생합니다. 포함 내역: 염습 + 단독 추모실 사용 + 단독화장 + 목관함 제공 + 액자 제공", "imageUrl": "./images/petsalang_1.png" },
+                            { "name": "펫사랑 예식", "price": "350,000원", "desc": "기본 예식 + 오동나무관, 삼베이불, 생화 소량", "longDesc": "보호자의 필요와 상황에 맞춘 펫사랑의 기본 패키지 장례 서비스입니다. (공통예식 포함)", "imageUrl": "./images/petsalang_2.png" },
+                            { "name": "품격 예식", "price": "450,000원", "desc": "기본 예식 + 오동나무관, 인견수의보/삼베수의 중 택 1, 생화", "longDesc": "반려동물의 품격을 더 높여드리기 위한 고급 수의 옵션이 포함된 품격 있는 장례 예식입니다.", "imageUrl": "./images/petsalang_3.png" },
+                            { "name": "고급 예식", "price": "550,000원", "desc": "기본 예식 + 오동나무관, 삼베수의, 고급 린넨수의보 등", "longDesc": "최고급 린넨 수의보 등을 구성한 고급 예식 패키지입니다.", "imageUrl": "./images/petsalang_4.png" },
+                            { "name": "최고급 예식", "price": "650,000원", "desc": "기본 예식 + 요람관, 최고급 목화솜수의보, 생화 등", "longDesc": "안락한 요람관과 최고급 목화솜 소재의 수의보를 제공하는 프리미엄 최고급 예식입니다.", "imageUrl": "./images/petsalang_5.png" }
                         ]
                     },
                     {
                         "category": "스톤 패키지 장례 (5kg 기준)",
                         "items": [
-                            { "name": "기본 스톤 장례", "price": "650,000원", "desc": "펫사랑예식 + 기본 스톤함", "longDesc": "장례와 스톤 제작을 함께 이용하시는 분들을 위해 경제적으로 제공되는 패키지입니다. (초과 시 추가요금 발생)", "imageUrl": "./../images/petsalang_stone_1.png" },
-                            { "name": "품격 스톤 장례", "price": "1,000,000원", "desc": "품격예식 + 호두나무 액자 스톤함", "longDesc": "품격예식에 고급 호두나무 재질의 액자 스톤함이 포함된 패키지입니다.", "imageUrl": "./../images/petsalang_stone_2.png" },
-                            { "name": "고급 스톤 장례", "price": "1,200,000원", "desc": "고급예식 + 고급 원목 홈세트", "longDesc": "최상단 고급 예식과 원목 스톤함, 원목 액자, 플레이트가 결합된 원목 홈세트 장례입니다.", "imageUrl": "./../images/petsalang_stone_3.png" }
+                            { "name": "기본 스톤 장례", "price": "650,000원", "desc": "펫사랑예식 + 기본 스톤함", "longDesc": "장례와 스톤 제작을 함께 이용하시는 분들을 위해 경제적으로 제공되는 패키지입니다. (초과 시 추가요금 발생)", "imageUrl": "./images/petsalang_stone_1.png" },
+                            { "name": "품격 스톤 장례", "price": "1,000,000원", "desc": "품격예식 + 호두나무 액자 스톤함", "longDesc": "품격예식에 고급 호두나무 재질의 액자 스톤함이 포함된 패키지입니다.", "imageUrl": "./images/petsalang_stone_2.png" },
+                            { "name": "고급 스톤 장례", "price": "1,200,000원", "desc": "고급예식 + 고급 원목 홈세트", "longDesc": "최상단 고급 예식과 원목 스톤함, 원목 액자, 플레이트가 결합된 원목 홈세트 장례입니다.", "imageUrl": "./images/petsalang_stone_3.png" }
                         ]
                     },
                     {
                         "category": "납골당 패키지 장례",
                         "items": [
-                            { "name": "품격 납골당 장례", "price": "700,000원", "desc": "품격예식 + 기능성 유골함 + 납골당(전층) 1년", "longDesc": "가장 품격 있는 장례 후 기능성 유골함에 담아 납골당에 최초 1년 안치하는 패키지입니다. (기간 연장 시 비용 발생)", "imageUrl": "./../images/petsalang_columbarium_1.png" },
-                            { "name": "고급 납골당 장례", "price": "900,000원", "desc": "고급예식 + 호두나무 액자 안치함 + 납골당 1년", "longDesc": "고급 호두나무 액자가 결합된 안치함에 담아 납골당(전층)에 1년간 안치합니다.", "imageUrl": "./../images/petsalang_columbarium_2.png" }
+                            { "name": "품격 납골당 장례", "price": "700,000원", "desc": "품격예식 + 기능성 유골함 + 납골당(전층) 1년", "longDesc": "가장 품격 있는 장례 후 기능성 유골함에 담아 납골당에 최초 1년 안치하는 패키지입니다. (기간 연장 시 비용 발생)", "imageUrl": "./images/petsalang_columbarium_1.png" },
+                            { "name": "고급 납골당 장례", "price": "900,000원", "desc": "고급예식 + 호두나무 액자 안치함 + 납골당 1년", "longDesc": "고급 호두나무 액자가 결합된 안치함에 담아 납골당(전층)에 1년간 안치합니다.", "imageUrl": "./images/petsalang_columbarium_2.png" }
                         ]
                     }
                 ],
@@ -2235,7 +1636,7 @@
                     }
                 ],
                 "address": "강원 원주시 소초면 현촌길 90-3",
-                "imageUrl": "./../images/pettoheaven_main.jpg"
+                "imageUrl": "./images/pettoheaven_main.jpg"
             },
             "포포즈 경기광주점": { "pricingType": "categorized", "prices": FOUR_PAWS_PRICES, "address": "경기 광주시 초월읍 신월리 592-19", "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/pofos-kyungigwangju.webp" },
             "포포즈 김포점": { "pricingType": "categorized", "prices": FOUR_PAWS_PRICES, "address": "경기 김포시 월곶면 개곡리 810-1" },
@@ -2257,16 +1658,16 @@
                     {
                         "category": "일반동물 (15kg 미만 기준)",
                         "items": [
-                            { "name": "베이직 장례", "price": "250,000원", "desc": "장례 한지이불 국화 나무유골함 보자기", "longDesc": "장례를 위한 꼭 필요한 기본 장례 서비스로, 화장 이후 나무유골함과 보자기가 제공됩니다.", "imageUrl": "./../images/becomestars_1.jpg" },
-                            { "name": "별장례", "price": "500,000원", "desc": "베이직장례 인견덮는형 고급면수의 고급오동나무관 국화 나무유골함 보자기 사진액자 꽃장식", "longDesc": "반려동물 맞춤 화장용 관과 이불 / 덮는용 수의로 마지막 길을 따뜻하고 편안하게 보내줄 수 있는 장례서비스. 별장례의 경우 아이가 옷을 입히는 경우해서 총 2가지가 가능합니다.", "imageUrl": "./../images/becomestars_3.jpg" },
-                            { "name": "요람장례", "price": "600,000원", "desc": "장례 별이되다요람 국화 나무유골함 보자기 사진액자 꽃장식", "longDesc": "편안하게, 마치 신생아가 태어났을 때처럼, 포근하게 있을 수 있도록 자작나무로 자체개발한 요람 장례서비스", "imageUrl": "./../images/becomestars_4.jpg" },
-                            { "name": "천사장례", "price": "800,000원", "desc": "장례 최고급오동나무관 최고급린넨수의 국화 나무유골함 보자기 사진액자 꽃장식", "longDesc": "반려동물 맞춤 화장용 관과 이불 / 수의로 마지막 길을 따뜻하고 편안하게 보내줄 수 있는 장례서비스. 수의의 경우 흰색, 파랑색, 분홍색이 있습니다.", "imageUrl": "./../images/becomestars_5.jpg" },
-                            { "name": "꽃장식", "price": "80,000원", "desc": "베이직장례, 간소화장례 적용 가능", "longDesc": "아이의 마지막을 장식해주는 꽃 (베이직장례, 간소화장례 - 80,000원 추가)", "imageUrl": "./../images/becomestars_6.jpg" }
+                            { "name": "베이직 장례", "price": "250,000원", "desc": "장례 한지이불 국화 나무유골함 보자기", "longDesc": "장례를 위한 꼭 필요한 기본 장례 서비스로, 화장 이후 나무유골함과 보자기가 제공됩니다.", "imageUrl": "./images/becomestars_1.jpg" },
+                            { "name": "별장례", "price": "500,000원", "desc": "베이직장례 인견덮는형 고급면수의 고급오동나무관 국화 나무유골함 보자기 사진액자 꽃장식", "longDesc": "반려동물 맞춤 화장용 관과 이불 / 덮는용 수의로 마지막 길을 따뜻하고 편안하게 보내줄 수 있는 장례서비스. 별장례의 경우 아이가 옷을 입히는 경우해서 총 2가지가 가능합니다.", "imageUrl": "./images/becomestars_3.jpg" },
+                            { "name": "요람장례", "price": "600,000원", "desc": "장례 별이되다요람 국화 나무유골함 보자기 사진액자 꽃장식", "longDesc": "편안하게, 마치 신생아가 태어났을 때처럼, 포근하게 있을 수 있도록 자작나무로 자체개발한 요람 장례서비스", "imageUrl": "./images/becomestars_4.jpg" },
+                            { "name": "천사장례", "price": "800,000원", "desc": "장례 최고급오동나무관 최고급린넨수의 국화 나무유골함 보자기 사진액자 꽃장식", "longDesc": "반려동물 맞춤 화장용 관과 이불 / 수의로 마지막 길을 따뜻하고 편안하게 보내줄 수 있는 장례서비스. 수의의 경우 흰색, 파랑색, 분홍색이 있습니다.", "imageUrl": "./images/becomestars_5.jpg" },
+                            { "name": "꽃장식", "price": "80,000원", "desc": "베이직장례, 간소화장례 적용 가능", "longDesc": "아이의 마지막을 장식해주는 꽃 (베이직장례, 간소화장례 - 80,000원 추가)", "imageUrl": "./images/becomestars_6.jpg" }
                         ]
                     }
                 ],
                 "address": "경남 김해시 생림면 나전로 137번길 31",
-                "imageUrl": "./../images/becomestars_main.jpg"
+                "imageUrl": "./images/becomestars_main.jpg"
             },
             "좋은친구들": {
                 "pricingType": "categorized",
@@ -2280,7 +1681,7 @@
                     }
                 ],
                 "address": "충청남도 공주시 우성면 보흥2길 36-61",
-                "imageUrl": "./../images/goodfriends_main.jpg"
+                "imageUrl": "./images/goodfriends_main.jpg"
             },
             "위드엔젤": {
                 "pricingType": "categorized",
@@ -2294,7 +1695,7 @@
                     }
                 ],
                 "address": "전북특별자치도 전주시 덕진구 쪽구름로 179-11",
-                "imageUrl": "./../images/withangel_main.png"
+                "imageUrl": "./images/withangel_main.png"
             },
             "더포에버": {
                 "pricingType": "categorized",
@@ -2321,7 +1722,7 @@
                     }
                 ],
                 "address": "인천 서구 설원로 79",
-                "imageUrl": "./../images/theforever_main.png"
+                "imageUrl": "./images/theforever_main.png"
             }
         };
 
@@ -2360,9 +1761,8 @@
         }
 
         function getExtendedDetails(item) {
-            // Priority: item (Supabase) > REAL_DATA (Local Fallback)
-            let realInfo = (typeof REAL_DATA !== 'undefined') ? REAL_DATA[item.name] : null;
-            if (!realInfo && typeof REAL_DATA !== 'undefined') {
+            let realInfo = REAL_DATA[item.name];
+            if (!realInfo) {
                 const foundKey = Object.keys(REAL_DATA).find(k => item.name.includes(k));
                 if (foundKey) realInfo = REAL_DATA[foundKey];
             }
@@ -2391,8 +1791,7 @@
             const dynamicRating = (4.5 + seededRandom() * 0.5).toFixed(1);
             const dynamicReviewCount = Math.floor(seededRandom() * 200) + 10;
 
-            // Use Supabase data if available
-            let address = item.address || realInfo?.address;
+            let address = realInfo?.address;
             if (!address) {
                 const region = getRegion(item);
                 const regionMap = {
@@ -2404,21 +1803,18 @@
                 address = `${city} 지역`;
             }
 
-            let prices = item.prices || realInfo?.prices || STANDARD_PRICES;
-            let pricingType = item.pricing_type || realInfo?.pricingType || 'categorized';
-            let imageUrl = item.image_url || realInfo?.imageUrl || null;
-            let phone = item.phone || (typeof PHONE_DATA !== 'undefined' ? PHONE_DATA[item.name] : null) || `0507-${Math.floor(Math.random() * 9000) + 1000}-${Math.floor(Math.random() * 9000) + 1000}`;
-            let description = item.description || realInfo?.description || `${item.name}은(는) 보호자님의 슬픔을 깊이 위로하며, 정성을 다해 반려동물의 마지막 가는 길을 함께합니다.`;
+            let prices = realInfo?.prices || STANDARD_PRICES;
+            let pricingType = realInfo?.pricingType || 'categorized';
+            let imageUrl = realInfo?.imageUrl || null;
 
             return {
                 ...item,
-                isAlliance: item.is_alliance !== undefined ? item.is_alliance : (item.isAlliance || false),
                 rating: realInfo ? dynamicRating : (4.0 + Math.random() * 1.0).toFixed(1),
                 reviewCount: realInfo ? dynamicReviewCount : Math.floor(Math.random() * 50) + 5,
                 address: address,
                 hours: '24시간 연중무휴',
-                phone: phone,
-                description: description,
+                phone: PHONE_DATA[item.name] || `0507-${Math.floor(Math.random() * 9000) + 1000}-${Math.floor(Math.random() * 9000) + 1000}`,
+                description: `${item.name}은(는) 보호자님의 슬픔을 깊이 위로하며, 정성을 다해 반려동물의 마지막 가는 길을 함께합니다.`,
                 facilities: facilities,
                 prices: prices,
                 pricingType: pricingType,
@@ -2557,7 +1953,7 @@
 
             let realInfo = null;
             try {
-                const response = await fetch('../manual_data.json?v=' + Date.now());
+                const response = await fetch('manual_data.json?v=' + Date.now());
                 const manualData = await response.json();
                 realInfo = manualData[details.name];
             } catch (err) {
@@ -2586,42 +1982,42 @@
                         price: "350,000원",
                         desc: "전용 추모실 + 개별 화장 + 장례지도사",
                         longDesc: "가장 기본적인 장례 서비스로, 정기적인 위생 관리와 정성스러운 염습, 개별 화장 서비스가 포함되어 있습니다.",
-                        imageUrl: "https://petforest.co.kr/../images/funeral/funeral-expense-1.jpg"
+                        imageUrl: "https://petforest.co.kr/images/funeral/funeral-expense-1.jpg"
                     },
                     {
                         name: "포레스트 장례",
                         price: "700,000원",
                         desc: "고급 수의 + 고급 오동나무관 + 포레스트 유골함",
                         longDesc: "자연을 닮은 포레스트 시리즈 용품이 포함된 패키지로, 더욱 품격 있는 이별을 준비해 드립니다.",
-                        imageUrl: "https://petforest.co.kr/../images/funeral/funeral-expense-2.jpg"
+                        imageUrl: "https://petforest.co.kr/images/funeral/funeral-expense-2.jpg"
                     },
                     {
                         name: "프리미엄 장례",
                         price: "1,400,000원",
                         desc: "최고급 수의 + 최고급 오동나무관 + 기능성 유골함",
                         longDesc: "펫포레스트의 모든 정성이 담긴 최상위 패키지입니다. 풍성한 꽃다발과 전용 하우징이 제공됩니다.",
-                        imageUrl: "https://petforest.co.kr/../images/funeral/funeral-expense-3.jpg"
+                        imageUrl: "https://petforest.co.kr/images/funeral/funeral-expense-3.jpg"
                     },
                     {
                         name: "스탠다드 루세떼 장례",
                         price: "1,000,000원",
                         desc: "스탠다드 장례 + 루세떼 제작 + 보증서",
                         longDesc: "스탠다드 장례 후 영원히 간직할 수 있는 명품 보석 '루세떼'를 제작해 드리는 패키지입니다.",
-                        imageUrl: "https://petforest.co.kr/../images/funeral/funeral-expense-4.jpg"
+                        imageUrl: "https://petforest.co.kr/images/funeral/funeral-expense-4.jpg"
                     },
                     {
                         name: "포레스트 루세떼 장례",
                         price: "1,350,000원",
                         desc: "포레스트 장례 + 루세떼 제작 + 보증서",
                         longDesc: "가장 인기 있는 조합으로, 정성스러운 장례 용품과 루세떼 제작이 모두 포함되어 있습니다.",
-                        imageUrl: "https://petforest.co.kr/../images/funeral/funeral-expense-5.jpg"
+                        imageUrl: "https://petforest.co.kr/images/funeral/funeral-expense-5.jpg"
                     },
                     {
                         name: "프리미엄 루세떼 장례",
                         price: "1,750,000원",
                         desc: "프리미엄 장례 + 루세떼 제작 + 보증서",
                         longDesc: "최고의 예우와 영원한 기억을 위한 최상위 루세떼 패키지입니다.",
-                        imageUrl: "https://petforest.co.kr/../images/funeral/funeral-expense-6.jpg"
+                        imageUrl: "https://petforest.co.kr/images/funeral/funeral-expense-6.jpg"
                     }
                 ];
             }
@@ -2650,7 +2046,7 @@
 
                     const isFallback = !item.imageUrl;
                     // 반려동물 장례/추모 분위기를 위한 로컬 기본 이미지 파일 (오프라인 브라우저 차단 완벽 회피)
-                    const defaultImg = './../fallback.jpg';
+                    const defaultImg = './fallback.jpg';
                     const imgSrc = item.imageUrl || defaultImg;
                     const card = document.createElement('div');
                     card.className = "mb-8 last:mb-0 border-b border-gray-100 last:border-0 pb-8 last:pb-0";
@@ -2756,489 +2152,4 @@
                 setTimeout(openQuoteModal, 500);
             }
         });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script src="../js/auth.js"></script>
-    <script>
-        // Global reservation handler
-        async function handleReservation(facilityId) {
-            const user = await Auth.getCurrentUser();
-            if (user) {
-                window.location.href = 'reservation.html?id=' + encodeURIComponent(facilityId);
-            } else {
-                alert('예약은 로그인 후 이용 가능합니다.');
-                window.location.href = 'login.html';
-            }
-        }
-
-        // --- Instant Quote Logic ---
-        const quoteModal = document.getElementById('quote-modal');
-        const quoteContent = document.getElementById('quote-modal-content');
-
-        function openQuoteModal() {
-            quoteModal.classList.remove('hidden');
-            setTimeout(() => quoteContent.classList.remove('translate-x-full'), 10);
-        }
-
-        function closeQuoteModal() {
-            quoteContent.classList.add('translate-x-full');
-            setTimeout(() => quoteModal.classList.add('hidden'), 300);
-        }
-
-        document.getElementById('btn-instant-quote').onclick = openQuoteModal;
-
-        function updateEstimatedQuote() {
-            let total = 200000; // Base 5kg
-            const weightArr = document.getElementsByName('quote-weight');
-            let weight = 5;
-            for (let radio of weightArr) {
-                if (radio.checked) {
-                    weight = parseInt(radio.value);
-                    break;
-                }
-            }
-
-            if (weight === 10) total += 50000;
-            if (weight === 20) total += 150000;
-            if (weight === 30) total += 250000;
-
-            if (document.getElementById('opt-shroud').checked) total += 100000;
-            if (document.getElementById('opt-coffin').checked) total += 150000;
-            if (document.getElementById('opt-stone').checked) total += 250000;
-
-            document.getElementById('quote-total').textContent = total.toLocaleString();
-            return total;
-        }
-
-        // Attach event listeners to radios
-        document.querySelectorAll('input[name="quote-weight"]').forEach(r => r.addEventListener('change', updateEstimatedQuote));
-
-        // --- Sync Filters (Sidebar & Modal) ---
-        document.addEventListener('change', (e) => {
-            if (e.target.classList.contains('filter-checkbox') || e.target.id === 'filter-alliance' || e.target.id === 'mobile-filter-alliance') {
-                const isAlliance = e.target.id === 'filter-alliance' || e.target.id === 'mobile-filter-alliance';
-                if (isAlliance) {
-                    const otherId = (e.target.id === 'filter-alliance') ? 'mobile-filter-alliance' : 'filter-alliance';
-                    const other = document.getElementById(otherId);
-                    if (other) other.checked = e.target.checked;
-                } else {
-                    const val = e.target.value;
-                    document.querySelectorAll(`.filter-checkbox[value="${val}"]`).forEach(cb => {
-                        cb.checked = e.target.checked;
-                    });
-                }
-                filterItems();
-            }
-        });
-
-        function applyQuoteFilter() {
-            const region = document.querySelector('input[name="quote-region"]:checked').value;
-            const total = updateEstimatedQuote();
-            const regionName = {
-                'sudogwon': '서울/경기/인천',
-                'chungcheong': '충청/대전/세종',
-                'gyeongsang': '경상/부산/대구',
-                'jeolla': '전라/광주',
-                'gangwon': '강원'
-            }[region] || region;
-
-            // Apply standard filters
-            const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
-            filterCheckboxes.forEach(cb => {
-                cb.checked = (cb.value === region);
-            });
-            
-            // Sync alliance checkboxes
-            const allianceCb = document.getElementById('filter-alliance');
-            const mobileAllianceCb = document.getElementById('mobile-filter-alliance');
-            if(allianceCb) allianceCb.checked = true;
-            if(mobileAllianceCb) mobileAllianceCb.checked = true;
-
-            // Trigger search filter and switch view
-            setTimeout(() => {
-                filterItems();
-                showView('list');
-                closeQuoteModal();
-                setTimeout(() => {
-                    alert(`선택하신 지역(${regionName})에 기반한 추천 결과입니다.`);
-                }, 300);
-            }, 100);
-        }
-
-        if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .catch(err => console.log('SW registration skipped or failed:', err));
-            });
-        } else if (window.location.protocol === 'file:') {
-            console.warn('Onsil: PWA features (Service Worker) are disabled on file:// protocol for security reasons.');
-        }
-
-        // Mobile Nav
-        function toggleMobileNav() {
-            const nav = document.getElementById('mobile-nav');
-            const panel = document.getElementById('mobile-nav-panel');
-            if (nav.classList.contains('hidden')) {
-                nav.classList.remove('hidden');
-                requestAnimationFrame(() => panel.classList.add('mobile-nav-open'));
-                document.body.style.overflow = 'hidden';
-            } else {
-                panel.classList.remove('mobile-nav-open');
-                document.body.style.overflow = '';
-                setTimeout(() => nav.classList.add('hidden'), 300);
-            }
-        }
-    </script>
-    <!-- Secondary Detailed Service Modal (Revamped Multi-Item) -->
-    <div id="service-modal" class="fixed inset-0 z-[200] hidden">
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-md" onclick="closeServiceModal()"></div>
-        <div
-            class="absolute bottom-0 left-0 right-0 max-w-lg mx-auto bg-white rounded-t-[2.5rem] overflow-hidden animate-slideUp flex flex-col max-h-[90vh]">
-            <!-- Header -->
-            <div class="flex items-center justify-between p-6 pb-2">
-                <h3 class="text-xl font-bold text-gray-900">요금 상세 정보</h3>
-                <button onclick="closeServiceModal()"
-                    class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">
-                    <i class="fas fa-times text-lg"></i>
-                </button>
-            </div>
-
-            <!-- Scrollable Content -->
-            <div id="service-modal-list" class="flex-1 overflow-y-auto p-6 pt-2 pb-24 space-y-2">
-                <!-- Service Cards Injected by JS -->
-            </div>
-
-            <!-- Sticky Bottom Button -->
-            <div
-                class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-white via-white/95 to-transparent pb-8">
-                <button onclick="closeServiceModal()"
-                    class="w-full py-4 bg-[#8D7B68] text-white font-bold rounded-2xl shadow-xl shadow-[#8D7B68]/30 transition-all hover:brightness-110 active:scale-[0.98]">
-                    확인했습니다
-                </button>
-            </div>
-        </div>
-    </div>
-    <footer class="bg-brand-cream border-t border-brand/5 py-16 mt-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
-                <div class="col-span-2 md:col-span-2">
-                    <div class="flex items-center gap-2 mb-4">
-                        <img src="./../images/onsil_logo_tr.png" width="32" height="32" class="w-8 h-8 object-contain" alt="The 온실 로고">
-                        <span class="font-bold text-lg text-[#2C3E50]">The 온실</span>
-                    </div>
-                    <p class="text-sm text-[#2C3E50]/40 mb-4 leading-relaxed max-w-sm">
-                        반려동물 장례식장 비교부터 예약까지.<br>어려운 결정에 늘 The 온실이 함께합니다.
-                    </p>
-                    <p class="text-xs text-[#2C3E50]/30">The 온실 | 대표 조영호 | 문의 1551-5052<br>사업자등록번호 : 181-18-02826<br>주소 : 부천시 삼작로 280번길 53-9 행우라폴리움 502호</p>
-                </div>
-                <div>
-                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">서비스</h3>
-                    <ul class="space-y-3 text-sm text-[#2C3E50]/50">
-                        <li><a href="search.html" class="hover:text-[#2C3E50] transition-colors">장례식장 찾기</a></li>
-                        <li><a href="guide.html" class="hover:text-[#2C3E50] transition-colors">이별 가이드</a></li>
-                        <li><a href="self-diagnosis.html" class="hover:text-[#2C3E50] transition-colors">건강자가진단</a></li>
-                        <li><a href="memory.html" class="hover:text-[#2C3E50] transition-colors">추억 가이드</a></li>
-                        <li><a href="community.html" class="hover:text-[#2C3E50] transition-colors">커뮤니티</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-bold text-sm text-[#2C3E50] mb-4">고객지원</h3>
-                    <ul class="space-y-3 text-sm text-[#2C3E50]/50">
-                        <li><a href="contact.html" class="hover:text-[#2C3E50] transition-colors">문의하기</a></li>
-                        <li><a href="partnership.html"
-                                class="hover:text-[#2C3E50] transition-colors font-bold text-[#D4A574]">제휴문의</a></li>
-                        <li><a href="terms.html" class="hover:text-[#2C3E50] transition-colors">이용약관</a></li>
-                        <li><a href="privacy.html" class="hover:text-[#2C3E50] transition-colors">개인정보처리방침</a></li>
-                        <li class="pt-2 border-t border-[#2C3E50]/5"><a href="partner-login.html" class="text-xs font-bold text-gray-400 hover:text-partner transition-colors"><i class="fas fa-lock text-[10px] mr-1"></i> 업체 로그인</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div
-                class="border-t border-[#2C3E50]/5 mt-10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-                <p class="text-xs text-[#2C3E50]/30">&copy; 2026 The 온실. All rights reserved.</p>
-                <div class="flex gap-4">
-                    <a href="#"
-                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
-                        <i class="fab fa-instagram text-sm"></i>
-                    </a>
-                    <a href="#"
-                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
-                        <i class="fab fa-youtube text-sm"></i>
-                    </a>
-                    <a href="#"
-                        class="w-9 h-9 bg-[#2C3E50]/5 rounded-full flex items-center justify-center text-[#2C3E50]/30 hover:text-[#2C3E50] hover:bg-[#2C3E50]/10 transition-all font-sans">
-                        <i class="fas fa-comment text-sm"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Mobile Navigation Overlay -->
-    <!-- Mobile Navigation Overlay -->
-    <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
-        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
-            id="mobile-nav-panel">
-            <div class="p-6 h-full flex flex-col pt-safe">
-                <div class="flex justify-between items-center mb-8">
-                    <span class="font-bold text-lg text-brand">메뉴</span>
-                    <button onclick="toggleMobileNav()"
-                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
-                        <i class="fas fa-times text-gray-500"></i>
-                    </button>
-                </div>
-                <nav class="space-y-1 flex-1">
-                    <a href="search.html?quote=true"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all bg-brand-cream text-brand font-bold mb-4 hover:shadow-md">
-                        <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
-                        <span>바로 견적받기</span>
-                    </a>
-                    <a href="search.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-brand/5 text-brand font-bold transition-colors">
-                        <i class="fas fa-search w-5 text-center"></i>
-                        <span>장례식장 찾기</span>
-                    </a>
-                    <a href="guide.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-book-open w-5 text-center"></i>
-                        <span>이별 가이드</span>
-                    </a>
-                    <a href="self-diagnosis.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-stethoscope w-5 text-center"></i>
-                        <span>건강자가진단</span>
-                    </a>
-                    <a href="memory.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-heart w-5 text-center"></i>
-                        <span>추억 가이드</span>
-                    </a>
-                    <a href="community.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-comments w-5 text-center"></i>
-                        <span>커뮤니티</span>
-                    </a>
-                </nav>
-                <!-- Mobile Bottom Actions -->
-                <div class="pt-6 border-t border-brand/5 space-y-3">
-                    <button
-                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
-                        class="w-full bg-brand-sage text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-sage/90 transition-colors">
-                        <i class="fas fa-calendar-check text-sm"></i> 예약하기
-                    </button>
-                    <a href="tel:1551-5052"
-                        class="w-full bg-brand-warm text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2 hover:bg-brand-warmDark transition-colors">
-                        <i class="fas fa-phone-alt text-sm"></i> 1551-5052 상담원 연결
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Scripts -->
-    <!-- Mobile Filter Drawer -->
-    <div id="filter-modal" class="fixed inset-0 z-[110] hidden">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeFilterModal()"></div>
-        <div class="absolute inset-y-0 right-0 w-full md:w-[450px] bg-white shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300"
-            id="filter-modal-content">
-            <div class="p-6 border-b flex justify-between items-center bg-gray-50 flex-shrink-0">
-                <h2 class="text-xl font-bold text-[#8D7B68]">필터 설정</h2>
-                <button onclick="closeFilterModal()" class="text-gray-400 hover:text-gray-600 w-10 h-10 flex items-center justify-center">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            
-            <div class="flex-1 overflow-y-auto p-6 space-y-8">
-                <!-- Alliance Filter -->
-                <div class="p-4 bg-[#8D7B68]/5 rounded-xl border border-[#8D7B68]/10">
-                    <label class="flex items-center gap-3 cursor-pointer group">
-                        <input type="checkbox" id="mobile-filter-alliance"
-                            class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
-                        <span class="text-sm font-bold text-[#8D7B68]">온실 제휴 업체만 보기</span>
-                    </label>
-                </div>
-
-                <!-- Region Filter -->
-                <div>
-                    <h3 class="font-bold text-sm text-gray-400 mb-4 uppercase tracking-wider">지역 선택</h3>
-                    <div class="grid grid-cols-1 gap-3">
-                        <label class="flex items-center gap-4 cursor-pointer p-3 border rounded-xl hover:bg-gray-50">
-                            <input type="checkbox" value="sudogwon" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68]">
-                            <span class="text-sm font-medium text-gray-700">서울 / 경기 / 인천</span>
-                        </label>
-                        <label class="flex items-center gap-4 cursor-pointer p-3 border rounded-xl hover:bg-gray-50">
-                            <input type="checkbox" value="chungcheong" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68]">
-                            <span class="text-sm font-medium text-gray-700">충청 / 대전 / 세종</span>
-                        </label>
-                        <label class="flex items-center gap-4 cursor-pointer p-3 border rounded-xl hover:bg-gray-50">
-                            <input type="checkbox" value="gyeongsang" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68]">
-                            <span class="text-sm font-medium text-gray-700">경상 / 부산 / 대구</span>
-                        </label>
-                        <label class="flex items-center gap-4 cursor-pointer p-3 border rounded-xl hover:bg-gray-50">
-                            <input type="checkbox" value="jeolla" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68]">
-                            <span class="text-sm font-medium text-gray-700">전라 / 광주</span>
-                        </label>
-                        <label class="flex items-center gap-4 cursor-pointer p-3 border rounded-xl hover:bg-gray-50">
-                            <input type="checkbox" value="gangwon" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68]">
-                            <span class="text-sm font-medium text-gray-700">강원</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Facility Filter -->
-                <div>
-                    <h3 class="font-bold text-sm text-gray-400 mb-4 uppercase tracking-wider">보유 시설</h3>
-                    <div class="grid grid-cols-1 gap-3">
-                        <label class="flex items-center gap-4 cursor-pointer p-3 border rounded-xl hover:bg-gray-50">
-                            <input type="checkbox" value="memorial" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68]">
-                            <span class="text-sm font-medium text-gray-700">개별추모실</span>
-                        </label>
-                        <label class="flex items-center gap-4 cursor-pointer p-3 border rounded-xl hover:bg-gray-50">
-                            <input type="checkbox" value="ossuary" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68]">
-                            <span class="text-sm font-medium text-gray-700">납골당</span>
-                        </label>
-                        <label class="flex items-center gap-4 cursor-pointer p-3 border rounded-xl hover:bg-gray-50">
-                            <input type="checkbox" value="burial" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68]">
-                            <span class="text-sm font-medium text-gray-700">수목장</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer -->
-            <div class="p-6 bg-white border-t flex gap-3 flex-shrink-0">
-                <button onclick="document.querySelectorAll('.filter-checkbox').forEach(cb => cb.checked = false); filterItems();"
-                    class="flex-1 py-4 border border-gray-200 rounded-2xl font-bold text-gray-500 hover:bg-gray-50">
-                    초기화
-                </button>
-                <button onclick="closeFilterModal()"
-                    class="flex-[2] py-4 bg-[#8D7B68] text-white rounded-2xl font-bold shadow-lg">
-                    결과 보기
-                </button>
-            </div>
-        </div>
-    <!-- Naver Maps API: ncpKeyId=5tiwbscjvi -->
-    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=5tiwbscjvi"></script>
-    <script src="../js/pwa.js"></script>
-    <script>
-        function toggleMobileNav() {
-            const nav = document.getElementById('mobile-nav');
-            const panel = document.getElementById('mobile-nav-panel');
-            if (nav.classList.contains('hidden')) {
-                nav.classList.remove('hidden');
-                setTimeout(() => panel.classList.remove('translate-x-full'), 10);
-            } else {
-                panel.classList.add('translate-x-full');
-                setTimeout(() => nav.classList.add('hidden'), 300);
-            }
-        }
-
-        function openFilterModal() {
-            const modal = document.getElementById('filter-modal');
-            const content = document.getElementById('filter-modal-content');
-            modal.classList.remove('hidden');
-            setTimeout(() => content.classList.remove('translate-x-full'), 10);
-        }
-
-        function closeFilterModal() {
-            const modal = document.getElementById('filter-modal');
-            const content = document.getElementById('filter-modal-content');
-            content.classList.add('translate-x-full');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        }
-    </script>
-    <!-- Filter Modal (Mobile Only) -->
-    <div id="filter-modal" class="fixed inset-0 z-[150] hidden">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeFilterModal()"></div>
-        <div id="filter-modal-content" class="absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-white shadow-2xl flex flex-col translate-x-full transition-transform duration-300">
-            <div class="flex items-center justify-between p-5 border-b">
-                <h3 class="text-lg font-bold text-[#8D7B68]">필터 설정</h3>
-                <button onclick="closeFilterModal()" class="text-gray-400 hover:text-gray-600">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            
-            <div class="flex-1 overflow-y-auto p-5 space-y-8">
-                <!-- Alliance Filter -->
-                <div class="p-4 bg-[#8D7B68]/5 rounded-xl border border-[#8D7B68]/10">
-                    <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" id="mobile-filter-alliance" class="w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                        <span class="text-sm font-bold text-[#8D7B68]">온실 제휴 업체만 보기</span>
-                    </label>
-                </div>
-
-                <!-- Region Filter -->
-                <div>
-                    <h4 class="font-bold text-sm mb-4 text-gray-400">지역 선택</h4>
-                    <div class="grid grid-cols-1 gap-3">
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                            <input type="checkbox" value="sudogwon" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                            <span class="text-gray-700 text-sm">서울 / 경기 / 인천</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                            <input type="checkbox" value="chungcheong" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                            <span class="text-gray-700 text-sm">충청 / 대전 / 세종</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                            <input type="checkbox" value="gyeongsang" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                            <span class="text-gray-700 text-sm">경상 / 부산 / 대구</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                            <input type="checkbox" value="jeolla" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                            <span class="text-gray-700 text-sm">전라 / 광주</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                            <input type="checkbox" value="gangwon" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                            <span class="text-gray-700 text-sm">강원</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Facility Filter -->
-                <div>
-                    <h4 class="font-bold text-sm mb-4 text-gray-400">보유 시설</h4>
-                    <div class="grid grid-cols-1 gap-3">
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                            <input type="checkbox" value="memorial" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                            <span class="text-gray-700 text-sm">개별추모실</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                            <input type="checkbox" value="ossuary" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                            <span class="text-gray-700 text-sm">납골당</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                            <input type="checkbox" value="burial" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                            <span class="text-gray-700 text-sm">수목장</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-5 border-t bg-gray-50 flex gap-3">
-                <button onclick="document.querySelectorAll('.filter-checkbox').forEach(cb => cb.checked = false); filterItems();" class="flex-1 py-4 text-gray-500 font-bold border border-gray-200 rounded-2xl bg-white transition-all active:scale-[0.98]">초기화</button>
-                <button onclick="closeFilterModal()" class="flex-[2] py-4 bg-[#8D7B68] text-white font-bold rounded-2xl shadow-lg shadow-[#8D7B68]/30 transition-all active:scale-[0.98]">결과 보기</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function openFilterModal() {
-            const modal = document.getElementById('filter-modal');
-            const content = document.getElementById('filter-modal-content');
-            modal.classList.remove('hidden');
-            setTimeout(() => content.classList.remove('translate-x-full'), 10);
-            document.body.style.overflow = 'hidden';
-        }
-        function closeFilterModal() {
-            const modal = document.getElementById('filter-modal');
-            const content = document.getElementById('filter-modal-content');
-            content.classList.add('translate-x-full');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.body.style.overflow = '';
-            }, 300);
-        }
-    </script>
-    <script src="../js/channel-talk.js"></script>
-</body>
-
-</html>
+    
