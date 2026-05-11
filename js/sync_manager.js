@@ -19,12 +19,22 @@ const SyncManager = {
      */
     getMissingHomes: async () => {
         try {
+            console.log('[SyncManager] Fetching DB homes...');
             const dbHomes = await Auth.getAllFuneralHomes();
-            const dbNames = new Set(dbHomes.map(h => h.name));
+            console.log(`[SyncManager] Found ${dbHomes ? dbHomes.length : 0} homes in DB`);
             
-            return LOCAL_MASTER_DATA.filter(h => !dbNames.has(h.name));
+            if (!Array.isArray(dbHomes)) {
+                console.error('[SyncManager] dbHomes is not an array:', dbHomes);
+                return [];
+            }
+
+            const dbNames = new Set(dbHomes.map(h => h.name));
+            const missing = LOCAL_MASTER_DATA.filter(h => !dbNames.has(h.name));
+            
+            console.log(`[SyncManager] Missing homes: ${missing.length}`, missing);
+            return missing;
         } catch (err) {
-            console.error('SyncManager Error:', err);
+            console.error('[SyncManager] getMissingHomes Error:', err);
             return [];
         }
     },
@@ -34,9 +44,16 @@ const SyncManager = {
      */
     syncHome: async (home) => {
         try {
+            console.log(`[SyncManager] Syncing home: ${home.name}`);
             const res = await Auth.createFuneralHome(home);
+            if (res.success) {
+                console.log(`[SyncManager] Successfully synced: ${home.name}`);
+            } else {
+                console.error(`[SyncManager] Failed to sync ${home.name}:`, res.message);
+            }
             return res;
         } catch (err) {
+            console.error(`[SyncManager] syncHome Crash: ${home.name}`, err);
             return { success: false, message: err.message };
         }
     },
@@ -45,9 +62,15 @@ const SyncManager = {
      * Bulk sync all missing homes
      */
     syncAllMissing: async () => {
+        console.log('[SyncManager] Starting bulk sync...');
         const missing = await SyncManager.getMissingHomes();
         const results = { success: [], failed: [] };
         
+        if (missing.length === 0) {
+            console.log('[SyncManager] Nothing to sync.');
+            return results;
+        }
+
         for (const home of missing) {
             const res = await SyncManager.syncHome(home);
             if (res.success) {

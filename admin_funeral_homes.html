@@ -355,20 +355,28 @@
 
         // Sync Check Function
         async function checkSyncStatus() {
-            const missingHomes = await SyncManager.getMissingHomes();
-            
-            if (missingHomes.length === 0) {
-                alert('모든 로컬 데이터가 이미 DB에 동기화되어 있습니다.');
-                return;
-            }
+            try {
+                console.log('Checking sync status...');
+                const missing = await SyncManager.getMissingHomes();
+                
+                if (missing.length === 0) {
+                    alert('모든 로컬 데이터가 이미 DB에 동기화되어 있습니다.');
+                    return;
+                }
 
-            const confirmSync = confirm(`${missingHomes.length}개의 새로운 장례식장 데이터(스냅플러그 등)가 발견되었습니다. DB로 동기화할까요?`);
-            
-            if (confirmSync) {
-                const results = await SyncManager.syncAll(missingHomes);
-                const successCount = results.filter(r => r.success).length;
-                alert(`${successCount}개의 장례식장이 성공적으로 동기화되었습니다.`);
-                loadFuneralHomes();
+                const confirmSync = confirm(`${missing.length}개의 새로운 장례식장 데이터(스냅플러그 등)가 발견되었습니다. DB로 동기화할까요?`);
+                
+                if (confirmSync) {
+                    const results = await SyncManager.syncAllMissing();
+                    alert(`동기화 완료!\n성공: ${results.success.length}건\n실패: ${results.failed.length}건`);
+                    if (results.failed.length > 0) {
+                        console.error('Sync Failures:', results.failed);
+                    }
+                    loadFuneralHomes();
+                }
+            } catch (err) {
+                console.error('Sync Error:', err);
+                alert('동기화 중 오류가 발생했습니다: ' + err.message);
             }
         }
 
