@@ -23,7 +23,11 @@ function getSupabase() {
         return null;
     }
 
-    _supabaseInstance = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    _supabaseInstance = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+        db: {
+            schema: 'public'
+        }
+    });
     return _supabaseInstance;
 }
 
