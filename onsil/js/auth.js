@@ -23,7 +23,11 @@ function getSupabase() {
         return null;
     }
 
-    _supabaseInstance = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    _supabaseInstance = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+        db: {
+            schema: 'public'
+        }
+    });
     return _supabaseInstance;
 }
 
@@ -127,11 +131,23 @@ const Auth = {
      */
     getCurrentUser: async () => {
         try {
+            console.log('Fetching current user...');
             const client = getSupabase();
-            if (!client) return null;
+            if (!client) {
+                console.error('Supabase client not available');
+                return null;
+            }
 
-            const { data: { user } } = await client.auth.getUser();
-            if (!user) return null;
+            const { data: { user }, error: authError } = await client.auth.getUser();
+            if (authError) {
+                console.warn('Auth getUser error:', authError);
+                return null;
+            }
+            if (!user) {
+                console.log('No user session found');
+                return null;
+            }
+            console.log('User found:', user.email);
 
             let profile = null;
             try {

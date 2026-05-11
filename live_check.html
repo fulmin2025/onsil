@@ -184,23 +184,14 @@
         window.addEventListener("DOMContentLoaded", checkAdmin);
 
         async function checkAdmin() {
-            console.log('Admin Page (Onsil): Checking admin permissions...');
-            try {
-                const user = await Auth.getCurrentUser();
-                console.log('Admin Page (Onsil): User check result:', user ? user.email : 'No user');
-                const adminEmails = ["fulmin@nate.com","theonsil@gmail.com","admin@theonsil.co.kr","theonsilofficial@gmail.com","admin@onsil.com"];
-                if (!user || (user.role !== "admin" && !adminEmails.includes(user.email))) {
-                    console.warn('Admin Page (Onsil): Access denied');
-                    alert("관리자 권한이 필요합니다.");
-                    location.href = "partner-login.html";
-                    return;
-                }
-                console.log('Admin Page (Onsil): Admin confirmed, loading data...');
-                loadFuneralHomes();
-            } catch (err) {
-                console.error('Admin Page (Onsil): checkAdmin error:', err);
-                alert("인증 확인 중 오류가 발생했습니다: " + err.message);
+            const user = await Auth.getCurrentUser();
+            const adminEmails = ["fulmin@nate.com","theonsil@gmail.com","admin@theonsil.co.kr","theonsilofficial@gmail.com","admin@onsil.com"];
+            if (!user || (user.role !== "admin" && !adminEmails.includes(user.email))) {
+                alert("관리자 권한이 필요합니다.");
+                location.href = "partner-login.html";
+                return;
             }
+            loadFuneralHomes();
         }
 
         async function loadFuneralHomes() {
@@ -210,48 +201,37 @@
 
         function renderTable(items) {
             const container = document.getElementById("home-list");
-            try {
-                if (!items || items.length === 0) {
-                    container.innerHTML = '<tr><td colspan="3" class="px-8 py-20 text-center text-gray-400">등록된 데이터가 없습니다.</td></tr>';
-                    return;
-                }
-                container.innerHTML = items.map(h => {
-                    try {
-                        const name = h.name || '이름 없음';
-                        const safeName = name.replace(/'/g, "\\'");
-                        return '<tr class="hover:bg-gray-50/50 transition-colors group">' +
-                            '<td class="px-8 py-6">' +
-                                '<div class="flex items-center gap-3">' +
-                                    '<div class="w-10 h-10 rounded-xl ' + (h.is_alliance ? 'bg-amber-50 text-amber-600' : 'bg-gray-100 text-gray-400') + ' flex items-center justify-center">' +
-                                        '<i class="fas fa-home text-lg"></i>' +
-                                    '</div>' +
-                                    '<div>' +
-                                        '<div class="flex items-center gap-2">' +
-                                            '<span class="font-bold text-gray-900">' + name + '</span>' +
-                                            (h.is_alliance ? '<span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 text-[9px] font-black rounded">제휴</span>' : '') +
-                                            (h.is_24h ? '<span class="px-1.5 py-0.5 bg-blue-100 text-blue-600 text-[9px] font-black rounded">24H</span>' : '') +
-                                        '</div>' +
-                                        '<span class="text-xs text-gray-400">' + (h.region || '-') + '</span>' +
-                                    '</div>' +
-                                '</div>' +
-                            '</td>' +
-                            '<td class="px-8 py-6"><span class="text-sm text-gray-500">' + (h.address || '-') + '</span></td>' +
-                            '<td class="px-8 py-6 text-right">' +
-                                '<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">' +
-                                    '<button onclick="editItem(\'' + h.id + '\')" class="w-9 h-9 rounded-lg bg-gray-50 text-gray-400 hover:bg-partner hover:text-white transition-all flex items-center justify-center"><i class="fas fa-edit text-xs"></i></button>' +
-                                    '<button onclick="deleteHome(\'' + h.id + '\', \'' + safeName + '\')" class="w-9 h-9 rounded-lg bg-gray-50 text-gray-400 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center"><i class="fas fa-trash-alt text-xs"></i></button>' +
-                                '</div>' +
-                            '</td>' +
-                        '</tr>';
-                    } catch (itemErr) {
-                        console.error('Item rendering error:', itemErr, h);
-                        return '';
-                    }
-                }).join('');
-            } catch (err) {
-                console.error('Table rendering error:', err);
-                container.innerHTML = '<tr><td colspan="3" class="px-8 py-20 text-center text-red-500">데이터를 표시하는 중 오류가 발생했습니다.</td></tr>';
+            if (!items || items.length === 0) {
+                container.innerHTML = '<tr><td colspan="3" class="px-8 py-20 text-center text-gray-400">등록된 데이터가 없습니다.</td></tr>';
+                return;
             }
+            container.innerHTML = items.map(h => {
+                const dataStr = JSON.stringify(h).replace(/"/g, '&quot;');
+                return '<tr class="hover:bg-gray-50/50 transition-colors group">' +
+                    '<td class="px-8 py-6">' +
+                        '<div class="flex items-center gap-3">' +
+                            '<div class="w-10 h-10 rounded-xl ' + (h.is_alliance ? 'bg-amber-50 text-amber-600' : 'bg-gray-100 text-gray-400') + ' flex items-center justify-center">' +
+                                '<i class="fas fa-home text-lg"></i>' +
+                            '</div>' +
+                            '<div>' +
+                                '<div class="flex items-center gap-2">' +
+                                    '<span class="font-bold text-gray-900">' + h.name + '</span>' +
+                                    (h.is_alliance ? '<span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 text-[9px] font-black rounded">제휴</span>' : '') +
+                                    (h.is_24h ? '<span class="px-1.5 py-0.5 bg-blue-100 text-blue-600 text-[9px] font-black rounded">24H</span>' : '') +
+                                '</div>' +
+                                '<span class="text-xs text-gray-400">' + (h.region || '-') + '</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</td>' +
+                    '<td class="px-8 py-6"><span class="text-sm text-gray-500">' + (h.address || '-') + '</span></td>' +
+                    '<td class="px-8 py-6 text-right">' +
+                        '<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">' +
+                            '<button onclick="editItem(\'' + h.id + '\')" class="w-9 h-9 rounded-lg bg-gray-50 text-gray-400 hover:bg-partner hover:text-white transition-all flex items-center justify-center"><i class="fas fa-edit text-xs"></i></button>' +
+                            '<button onclick="deleteHome(\'' + h.id + '\', \'' + h.name.replace(/'/g, "\\'") + '\')" class="w-9 h-9 rounded-lg bg-gray-50 text-gray-400 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center"><i class="fas fa-trash-alt text-xs"></i></button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
         }
 
         function editItem(id) {

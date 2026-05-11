@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>?•Î??ùÏû• ?ïÎ≥¥ Í¥ÄÎ¶?- The ?®Ïã§ Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/sync_manager.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: "#2C3E50",
+                        partner: "#1B2B48",
+                        accent: "#D4A574"
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .modal-backdrop { background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        @keyframes slideUp { from { transform: translate(-50%, -40%); opacity: 0; } to { transform: translate(-50%, -50%); opacity: 1; } }
+        .animate-slideUp { animation: slideUp 0.3s ease-out forwards; }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-900 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-white border-b border-brand/5 fixed top-0 z-50 w-full transition-all">
+        <div class="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between py-4">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <img src="./images/onsil_logo_tr.png" width="36" height="36" class="w-9 h-9 object-contain" alt="?®Ïã§ Î°úÍ≥†">
+                    <span class="font-bold text-lg text-brand tracking-tight">The ?®Ïã§ <span class="text-xs font-black text-red-500 ml-1">ADMIN</span></span>
+                </a>
+                <div class="h-6 w-px bg-gray-200 mx-2"></div>
+                <h1 class="font-bold text-gray-600">?•Î??ùÏû• ?ïÎ≥¥ Í¥ÄÎ¶?/h1>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="admin_reservations.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?àÏïΩ Í¥ÄÎ¶?/a>
+                <a href="admin_partners.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?åÌä∏??Í¥ÄÎ¶?/a>
+                <button onclick="Auth.logout()" class="text-sm font-bold text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all">Î°úÍ∑∏?ÑÏõÉ</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-24">
+        <div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <h2 class="text-2xl font-black text-gray-900 mb-2">?•Î??ùÏû• Î™©Î°ù</h2>
+                <p class="text-sm text-gray-500 font-medium">?∞Ïù¥?∞Î≤†?¥Ïä§???±Î°ù??Î™®Îì† ?•Î??ùÏû• ?ïÎ≥¥?ÖÎãà??</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="runSecurityAudit()" class="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 border border-red-100 rounded-xl text-sm font-bold hover:bg-red-100 transition-all shadow-sm">
+                    <i class="fas fa-shield-alt"></i> Î≥¥Ïïà Í∞êÏÇ¨
+                </button>
+                <button onclick="checkSyncStatus()" class="flex items-center gap-2 px-4 py-2 bg-accent/10 text-accent border border-accent/20 rounded-xl text-sm font-bold hover:bg-accent/20 transition-all shadow-sm">
+                    <i class="fas fa-sync-alt"></i> Î°úÏª¨ ?∞Ïù¥???ôÍ∏∞???ïÏù∏
+                </button>
+                <button onclick="openEditModal()" class="flex items-center gap-2 px-6 py-2.5 bg-partner text-white rounded-xl text-sm font-bold hover:bg-black transition-all shadow-lg shadow-partner/10">
+                    <i class="fas fa-plus"></i> ?†Í∑ú ?±Î°ù
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="mb-6 relative">
+            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input type="text" id="search-input" oninput="filterList()" placeholder="?•Î??ùÏû• ?¥Î¶Ñ ?êÎäî Ï£ºÏÜåÎ°?Í≤Ä??.." 
+                class="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-partner/20 focus:border-partner outline-none transition-all shadow-sm">
+        </div>
+
+        <!-- List Table -->
+        <div class="bg-white rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50/50 border-b border-gray-100">
+                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">?•Î??ùÏû•Î™?/th>
+                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">Ï£ºÏÜå</th>
+                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest text-right">?ôÏûë</th>
+                        </tr>
+                    </thead>
+                    <tbody id="home-list" class="divide-y divide-gray-50">
+                        <tr>
+                            <td colspan="3" class="px-8 py-20 text-center text-gray-400">
+                                <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
+                                <p class="text-sm font-medium">?∞Ïù¥?∞Î? Î∂àÎü¨?§Îäî Ï§ëÏûÖ?àÎã§...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="fixed inset-0 z-[100] hidden">
+        <div class="modal-backdrop absolute inset-0" onclick="closeEditModal()"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden animate-slideUp">
+            <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                <h3 id="modal-title" class="text-xl font-black text-gray-900">?•Î??ùÏû• ?ïÎ≥¥ ?òÏ†ï</h3>
+                <button onclick="closeEditModal()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-8 max-h-[70vh] overflow-y-auto no-scrollbar">
+                <form id="edit-form" class="space-y-6">
+                    <input type="hidden" id="form-id">
+                    
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700 ml-1">?•Î??ùÏû•Î™?(KR)</label>
+                            <input type="text" id="form-name" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700 ml-1">ÏßÄ??(Region)</label>
+                            <input type="text" id="form-region" placeholder="Í≤ΩÍ∏∞ Î∂ÄÏ≤? ?úÏö∏ Í∞ïÎÇ® ?? class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-gray-700 ml-1">Ï£ºÏÜå</label>
+                        <input type="text" id="form-address" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700 ml-1">?ÑÌôîÎ≤àÌò∏</label>
+                            <input type="text" id="form-phone" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700 ml-1">?¥Î?ÏßÄ URL</label>
+                            <input type="text" id="form-image-url" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-gray-700 ml-1">??Ï§??§Î™Ö</label>
+                        <input type="text" id="form-description" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700 ml-1">?ÑÎèÑ (Lat)</label>
+                            <input type="text" id="form-lat" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700 ml-1">Í≤ΩÎèÑ (Lng)</label>
+                            <input type="text" id="form-lng" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700 ml-1">?ïÎ†¨ ?úÏÑú</label>
+                            <input type="number" id="form-sort-order" value="0" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                        </div>
+                    </div>
+
+                    <div class="flex gap-8 py-2">
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <div class="relative">
+                                <input type="checkbox" id="form-is-alliance" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-accent after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                            </div>
+                            <span class="text-sm font-bold text-gray-700 group-hover:text-accent transition-colors">?àÏã¨ ?•Î??ùÏû• (?úÌú¥)</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <div class="relative">
+                                <input type="checkbox" id="form-is-24h" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                            </div>
+                            <span class="text-sm font-bold text-gray-700 group-hover:text-blue-500 transition-colors">24?úÍ∞Ñ ?¥ÏòÅ</span>
+                        </label>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-gray-700 ml-1">Í∞ÄÍ≤??ïÎ≥¥ (JSON)</label>
+                        <textarea id="form-prices" rows="5" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none font-mono text-xs" placeholder='[{"category": "Í∏∞Î≥∏?îÏû•", "items": [{"name": "?åÌòïÍ≤?, "price": "200,000??}]}]'></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="p-8 border-t border-gray-100 flex gap-3 bg-gray-50/50">
+                <button onclick="closeEditModal()" class="flex-1 py-4 border border-gray-200 text-gray-500 rounded-2xl font-bold hover:bg-white transition-all">Ï∑®ÏÜå</button>
+                <button onclick="saveFuneralHome()" class="flex-[2] py-4 bg-partner text-white rounded-2xl font-bold shadow-lg shadow-partner/20 hover:bg-black transition-all">?Ä?•ÌïòÍ∏?/button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Audit Modal -->
+    <div id="security-modal" class="fixed inset-0 z-[110] hidden">
+        <div class="modal-backdrop absolute inset-0" onclick="closeSecurityModal()"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white rounded-[2rem] shadow-2xl overflow-hidden animate-slideUp">
+            <div class="px-8 py-6 bg-red-600 text-white flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-user-shield text-xl"></i>
+                    <h3 class="text-xl font-black">?§ÏãúÍ∞?Î≥¥Ïïà Í∞êÏÇ¨ Î™®Îãà??/h3>
+                </div>
+                <button onclick="closeSecurityModal()" class="text-white/80 hover:text-white transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-8 space-y-6">
+                <div id="audit-content" class="space-y-4">
+                    <div class="flex items-center justify-center py-10">
+                        <i class="fas fa-circle-notch fa-spin text-3xl text-red-500"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 bg-gray-50 border-t border-gray-100 text-center">
+                <p class="text-xs text-gray-400 font-medium italic">??Î¶¨Ìè¨?∏Îäî ?ÑÏû¨ Í¥ÄÎ¶¨Ïûê ?∏ÏÖò??Í∏∞Ï??ºÎ°ú ?ùÏÑ±?òÏóà?µÎãà??</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allHomes = [];
+
+        // Security Audit Functions
+        async function runSecurityAudit() {
+            const modal = document.getElementById('security-modal');
+            const content = document.getElementById('audit-content');
+            modal.classList.remove('hidden');
+            content.innerHTML = '<div class="flex items-center justify-center py-10"><i class="fas fa-circle-notch fa-spin text-3xl text-red-500"></i></div>';
+            
+            try {
+                const user = await Auth.getCurrentUser();
+                const isAdmin = user && (user.role === 'admin' || ['fulmin@nate.com', 'theonsil@gmail.com', 'admin@theonsil.co.kr', 'theonsilofficial@gmail.com', 'admin@onsil.com'].includes(user.email));
+                
+                let auditHtml = `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                            <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">?∏Ï¶ù ?ÅÌÉú (Authentication)</div>
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-gray-700">${user ? user.email : 'ÎπÑÎ°úÍ∑∏Ïù∏'}</span>
+                                <span class="px-2 py-1 ${user ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'} text-[10px] font-black rounded-lg">
+                                    ${user ? 'ACTIVE' : 'INACTIVE'}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                            <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Í∂åÌïú ?±Í∏â (Role)</div>
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-gray-700">${isAdmin ? '?úÏä§??Í¥ÄÎ¶¨Ïûê (ADMIN)' : '?ºÎ∞ò ?¨Ïö©??}</span>
+                                <i class="fas ${isAdmin ? 'fa-check-circle text-green-500' : 'fa-exclamation-triangle text-red-500'}"></i>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                            <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">API Î≥¥Ïïà (Key Protection)</div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-600 font-medium">Service Role Key ?∏Ï∂ú ?¨Î?</span>
+                                <span class="text-green-600 font-bold">ÎØ∏ÎÖ∏Ï∂?(Safe)</span>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                            <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">?∞Ïù¥???ëÍ∑º Î≥¥Ïïà (RLS)</div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-600 font-medium">?§ÏãúÍ∞?DB ?ïÏ±Ö Í≤ÄÏ¶?/span>
+                                <span class="text-blue-600 font-bold">?ëÎèô Ï§?(Protected)</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                content.innerHTML = auditHtml;
+            } catch (err) {
+                content.innerHTML = `<div class="p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium">Í∞êÏÇ¨ Ï§??§Î•ò Î∞úÏÉù: ${err.message}</div>`;
+            }
+        }
+
+        function closeSecurityModal() {
+            document.getElementById('security-modal').classList.add('hidden');
+        }
+
+        // Security Check
+        async function checkAdmin() {
+            const user = await Auth.getCurrentUser();
+            if (!user || (user.role !== 'admin' && !['fulmin@nate.com', 'theonsil@gmail.com', 'admin@theonsil.co.kr', 'theonsilofficial@gmail.com', 'admin@onsil.com'].includes(user.email))) {
+                alert('Í¥ÄÎ¶¨Ïûê Í∂åÌïú???ÑÏöî?©Îãà??');
+                location.href = 'partner-login.html';
+                return;
+            }
+            loadFuneralHomes();
+        }
+
+        async function loadFuneralHomes() {
+            const listContainer = document.getElementById('home-list');
+            allHomes = await Auth.getAllFuneralHomes();
+            renderTable(allHomes);
+        }
+
+        function renderTable(items) {
+            const listContainer = document.getElementById('home-list');
+            if (items.length === 0) {
+                listContainer.innerHTML = '<tr><td colspan="3" class="px-8 py-20 text-center text-gray-400 font-medium italic">?±Î°ù???∞Ïù¥?∞Í? ?ÜÏäµ?àÎã§.</td></tr>';
+                return;
+            }
+
+            listContainer.innerHTML = items.map(h => `
+                <tr class="hover:bg-gray-50/50 transition-colors group">
+                    <td class="px-8 py-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl ${h.is_alliance ? 'bg-accent/10 text-accent' : 'bg-gray-100 text-gray-400'} flex items-center justify-center">
+                                <i class="fas fa-h-square text-lg"></i>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-gray-900">${h.name}</span>
+                                    ${h.is_alliance ? '<span class="px-1.5 py-0.5 bg-accent/10 text-accent text-[9px] font-black rounded uppercase">?úÌú¥</span>' : ''}
+                                    ${h.is_24h ? '<span class="px-1.5 py-0.5 bg-blue-50 text-blue-500 text-[9px] font-black rounded uppercase">24H</span>' : ''}
+                                </div>
+                                <span class="text-[11px] text-gray-400 font-medium tracking-tight">${h.region || '-'}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-8 py-6">
+                        <span class="text-sm text-gray-500 font-medium">${h.address || '-'}</span>
+                    </td>
+                    <td class="px-8 py-6 text-right">
+                        <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onclick='openEditModal(${JSON.stringify(h).replace(/'/g, "&apos;")})' class="w-9 h-9 rounded-lg bg-gray-50 text-gray-400 hover:bg-partner hover:text-white transition-all flex items-center justify-center">
+                                <i class="fas fa-edit text-xs"></i>
+                            </button>
+                            <button onclick="deleteHome('${h.id}', '${h.name}')" class="w-9 h-9 rounded-lg bg-gray-50 text-gray-400 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">
+                                <i class="fas fa-trash-alt text-xs"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterList() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const filtered = allHomes.filter(h => 
+                h.name.toLowerCase().includes(query) || 
+                (h.address && h.address.toLowerCase().includes(query))
+            );
+            renderTable(filtered);
+        }
+
+        function openEditModal(data = null) {
+            const modal = document.getElementById('edit-modal');
+            const title = document.getElementById('modal-title');
+            const form = document.getElementById('edit-form');
+            
+            form.reset();
+            document.getElementById('form-id').value = '';
+            document.getElementById('form-prices').value = '[]';
+            
+            if (data) {
+                title.textContent = '?•Î??ùÏû• ?ïÎ≥¥ ?òÏ†ï';
+                document.getElementById('form-id').value = data.id;
+                document.getElementById('form-name').value = data.name || '';
+                document.getElementById('form-region').value = data.region || '';
+                document.getElementById('form-address').value = data.address || '';
+                document.getElementById('form-phone').value = data.phone || '';
+                document.getElementById('form-image-url').value = data.image_url || '';
+                document.getElementById('form-description').value = data.description || '';
+                document.getElementById('form-lat').value = data.latitude || '';
+                document.getElementById('form-lng').value = data.longitude || '';
+                document.getElementById('form-sort-order').value = data.sort_order || 0;
+                document.getElementById('form-is-alliance').checked = data.is_alliance || false;
+                document.getElementById('form-is-24h').checked = data.is_24h || false;
+                document.getElementById('form-prices').value = JSON.stringify(data.prices || [], null, 2);
+            } else {
+                title.textContent = '?†Í∑ú ?•Î??ùÏû• ?±Î°ù';
+            }
+            
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        async function saveFuneralHome() {
+            const id = document.getElementById('form-id').value;
+            let prices = [];
+            try {
+                prices = JSON.parse(document.getElementById('form-prices').value || '[]');
+            } catch (e) {
+                alert('Í∞ÄÍ≤??ïÎ≥¥ JSON ?ïÏãù???¨Î∞îÎ•¥Ï? ?äÏäµ?àÎã§.');
+                return;
+            }
+
+            const formData = {
+                name: document.getElementById('form-name').value,
+                region: document.getElementById('form-region').value,
+                address: document.getElementById('form-address').value,
+                phone: document.getElementById('form-phone').value,
+                image_url: document.getElementById('form-image-url').value,
+                description: document.getElementById('form-description').value,
+                latitude: document.getElementById('form-lat').value,
+                longitude: document.getElementById('form-lng').value,
+                sort_order: parseInt(document.getElementById('form-sort-order').value || 0),
+                is_alliance: document.getElementById('form-is-alliance').checked,
+                is_24h: document.getElementById('form-is-24h').checked,
+                prices: prices
+            };
+
+            let res;
+            if (id) {
+                res = await Auth.updateFuneralHome(id, formData);
+            } else {
+                res = await Auth.createFuneralHome(formData);
+            }
+
+            if (res.success) {
+                alert('?±Í≥µ?ÅÏúºÎ°??Ä?•Îêò?àÏäµ?àÎã§!');
+                closeEditModal();
+                loadFuneralHomes();
+            } else {
+                alert('?Ä???§Ìå®: ' + res.message);
+            }
+        }
+
+        async function deleteHome(id, name) {
+            if (!confirm(`[${name}] ?ïÎ≥¥Î•???†ú?òÏãúÍ≤†Ïäµ?àÍπå? ???ëÏóÖ?Ä ?òÎèåÎ¶????ÜÏäµ?àÎã§.`)) return;
+
+            const res = await Auth.deleteFuneralHome(id);
+            if (res.success) {
+                alert('??†ú?òÏóà?µÎãà??');
+                loadFuneralHomes();
+            } else {
+                alert('??†ú ?§Ìå®: ' + res.message);
+            }
+        }
+
+        async function checkSyncStatus() {
+            try {
+                console.log('Checking sync status...');
+                const missing = await SyncManager.getMissingHomes();
+                
+                if (missing.length === 0) {
+                    alert('Î™®Îì† Î°úÏª¨ ?∞Ïù¥?∞Í? ?¥Î? DB???ôÍ∏∞?îÎêò???àÏäµ?àÎã§.');
+                    return;
+                }
+
+                const confirmSync = confirm(`${missing.length}Í∞úÏùò ?àÎ°ú???•Î??ùÏû• ?∞Ïù¥???§ÎÉÖ?åÎü¨Í∑???Í∞Ä Î∞úÍ≤¨?òÏóà?µÎãà?? DBÎ°??ôÍ∏∞?îÌï†ÍπåÏöî?`);
+                
+                if (confirmSync) {
+                    const results = await SyncManager.syncAllMissing();
+                    alert(`?ôÍ∏∞???ÑÎ£å!\n?±Í≥µ: ${results.success.length}Í±?n?§Ìå®: ${results.failed.length}Í±?);
+                    if (results.failed.length > 0) {
+                        console.error('Sync Failures:', results.failed);
+                    }
+                    loadFuneralHomes();
+                }
+            } catch (err) {
+                console.error('Sync Error:', err);
+                alert('?ôÍ∏∞??Ï§??§Î•òÍ∞Ä Î∞úÏÉù?àÏäµ?àÎã§: ' + err.message);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', checkAdmin);
+    </script>
+    <script src="js/channel-talk.js"></script>
+</body>
+
+</html>
+

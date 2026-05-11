@@ -1,0 +1,1 @@
+﻿const fs=require("fs");const src=fs.readFileSync("onsil/admin_funeral_homes.html","utf8");fs.writeFileSync("admin_funeral_homes.html",src,"utf8");const v=fs.readFileSync("admin_funeral_homes.html","utf8");console.log("size:",v.length,"korean:",v.includes("\uc7a5\ub840\uc2dd\uc7a5 \uc815\ubcf4 \uad00\ub9ac"));
