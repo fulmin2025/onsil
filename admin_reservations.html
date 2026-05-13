@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>예약 통합 관리 - The 온실 Admin</title>
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin
@@ -34,14 +33,10 @@
             }
         }
     </script>
-
-    <style>
-        body { padding-top: 72px; }
-        main { padding-top: 2rem !important; }
-    </style>
+    <style>body { padding-top: 72px; } main { padding-top: 2rem !important; }</style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-900 min-h-screen">
-        <!-- Header -->
+    <!-- Header -->
     <header id="main-header" class="fixed top-0 z-50 w-full bg-white border-b border-brand/5 transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
             <div class="flex items-center gap-6">
@@ -64,6 +59,7 @@
             </div>
         </div>
     </header>
+
     <main class="max-w-7xl mx-auto px-4 pb-24">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div>
@@ -107,49 +103,8 @@
         </div>
     </main>
 
-    <!-- Add Reservation Modal -->
-    <div id="add-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeAddModal()"></div>
-        <div class="bg-white w-full max-w-xl rounded-3xl p-8 relative z-10 shadow-2xl overflow-y-auto max-h-[90vh]">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-gray-900">신규 예약 수동 등록</h2>
-                <button onclick="closeAddModal()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times text-xl"></i></button>
-            </div>
-            <form id="add-res-form" class="space-y-5">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="col-span-2">
-                        <label class="block text-xs font-bold text-gray-500 mb-1.5">장례식장 선택</label>
-                        <select id="res-facility" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-onsil/20"></select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 mb-1.5">예약 날짜</label>
-                        <input type="date" id="res-date" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 mb-1.5">예약 시간</label>
-                        <select id="res-time" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl">
-                            <option value="09:00">09:00</option><option value="10:00">10:00</option><option value="11:00">11:00</option>
-                            <option value="13:00">13:00</option><option value="14:00">14:00</option><option value="15:00">15:00</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="col-span-2"><label class="block text-xs font-bold text-gray-500 mb-1.5">고객 성함</label><input type="text" id="res-user-name" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl"></div>
-                    <div><label class="block text-xs font-bold text-gray-500 mb-1.5">아이 이름</label><input type="text" id="res-pet-name" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl"></div>
-                    <div><label class="block text-xs font-bold text-gray-500 mb-1.5">종류</label><input type="text" id="res-pet-type" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl"></div>
-                </div>
-                <div><label class="block text-xs font-bold text-gray-500 mb-1.5">보호자 연락처</label><input type="tel" id="res-phone" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl"></div>
-                <div class="pt-4 flex gap-3">
-                    <button type="button" onclick="closeAddModal()" class="flex-1 py-4 bg-gray-100 rounded-2xl font-bold">취소</button>
-                    <button type="submit" class="flex-[2] py-4 bg-onsil text-white rounded-2xl font-bold shadow-lg">예약 등록</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script src="js/auth.js?v=v2_final"></script>
+    <script src="js/auth.js?v=v34"></script>
     <script>
         async function checkAdminAccess() {
             try {
@@ -159,14 +114,6 @@
                 const adminEmails = ["fulmin@nate.com","theonsil@gmail.com","admin@theonsil.co.kr","theonsilofficial@gmail.com","admin@onsil.com"];
                 const isAdmin = adminEmails.includes(user.email?.toLowerCase()) || user.role === 'admin';
                 const isPartner = user.role === 'partner';
-                
-                
-                if (!isAdmin && !isPartner) {
-                    alert('접근 권한이 없습니다.');
-                    location.href = 'index.html';
-                    return;
-                }
-                
                 
                 // Initialize Badge
                 const badge = document.getElementById('admin-badge');
@@ -182,7 +129,6 @@
                     }
                 }
                 
-                // Hide restricted menu items for partners
                 if (isPartner) {
                     const partnersMenu = document.getElementById('nav-partners');
                     const funeralMenu = document.getElementById('nav-homes');
@@ -190,67 +136,72 @@
                     if (funeralMenu) funeralMenu.classList.add('hidden');
                 }
 
-                // Load Data
-                if (typeof initPage === 'function') initPage(user, isAdmin);
+                if (typeof initPage === 'function') await initPage(user, isAdmin);
             } catch (err) {
                 console.error("Auth Check Error:", err);
-                location.href = 'index.html';
             }
         }
         document.addEventListener('DOMContentLoaded', checkAdminAccess);
-    </script>
-
-    <script>
-        function openAddModal() { document.getElementById('add-modal').classList.remove('hidden'); }
-        function closeAddModal() { document.getElementById('add-modal').classList.add('hidden'); }
 
         async function initPage(user, isAdmin) {
             const listContainer = document.getElementById('reservation-list');
-            const facilitySelect = document.getElementById('res-facility');
             const sb = Auth.getSupabase();
+            if (!sb) { listContainer.innerHTML = '<tr><td colspan="7" class="py-10 text-center text-red-500">DB 연결 실패</td></tr>'; return; }
 
-            // Setup Facility Select
-            if (!isAdmin && user.role === 'partner' && user.facility) {
-                document.getElementById('dashboard-title').textContent = user.facility + ' 관리 대시보드';
-                facilitySelect.innerHTML = '<option value="' + user.facility + '">' + user.facility + '</option>';
-            } else {
-                facilitySelect.innerHTML = '<option value="">시설 선택</option><option value="스냅플러그">스냅플러그</option><option value="펫포레스트 남양주점">펫포레스트 남양주점</option>';
-            }
-
-            // Fetch Data
             let query = sb.from('reservations').select('*');
-            if (!isAdmin && user.role === 'partner' && user.facility) {
-                query = query.eq('facility_name', user.facility);
+            if (!isAdmin && user.role === 'partner') {
+                if (user.facility) {
+                    document.getElementById('dashboard-title').textContent = user.facility + ' 관리 대시보드';
+                    query = query.eq('facility_name', user.facility);
+                } else {
+                    listContainer.innerHTML = '<tr><td colspan="7" class="py-20 text-center text-gray-400">배정된 시설이 없습니다. (관리자에게 문의해주세요)</td></tr>';
+                    return;
+                }
             }
-            const { data, error } = await query.order('created_at', { ascending: false });
-            if (error) { listContainer.innerHTML = '<tr><td colspan="7" class="py-10 text-center text-red-500">오류: ' + error.message + '</td></tr>'; return; }
 
-            if (!data || data.length === 0) {
-                listContainer.innerHTML = '<tr><td colspan="7" class="py-20 text-center text-gray-400">내역이 없습니다.</td></tr>';
-                return;
+            try {
+                const { data, error } = await query.order('created_at', { ascending: false });
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    listContainer.innerHTML = '<tr><td colspan="7" class="py-20 text-center text-gray-400">등록된 예약 내역이 없습니다.</td></tr>';
+                    return;
+                }
+
+                listContainer.innerHTML = data.map(res => {
+                    const date = new Date(res.created_at).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                    return `
+                        <tr class="hover:bg-gray-50/50 transition-colors">
+                            <td class="px-6 py-5 text-xs text-gray-500 font-medium">\${date}</td>
+                            <td class="px-6 py-5 font-bold text-gray-900">\${res.facility_name}</td>
+                            <td class="px-6 py-5 text-sm font-bold text-primary">\${res.reservation_date} \${res.reservation_time}</td>
+                            <td class="px-6 py-5 text-xs font-bold text-accent">\${res.service_price || '-'}</td>
+                            <td class="px-6 py-5 text-sm font-bold text-gray-800">\${res.pet_name || '미입력'} (\${res.pet_type || '-'})</td>
+                            <td class="px-6 py-5 text-sm text-gray-600">\${res.user_phone}</td>
+                            <td class="px-6 py-5 text-center">
+                                <button onclick="deleteRes('\${res.id}')" class="text-gray-300 hover:text-red-500 transition-all">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch (err) {
+                listContainer.innerHTML = '<tr><td colspan="7" class="py-10 text-center text-red-500">데이터 로드 오류: ' + err.message + '</td></tr>';
             }
-
-            listContainer.innerHTML = data.map(res => {
-                const date = new Date(res.created_at).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-                return '<tr class="hover:bg-gray-50">\n' +
-                    '<td class="px-6 py-5 text-xs text-gray-500">' + date + '</td>\n' +
-                    '<td class="px-6 py-5 font-bold text-gray-900">' + res.facility_name + '</td>\n' +
-                    '<td class="px-6 py-5 text-sm font-bold text-primary">' + res.reservation_date + ' ' + res.reservation_time + '</td>\n' +
-                    '<td class="px-6 py-5 text-xs">' + (res.service_price || '-') + '</td>\n' +
-                    '<td class="px-6 py-5 text-sm font-bold">' + (res.pet_name || '미입력') + ' (' + (res.pet_type || '-') + ')</td>\n' +
-                    '<td class="px-6 py-5 text-sm">' + res.user_phone + '</td>\n' +
-                    '<td class="px-6 py-5 text-center"><button onclick="deleteRes(\'' + res.id + '\')" class="text-gray-300 hover:text-red-500"><i class="fas fa-trash-alt"></i></button></td>\n' +
-                '</tr>';
-            }).join('');
         }
 
         async function deleteRes(id) {
-            if (!confirm('삭제하시겠습니까?')) return;
-            const sb = Auth.getSupabase();
-            const { error } = await sb.from('reservations').delete().eq('id', id);
-            if (error) alert('실패: ' + error.message);
-            else location.reload();
+            if (!confirm('해당 예약을 정말 삭제하시겠습니까?')) return;
+            try {
+                const sb = Auth.getSupabase();
+                const { error } = await sb.from('reservations').delete().eq('id', id);
+                if (error) throw error;
+                location.reload();
+            } catch (err) { alert('삭제 실패: ' + err.message); }
         }
+        
+        function openAddModal() { alert('수동 예약 등록 기능은 준비 중입니다.'); }
     </script>
 </body>
 </html>

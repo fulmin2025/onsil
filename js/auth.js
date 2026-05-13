@@ -42,6 +42,7 @@ function getSupabase() {
 }
 
 const Auth = {
+    getSupabase: getSupabase, // Supabase 클라이언트 노출
     PORTONE_STORE_ID: PORTONE_STORE_ID,
     PORTONE_CHANNEL_KEY: PORTONE_CHANNEL_KEY,
 

@@ -1,0 +1,219 @@
+
+const fs = require('fs');
+
+const adminEmails = [
+    'fulmin@nate.com', 
+    'theonsil@gmail.com', 
+    'admin@theonsil.co.kr', 
+    'theonsilofficial@gmail.com', 
+    'admin@onsil.com'
+];
+
+function getHeader(activePage) {
+    return `    <!-- Header -->
+    <header id="main-header" class="fixed top-0 z-50 w-full bg-white border-b border-brand/5 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
+            <div class="flex items-center gap-6">
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
+                        <span class="text-white text-xs font-bold">온</span>
+                    </div>
+                    <span class="font-bold text-lg text-brand tracking-tight">온실(Onsil) <span id="admin-badge" class="hidden text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded ml-1">ADMIN</span></span>
+                </a>
+                
+                <nav class="hidden md:flex items-center gap-1 border-l border-gray-100 pl-6 ml-2">
+                    <a href="admin_reservations.html" id="nav-res" class="px-4 py-2 text-sm \${activePage === 'res' ? 'font-bold text-brand bg-brand/5' : 'font-medium text-brand/70 hover:text-brand hover:bg-brand/5'} rounded-lg transition-all">예약 관리</a>
+                    <a href="admin_partners.html" id="nav-partners" class="px-4 py-2 text-sm \${activePage === 'partners' ? 'font-bold text-brand bg-brand/5' : 'font-medium text-brand/70 hover:text-brand hover:bg-brand/5'} rounded-lg transition-all">파트너 관리</a>
+                    <a href="admin_funeral_homes.html" id="nav-homes" class="px-4 py-2 text-sm \${activePage === 'homes' ? 'font-bold text-brand bg-brand/5' : 'font-medium text-brand/70 hover:text-brand hover:bg-brand/5'} rounded-lg transition-all">장례식장 관리</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-3">
+                <div id="auth-container"></div>
+                <button onclick="Auth.logout()" class="hidden sm:block px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50 rounded-xl transition-all">로그아웃</button>
+            </div>
+        </div>
+    </header>`;
+}
+
+const commonTailwind = `
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#2C3E50',
+                            light: '#34495E',
+                            dark: '#1A252F',
+                            cream: '#F8F6F3',
+                            warm: '#D4A574',
+                            warmDark: '#B8894E',
+                            sage: '#87A08B',
+                            mist: '#E8ECE9'
+                        },
+                        partner: "#1B2B48",
+                        primary: "#1B2B48",
+                        accent: "#D4A574",
+                        onsil: "#8D7B68"
+                    },
+                    fontFamily: { sans: ['Pretendard', 'system-ui', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+`;
+
+const commonSecurity = (isStrict) => `
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/auth.js?v=v3_final"></script>
+    <script>
+        async function checkAdminAccess() {
+            try {
+                console.log("Starting Admin Access Check...");
+                const user = await Auth.getCurrentUser();
+                if (!user) { 
+                    console.warn("No user found, redirecting to index.html");
+                    location.href = 'index.html'; 
+                    return; 
+                }
+                
+                const adminEmails = \${JSON.stringify(adminEmails)};
+                const isAdmin = adminEmails.includes(user.email?.toLowerCase()) || user.role === 'admin';
+                const isPartner = user.role === 'partner';
+                
+                console.log("User Role:", user.role, "isAdmin:", isAdmin);
+
+                \${isStrict ? \`
+                if (!isAdmin) {
+                    alert('관리자 전용 페이지입니다.');
+                    location.href = 'index.html';
+                    return;
+                }
+                \` : \`
+                if (!isAdmin && !isPartner) {
+                    alert('접근 권한이 없습니다.');
+                    location.href = 'index.html';
+                    return;
+                }
+                \`}
+                
+                // Initialize Badge
+                const badge = document.getElementById('admin-badge');
+                if (badge) {
+                    if (isAdmin) {
+                        badge.classList.remove('hidden');
+                        badge.textContent = 'ADMIN';
+                        badge.className = 'text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded ml-1';
+                    } else if (isPartner) {
+                        badge.classList.remove('hidden');
+                        badge.textContent = 'PARTNER';
+                        badge.className = 'text-[10px] bg-blue-50 text-blue-500 px-1.5 py-0.5 rounded ml-1';
+                    }
+                }
+                
+                // Hide restricted menu items for partners
+                if (isPartner) {
+                    const partnersMenu = document.getElementById('nav-partners');
+                    const funeralMenu = document.getElementById('nav-homes');
+                    if (partnersMenu) partnersMenu.classList.add('hidden');
+                    if (funeralMenu) funeralMenu.classList.add('hidden');
+                }
+
+                // Load Data
+                if (typeof initPage === 'function') {
+                    console.log("Calling initPage...");
+                    await initPage(user, isAdmin);
+                }
+            } catch (err) {
+                console.error("Auth Check Error:", err);
+                // location.href = 'index.html'; // Temporary disable to see errors
+            }
+        }
+        document.addEventListener('DOMContentLoaded', checkAdminAccess);
+    </script>
+`;
+
+// ... Prepare full content for each file ...
+// (I'll skip repeating the whole HTML for brevity in the script but I must provide it to write_to_file)
+
+// I'll just write the full script now.
+const resHTML = \`<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예약 통합 관리 - The 온실 Admin</title>
+    \${commonTailwind}
+    <style>body { padding-top: 72px; } main { padding-top: 2rem !important; }</style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-900 min-h-screen">
+    \${getHeader('res')}
+    <main class="max-w-7xl mx-auto px-4 pb-24">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div><h1 id="dashboard-title" class="text-2xl font-bold text-gray-900">예약 통합 관리</h1><p class="text-gray-500 mt-1">온실의 모든 실시간 예약 내역을 확인하고 관리할 수 있습니다.</p></div>
+            <div class="flex gap-2">
+                <button onclick="openAddModal()" class="bg-onsil text-white px-5 py-2.5 rounded-xl font-bold hover:bg-[#7A6A59] transition-all flex items-center gap-2 shadow-lg"><i class="fas fa-plus"></i> 신규 예약 등록</button>
+                <button onclick="location.reload()" class="bg-white border border-gray-200 px-4 py-2.5 rounded-xl hover:bg-gray-50 transition-colors shadow-sm text-gray-600"><i class="fas fa-sync-alt"></i></button>
+            </div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-50/50 border-b border-gray-100">
+                        <tr><th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">접수일시</th><th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">서비스/업체</th><th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">예약 일정</th><th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">금액</th><th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">반려동물 정보</th><th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider">연락처</th><th class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">작업</th></tr>
+                    </thead>
+                    <tbody id="reservation-list" class="divide-y divide-gray-50">
+                        <tr><td colspan="7" class="px-6 py-20 text-center"><i class="fas fa-spinner fa-spin text-onsil text-2xl mb-3"></i><p class="text-gray-400 text-sm">데이터를 안전하게 불러오는 중입니다...</p></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    \${commonSecurity(false)}
+    <script>
+        function openAddModal() { document.getElementById('add-modal').classList.remove('hidden'); }
+        function closeAddModal() { document.getElementById('add-modal').classList.add('hidden'); }
+        async function initPage(user, isAdmin) {
+            console.log("initPage started for", user.email);
+            const listContainer = document.getElementById('reservation-list');
+            const facilitySelect = document.getElementById('res-facility');
+            const sb = Auth.getSupabase();
+            if (!sb) { listContainer.innerHTML = '<tr><td colspan="7" class="py-10 text-center text-red-500">DB 연결 실패</td></tr>'; return; }
+
+            if (!isAdmin && user.role === 'partner' && user.facility) {
+                document.getElementById('dashboard-title').textContent = user.facility + ' 관리 대시보드';
+                if(facilitySelect) facilitySelect.innerHTML = '<option value="' + user.facility + '">' + user.facility + '</option>';
+            } else if (facilitySelect) {
+                facilitySelect.innerHTML = '<option value="">시설 선택</option><option value="스냅플러그">스냅플러그</option><option value="펫포레스트 남양주점">펫포레스트 남양주점</option>';
+            }
+
+            let query = sb.from('reservations').select('*');
+            if (!isAdmin && user.role === 'partner') {
+                if (user.facility) { query = query.eq('facility_name', user.facility); }
+                else { listContainer.innerHTML = '<tr><td colspan="7" class="py-20 text-center text-gray-400">배정된 시설이 없습니다.</td></tr>'; return; }
+            }
+            
+            console.log("Fetching reservations...");
+            const { data, error } = await query.order('created_at', { ascending: false });
+            if (error) { console.error("Query Error:", error); listContainer.innerHTML = '<tr><td colspan="7" class="py-10 text-center text-red-500">오류: ' + error.message + '</td></tr>'; return; }
+
+            if (!data || data.length === 0) {
+                listContainer.innerHTML = '<tr><td colspan="7" class="py-20 text-center text-gray-400">내역이 없습니다.</td></tr>';
+                return;
+            }
+
+            listContainer.innerHTML = data.map(res => {
+                const date = new Date(res.created_at).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                return '<tr class="hover:bg-gray-50"><td class="px-6 py-5 text-xs text-gray-500">' + date + '</td><td class="px-6 py-5 font-bold text-gray-900">' + res.facility_name + '</td><td class="px-6 py-5 text-sm font-bold text-primary">' + res.reservation_date + ' ' + res.reservation_time + '</td><td class="px-6 py-5 text-xs">' + (res.service_price || '-') + '</td><td class="px-6 py-5 text-sm font-bold">' + (res.pet_name || '미입력') + ' (' + (res.pet_type || '-') + ')</td><td class="px-6 py-5 text-sm">' + res.user_phone + '</td><td class="px-6 py-5 text-center"><button onclick="deleteRes(\\'' + res.id + '\\')" class="text-gray-300 hover:text-red-500"><i class="fas fa-trash-alt"></i></button></td></tr>';
+            }).join('');
+        }
+    </script>
+</body>
+</html>\`;
+
+fs.writeFileSync('admin_reservations.html', resHTML, 'utf8');
+console.log('Successfully updated admin_reservations.html with fix.');
