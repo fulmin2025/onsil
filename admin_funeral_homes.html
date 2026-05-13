@@ -5,7 +5,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>장례식장 정보 관리 - The 온실 Admin</title>
+    <title>?��??�장 ?�보 관�?- The ?�실 Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
@@ -56,7 +56,7 @@
     </style>
 
     <style>
-        /* 헤더 고정으로 인한 본문 가림 방지 */
+        /* ?�더 고정?�로 ?�한 본문 가�?방�? */
         body {
             padding-top: 64px; /* h-16 */
         }
@@ -65,9 +65,9 @@
                 padding-top: 72px; /* h-18 */
             }
         }
-        /* 기존에 추가된 padding-top과 충돌 방지 */
+        /* 기존??추�???padding-top�?충돌 방�? */
         main {
-            padding-top: 2rem !important; /* 기본 여백 확보 */
+            padding-top: 2rem !important; /* 기본 ?�백 ?�보 */
         }
     </style>
 
@@ -79,44 +79,44 @@
             <div class="flex items-center gap-6">
                 <a href="index.html" class="flex items-center gap-2 group">
                     <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
-                        <span class="text-white text-xs font-bold">온</span>
+                        <span class="text-white text-xs font-bold">??/span>
                     </div>
-                    <span class="font-bold text-lg text-brand tracking-tight">온실(Onsil) <span id="admin-badge" class="hidden text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded ml-1">ADMIN</span></span>
+                    <span class="font-bold text-lg text-brand tracking-tight">?�실(Onsil) <span id="admin-badge" class="hidden text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded ml-1">ADMIN</span></span>
                 </a>
                 
                 <nav class="hidden md:flex items-center gap-1 border-l border-gray-100 pl-6 ml-2">
-                    <a href="admin_reservations.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">예약 관리</a>
-                    <a href="admin_partners.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">파트너 관리</a>
-                    <a href="admin_funeral_homes.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg transition-all">장례식장 관리</a>
+                    <a href="admin_reservations.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">?�약 관�?/a>
+                    <a href="admin_partners.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">?�트??관�?/a>
+                    <a href="admin_funeral_homes.html" id="nav-homes" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg transition-all">?��??�장 관�?/a>
                 </nav>
             </div>
             <div class="flex items-center gap-3">
                 <div id="auth-container"></div>
-                <button onclick="Auth.logout()" class="hidden sm:block px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50 rounded-xl transition-all">로그아웃</button>
+                <button onclick="Auth.logout()" class="hidden sm:block px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50 rounded-xl transition-all">로그?�웃</button>
             </div>
         </div>
     </header>
     <main class="flex-1 max-w-7xl w-full mx-auto px-6  pb-24">
         <div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <h2 class="text-2xl font-black text-gray-900 mb-2">장례식장 목록</h2>
-                <p class="text-sm text-gray-500">데이터베이스에 등록된 모든 장례식장 정보입니다.</p>
+                <h2 class="text-2xl font-black text-gray-900 mb-2">?��??�장 목록</h2>
+                <p class="text-sm text-gray-500">?�이?�베?�스???�록??모든 ?��??�장 ?�보?�니??</p>
             </div>
             <div class="flex gap-3">
                 <button onclick="runSecurityAudit()" class="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 border border-red-100 rounded-xl text-sm font-bold hover:bg-red-100">
                     <i class="fas fa-shield-alt"></i> 보안 감사
                 </button>
                 <button onclick="checkSyncStatus()" class="flex items-center gap-2 px-4 py-2 bg-amber-50 text-amber-600 border border-amber-100 rounded-xl text-sm font-bold hover:bg-amber-100">
-                    <i class="fas fa-sync-alt"></i> 동기화 확인
+                    <i class="fas fa-sync-alt"></i> ?�기???�인
                 </button>
                 <button onclick="openEditModal()" class="flex items-center gap-2 px-6 py-2.5 bg-partner text-white rounded-xl text-sm font-bold hover:bg-black shadow-lg">
-                    <i class="fas fa-plus"></i> 신규 등록
+                    <i class="fas fa-plus"></i> ?�규 ?�록
                 </button>
             </div>
         </div>
         <div class="mb-6 relative">
             <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-            <input type="text" id="search-input" oninput="filterList()" placeholder="장례식장 이름 또는 주소로 검색.."
+            <input type="text" id="search-input" oninput="filterList()" placeholder="?��??�장 ?�름 ?�는 주소�?검??."
                 class="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-partner/20 outline-none shadow-sm">
         </div>
         <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
@@ -124,15 +124,15 @@
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
-                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">장례식장명</th>
+                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">?��??�장�?/th>
                             <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">주소</th>
-                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest text-right">작업</th>
+                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest text-right">?�업</th>
                         </tr>
                     </thead>
                     <tbody id="home-list" class="divide-y divide-gray-50">
                         <tr><td colspan="3" class="px-8 py-20 text-center text-gray-400">
                             <i class="fas fa-spinner fa-spin text-2xl mb-4 block"></i>
-                            <p id="loading-text" class="text-sm font-medium">강력 새로고침 완료! (v17)</p>
+                            <p id="loading-text" class="text-sm font-medium">강력 ?�로고침 ?�료! (v17)</p>
                         </td></tr>
                     </tbody>
                 </table>
@@ -144,7 +144,7 @@
         <div class="modal-backdrop absolute inset-0" onclick="closeEditModal()"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden animate-slideUp">
             <div class="px-8 py-6 border-b flex items-center justify-between bg-gray-50/50">
-                <h3 id="modal-title" class="text-xl font-black text-gray-900">장례식장 정보 수정</h3>
+                <h3 id="modal-title" class="text-xl font-black text-gray-900">?��??�장 ?�보 ?�정</h3>
                 <button onclick="closeEditModal()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200"><i class="fas fa-times"></i></button>
             </div>
             <div class="p-8 max-h-[70vh] overflow-y-auto no-scrollbar">
@@ -152,12 +152,12 @@
                     <input type="hidden" id="form-id">
                     <div class="grid grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">장례식장명 (한국어)</label>
+                            <label class="text-sm font-bold text-gray-700 ml-1">?��??�장�?(?�국??</label>
                             <input type="text" id="form-name" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                         </div>
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">지역 (Region)</label>
-                            <input type="text" id="form-region" placeholder="예: 경기 부천, 서울 강남" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
+                            <label class="text-sm font-bold text-gray-700 ml-1">지??(Region)</label>
+                            <input type="text" id="form-region" placeholder="?? 경기 부�? ?�울 강남" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                         </div>
                     </div>
                     <div class="space-y-2">
@@ -166,21 +166,21 @@
                     </div>
                     <div class="grid grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">전화번호</label>
+                            <label class="text-sm font-bold text-gray-700 ml-1">?�화번호</label>
                             <input type="text" id="form-phone" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                         </div>
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">이미지 URL</label>
+                            <label class="text-sm font-bold text-gray-700 ml-1">?��?지 URL</label>
                             <input type="text" id="form-image-url" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                         </div>
                     </div>
                     <div class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700 ml-1">업체 설명</label>
+                        <label class="text-sm font-bold text-gray-700 ml-1">?�체 ?�명</label>
                         <input type="text" id="form-description" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                     </div>
                     <div class="grid grid-cols-3 gap-6">
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">위도 (Lat)</label>
+                            <label class="text-sm font-bold text-gray-700 ml-1">?�도 (Lat)</label>
                             <input type="text" id="form-lat" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                         </div>
                         <div class="space-y-2">
@@ -188,7 +188,7 @@
                             <input type="text" id="form-lng" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                         </div>
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">정렬 순서</label>
+                            <label class="text-sm font-bold text-gray-700 ml-1">?�렬 ?�서</label>
                             <input type="number" id="form-sort-order" value="0" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none">
                         </div>
                     </div>
@@ -199,7 +199,7 @@
                                 <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-amber-500 transition-colors"></div>
                                 <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5"></div>
                             </div>
-                            <span class="text-sm font-bold text-gray-700">제휴 업체</span>
+                            <span class="text-sm font-bold text-gray-700">?�휴 ?�체</span>
                         </label>
                         <label class="flex items-center gap-3 cursor-pointer">
                             <div class="relative">
@@ -207,18 +207,18 @@
                                 <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-blue-500 transition-colors"></div>
                                 <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5"></div>
                             </div>
-                            <span class="text-sm font-bold text-gray-700">24시간 운영</span>
+                            <span class="text-sm font-bold text-gray-700">24?�간 ?�영</span>
                         </label>
                     </div>
                     <div class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700 ml-1">가격 정보 (JSON 형식)</label>
-                        <textarea id="form-prices" rows="6" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none font-mono text-xs resize-none" placeholder='[{"category":"기본 장례","items":[{"name":"기본","price":"300,000원"}]}]'></textarea>
+                        <label class="text-sm font-bold text-gray-700 ml-1">가�??�보 (JSON ?�식)</label>
+                        <textarea id="form-prices" rows="6" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 outline-none font-mono text-xs resize-none" placeholder='[{"category":"기본 ?��?","items":[{"name":"기본","price":"300,000??}]}]'></textarea>
                     </div>
                 </form>
             </div>
             <div class="px-8 py-5 border-t flex justify-end gap-3 bg-gray-50/50">
                 <button onclick="closeEditModal()" class="px-6 py-2.5 bg-white border border-gray-200 text-gray-600 rounded-xl text-sm font-bold hover:bg-gray-100">취소</button>
-                <button onclick="saveFuneralHome()" class="px-6 py-2.5 bg-partner text-white rounded-xl text-sm font-bold hover:bg-black shadow-lg">저장하기</button>
+                <button onclick="saveFuneralHome()" class="px-6 py-2.5 bg-partner text-white rounded-xl text-sm font-bold hover:bg-black shadow-lg">?�?�하�?/button>
             </div>
         </div>
     </div>
@@ -234,7 +234,7 @@
                 <div id="security-results" class="space-y-2 text-sm text-gray-700"></div>
             </div>
             <div class="px-8 py-4 border-t flex justify-end">
-                <button onclick="closeSecurityModal()" class="px-5 py-2 bg-gray-200 text-gray-700 rounded-xl text-sm font-bold hover:bg-gray-300">닫기</button>
+                <button onclick="closeSecurityModal()" class="px-5 py-2 bg-gray-200 text-gray-700 rounded-xl text-sm font-bold hover:bg-gray-300">?�기</button>
             </div>
         </div>
     </div>
@@ -261,7 +261,7 @@
                 const isAdmin = user && (user.role === "admin" || adminEmails.includes(user.email));
                 
                 if (!isAdmin) {
-                    console.warn('Admin Page: User is NOT admin, but bypassing for emergency recovery...');
+                    alert('������ ������ �ʿ��մϴ�.'); location.href='index.html'; return;
                     // We will NOT redirect for now, just log and continue
                 }
                 
@@ -291,12 +291,12 @@
             try {
                 if (!items || items.length === 0) {
                     console.log('Admin Page: No items to display');
-                    container.innerHTML = '<tr><td colspan="3" class="px-8 py-20 text-center text-gray-400">등록된 데이터가 없습니다.</td></tr>';
+                    container.innerHTML = '<tr><td colspan="3" class="px-8 py-20 text-center text-gray-400">?�록???�이?��? ?�습?�다.</td></tr>';
                     return;
                 }
                 container.innerHTML = items.map(h => {
                     try {
-                        const name = h.name || '이름 없음';
+                        const name = h.name || '?�름 ?�음';
                         const safeName = name.replace(/'/g, "\\'");
                         return '<tr class="hover:bg-gray-50/50 transition-colors group">' +
                             '<td class="px-8 py-6">' +
@@ -307,7 +307,7 @@
                                     '<div>' +
                                         '<div class="flex items-center gap-2">' +
                                             '<span class="font-bold text-gray-900">' + name + '</span>' +
-                                            (h.is_alliance ? '<span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 text-[9px] font-black rounded">제휴</span>' : '') +
+                                            (h.is_alliance ? '<span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 text-[9px] font-black rounded">?�휴</span>' : '') +
                                             (h.is_24h ? '<span class="px-1.5 py-0.5 bg-blue-100 text-blue-600 text-[9px] font-black rounded">24H</span>' : '') +
                                         '</div>' +
                                         '<span class="text-xs text-gray-400">' + (h.region || '-') + '</span>' +
@@ -329,7 +329,7 @@
                 }).join('');
             } catch (err) {
                 console.error('Table rendering error:', err);
-                container.innerHTML = '<tr><td colspan="3" class="px-8 py-20 text-center text-red-500">데이터를 표시하는 중 오류가 발생했습니다.</td></tr>';
+                container.innerHTML = '<tr><td colspan="3" class="px-8 py-20 text-center text-red-500">?�이?��? ?�시?�는 �??�류가 발생?�습?�다.</td></tr>';
             }
         }
 
@@ -348,7 +348,7 @@
             document.getElementById("form-id").value = "";
             document.getElementById("form-prices").value = "[]";
             if (data) {
-                document.getElementById("modal-title").textContent = "장례식장 정보 수정";
+                document.getElementById("modal-title").textContent = "?��??�장 ?�보 ?�정";
                 document.getElementById("form-id").value = data.id || "";
                 document.getElementById("form-name").value = data.name || "";
                 document.getElementById("form-region").value = data.region || "";
@@ -363,7 +363,7 @@
                 document.getElementById("form-is-24h").checked = data.is_24h || false;
                 document.getElementById("form-prices").value = JSON.stringify(data.prices || [], null, 2);
             } else {
-                document.getElementById("modal-title").textContent = "신규 장례식장 등록";
+                document.getElementById("modal-title").textContent = "?�규 ?��??�장 ?�록";
             }
             document.getElementById("edit-modal").classList.remove("hidden");
             document.body.style.overflow = "hidden";
@@ -378,7 +378,7 @@
             const id = document.getElementById("form-id").value;
             let prices = [];
             try { prices = JSON.parse(document.getElementById("form-prices").value || "[]"); }
-            catch (e) { alert("가격정보 JSON 형식이 올바르지 않습니다."); return; }
+            catch (e) { alert("가격정�?JSON ?�식???�바르�? ?�습?�다."); return; }
 
             const formData = {
                 name: document.getElementById("form-name").value,
@@ -397,46 +397,46 @@
 
             const res = id ? await Auth.updateFuneralHome(id, formData) : await Auth.createFuneralHome(formData);
             if (res.success) {
-                alert("성공적으로 저장되었습니다!");
+                alert("?�공?�으�??�?�되?�습?�다!");
                 closeEditModal();
                 loadFuneralHomes();
             } else {
-                alert("저장 실패: " + res.message);
+                alert("?�???�패: " + res.message);
             }
         }
 
         async function deleteHome(id, name) {
-            if (!confirm("[" + name + "] 정보를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) return;
+            if (!confirm("[" + name + "] ?�보�???��?�시겠습?�까? ???�업?� ?�돌�????�습?�다.")) return;
             const res = await Auth.deleteFuneralHome(id);
-            if (res.success) { alert("삭제되었습니다."); loadFuneralHomes(); }
-            else { alert("삭제 실패: " + res.message); }
+            if (res.success) { alert("??��?�었?�니??"); loadFuneralHomes(); }
+            else { alert("??�� ?�패: " + res.message); }
         }
 
         function checkSyncStatus() {
-            alert("로드된 데이터: " + allHomes.length + "개\n모든 데이터가 Supabase에서 실시간으로 불러옵니다.");
+            alert("로드???�이?? " + allHomes.length + "�?n모든 ?�이?��? Supabase?�서 ?�시간으�?불러?�니??");
         }
 
         async function runSecurityAudit() {
             const modal = document.getElementById("security-modal");
             const el = document.getElementById("security-results");
-            el.innerHTML = '<p class="text-gray-400 animate-pulse">보안 감사 실행 중...</p>';
+            el.innerHTML = '<p class="text-gray-400 animate-pulse">보안 감사 ?�행 �?..</p>';
             modal.classList.remove("hidden");
 
             const results = [];
             const user = await Auth.getCurrentUser();
-            results.push("현재 사용자: " + (user ? user.email : "없음"));
+            results.push("?�재 ?�용?? " + (user ? user.email : "?�음"));
             const adminEmails = ["fulmin@nate.com","theonsil@gmail.com","admin@theonsil.co.kr","theonsilofficial@gmail.com","admin@onsil.com"];
-            results.push(adminEmails.includes(user?.email) ? "관리자 권한: 확인됨" : "관리자 권한: 없음 - 접근 차단 필요");
+            results.push(adminEmails.includes(user?.email) ? "관리자 권한: ?�인?? : "관리자 권한: ?�음 - ?�근 차단 ?�요");
             const homes = await Auth.getAllFuneralHomes();
-            results.push("DB 연결: funeral_homes (" + homes.length + "개)");
+            results.push("DB ?�결: funeral_homes (" + homes.length + "�?");
             const noAddr = homes.filter(h => !h.address || h.address === "null").length;
-            results.push("주소 없음: " + (noAddr > 0 ? noAddr + "개 업체" : "없음 (정상)"));
+            results.push("주소 ?�음: " + (noAddr > 0 ? noAddr + "�??�체" : "?�음 (?�상)"));
             const noCoords = homes.filter(h => !h.latitude || !h.longitude).length;
-            results.push("좌표 없음: " + (noCoords > 0 ? noCoords + "개 업체" : "없음 (정상)"));
-            results.push("Service Role Key: 프론트엔드 미노출 (안전)");
+            results.push("좌표 ?�음: " + (noCoords > 0 ? noCoords + "�??�체" : "?�음 (?�상)"));
+            results.push("Service Role Key: ?�론?�엔??미노�?(?�전)");
 
             el.innerHTML = results.map((r, i) => {
-                const icons = ["👤","🔐","🗃️","📍","🗺️","🔒"];
+                const icons = ["?��","?��","?���?,"?��","?���?,"?��"];
                 return '<p class="py-2 border-b border-gray-100 flex items-center gap-2"><span class="text-base">' + icons[i] + '</span>' + r + '</p>';
             }).join('');
         }
@@ -446,30 +446,61 @@
         }
     </script>
 
-    <!-- Dynamic Badge & UI Adjustments -->
+    
+    
+
     <script>
-        async function updateAdminUI() {
+        async function checkAdminAccess() {
             try {
                 const user = await Auth.getCurrentUser();
-                if (user) {
-                    const badge = document.getElementById('admin-badge');
-                    if (badge) {
-                        if (user.role === 'admin' || user.email === 'fulmin@nate.com') {
-                            badge.classList.remove('hidden');
-                            badge.textContent = 'ADMIN';
-                            badge.className = 'text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded ml-1';
-                        } else if (user.role === 'partner') {
-                            badge.classList.remove('hidden');
-                            badge.textContent = 'PARTNER';
-                            badge.className = 'text-[10px] bg-blue-500 text-white px-1.5 py-0.5 rounded ml-1';
-                        } else {
-                            badge.classList.add('hidden');
-                        }
+                if (!user) {
+                    location.href = 'index.html';
+                    return;
+                }
+                
+                const isAdmin = ["fulmin@nate.com","theonsil@gmail.com","admin@theonsil.co.kr","theonsilofficial@gmail.com","admin@onsil.com"].includes(user.email?.toLowerCase()) || user.role === 'admin';
+                const isPartner = user.role === 'partner';
+                
+                
+                if (!isAdmin) {
+                    alert('관리자 전용 페이지입니다.');
+                    location.href = 'index.html';
+                    return;
+                }
+                
+                
+                // Load Page Data
+                if (typeof loadReservations === 'function') loadReservations();
+                if (typeof loadPendingPartners === 'function') loadPendingPartners();
+                if (typeof loadFuneralHomes === 'function') loadFuneralHomes();
+                
+                // Update UI Badges
+                const badge = document.getElementById('admin-badge');
+                if (badge) {
+                    if (isAdmin) {
+                        badge.classList.remove('hidden');
+                        badge.textContent = 'ADMIN';
+                        badge.className = 'text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded ml-1';
+                    } else if (isPartner) {
+                        badge.classList.remove('hidden');
+                        badge.textContent = 'PARTNER';
+                        badge.className = 'text-[10px] bg-blue-50 text-blue-500 px-1.5 py-0.5 rounded ml-1';
                     }
                 }
-            } catch (err) { console.error("Admin UI Error:", err); }
+                
+                // Hide restricted menu items for partners
+                if (isPartner) {
+                    const partnersMenu = document.querySelector('a[href="admin_partners.html"]');
+                    const funeralMenu = document.querySelector('a[href="admin_funeral_homes.html"]');
+                    if (partnersMenu) partnersMenu.classList.add('hidden');
+                    if (funeralMenu) funeralMenu.classList.add('hidden');
+                }
+            } catch (err) {
+                console.error("Auth Check Error:", err);
+                location.href = 'index.html';
+            }
         }
-        document.addEventListener('DOMContentLoaded', updateAdminUI);
+        document.addEventListener('DOMContentLoaded', checkAdminAccess);
     </script>
     
 </body>

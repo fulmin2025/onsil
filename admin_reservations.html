@@ -67,7 +67,7 @@
                 </a>
                 
                 <nav class="hidden md:flex items-center gap-1 border-l border-gray-100 pl-6 ml-2">
-                    <a href="admin_reservations.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg transition-all">예약 관리</a>
+                    <a href="admin_reservations.html" id="nav-res" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg transition-all">예약 관리</a>
                     <a href="admin_partners.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">파트너 관리</a>
                     <a href="admin_funeral_homes.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">장례식장 관리</a>
                 </nav>
@@ -192,171 +192,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="js/auth.js?v=2"></script>
-    <script>
-        // Role check
-        async function checkAdminAccess() {
-            try {
-                const user = await Auth.getCurrentUser();
-                if (!user || (user.role !== 'admin' && user.role !== 'partner' && user.email !== 'fulmin@nate.com')) {
-                    alert('관리자 또는 파트너 전용 페이지입니다.');
-                    location.href = 'index.html';
-                }
-            } catch (err) {
-                location.href = 'index.html';
-            }
-        }
-        checkAdminAccess();
-
-        function openAddModal() { document.getElementById('add-modal').classList.remove('hidden'); }
-        function closeAddModal() { document.getElementById('add-modal').classList.add('hidden'); }
-
-        async function loadReservations() {
-            const listContainer = document.getElementById('reservation-list');
-            try {
-                const sb = Auth.getSupabase();
-                const user = await Auth.getCurrentUser();
-                if (!user) throw new Error("로그인이 필요합니다.");
-
-                // Facility Select Population
-                const facilitySelect = document.getElementById('res-facility');
-                if (user.role === 'partner' && user.facility) {
-                    document.getElementById('dashboard-title').textContent = `${user.facility} 관리 대시보드`;
-                    facilitySelect.innerHTML = `<option value="${user.facility}">${user.facility}</option>`;
-                    facilitySelect.value = user.facility;
-                } else {
-                    // Admin can see all (populated from HOMES_DATA or DB)
-                    facilitySelect.innerHTML = `
-                        <option value="">시설을 선택해주세요</option>
-                        <option value="스냅플러그">스냅플러그</option>
-                        <option value="펫포레스트 남양주점">펫포레스트 남양주점</option>
-                        <option value="21그램 경기광주점">21그램 경기광주점</option>
-                        <option value="아이헤븐">아이헤븐</option>
-                        <option value="하늘소풍">하늘소풍</option>
-                        <option value="펫포레">펫포레</option>
-                    `;
-                }
-
-                let query = sb.from('reservations').select('*');
-                
-                const isAdmin = (user.role === 'admin' || 
-                                ['fulmin@nate.com', 'theonsil@gmail.com', 'admin@theonsil.co.kr'].includes(user.email.toLowerCase()));
-
-                if (isAdmin) {
-                    // Admin: Full access
-                    console.log("Admin access: No filter");
-                } else if (user.role === 'partner' && user.facility) {
-                    // Partner: Strict filter by facility
-                    query = query.eq('facility_name', user.facility);
-                } else {
-                    // Unauthorized or missing facility: Deny access
-                    listContainer.innerHTML = '<tr><td colspan="7" class="px-6 py-20 text-center text-red-500">조회 권한이 없거나 시설 정보가 등록되지 않았습니다.</td></tr>';
-                    return;
-                }
-
-                const { data, error } = await query.order('created_at', { ascending: false });
-                if (error) throw error;
-
-                if (!data || data.length === 0) {
-                    listContainer.innerHTML = '<tr><td colspan="7" class="px-6 py-20 text-center text-gray-400">등록된 예약 내역이 없습니다.</td></tr>';
-                    return;
-                }
-
-                listContainer.innerHTML = data.map(res => {
-                    const createdDate = new Date(res.created_at).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-                    const isManual = !res.user_id || res.user_id.length < 10;
-
-                    return `
-                        <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="px-6 py-5 text-xs text-gray-500 font-medium">${createdDate}</td>
-                            <td class="px-6 py-5">
-                                <span class="font-bold text-gray-900">${res.facility_name}</span>
-                                ${isManual ? '<span class="ml-2 text-[9px] bg-blue-50 text-blue-500 px-1.5 py-0.5 rounded font-black">현장등록</span>' : ''}
-                            </td>
-                            <td class="px-6 py-5">
-                                <div class="text-sm">
-                                    <p class="font-bold text-primary">${res.reservation_date}</p>
-                                    <p class="text-xs text-gray-400">${res.reservation_time}</p>
-                                </div>
-                            </td>
-                            <td class="px-6 py-5">
-                                <div class="flex flex-col gap-1">
-                                    <span class="text-xs font-bold text-gray-700">${res.selected_service || '상담 후 결정'}</span>
-                                    <span class="text-[10px] text-accent font-bold">${res.service_price || '-'}</span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-5">
-                                <div class="text-sm">
-                                    <span class="px-2 py-0.5 bg-onsil/5 text-onsil rounded text-[10px] font-bold mr-1 border border-onsil/10">${res.pet_type || '정보없음'}</span>
-                                    <span class="font-bold text-gray-800">${res.pet_name || '미입력'}</span>
-                                    <span class="text-[11px] text-gray-400">(${res.pet_weight || '0.0'}kg)</span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-5 font-mono text-sm text-gray-600">${res.user_phone}</td>
-                            <td class="px-6 py-5 text-center">
-                                <button onclick="deleteReservation('${res.id}')" class="w-8 h-8 rounded-full hover:bg-red-50 text-gray-300 hover:text-red-500 transition-all">
-                                    <i class="fas fa-trash-alt text-sm"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-
-            } catch (err) {
-                listContainer.innerHTML = `<tr><td colspan="7" class="px-6 py-20 text-center text-red-500">${err.message}</td></tr>`;
-            }
-        }
-
-        async function deleteReservation(id) {
-            if (!confirm('해당 예약을 정말 삭제하시겠습니까? (복구 불가능)')) return;
-            try {
-                const sb = Auth.getSupabase();
-                const { error } = await sb.from('reservations').delete().eq('id', id);
-                if (error) throw error;
-                loadReservations();
-            } catch (err) { alert('삭제 실패: ' + err.message); }
-        }
-
-        document.getElementById('add-res-form').onsubmit = async (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector('button[type="submit"]');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>처리 중..';
-
-            try {
-                const sb = Auth.getSupabase();
-                const user = await Auth.getCurrentUser();
-                
-                const payload = {
-                    facility_name: document.getElementById('res-facility').value,
-                    reservation_date: document.getElementById('res-date').value,
-                    reservation_time: document.getElementById('res-time').value,
-                    user_name: document.getElementById('res-user-name').value,
-                    pet_name: document.getElementById('res-pet-name').value,
-                    pet_type: document.getElementById('res-pet-type').value,
-                    user_phone: document.getElementById('res-phone').value,
-                    user_id: user.id,
-                    payment_status: 'manual'
-                };
-
-                if (!payload.facility_name || !payload.reservation_date) throw new Error("필수 정보를 입력해주세요.");
-
-                const { error } = await sb.from('reservations').insert([payload]);
-                if (error) throw error;
-
-                alert('신규 예약이 성공적으로 등록되었습니다.');
-                closeAddModal();
-                loadReservations();
-                e.target.reset();
-            } catch (err) {
-                alert('등록 오류: ' + err.message);
-            } finally {
-                btn.disabled = false;
-                btn.textContent = '예약 등록';
-            }
-        };
-
-        document.addEventListener('DOMContentLoaded', loadReservations);
-    </script>
+    
     <script>
         async function updateAdminUI() {
             try {
@@ -380,6 +216,61 @@
         document.addEventListener('DOMContentLoaded', updateAdminUI);
     </script>
     <script src="js/channel-talk.js"></script>
+
+    <script>
+        async function checkAdminAccess() {
+            try {
+                const user = await Auth.getCurrentUser();
+                if (!user) {
+                    location.href = 'index.html';
+                    return;
+                }
+                
+                const isAdmin = ["fulmin@nate.com","theonsil@gmail.com","admin@theonsil.co.kr","theonsilofficial@gmail.com","admin@onsil.com"].includes(user.email?.toLowerCase()) || user.role === 'admin';
+                const isPartner = user.role === 'partner';
+                
+                
+                if (!isAdmin && !isPartner) {
+                    alert('접근 권한이 없습니다.');
+                    location.href = 'index.html';
+                    return;
+                }
+                
+                
+                // Load Page Data
+                if (typeof loadReservations === 'function') loadReservations();
+                if (typeof loadPendingPartners === 'function') loadPendingPartners();
+                if (typeof loadFuneralHomes === 'function') loadFuneralHomes();
+                
+                // Update UI Badges
+                const badge = document.getElementById('admin-badge');
+                if (badge) {
+                    if (isAdmin) {
+                        badge.classList.remove('hidden');
+                        badge.textContent = 'ADMIN';
+                        badge.className = 'text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded ml-1';
+                    } else if (isPartner) {
+                        badge.classList.remove('hidden');
+                        badge.textContent = 'PARTNER';
+                        badge.className = 'text-[10px] bg-blue-50 text-blue-500 px-1.5 py-0.5 rounded ml-1';
+                    }
+                }
+                
+                // Hide restricted menu items for partners
+                if (isPartner) {
+                    const partnersMenu = document.querySelector('a[href="admin_partners.html"]');
+                    const funeralMenu = document.querySelector('a[href="admin_funeral_homes.html"]');
+                    if (partnersMenu) partnersMenu.classList.add('hidden');
+                    if (funeralMenu) funeralMenu.classList.add('hidden');
+                }
+            } catch (err) {
+                console.error("Auth Check Error:", err);
+                location.href = 'index.html';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', checkAdminAccess);
+    </script>
+    
 </body>
 
 </html>

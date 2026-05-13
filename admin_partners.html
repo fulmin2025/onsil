@@ -68,7 +68,7 @@
                 
                 <nav class="hidden md:flex items-center gap-1 border-l border-gray-100 pl-6 ml-2">
                     <a href="admin_reservations.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">예약 관리</a>
-                    <a href="admin_partners.html" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg transition-all">파트너 관리</a>
+                    <a href="admin_partners.html" id="nav-partners" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg transition-all">파트너 관리</a>
                     <a href="admin_funeral_homes.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">장례식장 관리</a>
                 </nav>
             </div>
@@ -117,86 +117,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="js/auth.js?v=2"></script>
-    <script>
-        async function checkAdmin() {
-            const user = await Auth.getCurrentUser();
-            if (!user || (user.role !== 'admin' && user.email !== 'fulmin@nate.com')) {
-                alert('관리자 권한이 필요합니다.');
-                location.href = 'partner-login.html';
-                return;
-            }
-            loadPendingPartners();
-        }
-
-        async function loadPendingPartners() {
-            const listContainer = document.getElementById('pending-list');
-            try {
-                const partners = await Auth.getPendingPartners();
-                if (!partners || partners.length === 0) {
-                    listContainer.innerHTML = `
-                        <tr>
-                            <td colspan="4" class="px-8 py-20 text-center">
-                                <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-300">
-                                    <i class="fas fa-inbox text-2xl"></i>
-                                </div>
-                                <p class="text-sm font-bold text-gray-400 uppercase tracking-tighter italic">현재 승인 대기 중인 신청 건이 없습니다.</p>
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-
-                listContainer.innerHTML = partners.map(p => `
-                    <tr class="hover:bg-gray-50/50 transition-colors group">
-                        <td class="px-8 py-6">
-                            <span class="text-sm font-medium text-gray-400">${new Date(p.created_at).toLocaleString('ko-KR')}</span>
-                        </td>
-                        <td class="px-8 py-6">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-partner/5 flex items-center justify-center text-partner">
-                                    <i class="fas fa-building"></i>
-                                </div>
-                                <div class="flex flex-col">
-                                    <span class="font-bold text-gray-900">${p.facility || '미지정 업체'}</span>
-                                    <span class="text-xs text-gray-400">${p.email}</span>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-8 py-6">
-                            <div class="flex flex-col">
-                                <span class="text-sm font-bold text-gray-700">${p.name || '미입력'}</span>
-                                <span class="text-xs text-gray-400">${p.phone || '연락처 없음'}</span>
-                            </div>
-                        </td>
-                        <td class="px-8 py-6 text-center">
-                            <button onclick="approveRequest('${p.id}', '${p.facility}')" class="px-6 py-2.5 bg-partner text-white rounded-xl text-xs font-bold shadow-lg shadow-partner/10 hover:bg-black transition-all active:scale-95">
-                                최종 승인
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
-            } catch (err) {
-                listContainer.innerHTML = `<tr><td colspan="4" class="px-8 py-20 text-center text-red-500">${err.message}</td></tr>`;
-            }
-        }
-
-        async function approveRequest(userId, facility) {
-            if (!confirm(`[${facility}] 업체의 입점을 승인하시겠습니까?`)) return;
-            try {
-                const res = await Auth.approvePartner(userId);
-                if (res.success) {
-                    alert('성공적으로 승인되었습니다.');
-                    loadPendingPartners();
-                } else {
-                    alert('승인 실패: ' + res.message);
-                }
-            } catch (err) {
-                alert('오류 발생: ' + err.message);
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', checkAdmin);
-    </script>
+    
     <script>
         async function updateAdminUI() {
             try {
@@ -220,6 +141,61 @@
         document.addEventListener('DOMContentLoaded', updateAdminUI);
     </script>
     <script src="js/channel-talk.js"></script>
+
+    <script>
+        async function checkAdminAccess() {
+            try {
+                const user = await Auth.getCurrentUser();
+                if (!user) {
+                    location.href = 'index.html';
+                    return;
+                }
+                
+                const isAdmin = ["fulmin@nate.com","theonsil@gmail.com","admin@theonsil.co.kr","theonsilofficial@gmail.com","admin@onsil.com"].includes(user.email?.toLowerCase()) || user.role === 'admin';
+                const isPartner = user.role === 'partner';
+                
+                
+                if (!isAdmin) {
+                    alert('관리자 전용 페이지입니다.');
+                    location.href = 'index.html';
+                    return;
+                }
+                
+                
+                // Load Page Data
+                if (typeof loadReservations === 'function') loadReservations();
+                if (typeof loadPendingPartners === 'function') loadPendingPartners();
+                if (typeof loadFuneralHomes === 'function') loadFuneralHomes();
+                
+                // Update UI Badges
+                const badge = document.getElementById('admin-badge');
+                if (badge) {
+                    if (isAdmin) {
+                        badge.classList.remove('hidden');
+                        badge.textContent = 'ADMIN';
+                        badge.className = 'text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded ml-1';
+                    } else if (isPartner) {
+                        badge.classList.remove('hidden');
+                        badge.textContent = 'PARTNER';
+                        badge.className = 'text-[10px] bg-blue-50 text-blue-500 px-1.5 py-0.5 rounded ml-1';
+                    }
+                }
+                
+                // Hide restricted menu items for partners
+                if (isPartner) {
+                    const partnersMenu = document.querySelector('a[href="admin_partners.html"]');
+                    const funeralMenu = document.querySelector('a[href="admin_funeral_homes.html"]');
+                    if (partnersMenu) partnersMenu.classList.add('hidden');
+                    if (funeralMenu) funeralMenu.classList.add('hidden');
+                }
+            } catch (err) {
+                console.error("Auth Check Error:", err);
+                location.href = 'index.html';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', checkAdminAccess);
+    </script>
+    
 </body>
 
 </html>
