@@ -149,17 +149,43 @@
             try {
                 const response = await fetch('manual_data.json?v=' + Date.now());
                 const manualData = await response.json();
-                const facilityData = manualData[facilityName];
+                let facilityData = manualData[facilityName];
+                
+                // If not found, try flexible matching (e.g., removing 'v', trimming, case-insensitive)
+                if (!facilityData) {
+                    const cleanName = facilityName.replace(/v$/, '').trim();
+                    const foundKey = Object.keys(manualData).find(k => 
+                        k.trim() === cleanName || 
+                        k.includes(cleanName) || 
+                        cleanName.includes(k)
+                    );
+                    if (foundKey) {
+                        facilityData = manualData[foundKey];
+                        console.log(`Matched facility "${facilityName}" to "${foundKey}"`);
+                    }
+                }
 
                 if (facilityData && facilityData.prices) {
-                    // Filter for 'package' or relevant categories
-                    const packages = facilityData.prices.find(p => p.category.toLowerCase().includes('장례') || p.category.toLowerCase().includes('패키지'));
-                    if (packages && packages.items) {
-                        currentServices = packages.items;
+                    // Filter for 'package' or relevant categories with expanded keywords
+                    const keywords = ['장례', '패키지', '비용', '요금', '화장', '서비스', '베이직', '프리미엄'];
+                    const filteredCategories = facilityData.prices.filter(p => 
+                        p.category && keywords.some(k => p.category.toLowerCase().includes(k))
+                    );
+
+                    if (filteredCategories.length > 0) {
+                        // Collect all items from matching categories
+                        currentServices = [];
+                        filteredCategories.forEach(cat => {
+                            if (cat.items) currentServices = currentServices.concat(cat.items);
+                        });
+                    } else if (facilityData.prices.length > 0) {
+                        // Fallback: If no keyword matches, take the first category's items
+                        currentServices = facilityData.prices[0].items || [];
                     }
                 }
                 
                 if (currentServices.length === 0) {
+                    console.warn(`No services found for ${facilityName}, using fallback.`);
                     currentServices = [
                         { name: "기본 장례 서비스", price: "200,000원", desc: "개별화장 + 추모실 + 유골함" },
                         { name: "프리미엄 패키지", price: "450,000원", desc: "기본 + 수의 + 고급관 + 꽃장식" }
