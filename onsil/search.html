@@ -700,7 +700,7 @@
 
                 const el = document.createElement('div');
                 el.className = "search-item bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row gap-6 cursor-pointer group";
-                el.onclick = () => location.href = 'detail.html?id=' + (item.id || item.external_uuid || item.uuid);
+                el.onclick = () => openDetailModal(item);
 
                 el.innerHTML = `
                         <div class="w-full md:w-48 h-32 bg-gray-200 rounded-lg bg-cover bg-center shrink-0 shadow-inner" style="background-image: url('${image}')"></div>
@@ -825,9 +825,9 @@
                 });
 
                 naver.maps.Event.addListener(marker, 'click', (e) => {
-                    location.href = 'detail.html?id=' + (item.external_uuid || item.id || item.uuid);
+                    openDetailModal(item);
                     naverMap.setCenter(new naver.maps.LatLng(lat, lng));
-                    naverMap.setZoom(13);
+                    // naverMap.setZoom(13); // Zoom is optional when modal opens
                 });
 
                 naverMarkers.push(marker);
