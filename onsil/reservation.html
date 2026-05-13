@@ -319,7 +319,7 @@
 
             try {
                 // Fetch manual data with cache breaker
-                const response = await fetch('manual_data.json?v=' + Date.now());
+                const response = await fetch('../manual_data.json?v=' + Date.now());
                 const manualData = await response.json();
                 let facilityData = manualData[facilityName];
 
