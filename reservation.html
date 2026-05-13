@@ -107,6 +107,15 @@
         </div>
     </main>
 
+    <!-- Hidden Debug Panel -->
+    <div id="debug-panel" class="hidden fixed bottom-20 left-4 right-4 bg-black/80 text-white text-[10px] p-4 rounded-xl z-[9999] overflow-auto max-h-[300px] font-mono">
+        <div class="flex justify-between items-center mb-2">
+            <span class="font-bold">System Diagnostics</span>
+            <button onclick="document.getElementById('debug-panel').classList.add('hidden')" class="text-white/50">Close</button>
+        </div>
+        <div id="debug-content"></div>
+    </div>
+
     <!-- Bottom CTA -->
     <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t p-4 shadow-lg">
         <button id="submit-btn" class="w-full py-4 bg-primary text-white rounded-xl font-bold text-lg disabled:opacity-50 disabled:bg-gray-300" disabled>예약 신청하기</button>
@@ -146,27 +155,48 @@
         }
 
         async function loadFacilityData() {
+            const debug = document.getElementById('debug-content');
+            const log = (msg) => { if(debug) debug.innerHTML += `<div>[${new Date().toLocaleTimeString()}] ${msg}</div>`; console.log(msg); };
+
+            if (!facilityName) {
+                log("Error: facilityName is missing from URL.");
+                return;
+            }
+
             try {
+                log(`Attempting to fetch data for: ${facilityName}`);
+                // Fetch manual data with cache breaker
                 const response = await fetch('manual_data.json?v=' + Date.now());
-                const manualData = await response.json();
-                let facilityData = manualData[facilityName];
+                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
                 
-                // If not found, try flexible matching (e.g., removing 'v', trimming, case-insensitive)
+                const text = await response.text();
+                const manualData = JSON.parse(text);
+                log(`Successfully loaded manual_data.json. Total keys: ${Object.keys(manualData).length}`);
+
+                // Normalize names for better matching (NFC)
+                const normalizedFacilityName = facilityName.normalize('NFC').replace(/v$/, '').trim();
+                let facilityData = manualData[facilityName.normalize('NFC')];
+
+                // Flexible matching for facility name
                 if (!facilityData) {
-                    const cleanName = facilityName.replace(/v$/, '').trim();
-                    const foundKey = Object.keys(manualData).find(k => 
-                        k.trim() === cleanName || 
-                        k.includes(cleanName) || 
-                        cleanName.includes(k)
-                    );
+                    log("Exact match failed, trying flexible matching...");
+                    const foundKey = Object.keys(manualData).find(k => {
+                        const normalizedKey = k.normalize('NFC').trim();
+                        return normalizedKey === normalizedFacilityName || 
+                               normalizedKey.includes(normalizedFacilityName) || 
+                               normalizedFacilityName.includes(normalizedKey);
+                    });
+                    
                     if (foundKey) {
                         facilityData = manualData[foundKey];
-                        console.log(`Matched facility "${facilityName}" to "${foundKey}"`);
+                        log(`Flexible match found: ${foundKey}`);
+                    } else {
+                        log(`No match found in manual_data. Keys: ${Object.keys(manualData).slice(0, 5).join(', ')}...`);
                     }
                 }
 
-                if (facilityData && facilityData.prices) {
-                    // Filter for 'package' or relevant categories with expanded keywords
+                if (facilityData && facilityData.prices && Array.isArray(facilityData.prices)) {
+                    log(`Found facility data with ${facilityData.prices.length} categories.`);
                     const keywords = ['장례', '패키지', '비용', '요금', '화장', '서비스', '베이직', '프리미엄'];
                     const filteredCategories = facilityData.prices.filter(p => 
                         p.category && keywords.some(k => p.category.includes(k))
@@ -174,11 +204,12 @@
 
                     let rawItems = [];
                     if (filteredCategories.length > 0) {
+                        log(`Filtered into ${filteredCategories.length} relevant categories.`);
                         filteredCategories.forEach(cat => {
                             if (cat.items) rawItems = rawItems.concat(cat.items);
                         });
-                    } else if (facilityData.prices.length > 0) {
-                        // Fallback: If no keyword matches, take all items
+                    } else {
+                        log("No category keywords matched, falling back to all items.");
                         facilityData.prices.forEach(cat => {
                             if (cat.items) rawItems = rawItems.concat(cat.items);
                         });
@@ -190,18 +221,24 @@
                             price: item.price,
                             desc: item.desc || (item.name.includes('기본') || item.name.includes('베이직') ? '개별 화장 + 추모실 + 기본 소모품' : '고급 유골함 + 염습 + 수의 포함')
                         }));
+                        log(`Successfully mapped ${currentServices.length} services.`);
                     }
+                } else {
+                    log("Facility data is empty or missing prices.");
                 }
-                
-                if (currentServices.length === 0) {
-                    console.warn(`No services found for ${facilityName}, using fallback.`);
-                    currentServices = [
-                        { name: "기본 장례 서비스", price: "200,000원", desc: "개별화장 + 추모실 + 유골함" },
-                        { name: "프리미엄 패키지", price: "450,000원", desc: "기본 + 수의 + 고급관 + 꽃장식" }
-                    ];
-                }
-                renderServices();
-            } catch (err) { console.error("Load Data Error:", err); }
+            } catch (err) {
+                log(`Pricing Init Error: ${err.message}`);
+                document.getElementById('debug-panel').classList.remove('hidden');
+            }
+
+            if (currentServices.length === 0) {
+                log("Final fallback triggered.");
+                currentServices = [
+                    { name: "기본 장례 서비스", price: "200,000원", desc: "개별화장 + 추모실 + 유골함" },
+                    { name: "프리미엄 패키지", price: "450,000원", desc: "기본 + 수의 + 고급관 + 꽃장식" }
+                ];
+            }
+            renderServices();
         }
 
         function renderServices() {

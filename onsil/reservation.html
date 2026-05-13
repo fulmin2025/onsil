@@ -271,6 +271,15 @@
         </div>
     </div>
 
+    <!-- Hidden Debug Panel -->
+    <div id="debug-panel" class="hidden fixed bottom-20 left-4 right-4 bg-black/80 text-white text-[10px] p-4 rounded-xl z-[9999] overflow-auto max-h-[300px] font-mono">
+        <div class="flex justify-between items-center mb-2">
+            <span class="font-bold">System Diagnostics</span>
+            <button onclick="document.getElementById('debug-panel').classList.add('hidden')" class="text-white/50">Close</button>
+        </div>
+        <div id="debug-content"></div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
@@ -314,31 +323,49 @@
         let currentServices = [];
 
         async function initPricing() {
-            if (!facilityName) return;
+            const debug = document.getElementById('debug-content');
+            const log = (msg) => { if(debug) debug.innerHTML += `<div>[${new Date().toLocaleTimeString()}] ${msg}</div>`; console.log(msg); };
+
+            if (!facilityName) {
+                log("Error: facilityName is missing from URL.");
+                return;
+            }
             document.getElementById('target-name').textContent = facilityName;
 
             try {
+                log(`Attempting to fetch data for: ${facilityName}`);
                 // Fetch manual data with cache breaker
                 const response = await fetch('../manual_data.json?v=' + Date.now());
-                const manualData = await response.json();
-                let facilityData = manualData[facilityName];
+                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+                
+                const text = await response.text();
+                const manualData = JSON.parse(text);
+                log(`Successfully loaded manual_data.json. Total keys: ${Object.keys(manualData).length}`);
+
+                // Normalize names for better matching (NFC)
+                const normalizedFacilityName = facilityName.normalize('NFC').replace(/v$/, '').trim();
+                let facilityData = manualData[facilityName.normalize('NFC')];
 
                 // Flexible matching for facility name
-                if (!facilityData && facilityName) {
-                    const cleanName = facilityName.replace(/v$/, '').trim();
-                    const foundKey = Object.keys(manualData).find(k =>
-                        k.trim() === cleanName ||
-                        k.includes(cleanName) ||
-                        cleanName.includes(k)
-                    );
+                if (!facilityData) {
+                    log("Exact match failed, trying flexible matching...");
+                    const foundKey = Object.keys(manualData).find(k => {
+                        const normalizedKey = k.normalize('NFC').trim();
+                        return normalizedKey === normalizedFacilityName || 
+                               normalizedKey.includes(normalizedFacilityName) || 
+                               normalizedFacilityName.includes(normalizedKey);
+                    });
+                    
                     if (foundKey) {
                         facilityData = manualData[foundKey];
-                        console.log(`Matched facility "${facilityName}" to "${foundKey}"`);
+                        log(`Flexible match found: ${foundKey}`);
+                    } else {
+                        log(`No match found in manual_data. Keys: ${Object.keys(manualData).slice(0, 5).join(', ')}...`);
                     }
                 }
 
                 if (facilityData && facilityData.prices && Array.isArray(facilityData.prices)) {
-                    // Expanded keywords for category matching
+                    log(`Found facility data with ${facilityData.prices.length} categories.`);
                     const keywords = ['패키지', '비용', '장례', '화장', '요금', '서비스', '베이직', '프리미엄'];
                     const filteredCategories = facilityData.prices.filter(p =>
                         p.category && keywords.some(k => p.category.includes(k))
@@ -346,11 +373,12 @@
 
                     let rawItems = [];
                     if (filteredCategories.length > 0) {
+                        log(`Filtered into ${filteredCategories.length} relevant categories.`);
                         filteredCategories.forEach(cat => {
                             if (cat.items) rawItems = rawItems.concat(cat.items);
                         });
-                    } else if (facilityData.prices.length > 0) {
-                        // Fallback: Use all items from all categories if no keyword matches
+                    } else {
+                        log("No category keywords matched, falling back to all items.");
                         facilityData.prices.forEach(cat => {
                             if (cat.items) rawItems = rawItems.concat(cat.items);
                         });
@@ -365,10 +393,14 @@
                             imageUrl: item.imageUrl || 'https://images.unsplash.com/photo-1596230526487-11152a4a754b?w=800',
                             icon: item.name.includes('루세떼') ? 'fas fa-gem' : (item.name.includes('프리미엄') ? 'fas fa-crown' : 'fas fa-leaf')
                         }));
+                        log(`Successfully mapped ${currentServices.length} services.`);
                     }
+                } else {
+                    log("Facility data is empty or missing prices.");
                 }
             } catch (err) {
-                console.error("Pricing Init Error:", err);
+                log(`Pricing Init Error: ${err.message}`);
+                document.getElementById('debug-panel').classList.remove('hidden');
             }
 
             // Final Data Compensation
