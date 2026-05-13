@@ -78,6 +78,23 @@
             transform: translateX(0) !important;
         }
     </style>
+
+    <style>
+        /* 헤더 고정으로 인한 본문 가림 방지 */
+        body {
+            padding-top: 64px; /* h-16 */
+        }
+        @media (min-width: 640px) {
+            body {
+                padding-top: 72px; /* h-18 */
+            }
+        }
+        /* 기존에 추가된 padding-top과 충돌 방지 */
+        main {
+            padding-top: 2rem !important; /* 기본 여백 확보 */
+        }
+    </style>
+
 </head>
 
 <body class="bg-gray-50 text-gray-900 font-sans overflow-x-hidden">
@@ -114,7 +131,7 @@
 
     <main>
         <!-- Hero Section -->
-        <section class="relative py-32 bg-[#1B2B48] text-white overflow-hidden">
+        <section class="relative  pb-32 bg-[#1B2B48] text-white overflow-hidden">
             <div
                 class="absolute inset-0 opacity-25 bg-[url('images/professional_funeral_service.png')] bg-cover bg-center scale-110">
             </div>

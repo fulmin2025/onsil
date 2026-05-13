@@ -54,6 +54,23 @@
         @keyframes slideUp { from { transform: translate(-50%,-40%); opacity: 0; } to { transform: translate(-50%,-50%); opacity: 1; } }
         .animate-slideUp { animation: slideUp 0.3s ease-out forwards; }
     </style>
+
+    <style>
+        /* 헤더 고정으로 인한 본문 가림 방지 */
+        body {
+            padding-top: 64px; /* h-16 */
+        }
+        @media (min-width: 640px) {
+            body {
+                padding-top: 72px; /* h-18 */
+            }
+        }
+        /* 기존에 추가된 padding-top과 충돌 방지 */
+        main {
+            padding-top: 2rem !important; /* 기본 여백 확보 */
+        }
+    </style>
+
 </head>
 <body class="bg-gray-50 font-sans text-gray-900 min-h-screen flex flex-col">
         <!-- Header -->
@@ -79,7 +96,7 @@
             </div>
         </div>
     </header>
-    <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-24">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-6  pb-24">
         <div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
                 <h2 class="text-2xl font-black text-gray-900 mb-2">장례식장 목록</h2>

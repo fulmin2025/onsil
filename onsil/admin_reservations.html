@@ -36,6 +36,23 @@
             }
         }
     </script>
+
+    <style>
+        /* 헤더 고정으로 인한 본문 가림 방지 */
+        body {
+            padding-top: 64px; /* h-16 */
+        }
+        @media (min-width: 640px) {
+            body {
+                padding-top: 72px; /* h-18 */
+            }
+        }
+        /* 기존에 추가된 padding-top과 충돌 방지 */
+        main {
+            padding-top: 2rem !important; /* 기본 여백 확보 */
+        }
+    </style>
+
 </head>
 
 <body class="bg-gray-50 font-sans text-gray-900 min-h-screen">
@@ -63,7 +80,7 @@
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-24">
+    <main class="max-w-7xl mx-auto px-4  pb-24">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <div>
                 <h1 id="dashboard-title" class="text-2xl font-bold text-gray-900">?�약 ?�합 관�?/h1>

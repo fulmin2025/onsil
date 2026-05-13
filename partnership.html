@@ -81,6 +81,23 @@
             transform: translateX(0) !important;
         }
     </style>
+
+    <style>
+        /* 헤더 고정으로 인한 본문 가림 방지 */
+        body {
+            padding-top: 64px; /* h-16 */
+        }
+        @media (min-width: 640px) {
+            body {
+                padding-top: 72px; /* h-18 */
+            }
+        }
+        /* 기존에 추가된 padding-top과 충돌 방지 */
+        main {
+            padding-top: 2rem !important; /* 기본 여백 확보 */
+        }
+    </style>
+
 </head>
 
 <body class="bg-brand-cream text-brand overflow-x-hidden">
@@ -115,7 +132,7 @@
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-6 py-20 pb-40">
+    <main class="max-w-4xl mx-auto px-6  pb-20 pb-40">
         <!-- Hero Section -->
         <section class="text-center mb-16 fade-up">
             <div

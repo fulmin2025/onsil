@@ -95,6 +95,23 @@
             transform: translateX(0) !important;
         }
     </style>
+
+    <style>
+        /* 헤더 고정으로 인한 본문 가림 방지 */
+        body {
+            padding-top: 64px; /* h-16 */
+        }
+        @media (min-width: 640px) {
+            body {
+                padding-top: 72px; /* h-18 */
+            }
+        }
+        /* 기존에 추가된 padding-top과 충돌 방지 */
+        main {
+            padding-top: 2rem !important; /* 기본 여백 확보 */
+        }
+    </style>
+
 </head>
 
 <body class="bg-brand-cream text-brand overflow-x-hidden">
@@ -129,7 +146,7 @@
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-6 py-12 pb-32">
+    <main class="max-w-6xl mx-auto px-6  pb-12 pb-32">
         <!-- Tab Navigation -->
         <div class="flex justify-center mb-12 sticky top-20 z-40 bg-brand-cream/80 backdrop-blur-sm py-4">
             <div class="bg-gray-100 p-1 rounded-2xl flex gap-1 shadow-inner overflow-x-auto no-scrollbar max-w-full">
