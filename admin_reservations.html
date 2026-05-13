@@ -237,8 +237,20 @@
                 }
 
                 let query = sb.from('reservations').select('*');
-                if (user.role === 'partner' && user.facility) {
+                
+                const isAdmin = (user.role === 'admin' || 
+                                ['fulmin@nate.com', 'theonsil@gmail.com', 'admin@theonsil.co.kr'].includes(user.email.toLowerCase()));
+
+                if (isAdmin) {
+                    // Admin: Full access
+                    console.log("Admin access: No filter");
+                } else if (user.role === 'partner' && user.facility) {
+                    // Partner: Strict filter by facility
                     query = query.eq('facility_name', user.facility);
+                } else {
+                    // Unauthorized or missing facility: Deny access
+                    listContainer.innerHTML = '<tr><td colspan="7" class="px-6 py-20 text-center text-red-500">조회 권한이 없거나 시설 정보가 등록되지 않았습니다.</td></tr>';
+                    return;
                 }
 
                 const { data, error } = await query.order('created_at', { ascending: false });
