@@ -169,18 +169,27 @@
                     // Filter for 'package' or relevant categories with expanded keywords
                     const keywords = ['장례', '패키지', '비용', '요금', '화장', '서비스', '베이직', '프리미엄'];
                     const filteredCategories = facilityData.prices.filter(p => 
-                        p.category && keywords.some(k => p.category.toLowerCase().includes(k))
+                        p.category && keywords.some(k => p.category.includes(k))
                     );
 
+                    let rawItems = [];
                     if (filteredCategories.length > 0) {
-                        // Collect all items from matching categories
-                        currentServices = [];
                         filteredCategories.forEach(cat => {
-                            if (cat.items) currentServices = currentServices.concat(cat.items);
+                            if (cat.items) rawItems = rawItems.concat(cat.items);
                         });
                     } else if (facilityData.prices.length > 0) {
-                        // Fallback: If no keyword matches, take the first category's items
-                        currentServices = facilityData.prices[0].items || [];
+                        // Fallback: If no keyword matches, take all items
+                        facilityData.prices.forEach(cat => {
+                            if (cat.items) rawItems = rawItems.concat(cat.items);
+                        });
+                    }
+
+                    if (rawItems.length > 0) {
+                        currentServices = rawItems.map(item => ({
+                            name: item.name,
+                            price: item.price,
+                            desc: item.desc || (item.name.includes('기본') || item.name.includes('베이직') ? '개별 화장 + 추모실 + 기본 소모품' : '고급 유골함 + 염습 + 수의 포함')
+                        }));
                     }
                 }
                 
@@ -198,12 +207,12 @@
         function renderServices() {
             const container = document.getElementById('service-container');
             container.innerHTML = currentServices.map((s, idx) => `
-                <div class="service-card p-4 border border-gray-200 rounded-2xl cursor-pointer hover:border-primary/50 flex items-center justify-between group" data-service="\${s.name}" data-price="\${s.price}">
+                <div class="service-card p-4 border border-gray-200 rounded-2xl cursor-pointer hover:border-primary/50 flex items-center justify-between group" data-service="${s.name}" data-price="${s.price}">
                     <div class="flex items-center gap-4">
                         <div class="w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400 group-[.active]:text-primary"><i class="fas fa-leaf"></i></div>
                         <div>
-                            <div class="flex items-center gap-2"><p class="font-bold text-gray-900">\${s.name}</p><span class="text-[10px] px-1.5 py-0.5 bg-gray-100 rounded font-bold">\${s.price}</span></div>
-                            <p class="text-[11px] text-gray-500">\${s.desc || ''}</p>
+                            <div class="flex items-center gap-2"><p class="font-bold text-gray-900">${s.name}</p><span class="text-[10px] px-1.5 py-0.5 bg-gray-100 rounded font-bold">${s.price}</span></div>
+                            <p class="text-[11px] text-gray-500">${s.desc || ''}</p>
                         </div>
                     </div>
                     <div class="w-6 h-6 border-2 border-gray-200 rounded-full flex items-center justify-center group-[.active]:bg-primary group-[.active]:border-primary"><i class="fas fa-check text-[10px] text-white"></i></div>
