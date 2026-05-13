@@ -91,31 +91,119 @@
 <body class="bg-brand-cream text-brand overflow-x-hidden">
 
     <!-- Header -->
-    <header id="main-header" class="fixed top-0 z-50 w-full bg-white border-b border-brand/5 transition-all outline-none">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
+    <header id="main-header"
+        class="fixed top-0 z-50 w-full transition-all duration-500 bg-white shadow-sm border-b border-brand/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2 group flex-shrink-0">
-                <img src="./images/onsil_logo_tr.png" width="40" height="40" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" alt="온실 캐릭터 로고">
-                <span class="font-bold text-lg text-brand tracking-tight">The 온실</span>
+                <div
+                    class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-brand flex items-center justify-center transition-transform group-hover:scale-110 shadow-lg shadow-brand/20">
+                    <span class="text-white text-xs sm:text-sm font-bold">온</span>
+                </div>
+                <div class="flex flex-col -space-y-1">
+                    <span class="font-black text-lg sm:text-xl text-brand tracking-tighter">온실(Onsil)</span>
+                    <span class="text-[9px] sm:text-[10px] text-brand/40 font-bold uppercase tracking-widest">Premium
+                        Care</span>
+                </div>
             </a>
+
+            <!-- Desktop Nav -->
             <nav class="hidden lg:flex items-center gap-1">
-                <a href="search.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">장례식장 찾기</a>
-                <a href="guide.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">이별 가이드</a>
-                <a href="self-diagnosis.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">건강자가진단</a>
-                <a href="memory.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">추억 가이드</a>
-                <a href="community.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">커뮤니티</a>
+                <a href="search.html"
+                    class="px-5 py-2.5 text-[15px] font-bold text-brand/60 hover:text-brand hover:bg-brand/5 rounded-xl transition-all">장례식장
+                    찾기</a>
+                <a href="guide.html"
+                    class="px-5 py-2.5 text-[15px] font-bold text-brand/60 hover:text-brand hover:bg-brand/5 rounded-xl transition-all">이별
+                    가이드</a>
+                <a href="self-diagnosis.html"
+                    class="px-5 py-2.5 text-[15px] font-bold text-brand/60 hover:text-brand hover:bg-brand/5 rounded-xl transition-all">건강자가진단</a>
+                <a href="memory.html"
+                    class="px-5 py-2.5 text-[15px] font-bold text-brand/60 hover:text-brand hover:bg-brand/5 rounded-xl transition-all">추억
+                    가이드</a>
+                <a href="community.html"
+                    class="px-5 py-2.5 text-[15px] font-bold text-brand/60 hover:text-brand hover:bg-brand/5 rounded-xl transition-all">커뮤니티</a>
             </nav>
-            <div class="hidden lg:flex items-center gap-2">
-                <a href="tel:1551-5052" class="bg-brand-warm hover:bg-brand-warmDark text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2">
-                    <i class="fas fa-phone-alt text-xs"></i> 1551-5052
+
+            <div class="hidden lg:flex items-center gap-4">
+                <div id="auth-container"></div>
+                <a href="tel:1551-5052"
+                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-6 py-3.5 rounded-2xl text-sm font-bold transition-all shadow-xl shadow-brand-warm/20 flex items-center gap-2">
+                    <i class="fas fa-phone-alt"></i> 1551-5052
                 </a>
             </div>
-            <div class="flex lg:hidden items-center gap-2">
-                <a href="tel:1551-5052" class="w-10 h-10 flex items-center justify-center rounded-xl bg-brand/5 text-brand transition-colors">
-                    <i class="fas fa-phone-alt text-sm"></i>
-                </a>
-            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn"
+                class="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors"
+                onclick="toggleMobileNav()">
+                <i class="fas fa-bars text-brand text-lg" id="menu-icon"></i>
+            </button>
         </div>
     </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
+            id="mobile-nav-panel">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <span class="font-bold text-lg text-brand">메뉴</span>
+                    <button onclick="toggleMobileNav()"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+                <nav class="space-y-1">
+                    <a href="search.html?quote=true"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors bg-brand-cream/50">
+                        <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
+                        <span class="font-bold text-brand">바로 견적받기</span>
+                    </a>
+                    <a href="search.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-search text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">장례식장 찾기</span>
+                    </a>
+                    <a href="guide.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-book-open text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">이별 가이드</span>
+                    </a>
+                    <a href="self-diagnosis.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-stethoscope text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">건강자가진단</span>
+                    </a>
+                    <a href="memory.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-heart text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">추억 가이드</span>
+                    </a>
+                    <a href="community.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-comments text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">커뮤니티</span>
+                    </a>
+                    <a href="contact.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-envelope text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">문의하기</span>
+                    </a>
+                </nav>
+                <div class="mt-8 pt-6 border-t">
+                    <button
+                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                        class="w-full flex items-center justify-center gap-2 bg-brand-sage text-white py-3.5 rounded-xl font-bold shadow-lg mb-3 hover:bg-[#87A08B]/90 transition-colors">
+                        <i class="fas fa-calendar-check"></i> 예약하기
+                    </button>
+                    <a href="tel:1551-5052"
+                        class="flex items-center justify-center gap-2 bg-brand-warm text-white py-3.5 rounded-xl font-bold shadow-lg">
+                        <i class="fas fa-phone-alt"></i> 상담전화 1551-5052
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <main class="max-w-4xl mx-auto px-6 py-12 pb-32">
         <section class="text-center mb-16 fade-up">
@@ -264,7 +352,35 @@
         </div>
     </footer>
 
+    <!-- Supabase Auth -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/auth.js"></script>
     <script>
+        // Mobile Nav
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            const panel = document.getElementById('mobile-nav-panel');
+            if (nav.classList.contains('hidden')) {
+                nav.classList.remove('hidden');
+                setTimeout(() => panel.classList.remove('translate-x-full'), 10);
+                document.body.style.overflow = 'hidden';
+            } else {
+                panel.classList.add('translate-x-full');
+                document.body.style.overflow = '';
+                setTimeout(() => nav.classList.add('hidden'), 300);
+            }
+        }
+
+        // Header scroll effect
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('bg-white', 'backdrop-blur-lg', 'shadow-sm', 'border-b', 'border-brand/5');
+            } else {
+                header.classList.remove('bg-white', 'backdrop-blur-lg', 'shadow-sm', 'border-b', 'border-brand/5');
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -275,7 +391,13 @@
             }, { threshold: 0.1 });
 
             document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+            // Sync Auth UI
+            if (window.Auth && window.Auth.updateHeaderUI) {
+                window.Auth.updateHeaderUI();
+            }
         });
+    </script>
 
         let quizAnswers = {};
         function selectQuizOption(step, value) {
