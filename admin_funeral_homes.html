@@ -81,7 +81,7 @@
                     <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
                         <span class="text-white text-xs font-bold">온</span>
                     </div>
-                    <span class="font-bold text-lg text-brand tracking-tight">온실(Onsil) <span class="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded ml-1">ADMIN</span></span>
+                    <span class="font-bold text-lg text-brand tracking-tight">온실(Onsil) <span id="admin-badge" class="hidden text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded ml-1">ADMIN</span></span>
                 </a>
                 
                 <nav class="hidden md:flex items-center gap-1 border-l border-gray-100 pl-6 ml-2">
@@ -445,5 +445,32 @@
             document.getElementById("security-modal").classList.add("hidden");
         }
     </script>
+
+    <!-- Dynamic Badge & UI Adjustments -->
+    <script>
+        async function updateAdminUI() {
+            try {
+                const user = await Auth.getCurrentUser();
+                if (user) {
+                    const badge = document.getElementById('admin-badge');
+                    if (badge) {
+                        if (user.role === 'admin' || user.email === 'fulmin@nate.com') {
+                            badge.classList.remove('hidden');
+                            badge.textContent = 'ADMIN';
+                            badge.className = 'text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded ml-1';
+                        } else if (user.role === 'partner') {
+                            badge.classList.remove('hidden');
+                            badge.textContent = 'PARTNER';
+                            badge.className = 'text-[10px] bg-blue-500 text-white px-1.5 py-0.5 rounded ml-1';
+                        } else {
+                            badge.classList.add('hidden');
+                        }
+                    }
+                }
+            } catch (err) { console.error("Admin UI Error:", err); }
+        }
+        document.addEventListener('DOMContentLoaded', updateAdminUI);
+    </script>
+    
 </body>
 </html>
