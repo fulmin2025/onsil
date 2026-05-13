@@ -75,6 +75,16 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        /* 헤더 고정으로 인한 본문 가림 방지 */
+        body {
+            padding-top: 64px; /* h-16 */
+        }
+        @media (min-width: 640px) {
+            body {
+                padding-top: 72px; /* h-18 */
+            }
+        }
     </style>
 </head>
 
