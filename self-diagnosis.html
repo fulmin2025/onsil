@@ -3,17 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>건강자가진단 - The 온실</title>
-    <link rel="canonical" href="https://theonsil.co.kr/self-diagnosis.html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2C3E50">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1B2B48">
     <link rel="apple-touch-icon" href="icons/icon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
-        rel="stylesheet">
-        <script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -27,76 +23,20 @@
                             warmDark: '#B8894E',
                             sage: '#87A08B',
                             mist: '#E8ECE9'
-                        },
-                        partner: "#1B2B48",
-                        primary: "#1B2B48",
-                        accent: "#D4A574",
-                        onsil: "#8D7B68"
+                        }
                     },
                     fontFamily: {
                         sans: ['Pretendard', 'system-ui', 'sans-serif'],
+                        serif: ['Nanum Myeongjo', 'serif'],
                     }
                 }
             }
         }
     </script>
     <style>
-        .fade-up {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease-out;
-        }
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
 
-        .fade-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .check-item.active {
-            border-color: #D4A373 !important;
-            background-color: #FFF9F2 !important;
-        }
-
-        .check-item.active .check-box {
-            background-color: #D4A373 !important;
-            border-color: #D4A373 !important;
-        }
-
-        .score-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #D4A373;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 3px solid white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .comparison-card {
-            transition: all 0.3s ease;
-        }
-
-        .comparison-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
-        }
-
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .mobile-nav-open {
-            transform: translateX(0) !important;
-        }
-    </style>
-
-    <style>
         /* 헤더 고정으로 인한 본문 가림 방지 */
         body {
             padding-top: 64px; /* h-16 */
@@ -106,17 +46,20 @@
                 padding-top: 72px; /* h-18 */
             }
         }
-        /* 기존에 추가된 padding-top과 충돌 방지 */
         main {
-            padding-top: 2rem !important; /* 기본 여백 확보 */
+            padding-top: 2rem !important;
+        }
+        .mobile-nav-open {
+            transform: translateX(0) !important;
         }
     </style>
 
+    <title>건강자가진단 - The 온실</title>
 </head>
 
-<body class="bg-brand-cream text-brand overflow-x-hidden">
+<body class="bg-brand-cream font-sans text-brand antialiased">
 
-                <!-- Header -->
+                        <!-- Header -->
     <header id="main-header" class="fixed top-0 z-50 w-full bg-white border-b border-brand/5 transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2 group shrink-0">
@@ -133,7 +76,7 @@
                 <a href="guide.html"
                     class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">이별 가이드</a>
                 <a href="self-diagnosis.html"
-                    class="px-4 py-2 text-sm text-brand font-bold bg-brand/5 rounded-lg transition-all whitespace-nowrap">건강자가진단</a>
+                    class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">건강자가진단</a>
                 <a href="memory.html"
                     class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">추억 가이드</a>
                 <a href="community.html"

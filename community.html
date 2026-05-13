@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>커뮤니티 - The 온실</title>
-    <link rel="canonical" href="https://theonsil.co.kr/community.html">
+    <meta name="theme-color" content="#2C3E50">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-        <script>
+    <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -22,14 +23,11 @@
                             warmDark: '#B8894E',
                             sage: '#87A08B',
                             mist: '#E8ECE9'
-                        },
-                        partner: "#1B2B48",
-                        primary: "#1B2B48",
-                        accent: "#D4A574",
-                        onsil: "#8D7B68"
+                        }
                     },
                     fontFamily: {
                         sans: ['Pretendard', 'system-ui', 'sans-serif'],
+                        serif: ['Nanum Myeongjo', 'serif'],
                     }
                 }
             }
@@ -37,81 +35,8 @@
     </script>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
 
-        body {
-            background-color: #F8F6F3;
-        }
-
-        .category-tab.active {
-            background-color: #2C3E50;
-            color: white;
-            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2);
-        }
-
-        .post-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .post-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-        }
-
-        .comment-section {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
-        }
-
-        .comment-section.active {
-            max-height: 1000px;
-            transition: max-height 1s ease-in-out;
-        }
-
-        .mobile-nav-open {
-            transform: translateX(0) !important;
-        }
-
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        /* Modal animation */
-        .modal-enter {
-            opacity: 0;
-            transform: scale(0.95);
-        }
-
-        .modal-enter-active {
-            opacity: 1;
-            transform: scale(1);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        @keyframes modalEnter {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .animate-modal-enter {
-            animation: modalEnter 0.3s ease-out forwards;
-        }
-    </style>
-
-    <style>
         /* 헤더 고정으로 인한 본문 가림 방지 */
         body {
             padding-top: 64px; /* h-16 */
@@ -121,16 +46,19 @@
                 padding-top: 72px; /* h-18 */
             }
         }
-        /* 기존에 추가된 padding-top과 충돌 방지 */
         main {
-            padding-top: 2rem !important; /* 기본 여백 확보 */
+            padding-top: 2rem !important;
+        }
+        .mobile-nav-open {
+            transform: translateX(0) !important;
         }
     </style>
 
+    <title>커뮤니티 - The 온실</title>
 </head>
 
-<body class="font-sans text-brand antialiased">
-            <!-- Header -->
+<body class="bg-brand-cream font-sans text-brand antialiased">
+                    <!-- Header -->
     <header id="main-header" class="fixed top-0 z-50 w-full bg-white border-b border-brand/5 transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2 group shrink-0">
@@ -151,7 +79,7 @@
                 <a href="memory.html"
                     class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">추억 가이드</a>
                 <a href="community.html"
-                    class="px-4 py-2 text-sm text-brand font-bold bg-brand/5 rounded-lg transition-all whitespace-nowrap">커뮤니티</a>
+                    class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">커뮤니티</a>
             </nav>
 
             <div class="hidden lg:flex items-center gap-1.5 flex-nowrap shrink-0">

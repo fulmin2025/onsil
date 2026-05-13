@@ -3,25 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <script>
-        // Naver Map Domain Fix: Force non-www to match Naver Console registration
-        if (window.location.hostname === 'www.theonsil.co.kr') {
-            window.location.replace('https://theonsil.co.kr' + window.location.pathname + window.location.search);
-        }
-    </script>
-    <meta name="referrer" content="origin">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>장례식장 찾기 - The 온실</title>
+    <meta name="theme-color" content="#2C3E50">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#8D7B68">
     <link rel="apple-touch-icon" href="icons/icon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- SEO Canonical -->
-    <link rel="canonical" href="https://theonsil.co.kr">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script src="js/auth.js"></script>
-        <script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -35,108 +23,20 @@
                             warmDark: '#B8894E',
                             sage: '#87A08B',
                             mist: '#E8ECE9'
-                        },
-                        partner: "#1B2B48",
-                        primary: "#1B2B48",
-                        accent: "#D4A574",
-                        onsil: "#8D7B68"
+                        }
                     },
                     fontFamily: {
                         sans: ['Pretendard', 'system-ui', 'sans-serif'],
+                        serif: ['Nanum Myeongjo', 'serif'],
                     }
                 }
             }
         }
     </script>
     <style>
-        .map-pin {
-            transition: transform 0.2s;
-            transform: translate(-50%, -50%) scale(calc(1 / var(--map-scale, 1)));
-        }
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
 
-        .map-pin:hover {
-            transform: translate(-50%, -50%) scale(calc(1.2 / var(--map-scale, 1)));
-            z-index: 50;
-        }
-
-        #map-view {
-            cursor: grab;
-            user-select: none;
-        }
-
-        #map-view:active {
-            cursor: grabbing;
-        }
-
-        #map-content svg text {
-            fill: white;
-            font-family: 'Pretendard', sans-serif;
-            font-size: 4px;
-            pointer-events: none;
-        }
-
-        #map-content svg path {
-            fill: #8D7B68;
-            fill-opacity: 0.5;
-            stroke: white;
-            stroke-width: 0.5px;
-            transition: fill 0.2s;
-        }
-
-        #map-content svg path:hover {
-            fill: #C5A065;
-            fill-opacity: 1;
-            cursor: pointer;
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(100%);
-            }
-
-            to {
-                transform: translateY(0);
-            }
-        }
-
-        .animate-slideUp {
-            animation: slideUp 0.3s ease-out forwards;
-        }
-
-        .region-badge-inner {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
-        }
-
-        .region-badge-inner:hover {
-            background-color: #C5A065 !important;
-            transform: scale(1.1);
-        }
-
-        /* Quote Modal Styles */
-        .quote-modal-backdrop {
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(8px);
-        }
-
-        .quote-input:checked+.quote-label {
-            border-color: #8D7B68;
-            background-color: #F9F5F0;
-            color: #8D7B68;
-        }
-
-        .mobile-nav-panel {
-            transform: translateX(100%);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .mobile-nav-open {
-            transform: translateX(0) !important;
-        }
-    </style>
-
-    <style>
         /* 헤더 고정으로 인한 본문 가림 방지 */
         body {
             padding-top: 64px; /* h-16 */
@@ -146,16 +46,19 @@
                 padding-top: 72px; /* h-18 */
             }
         }
-        /* 기존에 추가된 padding-top과 충돌 방지 */
         main {
-            padding-top: 2rem !important; /* 기본 여백 확보 */
+            padding-top: 2rem !important;
+        }
+        .mobile-nav-open {
+            transform: translateX(0) !important;
         }
     </style>
 
+    <title>장례식장 찾기 - The 온실</title>
 </head>
 
-<body class="bg-gray-50 text-gray-900">
-                <!-- Header -->
+<body class="bg-brand-cream font-sans text-brand antialiased">
+                        <!-- Header -->
     <header id="main-header" class="fixed top-0 z-50 w-full bg-white border-b border-brand/5 transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2 group shrink-0">
@@ -168,7 +71,7 @@
             <!-- Desktop Nav -->
             <nav class="hidden lg:flex items-center gap-1">
                 <a href="search.html"
-                    class="px-4 py-2 text-sm text-brand font-bold bg-brand/5 rounded-lg transition-all whitespace-nowrap">장례식장 찾기</a>
+                    class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">장례식장 찾기</a>
                 <a href="guide.html"
                     class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">이별 가이드</a>
                 <a href="self-diagnosis.html"
