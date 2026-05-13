@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>업체 승인 관리 - The 온실 Admin</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin
         href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-        <script>
+    <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -29,33 +29,16 @@
                         accent: "#D4A574",
                         onsil: "#8D7B68"
                     },
-                    fontFamily: {
-                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
-                    }
+                    fontFamily: { sans: ['Pretendard', 'system-ui', 'sans-serif'] }
                 }
             }
         }
     </script>
 
-    <style>
-        /* 헤더 고정으로 인한 본문 가림 방지 */
-        body {
-            padding-top: 64px; /* h-16 */
-        }
-        @media (min-width: 640px) {
-            body {
-                padding-top: 72px; /* h-18 */
-            }
-        }
-        main {
-            padding-top: 2rem !important;
-        }
-    </style>
-
+    <style>body { padding-top: 72px; } main { padding-top: 2rem !important; }</style>
 </head>
-
-<body class="bg-gray-50 font-sans text-gray-900 min-h-screen flex flex-col">
-    <!-- Header -->
+<body class="bg-gray-50 font-sans text-gray-900 min-h-screen">
+        <!-- Header -->
     <header id="main-header" class="fixed top-0 z-50 w-full bg-white border-b border-brand/5 transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
             <div class="flex items-center gap-6">
@@ -67,9 +50,9 @@
                 </a>
                 
                 <nav class="hidden md:flex items-center gap-1 border-l border-gray-100 pl-6 ml-2">
-                    <a href="admin_reservations.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">예약 관리</a>
+                    <a href="admin_reservations.html" id="nav-res" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">예약 관리</a>
                     <a href="admin_partners.html" id="nav-partners" class="px-4 py-2 text-sm font-bold text-brand bg-brand/5 rounded-lg transition-all">파트너 관리</a>
-                    <a href="admin_funeral_homes.html" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">장례식장 관리</a>
+                    <a href="admin_funeral_homes.html" id="nav-homes" class="px-4 py-2 text-sm font-medium text-brand/70 hover:text-brand hover:bg-brand/5 rounded-lg transition-all">장례식장 관리</a>
                 </nav>
             </div>
             <div class="flex items-center gap-3">
@@ -78,80 +61,29 @@
             </div>
         </div>
     </header>
-
-    <main class="flex-1 max-w-7xl w-full mx-auto px-6  pb-12">
-        <div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-                <h2 class="text-2xl font-black text-gray-900 mb-2">입점 신청 내역</h2>
-                <p class="text-sm text-gray-500 font-medium">승인 대기 중인 신규 파트너 목록입니다.</p>
-            </div>
-            <button onclick="loadPendingPartners()" class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-600 hover:bg-gray-50 transition-all shadow-sm">
-                <i class="fas fa-sync-alt"></i> 새로고침
-            </button>
+    <main class="max-w-7xl mx-auto px-6 pb-12">
+        <div class="mb-8 flex justify-between items-center">
+            <div><h2 class="text-2xl font-black text-gray-900 mb-2">입점 신청 내역</h2><p class="text-sm text-gray-500">승인 대기 중인 신규 파트너 목록입니다.</p></div>
+            <button onclick="location.reload()" class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-600 shadow-sm"><i class="fas fa-sync-alt"></i> 새로고침</button>
         </div>
-
-        <!-- Pending List Table -->
-        <div class="bg-white rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-gray-50/50 border-b border-gray-100">
-                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">신청 일시</th>
-                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">장례식장명</th>
-                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">담당자 / 연락처</th>
-                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest text-center">조작</th>
-                        </tr>
-                    </thead>
-                    <tbody id="pending-list" class="divide-y divide-gray-50">
-                        <tr>
-                            <td colspan="4" class="px-8 py-20 text-center text-gray-400">
-                                <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
-                                <p class="text-sm font-medium">데이터를 불러오는 중입니다...</p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="bg-white rounded-[2rem] shadow-xl border border-gray-100 overflow-hidden">
+            <table class="w-full text-left">
+                <thead><tr class="bg-gray-50 border-b border-gray-100"><th class="px-8 py-5 text-xs font-black text-gray-400">신청 일시</th><th class="px-8 py-5 text-xs font-black text-gray-400">장례식장명</th><th class="px-8 py-5 text-xs font-black text-gray-400">담당자 / 연락처</th><th class="px-8 py-5 text-xs font-black text-gray-400 text-center">조작</th></tr></thead>
+                <tbody id="pending-list" class="divide-y divide-gray-50"></tbody>
+            </table>
         </div>
     </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script src="js/auth.js?v=2"></script>
     
-    <script>
-        async function updateAdminUI() {
-            try {
-                const user = await Auth.getCurrentUser();
-                if (user) {
-                    const badge = document.getElementById('admin-badge');
-                    if (badge) {
-                        if (user.role === 'admin' || user.email === 'fulmin@nate.com') {
-                            badge.classList.remove('hidden');
-                            badge.textContent = 'ADMIN';
-                            badge.className = 'text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded ml-1';
-                        } else if (user.role === 'partner') {
-                            badge.classList.remove('hidden');
-                            badge.textContent = 'PARTNER';
-                            badge.className = 'text-[10px] bg-blue-500 text-white px-1.5 py-0.5 rounded ml-1';
-                        }
-                    }
-                }
-            } catch (err) {}
-        }
-        document.addEventListener('DOMContentLoaded', updateAdminUI);
-    </script>
-    <script src="js/channel-talk.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/auth.js?v=v2_final"></script>
     <script>
         async function checkAdminAccess() {
             try {
                 const user = await Auth.getCurrentUser();
-                if (!user) {
-                    location.href = 'index.html';
-                    return;
-                }
+                if (!user) { location.href = 'index.html'; return; }
                 
-                const isAdmin = ["fulmin@nate.com","theonsil@gmail.com","admin@theonsil.co.kr","theonsilofficial@gmail.com","admin@onsil.com"].includes(user.email?.toLowerCase()) || user.role === 'admin';
+                const adminEmails = ["fulmin@nate.com","theonsil@gmail.com","admin@theonsil.co.kr","theonsilofficial@gmail.com","admin@onsil.com"];
+                const isAdmin = adminEmails.includes(user.email?.toLowerCase()) || user.role === 'admin';
                 const isPartner = user.role === 'partner';
                 
                 
@@ -162,12 +94,7 @@
                 }
                 
                 
-                // Load Page Data
-                if (typeof loadReservations === 'function') loadReservations();
-                if (typeof loadPendingPartners === 'function') loadPendingPartners();
-                if (typeof loadFuneralHomes === 'function') loadFuneralHomes();
-                
-                // Update UI Badges
+                // Initialize Badge
                 const badge = document.getElementById('admin-badge');
                 if (badge) {
                     if (isAdmin) {
@@ -183,11 +110,14 @@
                 
                 // Hide restricted menu items for partners
                 if (isPartner) {
-                    const partnersMenu = document.querySelector('a[href="admin_partners.html"]');
-                    const funeralMenu = document.querySelector('a[href="admin_funeral_homes.html"]');
+                    const partnersMenu = document.getElementById('nav-partners');
+                    const funeralMenu = document.getElementById('nav-homes');
                     if (partnersMenu) partnersMenu.classList.add('hidden');
                     if (funeralMenu) funeralMenu.classList.add('hidden');
                 }
+
+                // Load Data
+                if (typeof initPage === 'function') initPage(user, isAdmin);
             } catch (err) {
                 console.error("Auth Check Error:", err);
                 location.href = 'index.html';
@@ -195,7 +125,28 @@
         }
         document.addEventListener('DOMContentLoaded', checkAdminAccess);
     </script>
-    
-</body>
 
+    <script>
+        async function initPage() {
+            const listContainer = document.getElementById('pending-list');
+            const partners = await Auth.getPendingPartners();
+            if (!partners || partners.length === 0) {
+                listContainer.innerHTML = '<tr><td colspan="4" class="py-20 text-center text-gray-400">대기 중인 내역이 없습니다.</td></tr>';
+                return;
+            }
+            listContainer.innerHTML = partners.map(p => '<tr class="hover:bg-gray-50">\n' +
+                '<td class="px-8 py-6 text-sm text-gray-400">' + new Date(p.created_at).toLocaleString() + '</td>\n' +
+                '<td class="px-8 py-6 font-bold text-gray-900">' + (p.facility || '미지정') + '<br><span class="text-xs font-normal text-gray-400">' + p.email + '</span></td>\n' +
+                '<td class="px-8 py-6 text-sm font-bold">' + (p.name || '미입력') + '<br><span class="text-xs font-normal text-gray-400">' + (p.phone || '-') + '</span></td>\n' +
+                '<td class="px-8 py-6 text-center"><button onclick="approve(\'' + p.id + '\', \'' + p.facility + '\')" class="px-6 py-2 bg-partner text-white rounded-xl text-xs font-bold shadow-lg">최종 승인</button></td>\n' +
+            '</tr>').join('');
+        }
+        async function approve(id, facility) {
+            if (!confirm(facility + ' 입점을 승인하시겠습니까?')) return;
+            const res = await Auth.approvePartner(id);
+            if (res.success) { alert('승인되었습니다.'); location.reload(); }
+            else alert('실패: ' + res.message);
+        }
+    </script>
+</body>
 </html>
