@@ -380,6 +380,18 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Force reset quiz state and scroll to top
+            window.scrollTo(0, 0);
+            
+            const steps = document.querySelectorAll('.quiz-step');
+            steps.forEach((step, index) => {
+                if (index === 0) step.classList.add('active');
+                else step.classList.remove('active');
+            });
+            
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
