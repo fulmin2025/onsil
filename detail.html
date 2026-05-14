@@ -10,6 +10,7 @@
     <link rel="stylesheet" as="style" crossorigin
         href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/data.js"></script>
     <script src="js/auth.js"></script>
         <script>
         tailwind.config = {
@@ -163,6 +164,20 @@
         }
 
         function renderDetail(data) {
+            // Merge with REAL_DATA if available
+            if (typeof REAL_DATA !== 'undefined' && data.name) {
+                let realInfo = REAL_DATA[data.name];
+                if (!realInfo) {
+                    const foundKey = Object.keys(REAL_DATA).find(k => data.name.includes(k) || k.includes(data.name));
+                    if (foundKey) realInfo = REAL_DATA[foundKey];
+                }
+                
+                if (realInfo) {
+                    if (!data.prices || data.prices.length === 0) data.prices = realInfo.prices || (typeof STANDARD_PRICES !== 'undefined' ? STANDARD_PRICES : []);
+                    if (!data.image_url && realInfo.imageUrl) data.image_url = realInfo.imageUrl;
+                    if (!data.address && realInfo.address) data.address = realInfo.address;
+                }
+            }
             document.title = `${data.name} - 온실(Onsil)`;
             document.getElementById('detail-name').textContent = data.name;
             document.getElementById('detail-address-text').textContent = data.address;
