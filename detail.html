@@ -269,13 +269,17 @@
                     </div>
                 </div>`;
 
-            // Reserve Button
+                        // Reserve Button
             document.getElementById('reserve-btn').onclick = async () => {
+                if (!data.is_alliance) {
+                    alert('???λ??앹옣? ?쒗쑕 ?앹옣???꾨땲?댁꽌 ?⑤씪???덉빟??遺덇??ν빀?덈떎.\n?곷떞??1551-5052)瑜??듯빐 ?덉빟 吏꾪뻾???꾩??쒕━寃좎뒿?덈떎.');
+                    return;
+                }
                 const user = await Auth.getCurrentUser();
                 if (user) {
                     location.href = `reservation.html?id=${encodeURIComponent(data.name)}`;
                 } else {
-                    alert('예약은 로그인 후 이용 가능합니다.');
+                    alert('?덉빟? 濡쒓렇?????댁슜 媛?ν빀?덈떎.');
                     location.href = 'login.html';
                 }
             };
