@@ -348,7 +348,7 @@
                         </div>
 
                         <!-- Mock items -->
-                        <div class="space-y-2.5">
+                        <div id="home-recommendation-list" class="space-y-2.5">
                             <div
                                 class="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-4 bg-brand-cream rounded-2xl border border-brand/5">
                                 <div
@@ -1017,7 +1017,96 @@
             console.warn('Onsil: PWA features (Service Worker) are disabled on file:// protocol for security reasons.');
         }
     </script>
-    <script src="js/channel-talk.js"></script>
+
+                <script>
+        // --- Location-based Recommendations ---
+        async function initHomeRecommendations() {
+            const listContainer = document.getElementById('home-recommendation-list');
+            const statusText = document.getElementById('loc-status');
+            if (!listContainer) return;
+
+            function getDistance(lat1, lon1, lat2, lon2) {
+                const R = 6371;
+                const dLat = (lat2 - lat1) * Math.PI / 180;
+                const dLon = (lon2 - lon1) * Math.PI / 180;
+                const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                return R * c;
+            }
+
+            try {
+                if (statusText) statusText.textContent = '?꾩튂 ?뺤씤 以?..';
+
+                const pos = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, { 
+                        timeout: 10000,
+                        enableHighAccuracy: false 
+                    });
+                }).catch((err) => {
+                    console.warn("Geolocation failed:", err);
+                    if (statusText) {
+                        if (err.code === 1) statusText.textContent = '?꾩튂 沅뚰븳??嫄곕???(?쒖슱 湲곗? 異붿쿇)';
+                        else statusText.textContent = '?꾩튂 ?뺤씤 遺덇? (?쒖슱 湲곗? 異붿쿇)';
+                    }
+                    return { coords: { latitude: 37.5665, longitude: 126.9780 } }; // Default to Seoul
+                });
+
+                if (statusText && !statusText.textContent.includes('嫄곕?')) {
+                    statusText.textContent = '???꾩튂 湲곕컲 異붿쿇';
+                }
+
+                const userLat = pos.coords.latitude;
+                const userLng = pos.coords.longitude;
+
+                let homes = [];
+                if (window.Auth && window.Auth.getAllFuneralHomes) {
+                    homes = await window.Auth.getAllFuneralHomes();
+                }
+
+                if (!homes || homes.length === 0) {
+                    homes = typeof HOMES_DATA !== 'undefined' ? HOMES_DATA.map(h => ({...h, latitude: h.lat, longitude: h.lng})) : [];
+                }
+
+                const finalItems = homes
+                    .map(h => ({
+                        ...h,
+                        distance: getDistance(userLat, userLng, h.latitude, h.longitude)
+                    }))
+                    .sort((a, b) => a.distance - b.distance)
+                    .slice(0, 4);
+
+                if (finalItems.length === 0) return;
+
+                listContainer.innerHTML = finalItems.map(item => {
+                    const isAlliance = item.is_alliance || item.isAlliance;
+                    const allianceBadge = isAlliance ? '<span class="text-[10px] px-1.5 py-0.5 bg-brand-warm/15 text-brand-warm rounded font-bold">?쒗쑕</span>' : '';
+                    const distText = item.distance.toFixed(1) + 'km';
+                    
+                    return `
+                        <div class="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-4 bg-white rounded-2xl border border-brand/5 hover:bg-brand-cream/30 transition-colors cursor-pointer" onclick="location.href='search.html?id=${item.id || ''}'">
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 bg-brand-warm/10 rounded-xl flex items-center justify-center shrink-0">
+                                <i class="fas fa-building text-brand-warm text-lg sm:text-xl"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2">
+                                    ${allianceBadge}
+                                    <p class="font-bold text-brand text-sm truncate">${item.name}</p>
+                                </div>
+                                <p class="text-xs text-brand/40 mt-0.5">${item.region || ''} 쨌 ${distText}</p>
+                            </div>
+                            <p class="font-bold text-brand text-sm whitespace-nowrap">${item.price || '蹂꾨룄臾몄쓽'}</p>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (err) {
+                console.error("Recommendation Error:", err);
+            }
+        }
+        window.addEventListener('load', initHomeRecommendations);
+    </script>`n    <script src="js/channel-talk.js"></script>
 </body>
 
 </html>
