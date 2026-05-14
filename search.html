@@ -604,7 +604,7 @@
 
                 const realData = (typeof REAL_DATA !== 'undefined') ? REAL_DATA[item.name] : null;
                 const defaultImage = 'https://images.unsplash.com/photo-1596230526487-11152a4a754b?w=500';
-                const image = item.image_url || (realData && realData.imageUrl) ? (item.image_url || realData.imageUrl) : defaultImage;
+                const image = item.imageUrl || item.image_url || (realData && realData.imageUrl) ? (item.imageUrl || item.image_url || realData.imageUrl) : defaultImage;
 
                 let priceText = "상담 문의";
                 const itemPrices = item.prices || (realData ? realData.prices : null);
