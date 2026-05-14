@@ -294,7 +294,7 @@
             }
 
             // [Apple 심사관 데모계정 우회 백도어]
-            if (name.toLowerCase() === 'fulmin' && phone === '01000000000') {
+            if ((name.toLowerCase() === 'fulmin' || email.toLowerCase() === 'fulmin') && (phone === '01000000000' || phone === '')) {
                 isVerified = true;
                 document.getElementById('verify-status').classList.remove('hidden');
                 document.getElementById('phone').disabled = true;

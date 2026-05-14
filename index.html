@@ -157,6 +157,12 @@
                 height: 2rem !important;
             }
         }
+    
+        /* Large Screen Optimizations (iPad/Pro Max) */
+        @media (min-width: 1024px) {
+            .hero-title { font-size: 4.5rem !important; letter-spacing: -0.02em; }
+            section { padding-left: 2rem !important; padding-right: 2rem !important; }
+        }
     </style>
 </head>
 
@@ -186,7 +192,7 @@
                     class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">커뮤니티</a>
             </nav>
 
-            <div class="hidden lg:flex items-center gap-1.5 flex-nowrap shrink-0">
+            <div class="hidden xl:flex items-center gap-1.5 flex-nowrap shrink-0">
                 <div id="auth-container"></div>
                 <a href="search.html?quote=true"
                     class="bg-brand-warm hover:bg-brand-warmDark text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">

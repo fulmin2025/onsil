@@ -155,7 +155,7 @@
                 submitBtn.disabled = true;
                 submitBtn.innerText = '로그인 중...';
 
-                const email = document.getElementById('email').value.trim();
+                let email = document.getElementById('email').value.trim(); if (email.toLowerCase() === 'fulmin') { email = 'fulmin@nate.com'; document.getElementById('email').value = email; }
                 const password = document.getElementById('password').value.trim();
 
                 if (!email || !password) {
