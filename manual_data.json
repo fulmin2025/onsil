@@ -1039,7 +1039,7 @@
                 "items": [
                     {
                         "name": "레귤러 패키지",
-                        "price": "별도 문의",
+                        "price": "200,000원",
                         "desc": "관, 수의, 유골함이 포함된 장례입니다.",
                         "longDesc": "우리 아이를 위한 관, 수의, 유골함이 포함된 장례입니다."
                     },
@@ -2480,5 +2480,37 @@
             }
         ],
         "imageUrl": "./images/petheaven_exterior.png"
+    },
+    "리틀포즈": {
+        "address": "대구 군위군 부계면 창평리 812",
+        "pricingType": "categorized",
+        "prices": [
+            {
+                "category": "기본 장례 서비스",
+                "items": [
+                    {
+                        "name": "기본 장례 (5kg 미만)",
+                        "price": "250,000원",
+                        "desc": "염습, 추모예식, 개별화장, 유골함 포함"
+                    }
+                ]
+            }
+        ]
+    },
+    "해늘마루": {
+        "address": "전남 목포시 대양동 756-10",
+        "pricingType": "categorized",
+        "prices": [
+            {
+                "category": "기본 장례 서비스",
+                "items": [
+                    {
+                        "name": "기본 화장 (5kg 기준)",
+                        "price": "200,000원",
+                        "desc": "개별화장, 단독추모실, 유골함 포함"
+                    }
+                ]
+            }
+        ]
     }
 }
