@@ -4183,18 +4183,7 @@
             }
             return 99999999;
         }
-                                // "추가" 과금 및 0원 등은 기본가(최저가) 산출에서 제외
-                                if (!isNaN(val) && val > 0 && val < min && !p.name.includes('추가') && !p.name.includes('초과') && !p.name.includes('가산')) {
-                                    min = val;
-                                }
-                            }
-                        });
-                        return min;
-                    }
-                }
-            }
-            return 99999999;
-        }
+
 
         function getExtendedDetails(item) {
             let realInfo = REAL_DATA[item.name];
