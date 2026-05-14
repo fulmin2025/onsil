@@ -1037,7 +1037,7 @@
             }
 
             try {
-                if (statusText) statusText.textContent = '?꾩튂 ?뺤씤 以?..';
+                if (statusText) statusText.textContent = '위치 확인 중...';
 
                 const pos = await new Promise((resolve, reject) => {
                     navigator.geolocation.getCurrentPosition(resolve, reject, { 
@@ -1047,14 +1047,14 @@
                 }).catch((err) => {
                     console.warn("Geolocation failed:", err);
                     if (statusText) {
-                        if (err.code === 1) statusText.textContent = '?꾩튂 沅뚰븳??嫄곕???(?쒖슱 湲곗? 異붿쿇)';
-                        else statusText.textContent = '?꾩튂 ?뺤씤 遺덇? (?쒖슱 湲곗? 異붿쿇)';
+                        if (err.code === 1) statusText.textContent = '위치 권한이 거부됨 (서울 기준 추천)';
+                        else statusText.textContent = '위치 확인 불가 (서울 기준 추천)';
                     }
                     return { coords: { latitude: 37.5665, longitude: 126.9780 } }; // Default to Seoul
                 });
 
-                if (statusText && !statusText.textContent.includes('嫄곕?')) {
-                    statusText.textContent = '???꾩튂 湲곕컲 異붿쿇';
+                if (statusText && !statusText.textContent.includes('거부')) {
+                    statusText.textContent = '내 위치 기반 추천';
                 }
 
                 const userLat = pos.coords.latitude;
@@ -1081,7 +1081,7 @@
 
                 listContainer.innerHTML = finalItems.map(item => {
                     const isAlliance = item.is_alliance || item.isAlliance;
-                    const allianceBadge = isAlliance ? '<span class="text-[10px] px-1.5 py-0.5 bg-brand-warm/15 text-brand-warm rounded font-bold">?쒗쑕</span>' : '';
+                    const allianceBadge = isAlliance ? '<span class="text-[10px] px-1.5 py-0.5 bg-brand-warm/15 text-brand-warm rounded font-bold">제휴</span>' : '';
                     const distText = item.distance.toFixed(1) + 'km';
                     
                     return `
@@ -1094,9 +1094,9 @@
                                     ${allianceBadge}
                                     <p class="font-bold text-brand text-sm truncate">${item.name}</p>
                                 </div>
-                                <p class="text-xs text-brand/40 mt-0.5">${item.region || ''} 쨌 ${distText}</p>
+                                <p class="text-xs text-brand/40 mt-0.5">${item.region || ''} · ${distText}</p>
                             </div>
-                            <p class="font-bold text-brand text-sm whitespace-nowrap">${item.price || '蹂꾨룄臾몄쓽'}</p>
+                            <p class="font-bold text-brand text-sm whitespace-nowrap">${item.price || '별도문의'}</p>
                         </div>
                     `;
                 }).join('');
@@ -1106,7 +1106,8 @@
             }
         }
         window.addEventListener('load', initHomeRecommendations);
-    </script>`n    <script src="js/channel-talk.js"></script>
+    </script>
+    <script src="js/channel-talk.js"></script>
 </body>
 
 </html>
