@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Search</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body>
+    <h1>Supabase Connection Test</h1>
+    <div id="status">Loading...</div>
+    <ul id="list"></ul>
+
+    <script>
+        async function test() {
+            const status = document.getElementById('status');
+            const list = document.getElementById('list');
+            try {
+                console.log('Testing Auth.getAllFuneralHomes...');
+                const data = await Auth.getAllFuneralHomes();
+                status.textContent = `Success! Loaded ${data.length} items.`;
+                data.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item.name;
+                    list.appendChild(li);
+                });
+            } catch (e) {
+                status.textContent = 'Error: ' + e.message;
+                console.error(e);
+            }
+        }
+        window.onload = test;
+    </script>
+</body>
+</html>

@@ -224,9 +224,9 @@
                             </label>
                         </div>
                     </div>
-                </div>
-                    <!-- Insurance Banner -->
-                    <div class="mt-8 pt-6 border-t border-gray-100">
+
+                    <!-- Insurance Banner (Sticky) -->
+                    <div class="pt-6 border-t border-gray-100">
                         <a href="insurance-diagnosis.html" class="block group">
                             <div class="bg-gradient-to-br from-[#E8ECE9] to-white p-5 rounded-2xl border border-[#87A08B]/20 transition-all hover:shadow-md hover:border-[#87A08B]/40">
                                 <div class="flex items-start justify-between mb-3">
@@ -243,6 +243,7 @@
                             </div>
                         </a>
                     </div>
+                </div>
             </aside>
 
             <div class="flex-1">
@@ -1874,6 +1875,32 @@
             setTimeout(() => modal.classList.add('hidden'), 300);
         }
     </script>
+        <!-- Mobile Insurance Floating Banner -->
+    <div class="md:hidden fixed bottom-6 left-4 right-4 z-[55]">
+        <a href="insurance-diagnosis.html" class="flex items-center justify-between p-4 bg-brand-warm text-white rounded-2xl shadow-xl border border-white/20 active:scale-95 transition-transform">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-shield-dog text-lg"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-sm leading-tight">우리 아이 보험 점검</h4>
+                    <p class="text-[10px] text-white/80">무료 진단 받고 보험금 혜택 확인하기</p>
+                </div>
+            </div>
+            <i class="fas fa-chevron-right text-sm mr-2"></i>
+        </a>
+    </div>
+
+    
+                <div>
+                    <h4 class="font-bold text-sm leading-tight">우리 아이 보험 점검</h4>
+                    <p class="text-[10px] text-white/80">무료 진단 받고 보험금 혜택 확인하기</p>
+                </div>
+            </div>
+            <i class="fas fa-chevron-right text-sm mr-2"></i>
+        </a>
+    </div>
+
     <!-- Filter Modal (Mobile Only) -->
     <div id="filter-modal" class="fixed inset-0 z-[150] hidden">
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeFilterModal()"></div>
