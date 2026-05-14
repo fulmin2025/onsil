@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "cap:sync": "npx cap copy && npx cap sync",
     "cap:open:android": "npx cap open android",
-    "cap:open:ios": "npx cap open ios"
+    "cap:open:ios": "npx cap open ios",
+    "postinstall": "chmod +x node_modules/.bin/cap || true"
   },
   "keywords": [
     "capacitor",
