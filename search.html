@@ -4560,7 +4560,25 @@
                     funeralHomesData = data;
                 } else {
                     // Fallback to RAW_JSON if DB is empty
-                    funeralHomesData = (typeof RAW_JSON !== 'undefined' && RAW_JSON.business) ? RAW_JSON.business : [];
+                    if (typeof RAW_JSON !== 'undefined' && RAW_JSON.business) {
+                        funeralHomesData = RAW_JSON.business;
+                    } else if (typeof REAL_DATA !== 'undefined') {
+                        funeralHomesData = Object.keys(REAL_DATA).map((name, index) => {
+                            const info = REAL_DATA[name];
+                            return {
+                                id: 'fallback-' + index,
+                                name: name,
+                                address: info.address || '',
+                                latitude: info.latitude || 37.5665,
+                                longitude: info.longitude || 126.9780,
+                                image_url: info.imageUrl || '',
+                                is_alliance: true,
+                                prices: info.prices || []
+                            };
+                        });
+                    } else {
+                        funeralHomesData = [];
+                    }
                 }
 
                 console.log(`DATA: Loaded ${funeralHomesData.length} items from ${data && data.length > 0 ? 'Supabase' : 'Fallback'}`);
@@ -4573,7 +4591,25 @@
             } catch (err) {
                 console.error("Initialization Error:", err);
                 // Fallback
-                funeralHomesData = (typeof RAW_JSON !== 'undefined' && RAW_JSON.business) ? RAW_JSON.business : [];
+                if (typeof RAW_JSON !== 'undefined' && RAW_JSON.business) {
+                    funeralHomesData = RAW_JSON.business;
+                } else if (typeof REAL_DATA !== 'undefined') {
+                    funeralHomesData = Object.keys(REAL_DATA).map((name, index) => {
+                        const info = REAL_DATA[name];
+                        return {
+                            id: 'fallback-' + index,
+                            name: name,
+                            address: info.address || '',
+                            latitude: info.latitude || 37.5665,
+                            longitude: info.longitude || 126.9780,
+                            image_url: info.imageUrl || '',
+                            is_alliance: true,
+                            prices: info.prices || []
+                        };
+                    });
+                } else {
+                    funeralHomesData = [];
+                }
                 filterItems();
             }
         }
