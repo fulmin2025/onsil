@@ -368,8 +368,6 @@
         ]
     },
     "메리온": {
-        "is24h": true,
-        "address": "경남 양산시 상북면 외석리 462-1",
         "pricingType": "categorized",
         "prices": [
             {
@@ -422,7 +420,9 @@
                     }
                 ]
             }
-        ]
+        ],
+        "address": "경남 양산시 상북면 외석리 462-1",
+        "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/merion.webp"
     },
     "씨엘로펫": {
         "is24h": true,
@@ -2443,61 +2443,42 @@
             }
         ]
     },
-    "메리온": {
+    "강아지펫헤븐": {
+        "is24h": true,
+        "address": "경북 성주군 선남면 오도리 91",
         "pricingType": "categorized",
         "prices": [
             {
-                "category": "장례 패키지 (5kg 기준)",
+                "category": "기본 장례 비용",
                 "items": [
                     {
-                        "name": "기본장",
+                        "name": "기본 화장 (5kg 미만)",
                         "price": "200,000원",
-                        "desc": "기본 유골함, 예식실 사용, 염습",
-                        "longDesc": "가장 기본적인 절차로 구성된 실속형 장례 서비스입니다. 반려동물을 깨끗하게 닦고 갈무리하는 '염습' 과정과 기본 유골함이 제공됩니다. (5kg 기본)",
-                        "imageUrl": "http://www.merion.co.kr/img/sub02/02_01.jpg"
+                        "desc": "영정사진, 추모실, 개별화장, 기본유골함",
+                        "longDesc": "염습, 단독 추모실, 개별화장, 기본 유골함, 고급 보자기, 장례 확인서가 포함됩니다.",
+                        "imageUrl": "./images/petheaven_exterior.png"
                     },
                     {
-                        "name": "일반장",
-                        "price": "420,000원",
-                        "desc": "일반 수의, 오동나무 관, 일반 유골함 등",
-                        "longDesc": "수의와 관이 포함되어 보다 정중하게 격식을 갖춘 장례 서비스입니다. 오동나무 관에 일반 삼베 수의를 입혀 마지막을 예우합니다.",
-                        "imageUrl": "http://www.merion.co.kr/img/sub02/02_02.jpg"
-                    },
-                    {
-                        "name": "고급장",
-                        "price": "별도 문의",
-                        "desc": "고급 수의, 오동나무 관, 고급 유골함 등",
-                        "longDesc": "소재가 업그레이드된 수의와 관, 유골함을 사용하여 품격을 높인 프리미엄 서비스입니다. 상세 비용은 지점 상담을 통해 확인 가능합니다.",
-                        "imageUrl": "http://www.merion.co.kr/img/sub02/02_03.jpg"
-                    },
-                    {
-                        "name": "최고급장",
-                        "price": "별도 문의",
-                        "desc": "최고급 명주 수의, 최고급 관, 이중 유골함 등",
-                        "longDesc": "최고급 소재인 명주 수의와 이중 유골함 등 모든 구성품을 최상급으로 제공하는 메리온 최고의 예우 서비스입니다.",
-                        "imageUrl": "http://www.merion.co.kr/img/sub02/02_04.jpg"
+                        "name": "기본 화장 (5~15kg)",
+                        "price": "250,000원",
+                        "desc": "영정사진, 추모실, 개별화장, 기본유골함",
+                        "longDesc": "염습, 단독 추모실, 개별화장, 기본 유골함, 고급 보자기, 장례 확인서가 포함됩니다.",
+                        "imageUrl": "./images/petheaven_exterior.png"
                     }
                 ]
             },
             {
-                "category": "안치 (추모관)",
+                "category": "추가 선택 사항",
                 "items": [
                     {
-                        "name": "일반 추모관 (1년)",
-                        "price": "150,000원",
-                        "desc": "추가 관리비 없음",
-                        "longDesc": "안전하고 편안한 공간에 마련된 일반 추모관입니다. 안치 후 추가적으로 발생하는 별도 관리비가 없습니다."
-                    },
-                    {
-                        "name": "고급 추모관 (1년)",
-                        "price": "250,000원",
-                        "desc": "추가 관리비 없음",
-                        "longDesc": "보다 쾌적하고 넓은 공간에 마련된 고급 추모관입니다. 일반 추모관과 마찬가지로 1년 단위 계약이며 별도 관리비가 없습니다."
+                        "name": "메모리얼 스톤",
+                        "price": "200,000원 ~",
+                        "desc": "아이의 유골을 보석화",
+                        "longDesc": "유골을 아름다운 보석 형태로 남기는 메모리얼 스톤 제작 서비스입니다."
                     }
                 ]
             }
         ],
-        "address": "경남 양산시 상북면 외석리 462-1",
-        "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/merion.webp"
+        "imageUrl": "./images/petheaven_exterior.png"
     }
 }
