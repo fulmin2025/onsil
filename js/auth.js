@@ -471,6 +471,13 @@ const Auth = {
             }
 
             console.log('Auth.getAllFuneralHomes: Fetch complete. Count:', data ? data.length : 0);
+            
+            // Filter out deleted funeral homes
+            if (data && data.length > 0) {
+                const hiddenNames = ['펫메모리얼', '펫포유', '파트라슈'];
+                data = data.filter(item => !hiddenNames.includes(item.name));
+            }
+
             return data || [];
         } catch (error) {
             console.error('Auth.getAllFuneralHomes: EXCEPTION:', error);
