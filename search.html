@@ -1489,16 +1489,16 @@
     <script src="js/data.js"></script>
     <script src="js/auth.js"></script>
     <script>
-                // Global reservation handler
+        // Global reservation handler
         async function handleReservation(facilityId, isAlliance) {
-            // 留뚯빟 isAlliance媛 ?몄옄濡??꾨떖?섏? ?딆븯?ㅻ㈃ ?곗씠?곕? 李얠븘遊낅땲??
+            // 만약 isAlliance가 인자로 전달되지 않았다면 데이터를 찾아봅니다.
             if (isAlliance === undefined && typeof enrichedHomesData !== 'undefined' && enrichedHomesData) {
                 const home = enrichedHomesData.find(h => h.name === facilityId);
                 if (home) isAlliance = home.is_alliance || home.isAlliance;
             }
 
             if (!isAlliance) {
-                alert('???λ??앹옣? ?쒗쑕 ?앹옣???꾨땲?댁꽌 ?⑤씪???덉빟??遺덇??ν빀?덈떎.\n?곷떞??1551-5052)瑜??듯빐 ?덉빟 吏꾪뻾???꾩??쒕━寃좎뒿?덈떎.');
+                alert('해당 장례식장은 온실 제휴 장례식장이 아니므로 온라인 예약이 불가능합니다.\n상담원(1551-5052)을 통해 예약을 도와드리겠습니다.');
                 return;
             }
 
@@ -1506,10 +1506,6 @@
             if (user) {
                 window.location.href = 'reservation.html?id=' + encodeURIComponent(facilityId);
             } else {
-                alert('?덉빟? 濡쒓렇?????댁슜 媛?ν빀?덈떎.');
-                window.location.href = 'login.html';
-            }
-        } else {
                 alert('예약은 로그인 후 이용 가능합니다.');
                 window.location.href = 'login.html';
             }
@@ -1905,109 +1901,7 @@
             <i class="fas fa-chevron-right text-sm mr-2"></i>
         </a>
     </div>
-
-    
-                <div>
-                    <h4 class="font-bold text-sm leading-tight">우리 아이 보험 점검</h4>
-                    <p class="text-[10px] text-white/80">무료 진단 받고 보험금 혜택 확인하기</p>
-                </div>
-            </div>
-            <i class="fas fa-chevron-right text-sm mr-2"></i>
-        </a>
-    </div>
-
-    <!-- Filter Modal (Mobile Only) -->
-    <div id="filter-modal" class="fixed inset-0 z-[150] hidden">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeFilterModal()"></div>
-        <div id="filter-modal-content" class="absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-white shadow-2xl flex flex-col translate-x-full transition-transform duration-300">
-            <div class="flex items-center justify-between p-5 border-b">
-                <h3 class="text-lg font-bold text-[#8D7B68]">필터 설정</h3>
-                <button onclick="closeFilterModal()" class="text-gray-400 hover:text-gray-600">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            
-            <div class="flex-1 overflow-y-auto p-5 space-y-8">
-                <!-- Alliance Filter -->
-                <div class="p-4 bg-[#8D7B68]/5 rounded-xl border border-[#8D7B68]/10">
-                    <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" id="mobile-filter-alliance" class="w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                        <span class="text-sm font-bold text-[#8D7B68]">온실 제휴 업체만 보기</span>
-                    </label>
-                </div>
-
-                <!-- Region Filter -->
-                <div>
-                    <h4 class="font-bold text-sm mb-4 text-gray-400">지역 선택</h4>
-                    <div class="grid grid-cols-1 gap-3">
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                            <input type="checkbox" value="sudogwon" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                            <span class="text-gray-700 text-sm">서울 / 경기 / 인천</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                            <input type="checkbox" value="chungcheong" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                            <span class="text-gray-700 text-sm">충청 / 대전 / 세종</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                            <input type="checkbox" value="gyeongsang" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                            <span class="text-gray-700 text-sm">경상 / 부산 / 대구</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                            <input type="checkbox" value="jeolla" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                            <span class="text-gray-700 text-sm">전라 / 광주</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                            <input type="checkbox" value="gangwon" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                            <span class="text-gray-700 text-sm">강원</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Facility Filter -->
-                <div>
-                    <h4 class="font-bold text-sm mb-4 text-gray-400">보유 시설</h4>
-                    <div class="grid grid-cols-1 gap-3">
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                            <input type="checkbox" value="memorial" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                            <span class="text-gray-700 text-sm">개별추모실</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                            <input type="checkbox" value="ossuary" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                            <span class="text-gray-700 text-sm">납골당</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                            <input type="checkbox" value="burial" class="filter-checkbox w-6 h-6 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68]">
-                            <span class="text-gray-700 text-sm">수목장</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-5 border-t bg-gray-50 flex gap-3">
-                <button onclick="document.querySelectorAll('.filter-checkbox').forEach(cb => cb.checked = false); filterItems();" class="flex-1 py-4 text-gray-500 font-bold border border-gray-200 rounded-2xl bg-white transition-all active:scale-[0.98]">초기화</button>
-                <button onclick="closeFilterModal()" class="flex-[2] py-4 bg-[#8D7B68] text-white font-bold rounded-2xl shadow-lg shadow-[#8D7B68]/30 transition-all active:scale-[0.98]">결과 보기</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function openFilterModal() {
-            const modal = document.getElementById('filter-modal');
-            const content = document.getElementById('filter-modal-content');
-            modal.classList.remove('hidden');
-            setTimeout(() => content.classList.remove('translate-x-full'), 10);
-            document.body.style.overflow = 'hidden';
-        }
-        function closeFilterModal() {
-            const modal = document.getElementById('filter-modal');
-            const content = document.getElementById('filter-modal-content');
-            content.classList.add('translate-x-full');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.body.style.overflow = '';
-            }, 300);
-        }
-    </script>
+    <!-- Channel Talk -->
     <script src="js/channel-talk.js"></script>
 </body>
 
