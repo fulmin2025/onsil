@@ -853,16 +853,19 @@
             // 일부 데이터에서 location 속성을 사용할 수도 있으므로 addr 추출을 보강합니다.
             const realInfo = (typeof REAL_DATA !== 'undefined') ? REAL_DATA[item.name] : null;
             const addr = item.address || item.location || (realInfo ? (realInfo.address || realInfo.location || '') : '') || '';
+            // DB의 region 컬럼 값도 함께 참조 (예: '경기 부천' → 경기로 분류)
+            const regionField = item.region || '';
+            const searchStr = addr + ' ' + regionField;
             const lat = parseFloat(item.latitude);
             const lng = parseFloat(item.longitude);
 
-            if (addr.includes('서울')) return 'seoul';
-            if (addr.includes('경기')) return 'gyeonggi';
-            if (addr.includes('인천')) return 'incheon';
-            if (addr.includes('강원')) return 'gangwon';
-            if (addr.includes('충남') || addr.includes('충북') || addr.includes('대전') || addr.includes('세종') || addr.includes('충청')) return 'chungcheong';
-            if (addr.includes('경남') || addr.includes('경북') || addr.includes('부산') || addr.includes('대구') || addr.includes('울산') || addr.includes('경상')) return 'gyeongsang';
-            if (addr.includes('전남') || addr.includes('전북') || addr.includes('광주') || addr.includes('전라')) return 'jeolla';
+            if (searchStr.includes('서울')) return 'seoul';
+            if (searchStr.includes('경기')) return 'gyeonggi';
+            if (searchStr.includes('인천')) return 'incheon';
+            if (searchStr.includes('강원')) return 'gangwon';
+            if (searchStr.includes('충남') || searchStr.includes('충북') || searchStr.includes('대전') || searchStr.includes('세종') || searchStr.includes('충청')) return 'chungcheong';
+            if (searchStr.includes('경남') || searchStr.includes('경북') || searchStr.includes('부산') || searchStr.includes('대구') || searchStr.includes('울산') || searchStr.includes('경상')) return 'gyeongsang';
+            if (searchStr.includes('전남') || searchStr.includes('전북') || searchStr.includes('광주') || searchStr.includes('전라')) return 'jeolla';
 
             // 좌표 기반Fallback (주소 데이터가 부실한 경우를 대비)
             // 강원도 범위를 조금 더 동쪽(127.9 이상)으로 좁혀서 경기도(양평 등)와 겹치지 않게 합니다.
