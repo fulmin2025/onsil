@@ -156,7 +156,7 @@
                     <div class="mb-8 p-4 bg-[#8D7B68]/5 rounded-xl border border-[#8D7B68]/10">
                         <label class="flex items-center gap-3 cursor-pointer group">
                             <input type="checkbox" id="filter-alliance"
-                                class="w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
+                                class="filter-checkbox w-5 h-5 rounded border-gray-300 text-[#8D7B68] focus:ring-[#8D7B68] transition-all">
                             <span class="text-sm font-bold text-[#8D7B68] group-hover:underline">온실 제휴 업체만 보기</span>
                         </label>
                     </div>
@@ -866,7 +866,9 @@
             }
 
             const checkboxes = document.querySelectorAll('.filter-checkbox:checked');
-            const checkedValues = Array.from(checkboxes).map(cb => cb.value);
+            const checkedValues = Array.from(checkboxes)
+                .filter(cb => cb.id !== 'filter-alliance' && cb.id !== 'mobile-filter-alliance')
+                .map(cb => cb.value);
             
             // 구분: 지역 필터 vs 시설 필터
             const regionValues = ['sudogwon', 'chungcheong', 'gyeongsang', 'jeolla', 'gangwon'];
@@ -1487,7 +1489,7 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="js/data.js"></script>
-    <script src="js/auth.js"></script>
+    <script src="js/auth.js?v=3"></script>
     <script>
         // Global reservation handler
         async function handleReservation(facilityId, isAlliance) {

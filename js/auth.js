@@ -469,7 +469,7 @@ const Auth = {
             }
 
             console.log('Auth.getAllFuneralHomes: Sending query to public.funeral_homes...');
-            const { data, error } = await client
+            let { data, error } = await client
                 .from('funeral_homes')
                 .select('*')
                 .order('is_alliance', { ascending: false })
@@ -483,12 +483,13 @@ const Auth = {
             console.log('Auth.getAllFuneralHomes: Fetch complete. Count:', data ? data.length : 0);
             
             // Filter out deleted funeral homes
-            if (data && data.length > 0) {
+            let filteredData = data || [];
+            if (filteredData && filteredData.length > 0) {
                 const hiddenNames = ['펫메모리얼', '펫포유', '파트라슈'];
-                data = data.filter(item => !hiddenNames.includes(item.name));
+                filteredData = filteredData.filter(item => !hiddenNames.includes(item.name));
             }
 
-            return data || [];
+            return filteredData;
         } catch (error) {
             console.error('Auth.getAllFuneralHomes: EXCEPTION:', error);
             return [];
