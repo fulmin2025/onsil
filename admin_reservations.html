@@ -103,7 +103,7 @@
                 <div><label class="block text-xs font-bold text-gray-500 mb-1.5">메모 (선택)</label><input type="text" id="res-memo" placeholder="예: 유선 예약 건, 시설 점검 등" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl"></div>
                 <p class="text-[11px] text-brand-warm font-bold">* 수동 예약 등록 시 해당 시간대는 고객 예약이 즉시 마감됩니다.</p>
                 <div class="pt-4 flex gap-3">
-                    <button type="button" onclick="closeAddModal()" class="flex-1 py-4 bg-gray-100 rounded-2xl font-bold">취on 취소</button>
+                    <button type="button" onclick="closeAddModal()" class="flex-1 py-4 bg-gray-100 rounded-2xl font-bold">취소</button>
                     <button type="submit" class="flex-[2] py-4 bg-onsil text-white rounded-2xl font-bold">예약 등록 및 마감</button>
                 </div>
             </form>
@@ -129,6 +129,7 @@
                     document.getElementById('nav-partners')?.classList.add('hidden');
                     document.getElementById('nav-homes')?.classList.add('hidden');
                 }
+                window.currentUser = user; // 수동 등록 시 외래키 참조를 위해 글로벌 등록
                 await initPage(user, isAdmin);
             } catch (err) { console.error(err); }
         }
@@ -141,11 +142,21 @@
             // Setup Facility Select
             if (!isAdmin && user.role === 'partner' && user.facility) {
                 document.getElementById('dashboard-title').textContent = user.facility + ' 예약 관리';
-                facilitySelect.innerHTML = \`<option value="\${user.facility}">\${user.facility}</option>\`;
+                facilitySelect.innerHTML = `<option value="${user.facility}">${user.facility}</option>`;
             } else {
-                facilitySelect.innerHTML = '<option value="">시설 선택</option><option value="스냅플러그">스냅플러그</option><option value="펫포레스트 남양주점">펫포레스트 남양주점</option><option value="별다만">별다만</option>';
+                // DB에서 실시간 장례식장 목록 동적 로드
+                try {
+                    const homes = await Auth.getAllFuneralHomes();
+                    if (homes && homes.length > 0) {
+                        facilitySelect.innerHTML = '<option value="">시설 선택</option>' + 
+                            homes.map(h => `<option value="${h.name}">${h.name}</option>`).join('');
+                    } else {
+                        facilitySelect.innerHTML = '<option value="">시설 선택</option><option value="스냅플러그">스냅플러그</option><option value="펫포레스트 남양주점">펫포레스트 남양주점</option><option value="별다만">별다만</option>';
+                    }
+                } catch (e) {
+                    facilitySelect.innerHTML = '<option value="">시설 선택</option><option value="스냅플러그">스냅플러그</option><option value="펫포레스트 남양주점">펫포레스트 남양주점</option><option value="별다만">별다만</option>';
+                }
             }
-
             let query = sb.from('reservations').select('*');
             if (!isAdmin && user.role === 'partner' && user.facility) {
                 query = query.eq('facility_name', user.facility);
@@ -158,30 +169,34 @@
             listContainer.innerHTML = data.map(res => {
                 const isPartner = res.booking_type === 'partner';
                 const date = new Date(res.created_at).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-                return \`
+                return `
                     <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-5"><span class="px-2 py-1 \${isPartner ? 'bg-brand-warm/10 text-brand-warm' : 'bg-green-50 text-green-600'} text-[10px] font-bold rounded">\${isPartner ? '수동(마감)' : '고객예약'}</span></td>
-                        <td class="px-6 py-5 text-xs text-gray-400">\${date}</td>
-                        <td class="px-6 py-5 font-bold text-gray-900">\${res.facility_name}</td>
-                        <td class="px-6 py-5 text-sm font-bold text-primary">\${res.reservation_date} \${res.reservation_time}</td>
-                        <td class="px-6 py-5 text-sm font-bold">\${res.user_name || '파트너'} / \${res.pet_name || '-'}</td>
-                        <td class="px-6 py-5 text-sm">\${res.user_phone || '-'}</td>
-                        <td class="px-6 py-5 text-center"><button onclick="deleteRes('\${res.id}')" class="text-gray-300 hover:text-red-500"><i class="fas fa-trash-alt"></i></button></td>
+                        <td class="px-6 py-5"><span class="px-2 py-1 ${isPartner ? 'bg-brand-warm/10 text-brand-warm' : 'bg-green-50 text-green-600'} text-[10px] font-bold rounded">${isPartner ? '수동(마감)' : '고객예약'}</span></td>
+                        <td class="px-6 py-5 text-xs text-gray-400">${date}</td>
+                        <td class="px-6 py-5 font-bold text-gray-900">${res.facility_name}</td>
+                        <td class="px-6 py-5 text-sm font-bold text-primary">${res.reservation_date} ${res.reservation_time}</td>
+                        <td class="px-6 py-5 text-sm font-bold">${res.user_name || '파트너'} / ${res.pet_name || '-'}</td>
+                        <td class="px-6 py-5 text-sm">${res.user_phone || '-'}</td>
+                        <td class="px-6 py-5 text-center"><button onclick="deleteRes('${res.id}')" class="text-gray-300 hover:text-red-500"><i class="fas fa-trash-alt"></i></button></td>
                     </tr>
-                \`;
+                `;
             }).join('');
         }
 
         document.getElementById('add-res-form').onsubmit = async (e) => {
             e.preventDefault();
             const sb = Auth.getSupabase();
+            
+            const currentUserId = window.currentUser ? window.currentUser.id : null;
+            
             const payload = {
                 facility_name: document.getElementById('res-facility').value,
                 reservation_date: document.getElementById('res-date').value,
                 reservation_time: document.getElementById('res-time').value,
                 user_name: '수동 등록',
                 pet_name: document.getElementById('res-memo').value || '파트너 직접 예약',
-                booking_type: 'partner'
+                booking_type: 'partner',
+                user_id: currentUserId // 외래키 제약 방어
             };
             const { error } = await sb.from('reservations').insert([payload]);
             if (error) alert('실패: ' + error.message);

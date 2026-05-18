@@ -566,6 +566,22 @@ const Auth = {
             console.error('deleteFuneralHome error:', error);
             return { success: false, message: error.message };
         }
+    },
+
+    getAllFuneralHomes: async () => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('클라이언트 연결 실패');
+            const { data, error } = await client
+                .from('funeral_homes')
+                .select('id, name')
+                .order('name', { ascending: true });
+            if (error) throw error;
+            return data || [];
+        } catch (error) {
+            console.error('getAllFuneralHomes error:', error);
+            return [];
+        }
     }
 };
 

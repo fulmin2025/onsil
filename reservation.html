@@ -310,8 +310,20 @@
         // Init Page Data & Pricing
         const urlParams = new URLSearchParams(window.location.search);
         const facilityName = urlParams.get('id');
-        let selectedService = "";
+        let selectedService = []; // 다중 선택 배열로 변경
         let currentServices = [];
+
+        // 가격 문자열을 숫자로 안전하게 파싱하는 헬퍼 함수
+        function parsePriceValue(priceStr) {
+            if (!priceStr) return 0;
+            const numMatch = priceStr.match(/(\d{1,3}(?:,\d{3})+|\d+)/);
+            if (numMatch) {
+                let val = parseInt(numMatch[1].replace(/,/g, ''));
+                if (priceStr.includes('만') && val < 10000) val *= 10000;
+                return val;
+            }
+            return 0;
+        }
 
         async function initPricing() {
             const debug = document.getElementById('debug-content');
@@ -431,9 +443,24 @@
 
             document.querySelectorAll('.service-card').forEach(card => {
                 card.onclick = () => {
-                    document.querySelectorAll('.service-card').forEach(c => c.classList.remove('active'));
-                    card.classList.add('active');
-                    selectedService = card.dataset.service;
+                    card.classList.toggle('active');
+                    
+                    const activeCards = document.querySelectorAll('.service-card.active');
+                    selectedService = Array.from(activeCards).map(c => c.dataset.service);
+                    
+                    // 실시간 금액 합산 및 하단 예약 버튼 동적 변경
+                    let totalVal = 0;
+                    activeCards.forEach(c => {
+                        totalVal += parsePriceValue(c.dataset.price);
+                    });
+                    
+                    const submitBtn = document.getElementById('submit-btn');
+                    if (totalVal > 0) {
+                        submitBtn.textContent = `예약 신청하기 (총 ${totalVal.toLocaleString()}원 결제)`;
+                    } else {
+                        submitBtn.textContent = '예약 신청하기';
+                    }
+                    
                     validateForm();
                 };
             });
@@ -550,7 +577,7 @@
             const phone = document.getElementById('user-phone').value;
             const agree = document.getElementById('agree-all').checked;
             const timeSelected = document.querySelector('.time-btn.active');
-            const serviceSelected = selectedService !== "";
+            const serviceSelected = selectedService.length > 0;
 
             const isComplete = petName && petWeight && petType && userName && phone && agree && timeSelected && isVerified && serviceSelected;
             document.getElementById('submit-btn').disabled = !isComplete;
@@ -575,8 +602,14 @@
                 return;
             }
 
-            const selectedBtn = document.querySelector('.service-card.active');
-            const priceText = selectedBtn ? selectedBtn.dataset.price : '0원';
+            const activeCards = document.querySelectorAll('.service-card.active');
+            let totalPrice = 0;
+            activeCards.forEach(c => {
+                totalPrice += parsePriceValue(c.dataset.price);
+            });
+            
+            const serviceNames = Array.from(activeCards).map(c => c.dataset.service).join(', ');
+            const priceText = totalPrice.toLocaleString() + '원';
             
             const resData = {
                 facility_name: document.getElementById('target-name').textContent,
@@ -587,7 +620,7 @@
                 pet_weight: document.getElementById('pet-weight').value,
                 pet_type: document.getElementById('pet-type').value,
                 user_phone: document.getElementById('user-phone').value,
-                selected_service: selectedService,
+                selected_service: serviceNames,
                 service_price: priceText,
                 user_id: user.id
             };
@@ -627,7 +660,7 @@
                     channelKey: Auth.PORTONE_CHANNEL_KEY,
                     paymentId: paymentId,
                     orderName: `The 온실: ${resData.selected_service}`,
-                    totalAmount: 100, 
+                    totalAmount: totalPrice, 
                     currency: "CURRENCY_KRW",
                     payMethod: "CARD",
                     customer: {
