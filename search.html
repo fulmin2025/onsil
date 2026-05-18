@@ -577,7 +577,38 @@
         let regionMarkers = [];
         let enrichedHomesData = null;
         let currentSortMode = 'recommend';
-        let userLocation = { lat: 37.5665, lng: 126.9780 };
+        let userLocation = { lat: 37.5665, lng: 126.9780 }; // 기본값: 서울시청
+
+        // 사용자 실제 현재 위치 가져오기 및 동기화
+        function initializeUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        userLocation.lat = position.coords.latitude;
+                        userLocation.lng = position.coords.longitude;
+                        console.log("🌸 [온실] 사용자 현재 위치 획득 성공:", userLocation);
+                        
+                        // 현재 거리순 정렬이 선택되어 있거나, 위치 기반 정렬을 동기화하기 위해 필터 재호출
+                        filterItems();
+                    },
+                    (error) => {
+                        console.warn("⚠️ [온실] 현재 위치를 가져오지 못했습니다. 기본 위치(서울시청)를 사용합니다. 에러 코드:", error.code);
+                        // 위치 권한이 거부되거나 실패해도 서울시청 기준으로 거리순 정렬 및 뱃지 노출을 진행하기 위해 필터 호출
+                        filterItems();
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                console.warn("⚠️ [온실] 브라우저가 Geolocation을 지원하지 않습니다.");
+            }
+        }
+
+        // 페이지 초기 로드 시 위치 초기화 호출
+        initializeUserLocation();
 
         // --- Global Configuration ---
         const ON_CONFIG = {
@@ -621,6 +652,15 @@
                 const rating = item.rating || (realData && realData.rating) ? (item.rating || realData.rating) : (4.5 + Math.random() * 0.5).toFixed(1);
                 const reviewCount = item.review_count || (realData && realData.reviewCount) ? (item.review_count || realData.reviewCount) : Math.floor(Math.random() * 100) + 10;
 
+                // 거리 계산 추가
+                let distanceText = "";
+                if (userLocation && item.latitude && item.longitude) {
+                    const dist = calculateDistance(userLocation.lat, userLocation.lng, parseFloat(item.latitude), parseFloat(item.longitude));
+                    if (!isNaN(dist)) {
+                        distanceText = ' <span class="bg-[#8D7B68]/10 text-[#8D7B68] text-[10px] px-1.5 py-0.5 rounded ml-2 font-semibold font-mono flex items-center gap-1 shrink-0"><i class="fas fa-map-marker-alt text-[9px]"></i>' + dist.toFixed(1) + 'km</span>';
+                    }
+                }
+
                 let badgesHtml = '';
                 const isAlliance = item.is_alliance || item.isAlliance;
                 if (ON_CONFIG.showPartnership && isAlliance) badgesHtml += '<span class="bg-[#8D7B68] text-white text-xs px-2 py-1 rounded mr-2">제휴</span>';
@@ -635,7 +675,7 @@
                                         <h3 class="text-xl font-bold mt-1 inline-block align-middle group-hover:text-[#8D7B68] transition-colors">${item.name}</h3>
                                     </div>
                                 </div>
-                                <p class="text-gray-400 text-xs mb-3">${item.address || (item.enName || '')}</p>
+                                <p class="text-gray-400 text-xs mb-3 flex items-center justify-between md:justify-start">${item.address || (item.enName || '')}` + distanceText + `</p>
                                 <div class="flex gap-2 text-[11px] text-gray-500 mb-4">
                                     <span class="px-2 py-0.5 bg-gray-50 rounded-full border border-gray-100">개별 추모실</span>
                                     <span class="px-2 py-0.5 bg-gray-50 rounded-full border border-gray-100">박스관 포함</span>
@@ -1065,6 +1105,20 @@
                 if (foundKey) realInfo = REAL_DATA[foundKey];
             }
 
+            // 위도/경도 데이터 누락 방지 로직 (Supabase 등에서 누락 시 REAL_DATA 또는 서울시청 기준으로 보정)
+            let latVal = item.latitude || item.lat;
+            let lngVal = item.longitude || item.lng;
+            if (!latVal || !lngVal) {
+                if (realInfo) {
+                    latVal = realInfo.latitude || realInfo.lat;
+                    lngVal = realInfo.longitude || realInfo.lng;
+                }
+                if (!latVal || !lngVal) {
+                    latVal = 37.5665;
+                    lngVal = 126.9780;
+                }
+            }
+
             const mockFacilities = [
                 { name: '주차가능', icon: 'fa-parking' },
                 { name: '참관가능', icon: 'fa-eye' },
@@ -1107,6 +1161,8 @@
 
             return {
                 ...item,
+                latitude: latVal,
+                longitude: lngVal,
                 rating: realInfo ? dynamicRating : (4.0 + Math.random() * 1.0).toFixed(1),
                 reviewCount: realInfo ? dynamicReviewCount : Math.floor(Math.random() * 50) + 5,
                 address: address,
