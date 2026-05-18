@@ -120,8 +120,7 @@
             try {
                 const user = await Auth.getCurrentUser();
                 if (!user) { location.href = 'index.html'; return; }
-                const adminEmails = ["fulmin@nate.com","theonsil@gmail.com","admin@theonsil.co.kr","theonsilofficial@gmail.com","admin@onsil.com"];
-                const isAdmin = adminEmails.includes(user.email?.toLowerCase()) || user.role === 'admin';
+                const isAdmin = user.role === 'admin';
                 const isPartner = user.role === 'partner';
                 
                 if (!isAdmin && !isPartner) { alert('접근 권한이 없습니다.'); location.href = 'index.html'; return; }

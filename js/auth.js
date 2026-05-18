@@ -262,15 +262,25 @@ const Auth = {
             }
 
             const mergedUser = { ...user, ...(profile || {}) };
-            const adminEmails = [
-                'fulmin@nate.com', 
-                'theonsil@gmail.com', 
-                'admin@theonsil.co.kr', 
-                'theonsilofficial@gmail.com', 
-                'admin@onsil.com'
+            const adminHashes = [
+                '5c8f37e4517561514ddb8e4010b1e4600c4542fe52f765afe9494c059b8891aa', // f
+                '615f33115880753a66c25776ee15f93590c9aedc679476a7f33b8262c03140f4', // t
+                'e8102f9dd1f1ac3f859a20cb32f24d5d82ea25696c387e5ae1183fe52f7e1580', // a1
+                'ecc27b56cc2176da2065922a20a8676beab3150819f344d35f42247389d93b88', // t2
+                '3f7bf82339670170dbeff1e3f2b26b81036005c157e56da3962876109df52696'  // a2
             ];
-            if (user.email && adminEmails.includes(user.email.toLowerCase())) {
-                mergedUser.role = 'admin';
+            if (user.email) {
+                try {
+                    const msgUint8 = new TextEncoder().encode(user.email.toLowerCase().trim());
+                    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+                    const hashArray = Array.from(new Uint8Array(hashBuffer));
+                    const emailHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                    if (adminHashes.includes(emailHash)) {
+                        mergedUser.role = 'admin';
+                    }
+                } catch (e) {
+                    console.error('Hash calculation error:', e);
+                }
             }
             return mergedUser;
         } catch (error) {

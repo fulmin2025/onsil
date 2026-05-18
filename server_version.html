@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>?��??�장 ?�보 관�?- The ?�실 Admin</title>
+    <title>?��??�장 ?�보 관�?- The ?�실 Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" as="style" crossorigin
@@ -42,16 +42,16 @@
         <div class="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between py-4">
             <div class="flex items-center gap-4">
                 <a href="index.html" class="flex items-center gap-2 group">
-                    <img src="./images/onsil_logo_tr.png" width="36" height="36" class="w-9 h-9 object-contain" alt="?�실 로고">
-                    <span class="font-bold text-lg text-brand tracking-tight">The ?�실 <span class="text-xs font-black text-red-500 ml-1">ADMIN</span></span>
+                    <img src="./images/onsil_logo_tr.png" width="36" height="36" class="w-9 h-9 object-contain" alt="?�실 로고">
+                    <span class="font-bold text-lg text-brand tracking-tight">The ?�실 <span class="text-xs font-black text-red-500 ml-1">ADMIN</span></span>
                 </a>
                 <div class="h-6 w-px bg-gray-200 mx-2"></div>
-                <h1 class="font-bold text-gray-600">?��??�장 ?�보 관�?/h1>
+                <h1 class="font-bold text-gray-600">?��??�장 ?�보 관�?/h1>
             </div>
             <div class="flex items-center gap-3">
-                <a href="admin_reservations.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?�약 관�?/a>
-                <a href="admin_partners.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?�트??관�?/a>
-                <button onclick="Auth.logout()" class="text-sm font-bold text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all">로그?�웃</button>
+                <a href="admin_reservations.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?�약 관�?/a>
+                <a href="admin_partners.html" class="text-sm font-medium text-gray-500 hover:text-brand transition-colors">?�트??관�?/a>
+                <button onclick="Auth.logout()" class="text-sm font-bold text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all">로그?�웃</button>
             </div>
         </div>
     </header>
@@ -59,18 +59,18 @@
     <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-24">
         <div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <h2 class="text-2xl font-black text-gray-900 mb-2">?��??�장 목록</h2>
-                <p class="text-sm text-gray-500 font-medium">?�이?�베?�스???�록??모든 ?��??�장 ?�보?�니??</p>
+                <h2 class="text-2xl font-black text-gray-900 mb-2">?��??�장 목록</h2>
+                <p class="text-sm text-gray-500 font-medium">?�이?�베?�스???�록??모든 ?��??�장 ?�보?�니??</p>
             </div>
             <div class="flex gap-3">
                 <button onclick="runSecurityAudit()" class="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 border border-red-100 rounded-xl text-sm font-bold hover:bg-red-100 transition-all shadow-sm">
                     <i class="fas fa-shield-alt"></i> 보안 감사
                 </button>
                 <button onclick="checkSyncStatus()" class="flex items-center gap-2 px-4 py-2 bg-accent/10 text-accent border border-accent/20 rounded-xl text-sm font-bold hover:bg-accent/20 transition-all shadow-sm">
-                    <i class="fas fa-sync-alt"></i> 로컬 ?�이???�기???�인
+                    <i class="fas fa-sync-alt"></i> 로컬 ?�이???�기???�인
                 </button>
                 <button onclick="openEditModal()" class="flex items-center gap-2 px-6 py-2.5 bg-partner text-white rounded-xl text-sm font-bold hover:bg-black transition-all shadow-lg shadow-partner/10">
-                    <i class="fas fa-plus"></i> ?�규 ?�록
+                    <i class="fas fa-plus"></i> ?�규 ?�록
                 </button>
             </div>
         </div>
@@ -78,7 +78,7 @@
         <!-- Search Bar -->
         <div class="mb-6 relative">
             <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-            <input type="text" id="search-input" oninput="filterList()" placeholder="?��??�장 ?�름 ?�는 주소�?검??.." 
+            <input type="text" id="search-input" oninput="filterList()" placeholder="?��??�장 ?�름 ?�는 주소�?검??.." 
                 class="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-partner/20 focus:border-partner outline-none transition-all shadow-sm">
         </div>
 
@@ -88,16 +88,16 @@
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
-                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">?��??�장�?/th>
+                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">?��??�장�?/th>
                             <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">주소</th>
-                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest text-right">?�작</th>
+                            <th class="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest text-right">?�작</th>
                         </tr>
                     </thead>
                     <tbody id="home-list" class="divide-y divide-gray-50">
                         <tr>
                             <td colspan="3" class="px-8 py-20 text-center text-gray-400">
                                 <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
-                                <p class="text-sm font-medium">?�이?��? 불러?�는 중입?�다...</p>
+                                <p class="text-sm font-medium">?�이?��? 불러?�는 중입?�다...</p>
                             </td>
                         </tr>
                     </tbody>
@@ -111,7 +111,7 @@
         <div class="modal-backdrop absolute inset-0" onclick="closeEditModal()"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden animate-slideUp">
             <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
-                <h3 id="modal-title" class="text-xl font-black text-gray-900">?��??�장 ?�보 ?�정</h3>
+                <h3 id="modal-title" class="text-xl font-black text-gray-900">?��??�장 ?�보 ?�정</h3>
                 <button onclick="closeEditModal()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition-colors">
                     <i class="fas fa-times"></i>
                 </button>
@@ -122,12 +122,12 @@
                     
                     <div class="grid grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">?��??�장�?(KR)</label>
+                            <label class="text-sm font-bold text-gray-700 ml-1">?��??�장�?(KR)</label>
                             <input type="text" id="form-name" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
                         </div>
                         <div class="space-y-2">
                             <label class="text-sm font-bold text-gray-700 ml-1">지??(Region)</label>
-                            <input type="text" id="form-region" placeholder="경기 부�? ?�울 강남 ?? class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
+                            <input type="text" id="form-region" placeholder="경기 부�? ?�울 강남 ?? class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
                         </div>
                     </div>
 
@@ -138,23 +138,23 @@
 
                     <div class="grid grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">?�화번호</label>
+                            <label class="text-sm font-bold text-gray-700 ml-1">?�화번호</label>
                             <input type="text" id="form-phone" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
                         </div>
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">?��?지 URL</label>
+                            <label class="text-sm font-bold text-gray-700 ml-1">?��?지 URL</label>
                             <input type="text" id="form-image-url" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
                         </div>
                     </div>
 
                     <div class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700 ml-1">??�??�명</label>
+                        <label class="text-sm font-bold text-gray-700 ml-1">??�??�명</label>
                         <input type="text" id="form-description" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
                     </div>
 
                     <div class="grid grid-cols-3 gap-6">
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">?�도 (Lat)</label>
+                            <label class="text-sm font-bold text-gray-700 ml-1">?�도 (Lat)</label>
                             <input type="text" id="form-lat" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
                         </div>
                         <div class="space-y-2">
@@ -162,7 +162,7 @@
                             <input type="text" id="form-lng" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
                         </div>
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700 ml-1">?�렬 ?�서</label>
+                            <label class="text-sm font-bold text-gray-700 ml-1">?�렬 ?�서</label>
                             <input type="number" id="form-sort-order" value="0" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none">
                         </div>
                     </div>
@@ -173,26 +173,26 @@
                                 <input type="checkbox" id="form-is-alliance" class="sr-only peer">
                                 <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-accent after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
                             </div>
-                            <span class="text-sm font-bold text-gray-700 group-hover:text-accent transition-colors">?�심 ?��??�장 (?�휴)</span>
+                            <span class="text-sm font-bold text-gray-700 group-hover:text-accent transition-colors">?�심 ?��??�장 (?�휴)</span>
                         </label>
                         <label class="flex items-center gap-3 cursor-pointer group">
                             <div class="relative">
                                 <input type="checkbox" id="form-is-24h" class="sr-only peer">
                                 <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-500 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
                             </div>
-                            <span class="text-sm font-bold text-gray-700 group-hover:text-blue-500 transition-colors">24?�간 ?�영</span>
+                            <span class="text-sm font-bold text-gray-700 group-hover:text-blue-500 transition-colors">24?�간 ?�영</span>
                         </label>
                     </div>
 
                     <div class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700 ml-1">가�??�보 (JSON)</label>
-                        <textarea id="form-prices" rows="5" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none font-mono text-xs" placeholder='[{"category": "기본?�장", "items": [{"name": "?�형�?, "price": "200,000??}]}]'></textarea>
+                        <label class="text-sm font-bold text-gray-700 ml-1">가�??�보 (JSON)</label>
+                        <textarea id="form-prices" rows="5" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-partner/20 outline-none font-mono text-xs" placeholder='[{"category": "기본?�장", "items": [{"name": "?�형�?, "price": "200,000??}]}]'></textarea>
                     </div>
                 </form>
             </div>
             <div class="p-8 border-t border-gray-100 flex gap-3 bg-gray-50/50">
                 <button onclick="closeEditModal()" class="flex-1 py-4 border border-gray-200 text-gray-500 rounded-2xl font-bold hover:bg-white transition-all">취소</button>
-                <button onclick="saveFuneralHome()" class="flex-[2] py-4 bg-partner text-white rounded-2xl font-bold shadow-lg shadow-partner/20 hover:bg-black transition-all">?�?�하�?/button>
+                <button onclick="saveFuneralHome()" class="flex-[2] py-4 bg-partner text-white rounded-2xl font-bold shadow-lg shadow-partner/20 hover:bg-black transition-all">?�?�하�?/button>
             </div>
         </div>
     </div>
@@ -204,7 +204,7 @@
             <div class="px-8 py-6 bg-red-600 text-white flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <i class="fas fa-user-shield text-xl"></i>
-                    <h3 class="text-xl font-black">?�시�?보안 감사 모니??/h3>
+                    <h3 class="text-xl font-black">?�시�?보안 감사 모니??/h3>
                 </div>
                 <button onclick="closeSecurityModal()" class="text-white/80 hover:text-white transition-colors">
                     <i class="fas fa-times"></i>
@@ -218,7 +218,7 @@
                 </div>
             </div>
             <div class="p-6 bg-gray-50 border-t border-gray-100 text-center">
-                <p class="text-xs text-gray-400 font-medium italic">??리포?�는 ?�재 관리자 ?�션??기�??�로 ?�성?�었?�니??</p>
+                <p class="text-xs text-gray-400 font-medium italic">??리포?�는 ?�재 관리자 ?�션??기�??�로 ?�성?�었?�니??</p>
             </div>
         </div>
     </div>
@@ -235,12 +235,12 @@
             
             try {
                 const user = await Auth.getCurrentUser();
-                const isAdmin = user && (user.role === 'admin' || ['fulmin@nate.com', 'theonsil@gmail.com', 'admin@theonsil.co.kr', 'theonsilofficial@gmail.com', 'admin@onsil.com'].includes(user.email));
+                const isAdmin = user && user.role === 'admin';
                 
                 let auditHtml = `
                     <div class="space-y-4">
                         <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                            <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">?�증 ?�태 (Authentication)</div>
+                            <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">?�증 ?�태 (Authentication)</div>
                             <div class="flex items-center justify-between">
                                 <span class="font-bold text-gray-700">${user ? user.email : '비로그인'}</span>
                                 <span class="px-2 py-1 ${user ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'} text-[10px] font-black rounded-lg">
@@ -250,9 +250,9 @@
                         </div>
 
                         <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                            <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">권한 ?�급 (Role)</div>
+                            <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">권한 ?�급 (Role)</div>
                             <div class="flex items-center justify-between">
-                                <span class="font-bold text-gray-700">${isAdmin ? '?�스??관리자 (ADMIN)' : '?�반 ?�용??}</span>
+                                <span class="font-bold text-gray-700">${isAdmin ? '?�스??관리자 (ADMIN)' : '?�반 ?�용??}</span>
                                 <i class="fas ${isAdmin ? 'fa-check-circle text-green-500' : 'fa-exclamation-triangle text-red-500'}"></i>
                             </div>
                         </div>
@@ -260,16 +260,16 @@
                         <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
                             <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">API 보안 (Key Protection)</div>
                             <div class="flex items-center justify-between text-sm">
-                                <span class="text-gray-600 font-medium">Service Role Key ?�출 ?��?</span>
-                                <span class="text-green-600 font-bold">미노�?(Safe)</span>
+                                <span class="text-gray-600 font-medium">Service Role Key ?�출 ?��?</span>
+                                <span class="text-green-600 font-bold">미노�?(Safe)</span>
                             </div>
                         </div>
 
                         <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                            <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">?�이???�근 보안 (RLS)</div>
+                            <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">?�이???�근 보안 (RLS)</div>
                             <div class="flex items-center justify-between text-sm">
-                                <span class="text-gray-600 font-medium">?�시�?DB ?�책 검�?/span>
-                                <span class="text-blue-600 font-bold">?�동 �?(Protected)</span>
+                                <span class="text-gray-600 font-medium">?�시�?DB ?�책 검�?/span>
+                                <span class="text-blue-600 font-bold">?�동 �?(Protected)</span>
                             </div>
                         </div>
                     </div>
@@ -277,7 +277,7 @@
                 
                 content.innerHTML = auditHtml;
             } catch (err) {
-                content.innerHTML = `<div class="p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium">감사 �??�류 발생: ${err.message}</div>`;
+                content.innerHTML = `<div class="p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium">감사 �??�류 발생: ${err.message}</div>`;
             }
         }
 
@@ -288,8 +288,8 @@
         // Security Check
         async function checkAdmin() {
             const user = await Auth.getCurrentUser();
-            if (!user || (user.role !== 'admin' && !['fulmin@nate.com', 'theonsil@gmail.com', 'admin@theonsil.co.kr', 'theonsilofficial@gmail.com', 'admin@onsil.com'].includes(user.email))) {
-                alert('관리자 권한???�요?�니??');
+            if (!user || user.role !== 'admin') {
+                alert('관리자 권한???�요?�니??');
                 location.href = 'partner-login.html';
                 return;
             }
@@ -305,7 +305,7 @@
         function renderTable(items) {
             const listContainer = document.getElementById('home-list');
             if (items.length === 0) {
-                listContainer.innerHTML = '<tr><td colspan="3" class="px-8 py-20 text-center text-gray-400 font-medium italic">?�록???�이?��? ?�습?�다.</td></tr>';
+                listContainer.innerHTML = '<tr><td colspan="3" class="px-8 py-20 text-center text-gray-400 font-medium italic">?�록???�이?��? ?�습?�다.</td></tr>';
                 return;
             }
 
@@ -319,7 +319,7 @@
                             <div class="flex flex-col">
                                 <div class="flex items-center gap-2">
                                     <span class="font-bold text-gray-900">${h.name}</span>
-                                    ${h.is_alliance ? '<span class="px-1.5 py-0.5 bg-accent/10 text-accent text-[9px] font-black rounded uppercase">?�휴</span>' : ''}
+                                    ${h.is_alliance ? '<span class="px-1.5 py-0.5 bg-accent/10 text-accent text-[9px] font-black rounded uppercase">?�휴</span>' : ''}
                                     ${h.is_24h ? '<span class="px-1.5 py-0.5 bg-blue-50 text-blue-500 text-[9px] font-black rounded uppercase">24H</span>' : ''}
                                 </div>
                                 <span class="text-[11px] text-gray-400 font-medium tracking-tight">${h.region || '-'}</span>
@@ -362,7 +362,7 @@
             document.getElementById('form-prices').value = '[]';
             
             if (data) {
-                title.textContent = '?��??�장 ?�보 ?�정';
+                title.textContent = '?��??�장 ?�보 ?�정';
                 document.getElementById('form-id').value = data.id;
                 document.getElementById('form-name').value = data.name || '';
                 document.getElementById('form-region').value = data.region || '';
@@ -377,7 +377,7 @@
                 document.getElementById('form-is-24h').checked = data.is_24h || false;
                 document.getElementById('form-prices').value = JSON.stringify(data.prices || [], null, 2);
             } else {
-                title.textContent = '?�규 ?��??�장 ?�록';
+                title.textContent = '?�규 ?��??�장 ?�록';
             }
             
             modal.classList.remove('hidden');
@@ -395,7 +395,7 @@
             try {
                 prices = JSON.parse(document.getElementById('form-prices').value || '[]');
             } catch (e) {
-                alert('가�??�보 JSON ?�식???�바르�? ?�습?�다.');
+                alert('가�??�보 JSON ?�식???�바르�? ?�습?�다.');
                 return;
             }
 
@@ -422,23 +422,23 @@
             }
 
             if (res.success) {
-                alert('?�공?�으�??�?�되?�습?�다!');
+                alert('?�공?�으�??�?�되?�습?�다!');
                 closeEditModal();
                 loadFuneralHomes();
             } else {
-                alert('?�???�패: ' + res.message);
+                alert('?�???�패: ' + res.message);
             }
         }
 
         async function deleteHome(id, name) {
-            if (!confirm(`[${name}] ?�보�???��?�시겠습?�까? ???�업?� ?�돌�????�습?�다.`)) return;
+            if (!confirm(`[${name}] ?�보�???��?�시겠습?�까? ???�업?� ?�돌�????�습?�다.`)) return;
 
             const res = await Auth.deleteFuneralHome(id);
             if (res.success) {
-                alert('??��?�었?�니??');
+                alert('??��?�었?�니??');
                 loadFuneralHomes();
             } else {
-                alert('??�� ?�패: ' + res.message);
+                alert('??�� ?�패: ' + res.message);
             }
         }
 
@@ -448,15 +448,15 @@
                 const missing = await SyncManager.getMissingHomes();
                 
                 if (missing.length === 0) {
-                    alert('모든 로컬 ?�이?��? ?��? DB???�기?�되???�습?�다.');
+                    alert('모든 로컬 ?�이?��? ?��? DB???�기?�되???�습?�다.');
                     return;
                 }
 
-                const confirmSync = confirm(`${missing.length}개의 ?�로???��??�장 ?�이???�냅?�러�???가 발견?�었?�니?? DB�??�기?�할까요?`);
+                const confirmSync = confirm(`${missing.length}개의 ?�로???��??�장 ?�이???�냅?�러�???가 발견?�었?�니?? DB�??�기?�할까요?`);
                 
                 if (confirmSync) {
                     const results = await SyncManager.syncAllMissing();
-                    alert(`?�기???�료!\n?�공: ${results.success.length}�?n?�패: ${results.failed.length}�?);
+                    alert(`?�기???�료!\n?�공: ${results.success.length}�?n?�패: ${results.failed.length}�?);
                     if (results.failed.length > 0) {
                         console.error('Sync Failures:', results.failed);
                     }
@@ -464,7 +464,7 @@
                 }
             } catch (err) {
                 console.error('Sync Error:', err);
-                alert('?�기??�??�류가 발생?�습?�다: ' + err.message);
+                alert('?�기??�??�류가 발생?�습?�다: ' + err.message);
             }
         }
 

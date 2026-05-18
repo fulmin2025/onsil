@@ -378,7 +378,7 @@
         let editPostId = null; 
         let blockedUsers = JSON.parse(localStorage.getItem('onsil_blocked_users') || '[]');
 
-        const ADMIN_EMAILS = ['theonsil@gmail.com', 'admin@theonsil.co.kr', 'theonsilofficial@gmail.com', 'admin@onsil.com'];
+        // ADMIN_EMAILS hardcoded list removed for security
         // 욕설 필터링 키워드
         const BANNED_WORDS = ['씨발', '개새끼', '존나', '병신', '미친', '지랄', '시발', '새끼'];
 
@@ -502,7 +502,7 @@
 
         function renderCardPost(p) {
             const isOwner = currentUser && currentUser.email === p.authorEmail;
-            const isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
+            const isAdmin = currentUser && currentUser.role === 'admin';
             
             return `
             <div class="post-card bg-white rounded-3xl shadow-sm border border-brand/5 overflow-hidden flex flex-col relative">
@@ -565,7 +565,7 @@
 
         function renderListPost(p) {
             const isOwner = currentUser && currentUser.email === p.authorEmail;
-            const isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
+            const isAdmin = currentUser && currentUser.role === 'admin';
 
             return `
             <div class="bg-white rounded-3xl shadow-sm border border-brand/5 overflow-hidden flex flex-col hover:bg-white/50 transition-all cursor-pointer group">
@@ -747,7 +747,7 @@
             
             return visibleComments.map(c => {
                 const isCommentOwner = currentUser && currentUser.email === c.authorEmail;
-                const isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
+                const isAdmin = currentUser && currentUser.role === 'admin';
 
                 return `
                 <div class="flex justify-between items-start gap-3 bg-white/50 p-3 rounded-2xl border border-brand/5 animate-slide-up relative group">

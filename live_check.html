@@ -185,8 +185,7 @@
 
         async function checkAdmin() {
             const user = await Auth.getCurrentUser();
-            const adminEmails = ["fulmin@nate.com","theonsil@gmail.com","admin@theonsil.co.kr","theonsilofficial@gmail.com","admin@onsil.com"];
-            if (!user || (user.role !== "admin" && !adminEmails.includes(user.email))) {
+                        if (!user || user.role !== "admin") {
                 alert("관리자 권한이 필요합니다.");
                 location.href = "partner-login.html";
                 return;
@@ -326,8 +325,7 @@
             const results = [];
             const user = await Auth.getCurrentUser();
             results.push("현재 사용자: " + (user ? user.email : "없음"));
-            const adminEmails = ["fulmin@nate.com","theonsil@gmail.com","admin@theonsil.co.kr","theonsilofficial@gmail.com","admin@onsil.com"];
-            results.push(adminEmails.includes(user?.email) ? "관리자 권한: 확인됨" : "관리자 권한: 없음 - 접근 차단 필요");
+            results.push(user?.role === "admin" ? "관리자 권한: 확인됨" : "관리자 권한: 없음 - 접근 차단 필요");
             const homes = await Auth.getAllFuneralHomes();
             results.push("DB 연결: funeral_homes (" + homes.length + "개)");
             const noAddr = homes.filter(h => !h.address || h.address === "null").length;
