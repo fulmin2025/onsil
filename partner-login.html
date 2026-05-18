@@ -112,7 +112,7 @@
                 const res = await Auth.login(email, password);
                 if (res.success) {
                     const user = await Auth.getCurrentUser();
-                    if (user && (user.role === 'admin' || user.role === 'partner' || user.email === 'fulmin@nate.com')) {
+                    if (user && (user.role === 'admin' || user.role === 'partner')) {
                         location.href = 'admin_reservations.html';
                     } else if (user && user.role === 'pending_partner') {
                         // Pending approval
@@ -139,7 +139,7 @@
         // Redirect if already logged in as partner/admin
         window.onload = async () => {
             const user = await Auth.getCurrentUser();
-            if (user && (user.role === 'partner' || user.role === 'admin' || user.email === 'fulmin@nate.com')) {
+            if (user && (user.role === 'partner' || user.role === 'admin')) {
                 location.href = 'admin_reservations.html';
             }
         };
