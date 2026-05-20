@@ -812,12 +812,14 @@
 
                 btn.textContent = selectedPayMethod === 'kakaopay' ? "카카오페이 결제창 로딩 중..." : "결제창 로딩 중...";
 
-                // 결제 수단에 따라 채널키와 결제방식 분기
+                // 결제 수단에 따라 스토어ID, 채널키와 결제방식 분기
                 const paymentConfig = {
-                    storeId: Auth.PORTONE_STORE_ID,
+                    storeId: selectedPayMethod === 'kakaopay' 
+                        ? Auth.PORTONE_STORE_ID 
+                        : Auth.PORTONE_CARD_STORE_ID,
                     channelKey: selectedPayMethod === 'kakaopay' 
                         ? Auth.PORTONE_KAKAOPAY_CHANNEL_KEY 
-                        : Auth.PORTONE_CHANNEL_KEY,
+                        : Auth.PORTONE_CARD_CHANNEL_KEY,
                     paymentId: paymentId,
                     orderName: `The 온실: ${resData.selected_service}`,
                     totalAmount: totalPrice, 

@@ -10,6 +10,8 @@ const SUPABASE_KEY = 'sb_publishable_9OyB7n3foIalMmDxq1-_PA_s3xYfcJS';
 const PORTONE_STORE_ID = "store-da73189c-c561-4ce0-8354-3de92abc40b9";
 const PORTONE_CHANNEL_KEY = "channel-key-c871e7bc-cc63-4daf-a74f-2b8b80a9d29c";
 const PORTONE_KAKAOPAY_CHANNEL_KEY = "channel-key-14da73a7-37be-4b12-a4e0-dddc0c7ae460";
+const PORTONE_CARD_STORE_ID = "iamporttest_3";
+const PORTONE_CARD_CHANNEL_KEY = "channel-key-f5a9e74f-4ef2-4fe0-89e8-8e85e65246b4";
 
 // Initialize Supabase Client
 let _supabaseInstance = null;
@@ -47,6 +49,8 @@ const Auth = {
     PORTONE_STORE_ID: PORTONE_STORE_ID,
     PORTONE_CHANNEL_KEY: PORTONE_CHANNEL_KEY,
     PORTONE_KAKAOPAY_CHANNEL_KEY: PORTONE_KAKAOPAY_CHANNEL_KEY,
+    PORTONE_CARD_STORE_ID: PORTONE_CARD_STORE_ID,
+    PORTONE_CARD_CHANNEL_KEY: PORTONE_CARD_CHANNEL_KEY,
 
     /**
      * Signup a new user and create a profile
