@@ -72,6 +72,74 @@
             margin-bottom: 1rem;
             color: #1a1a1a;
         }
+
+        /* 카카오페이 결제 수단 선택 */
+        .pay-method-card {
+            position: relative;
+            border: 2px solid #e5e7eb;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+        }
+        .pay-method-card:hover {
+            border-color: #d1d5db;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .pay-method-card.active {
+            border-color: #8D7B68;
+            box-shadow: 0 0 0 3px rgba(141,123,104,0.15);
+        }
+        .pay-method-card.active.kakaopay {
+            border-color: #FEE500;
+            box-shadow: 0 0 0 3px rgba(254,229,0,0.25);
+        }
+        .pay-method-card .check-circle {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .pay-method-card.active .check-circle {
+            border-color: #8D7B68;
+            background: #8D7B68;
+        }
+        .pay-method-card.active.kakaopay .check-circle {
+            border-color: #3C1E1E;
+            background: #3C1E1E;
+        }
+        .pay-method-card .check-circle i {
+            font-size: 10px;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .pay-method-card.active .check-circle i {
+            opacity: 1;
+        }
+
+        /* 카카오페이 버튼 스타일 */
+        .btn-kakaopay {
+            background: #FEE500 !important;
+            color: #191919 !important;
+        }
+        .btn-kakaopay:hover {
+            background: #FDD835 !important;
+        }
+
+        @keyframes selectPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        .pay-method-card.active {
+            animation: selectPulse 0.3s ease;
+        }
     </style>
 
     <style>
@@ -223,6 +291,57 @@
             </div>
         </div>
 
+        <!-- Payment Method Selection -->
+        <div class="p-5 bg-white mb-2">
+            <h3 class="step-title">결제 수단을 선택해주세요.</h3>
+            <div class="space-y-3" id="pay-method-container">
+                <!-- 카카오페이 -->
+                <div class="pay-method-card kakaopay" data-method="kakaopay" onclick="selectPayMethod('kakaopay')">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:#FEE500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 256 256">
+                                    <path fill="#3C1E1E" d="M128 36C70.6 36 24 72.2 24 116.8c0 29 19.2 54.4 48 69.2l-10.4 38c-.8 3 2.6 5.4 5.2 3.6L112 196c5.2.8 10.6 1.2 16 1.2 57.4 0 104-36.2 104-80.4S185.4 36 128 36z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-900">카카오페이</p>
+                                <p class="text-[11px] text-gray-500">카카오페이로 간편하게 결제</p>
+                            </div>
+                        </div>
+                        <div class="check-circle">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex items-center gap-2">
+                        <span class="text-[10px] px-2 py-1 bg-yellow-50 text-yellow-700 rounded-full font-bold">간편결제</span>
+                        <span class="text-[10px] px-2 py-1 bg-yellow-50 text-yellow-700 rounded-full font-bold">카카오페이 머니 · 카드</span>
+                    </div>
+                </div>
+
+                <!-- 일반 카드 결제 -->
+                <div class="pay-method-card" data-method="card" onclick="selectPayMethod('card')">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-gray-100">
+                                <i class="fas fa-credit-card text-xl text-gray-500"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-900">신용/체크카드</p>
+                                <p class="text-[11px] text-gray-500">일반 카드 결제</p>
+                            </div>
+                        </div>
+                        <div class="check-circle">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex items-center gap-2">
+                        <span class="text-[10px] px-2 py-1 bg-gray-100 text-gray-600 rounded-full font-bold">모든 카드 가능</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Agreement -->
         <div class="p-5 bg-white">
             <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
@@ -312,6 +431,49 @@
         const facilityName = urlParams.get('id');
         let selectedService = []; // 다중 선택 배열로 변경
         let currentServices = [];
+        let selectedPayMethod = 'kakaopay'; // 기본값: 카카오페이
+
+        // 결제 수단 선택 함수
+        function selectPayMethod(method) {
+            selectedPayMethod = method;
+            document.querySelectorAll('.pay-method-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            const selectedCard = document.querySelector(`.pay-method-card[data-method="${method}"]`);
+            if (selectedCard) selectedCard.classList.add('active');
+
+            // 하단 버튼 스타일 동적 변경
+            const submitBtn = document.getElementById('submit-btn');
+            if (method === 'kakaopay') {
+                submitBtn.classList.add('btn-kakaopay');
+                submitBtn.classList.remove('bg-primary', 'hover:bg-[#7A6A59]');
+            } else {
+                submitBtn.classList.remove('btn-kakaopay');
+                submitBtn.classList.add('bg-primary', 'hover:bg-[#7A6A59]');
+            }
+
+            // 버튼 텍스트 업데이트
+            updateSubmitButtonText();
+            validateForm();
+        }
+
+        function updateSubmitButtonText() {
+            const activeCards = document.querySelectorAll('.service-card.active');
+            let totalVal = 0;
+            activeCards.forEach(c => { totalVal += parsePriceValue(c.dataset.price); });
+            const submitBtn = document.getElementById('submit-btn');
+            const methodLabel = selectedPayMethod === 'kakaopay' ? '카카오페이' : '카드';
+            if (totalVal > 0) {
+                submitBtn.textContent = `${methodLabel}로 ${totalVal.toLocaleString()}원 결제하기`;
+            } else {
+                submitBtn.textContent = '예약 신청하기';
+            }
+        }
+
+        // 페이지 로드 시 기본 카카오페이 선택 활성화
+        document.addEventListener('DOMContentLoaded', () => {
+            selectPayMethod('kakaopay');
+        });
 
         // 가격 문자열을 숫자로 안전하게 파싱하는 헬퍼 함수
         function parsePriceValue(priceStr) {
@@ -454,12 +616,7 @@
                         totalVal += parsePriceValue(c.dataset.price);
                     });
                     
-                    const submitBtn = document.getElementById('submit-btn');
-                    if (totalVal > 0) {
-                        submitBtn.textContent = `예약 신청하기 (총 ${totalVal.toLocaleString()}원 결제)`;
-                    } else {
-                        submitBtn.textContent = '예약 신청하기';
-                    }
+                    updateSubmitButtonText();
                     
                     validateForm();
                 };
@@ -578,8 +735,9 @@
             const agree = document.getElementById('agree-all').checked;
             const timeSelected = document.querySelector('.time-btn.active');
             const serviceSelected = selectedService.length > 0;
+            const payMethodSelected = !!selectedPayMethod;
 
-            const isComplete = petName && petWeight && petType && userName && phone && agree && timeSelected && isVerified && serviceSelected;
+            const isComplete = petName && petWeight && petType && userName && phone && agree && timeSelected && isVerified && serviceSelected && payMethodSelected;
             document.getElementById('submit-btn').disabled = !isComplete;
         }
 
@@ -652,23 +810,32 @@
                     return;
                 }
 
-                btn.textContent = "결제창 로딩 중...";
+                btn.textContent = selectedPayMethod === 'kakaopay' ? "카카오페이 결제창 로딩 중..." : "결제창 로딩 중...";
 
-                // Using Auth centralized PortOne config
-                const response = await PortOne.requestPayment({
+                // 결제 수단에 따라 채널키와 결제방식 분기
+                const paymentConfig = {
                     storeId: Auth.PORTONE_STORE_ID,
-                    channelKey: Auth.PORTONE_CHANNEL_KEY,
+                    channelKey: selectedPayMethod === 'kakaopay' 
+                        ? Auth.PORTONE_KAKAOPAY_CHANNEL_KEY 
+                        : Auth.PORTONE_CHANNEL_KEY,
                     paymentId: paymentId,
                     orderName: `The 온실: ${resData.selected_service}`,
                     totalAmount: totalPrice, 
                     currency: "CURRENCY_KRW",
-                    payMethod: "CARD",
+                    payMethod: selectedPayMethod === 'kakaopay' ? "EASY_PAY" : "CARD",
                     customer: {
                         fullName: user.name,
                         phoneNumber: resData.user_phone,
                         email: user.email,
                     },
-                });
+                };
+
+                // 카카오페이일 때 easyPay provider 추가
+                if (selectedPayMethod === 'kakaopay') {
+                    paymentConfig.easyPay = { provider: "KAKAOPAY" };
+                }
+
+                const response = await PortOne.requestPayment(paymentConfig);
 
                 if (response.code !== undefined) {
                     alert(`결제에 실패하였습니다. 사유: ${response.message}`);
