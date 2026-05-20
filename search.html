@@ -1163,6 +1163,7 @@
             let imageUrl = realInfo?.imageUrl || null;
 
             return {
+                isAlliance: item.is_alliance || item.isAlliance || (realInfo && (realInfo.isAlliance || realInfo.is_alliance)) || false,
                 ...item,
                 latitude: latVal,
                 longitude: lngVal,
@@ -1493,7 +1494,7 @@
                                 latitude: info.latitude || 37.5665,
                                 longitude: info.longitude || 126.9780,
                                 image_url: info.imageUrl || '',
-                                is_alliance: false,
+                                is_alliance: info.isAlliance || info.is_alliance || false,
                                 prices: info.prices || []
                             };
                         });
@@ -1524,7 +1525,7 @@
                             latitude: info.latitude || 37.5665,
                             longitude: info.longitude || 126.9780,
                             image_url: info.imageUrl || '',
-                            is_alliance: false,
+                            is_alliance: info.isAlliance || info.is_alliance || false,
                             prices: info.prices || []
                         };
                     });
