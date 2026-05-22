@@ -1,56 +1,3 @@
-const FOUR_PAWS_PRICES = [
-            {
-                category: "일반 동물 장례 패키지 (10kg 이하 기준)",
-                items: [
-                    { name: "기본 화장", price: "250,000원", desc: "염습, 단독추모, 개별화장, 임시유골함, 추모키트", longDesc: "염습, 단독 추모, 개별 화장 및 수/분골, 임시 유골함 제공. (추모키트: 장례 증명서, 사진 인화, 발도장, 인연의 실, 안내서)" },
-                    { name: "관 장례 패키지", price: "550,000원", desc: "기본화장 + 오동나무 관 + 고급수의 + 꽃다발", longDesc: "기본 화장 + 오동나무 관 + 인견 수의/수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item01.webp" },
-                    { name: "요람 장례 패키지", price: "600,000원", desc: "기본화장 + 요람관 + 고급수의 + 목화솜 이불", longDesc: "기본 화장 + 요람관 + 인견 수의 + 목화솜 이불 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item02.webp" },
-                    { name: "자연닮음 장례 패키지", price: "600,000원", desc: "기본화장 + 자연닮음 관/수의 + 한지 수목함", longDesc: "기본 화장 + 자연닮음 관 + 자연닮음 수의/수의보 + 한지 수목함 + 작은 꽃다발", imageUrl: "./images/p_item04.webp" },
-                    { name: "ALL IN ONE 패키지", price: "1,360,000원", desc: "최고급관 + 블리스 스톤 전량 + 다담 스톤함", longDesc: "기본 화장 + 오동나무 관 + 면 수의/수의보 + 블리스 스톤(전량) + 호두나무 다담 스톤함 + 작은 꽃다발", imageUrl: "./images/p_item03.webp" }
-                ]
-            },
-            {
-                category: "소동물 장례 패키지 (1kg 이하 기준)",
-                items: [
-                    { name: "소동물 기본 화장", price: "200,000원", desc: "염습 시 특수 칫솔 사용 등 일반 기본 화장과 동일", longDesc: "일반 동물 기본 화장 서비스 구성 100% 동일" },
-                    { name: "소동물 관 장례 패키지", price: "350,000원", desc: "기본화장 + 오동나무 관 + 소동물 수의보", longDesc: "기본 화장 + 오동나무 관 + 면 수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item01_ex_3.webp" }
-                ]
-            },
-            {
-                category: "추가 비용 (체중 초과 안내)",
-                items: [
-                    { name: "기초 체중 초과 (1kg 당)", price: "10,000원", desc: "기초 체중을 초과한 1kg 단위 가산 금액", longDesc: "기초 체중(일반동물 10kg, 소동물 1kg) 초과 시 1kg당 10,000원의 비용이 추가됩니다. 패키지 용품 사이즈 변경 시 추가 비용이 발생할 수 있습니다." }
-                ]
-            }
-        ];
-
-        // --- 포포즈 세종/김해(부산) 요금표 (서울/경기 대비 5만원 저렴) ---
-        const FOUR_PAWS_PRICES_SEJONG_BUSAN = [
-            {
-                category: "일반 동물 장례 패키지 (10kg 이하 기준)",
-                items: [
-                    { name: "기본 화장", price: "200,000원", desc: "염습, 단독추모, 개별화장, 임시유골함, 추모키트", longDesc: "염습, 단독 추모, 개별 화장 및 수/분골, 임시 유골함 제공. (추모키트: 장례 증명서, 사진 인화, 발도장, 인연의 실, 안내서)" },
-                    { name: "관 장례 패키지", price: "500,000원", desc: "기본화장 + 오동나무 관 + 고급수의 + 꽃다발", longDesc: "기본 화장 + 오동나무 관 + 인견 수의/수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item01.webp" },
-                    { name: "요람 장례 패키지", price: "550,000원", desc: "기본화장 + 요람관 + 고급수의 + 목화솜 이불", longDesc: "기본 화장 + 요람관 + 인견 수의 + 목화솜 이불 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item02.webp" },
-                    { name: "자연닮음 장례 패키지", price: "550,000원", desc: "기본화장 + 자연닮음 관/수의 + 한지 수목함", longDesc: "기본 화장 + 자연닮음 관 + 자연닮음 수의/수의보 + 한지 수목함 + 작은 꽃다발", imageUrl: "./images/p_item04.webp" },
-                    { name: "ALL IN ONE 패키지", price: "1,310,000원", desc: "최고급관 + 블리스 스톤 전량 + 다담 스톤함", longDesc: "기본 화장 + 오동나무 관 + 면 수의/수의보 + 블리스 스톤(전량) + 호두나무 다담 스톤함 + 작은 꽃다발", imageUrl: "./images/p_item03.webp" }
-                ]
-            },
-            {
-                category: "소동물 장례 패키지 (1kg 이하 기준)",
-                items: [
-                    { name: "소동물 기본 화장", price: "150,000원", desc: "염습 시 특수 칫솔 사용 등 일반 기본 화장과 동일", longDesc: "일반 동물 기본 화장 서비스 구성 100% 동일" },
-                    { name: "소동물 관 장례 패키지", price: "300,000원", desc: "기본화장 + 오동나무 관 + 소동물 수의보", longDesc: "기본 화장 + 오동나무 관 + 면 수의보 + 기본 유골함 + 작은 꽃다발", imageUrl: "./images/p_item01_ex_3.webp" }
-                ]
-            },
-            {
-                category: "추가 비용 (체중 초과 안내)",
-                items: [
-                    { name: "기초 체중 초과 (1kg 당)", price: "10,000원", desc: "기초 체중을 초과한 1kg 단위 가산 금액", longDesc: "기초 체중(일반동물 10kg, 소동물 1kg) 초과 시 1kg당 10,000원의 비용이 추가됩니다. 패키지 용품 사이즈 변경 시 추가 비용이 발생할 수 있습니다." }
-                ]
-            }
-        ];
-
         const STANDARD_PRICES = [
             {
                 category: "기본 장례 비용",
@@ -72,25 +19,6 @@ const FOUR_PAWS_PRICES = [
                 items: [
                     { name: "수의/관", price: "별도 비용" },
                     { name: "메모리얼 스톤", price: "200,000원 ~" }
-                ]
-            }
-        ];
-
-        const TWENTYONE_GRAM_PRICES = [
-            {
-                "category": "21그램 장례 패키지",
-                "items": [
-                    { "name": "베이직 장례", "price": "15kg 미만 35만원 / 대형견 65만원", "desc": "가장 기본적인 장례 절차", "imageUrl": "./images/21gram_basic.jpg", "longDesc": "모든 서비스에 엽습, 단독추모실, 개별화장, 유골함, 보자기, 추모 예식 서비스(편지, 발도장, 본, 털 보관 등)가 포함된 기본 장례 서비스입니다." },
-                    { "name": "21그램 장례 I", "price": "15kg 미만 70만원 / 대형견 111만원", "desc": "베이직 + 시그니처 요람 + 헌화 꽃다발", "imageUrl": "./images/21gram_type1.jpg", "longDesc": "베이직 구성에 21그램 시그니처 요람(M/L)과 헌화 꽃다발이 추가로 제공되는 패키지입니다." },
-                    { "name": "21그램 장례 II", "price": "15kg 미만 75만원 / 대형견 120만원", "desc": "베이직 + 오동나무관 + 고급 수의 + 헌화 꽃다발", "imageUrl": "./images/21gram_type2.jpg", "longDesc": "베이직 구성에 오동나무관(M/L), 고급 수의, 헌화 꽃다발이 추가로 제공되는 패키지입니다. (1kg 미만 소동물 전용 65만원)" },
-                    { "name": "프리미엄 소풍 장례", "price": "1,350,000원", "desc": "최상급 프리미엄 장례 (15kg 미만 전용)", "imageUrl": "./images/21gram_premium.jpg", "longDesc": "베이직 구성에 프리미엄 관 M, 최고급 수의, 무지개 다리 특별 예식, 소풍 가방, 들꽃 바구니가 모두 포함된 최고급 예우 패키지입니다." }
-                ]
-            },
-            {
-                "category": "부가 서비스 및 선택 용품",
-                "items": [
-                    { "name": "루세떼 (메모리얼 스톤)", "price": "별도 문의", "desc": "유골분을 보석 형태로 제작", "imageUrl": "./images/21gram_lucete.jpg", "longDesc": "유골분을 영원히 변치않는 아름다운 보석 형태의 메모리얼 스톤(루세떼)으로 가공하는 서비스입니다." },
-                    { "name": "운구 서비스 / 비동행 장례", "price": "별도 문의", "desc": "상황에 따라 맞춤 진행", "longDesc": "보호자 참석이 어려운 경우 비동행 장례가 가능하며, 장례식장 이동을 위한 운송 서비스도 지원됩니다. 자세한 비용은 병원 문의바랍니다." }
                 ]
             }
         ];
@@ -432,12 +360,6 @@ const FOUR_PAWS_PRICES = [
                 "address": "대구 군위군 부계면 창평리 812",
                 "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/littlepaws.webp"
             },
-            "포포즈 화성점": {
-                "pricingType": "categorized",
-                "prices": FOUR_PAWS_PRICES,
-                "address": "경기 화성시 팔탄면 창곡리 925-6",
-                "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000&auto=format&fit=crop"
-            },
             "스윗드림펫": {
                 "pricingType": "categorized",
                 "prices": [
@@ -733,7 +655,6 @@ const FOUR_PAWS_PRICES = [
                 "address": "경기 고양시 일산동구 설문동 515-1",
                 "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/petbaragi-ilsan.webp"
             },
-            "포포즈 양주점": { "pricingType": "categorized", "prices": FOUR_PAWS_PRICES, "address": "경기 양주시 광적면 비암리 583-4", "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/pofos-yangju.webp" },
             "엔젤스톤": {
                 "pricingType": "categorized",
                 "prices": [
@@ -932,14 +853,7 @@ const FOUR_PAWS_PRICES = [
                 "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/happypet.webp"
             },
             "펫로스케어": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경남 김해시 상동면 우계리 112-1" , "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/21gram-namyangju.webp"},
-            "21그램 남양주점": {
-                "address": "경기 남양주시 화도읍 차산리 856-1",
-                "pricingType": "categorized",
-                "prices": TWENTYONE_GRAM_PRICES,
-                "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/21gram-namyangju.webp"
-            },
             "좋은친구들": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "충남 공주시 우성면 보흥리 759", "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/joeunchingudeul.webp" },
-            "포포즈 세종점": { "pricingType": "categorized", "prices": FOUR_PAWS_PRICES_SEJONG_BUSAN, "address": "세종 부강면 부강리 658-2", "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/pofos-sejong.webp" },
             "펫포레스트 김포점": {
                 "address": "경기 김포시 통진읍 고정로 308",
                 "pricingType": "categorized",
@@ -961,12 +875,6 @@ const FOUR_PAWS_PRICES = [
             "더포에버": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "인천 서구 대곡동 361-2", "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/theforever.webp" },
             "한별": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경남 창원시 성산구 창원대로 11" , "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/mongmongiempark.webp"},
             "몽몽이엠파크": { "pricingType": "categorized", "prices": MONGMONG_PRICES, "address": "경기 남양주시 화도읍 구암리 305", "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/mongmongiempark.webp" },
-            "21그램 경기광주점": {
-                "address": "경기 광주시 매산동 139",
-                "pricingType": "categorized",
-                "prices": TWENTYONE_GRAM_PRICES,
-                "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/21gram-kyungigwangju.webp"
-            },
             "백꽃사랑하이빛": {
                 "pricingType": "categorized",
                 "prices": [
@@ -999,7 +907,6 @@ const FOUR_PAWS_PRICES = [
             },
             "하늘강아지": { "pricingType": "categorized", "prices": HANEUL_PRICES, "address": "경기 광주시 초월읍 선동리 386-5", "imageUrl": "https://cdn.imweb.me/thumbnail/20250810/14567aedad916.jpg" },
             "아이별": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "부산 기장군 장안읍 기룡리 240" , "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/pofos-gimhae.webp"},
-            "포포즈 김해점": { "pricingType": "categorized", "prices": FOUR_PAWS_PRICES_SEJONG_BUSAN, "address": "경상남도 김해시 한림면 안하로 102", "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/pofos-gimhae.webp" },
             "하얀민들레": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경북 청도군 화양읍 남성현로 852" , "imageUrl": "./images/petnoblesse_main.png"},
             "아이드림펫": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경기 김포시 하성면 양택리 161-1" , "imageUrl": "./images/ibyeol_main.png"},
             "펫노블레스": { "pricingType": "categorized", "prices": PETNOBLESSE_PRICES, "address": "경남 양산시 상북면 상삼리 807", "imageUrl": "./images/petnoblesse_main.png" },
@@ -1093,15 +1000,7 @@ const FOUR_PAWS_PRICES = [
                 "address": "강원 원주시 소초면 현촌길 90-3",
                 "imageUrl": "./images/pettoheaven_main.jpg"
             },
-            "포포즈 경기광주점": { "pricingType": "categorized", "prices": FOUR_PAWS_PRICES, "address": "경기 광주시 초월읍 신월리 592-19", "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/pofos-kyungigwangju.webp" },
-            "포포즈 김포점": { "pricingType": "categorized", "prices": FOUR_PAWS_PRICES, "address": "경기 김포시 월곶면 개곡리 810-1" , "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/ariapet.webp"},
             "아리아펫": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경기 이천시 마장면 장암리 525-1", "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/ariapet.webp" },
-            "21그램 천안아산점": {
-                "pricingType": "categorized",
-                "prices": TWENTYONE_GRAM_PRICES,
-                "address": "충청남도 천안시 동남구 광풍로 1668",
-                "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/21gram-cheonanasan.webp"
-            },
             "아이들랜드": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경북 경산시 와촌면 신한리 570-2" , "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/rememberpark.webp"},
             "이별공간": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "울산 울주군 삼동면 조일리 906-4" , "imageUrl": "https://ebyulplace.com/wp-content/uploads/2025/02/공통장례1.webp"},
             "리멤버파크": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "충남 논산시 연산면 청동리 16", "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/rememberpark.webp" },
@@ -1196,5 +1095,5 @@ const FOUR_PAWS_PRICES = [
 
         // --- Data Enrichment Helper ---
         const PHONE_DATA = {
-            "리틀포즈": "1551-5052", "포이리스": "1551-5052", "포포즈 화성점": "1551-5052", "스윗드림펫": "1551-5052", "스타티스": "1551-5052", "씨엘로펫": "1551-5052", "해늘마루": "1551-5052", "메리온": "05078718214", "펫오케스트라": "1551-5052", "전주아리움": "1551-5052", "전주하늘": "1551-5052", "펫포레스트 남양주점": "05078718324", "퍼스트펫": "05078718322", "젠틀펫스타": "1551-5052", "아이헤븐": "05078718213", "한별리멤버파크": "1551-5052", "별다만": "1551-5052", "해피엔딩": "1551-5052", "포포즈 김포점": "1551-5052", "타임투": "1551-5052", "펫바라기 남원점": "1551-5052", "푸른솔": "1551-5052", "러블리엔젤": "1551-5052", "오수펫추모공원": "05078718218", "펫바라기 일산점": "1551-5052", "포포즈 양주점": "1551-5052", "엔젤스톤": "05078718210", "패투헤븐": "1551-5052", "별이되다": "1551-5052", "스토리펫": "05078718320", "경북": "1551-5052", "러브펫 경기광주점": "1551-5052", "펫로스케어": "1551-5052", "21그램 남양주점": "1551-5052", "좋은친구들": "1551-5052", "하늘별": "1551-5052", "포포즈 세종점": "1551-5052", "펫포레스트 김포점": "05078718323", "더포에버": "1551-5052", "한별": "1551-5052", "몽몽이엠파크": "1551-5052", "21그램 천안아산점": "1551-5052", "스마일어게인": "05078718216", "21그램 경기광주점": "1551-5052", "백꽃사랑하이빛": "1551-5052", "어게인": "1551-5052", "하늘강아지": "1551-5052", "대전스카이펫": "1551-5052", "아이별": "1551-5052", "포포즈 김해점": "1551-5052", "하얀민들레": "1551-5052", "아이드림펫": "1551-5052", "펫노블레스": "1551-5052", "서래안펫타운": "1551-5052", "하늘소풍": "1551-5052", "리멤버": "1551-5052", "강아지펫헤븐": "1551-5052", "위드엔젤": "1551-5052", "펫포레스트 경기광주점": "05078718325", "굿바이펫": "05078718215", "로이힐즈": "1551-5052", "강릉펫사랑": "1551-5052", "우바스": "1551-5052", "포포즈 경기광주점": "1551-5052", "해피펫": "1551-5052", "아리아펫": "1551-5052", "아이들랜드": "1551-5052", "이별공간": "1551-5052", "리멤버파크": "1551-5052", "펫콤": "1551-5052", "스타펫": "1551-5052", "스냅플러그": "1551-5051"
+            "리틀포즈": "1551-5052", "포이리스": "1551-5052", "스윗드림펫": "1551-5052", "스타티스": "1551-5052", "씨엘로펫": "1551-5052", "해늘마루": "1551-5052", "메리온": "05078718214", "펫오케스트라": "1551-5052", "전주아리움": "1551-5052", "전주하늘": "1551-5052", "펫포레스트 남양주점": "05078718324", "퍼스트펫": "05078718322", "젠틀펫스타": "1551-5052", "아이헤븐": "05078718213", "한별리멤버파크": "1551-5052", "별다만": "1551-5052", "해피엔딩": "1551-5052", "타임투": "1551-5052", "펫바라기 남원점": "1551-5052", "푸른솔": "1551-5052", "러블리엔젤": "1551-5052", "오수펫추모공원": "05078718218", "펫바라기 일산점": "1551-5052", "엔젤스톤": "05078718210", "패투헤븐": "1551-5052", "별이되다": "1551-5052", "스토리펫": "05078718320", "경북": "1551-5052", "러브펫 경기광주점": "1551-5052", "펫로스케어": "1551-5052", "좋은친구들": "1551-5052", "하늘별": "1551-5052", "펫포레스트 김포점": "05078718323", "더포에버": "1551-5052", "한별": "1551-5052", "몽몽이엠파크": "1551-5052", "스마일어게인": "05078718216", "백꽃사랑하이빛": "1551-5052", "어게인": "1551-5052", "하늘강아지": "1551-5052", "대전스카이펫": "1551-5052", "아이별": "1551-5052", "하얀민들레": "1551-5052", "아이드림펫": "1551-5052", "펫노블레스": "1551-5052", "서래안펫타운": "1551-5052", "하늘소풍": "1551-5052", "리멤버": "1551-5052", "강아지펫헤븐": "1551-5052", "위드엔젤": "1551-5052", "펫포레스트 경기광주점": "05078718325", "굿바이펫": "05078718215", "로이힐즈": "1551-5052", "강릉펫사랑": "1551-5052", "우바스": "1551-5052", "해피펫": "1551-5052", "아리아펫": "1551-5052", "아이들랜드": "1551-5052", "이별공간": "1551-5052", "리멤버파크": "1551-5052", "펫콤": "1551-5052", "스타펫": "1551-5052", "스냅플러그": "1551-5051"
         };
