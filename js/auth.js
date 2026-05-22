@@ -492,7 +492,12 @@ const Auth = {
             let filteredData = data || [];
             if (filteredData && filteredData.length > 0) {
                 const hiddenNames = ['펫메모리얼', '펫포유', '파트라슈'];
-                filteredData = filteredData.filter(item => !hiddenNames.includes(item.name));
+                filteredData = filteredData.filter(item => 
+                    item.name &&
+                    !hiddenNames.includes(item.name) &&
+                    !item.name.includes('21그램') &&
+                    !item.name.includes('포포즈')
+                );
             }
 
             return filteredData;
@@ -574,21 +579,6 @@ const Auth = {
         }
     },
 
-    getAllFuneralHomes: async () => {
-        try {
-            const client = getSupabase();
-            if (!client) throw new Error('클라이언트 연결 실패');
-            const { data, error } = await client
-                .from('funeral_homes')
-                .select('id, name')
-                .order('name', { ascending: true });
-            if (error) throw error;
-            return data || [];
-        } catch (error) {
-            console.error('getAllFuneralHomes error:', error);
-            return [];
-        }
-    }
 };
 
 // Make Auth globally available

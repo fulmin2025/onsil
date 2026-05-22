@@ -852,7 +852,7 @@
                 "address": "전북 완주군 이서면 은교리 508",
                 "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/happypet.webp"
             },
-            "펫로스케어": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경남 김해시 상동면 우계리 112-1" , "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/21gram-namyangju.webp"},
+            "펫로스케어": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경남 김해시 상동면 우계리 112-1" , "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/petlosscare.webp"},
             "좋은친구들": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "충남 공주시 우성면 보흥리 759", "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/joeunchingudeul.webp" },
             "펫포레스트 김포점": {
                 "address": "경기 김포시 통진읍 고정로 308",
