@@ -500,6 +500,34 @@ const Auth = {
                 );
             }
 
+            // ✅ 온실 공식 제휴 장례식장 15개 - is_alliance 강제 설정
+            // (Supabase RLS 정책 무관하게 클라이언트 사이드에서 보장)
+            const OFFICIAL_ALLIANCE_NAMES = [
+                '좋은친구들',
+                '스마일어게인',
+                '대전이별공간',
+                '굿바이펫',
+                '러블리엔젤',
+                '경북',                          // DB 저장명
+                '경북반려동물장례식장',
+                '강아지펫헤븐',
+                '하늘소풍',
+                '별이되다',
+                '이별공간',
+                '스타티스',
+                '펫바라기 남원점',
+                '푸른솔',
+                '타임투',
+                '순천 반려동물장례식장 하늘별',
+            ];
+            filteredData = filteredData.map(item => {
+                const isOfficial = OFFICIAL_ALLIANCE_NAMES.some(n =>
+                    item.name === n || item.name.includes(n) || n.includes(item.name)
+                );
+                if (isOfficial) return { ...item, is_alliance: true };
+                return item;
+            });
+
             return filteredData;
         } catch (error) {
             console.error('Auth.getAllFuneralHomes: EXCEPTION:', error);
