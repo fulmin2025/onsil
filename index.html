@@ -168,63 +168,6 @@
 
 <body class="bg-brand-cream font-sans text-brand antialiased">
 
-    <!-- 🌿 바우처 배너 (온실 추모 지원) -->
-    <div id="voucher-banner" style="position:fixed;top:64px;left:0;right:0;z-index:49;background:linear-gradient(135deg,#1a1a2e 0%,#2c2c4a 40%,#1e3a3a 100%);overflow:hidden;">
-        <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
-            <div style="position:absolute;top:-20%;left:-10%;width:300px;height:300px;background:radial-gradient(circle,rgba(212,175,55,0.12) 0%,transparent 70%);border-radius:50%;"></div>
-            <div style="position:absolute;bottom:-30%;right:-5%;width:250px;height:250px;background:radial-gradient(circle,rgba(135,160,139,0.15) 0%,transparent 70%);border-radius:50%;"></div>
-        </div>
-        <div style="position:relative;z-index:1;max-width:640px;margin:0 auto;padding:18px 20px 14px;text-align:center;">
-            <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(212,175,55,0.15);border:1px solid rgba(212,175,55,0.35);border-radius:100px;padding:3px 12px;margin-bottom:10px;">
-                <span style="width:6px;height:6px;border-radius:50%;background:#d4af37;display:inline-block;animation:pulse-gold 2s infinite;flex-shrink:0;"></span>
-                <span style="font-size:11px;font-weight:700;color:#d4c27a;letter-spacing:0.5px;white-space:nowrap;">온실 추모 지원 프로그램</span>
-            </div>
-            <p style="font-size:16px;font-weight:700;color:#f5f0e8;line-height:1.5;margin:0 0 5px;letter-spacing:-0.3px;font-family:'Nanum Myeongjo',serif;">
-                사랑하는 아이에게 줄 수 있는 마지막 배려, <em style="font-style:normal;color:#e8d48b;">'장례'</em>.
-            </p>
-            <p style="font-size:12.5px;color:rgba(245,240,232,0.7);line-height:1.6;margin:0 0 12px;letter-spacing:-0.2px;">
-                준비된 바우처와 함께 가장 깊은 애도의 시간을 마주하세요.
-            </p>
-            <div style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(212,175,55,0.2) 0%,rgba(212,175,55,0.08) 100%);border:1.5px solid rgba(212,175,55,0.45);border-radius:10px;padding:9px 16px;margin-bottom:14px;">
-                <span style="font-size:18px;flex-shrink:0;">🎫</span>
-                <span style="font-size:13px;font-weight:800;color:#e8d48b;letter-spacing:-0.3px;line-height:1.4;text-align:left;">
-                    마음 편한 이별을 위한&nbsp;
-                    <span style="font-size:15px;color:#f4e57a;">총 10만 원</span> 추모 지원 바우처 증정
-                </span>
-            </div>
-            <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-                <a href="search.html" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#d4af37 0%,#b8972c 100%);color:#1a1a0f;font-size:13px;font-weight:800;padding:9px 18px;border-radius:9px;text-decoration:none;box-shadow:0 4px 14px rgba(212,175,55,0.4);letter-spacing:-0.2px;">
-                    <i class="fas fa-gift" style="font-size:11px;"></i> 바우처 받기
-                </a>
-                <a href="tel:1551-5052" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:rgba(245,240,232,0.9);font-size:13px;font-weight:600;padding:9px 18px;border-radius:9px;text-decoration:none;letter-spacing:-0.2px;">
-                    <i class="fas fa-phone-alt" style="font-size:11px;"></i> 1551-5052
-                </a>
-            </div>
-        </div>
-        <button onclick="document.getElementById('voucher-banner').style.display='none';document.body.style.paddingTop='0';" style="position:absolute;top:8px;right:12px;background:none;border:none;cursor:pointer;color:rgba(245,240,232,0.45);font-size:15px;padding:4px;line-height:1;" aria-label="배너 닫기">✕</button>
-        <div style="height:2px;background:linear-gradient(90deg,transparent 0%,rgba(212,175,55,0.6) 30%,rgba(212,175,55,0.6) 70%,transparent 100%);"></div>
-    </div>
-    <style>
-        @keyframes pulse-gold { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.55;transform:scale(0.8)} }
-        #voucher-banner + section, #voucher-banner ~ section:first-of-type { margin-top: var(--banner-h, 200px); }
-    </style>
-    <script>
-        (function() {
-            function adjustBanner() {
-                var banner = document.getElementById('voucher-banner');
-                if (!banner || banner.style.display === 'none') return;
-                var h = banner.offsetHeight;
-                document.documentElement.style.setProperty('--banner-h', h + 'px');
-                // 페이지 콘텐츠 밀어내기
-                var firstSection = document.querySelector('body > section, body > main, .hero-section, [class*="min-h"]');
-                if (firstSection) firstSection.style.marginTop = h + 'px';
-            }
-            window.addEventListener('load', adjustBanner);
-            window.addEventListener('resize', adjustBanner);
-        })();
-    </script>
-
-
                 <!-- Header -->
     <header id="main-header" class="fixed top-0 z-50 w-full bg-white border-b border-brand/5 transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
@@ -278,6 +221,71 @@
             </button>
         </div>
     </header>
+
+    <!-- 🌿 온실 추모 지원 바우처 배너 -->
+    <div id="voucher-banner" class="w-full relative z-[51]" style="background: linear-gradient(135deg, #1a1a2e 0%, #2c2c4a 40%, #1e3a3a 100%); border-bottom: 2px solid #d4af37;">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute -top-12 -left-10 w-64 h-64 bg-yellow-500/10 rounded-full blur-2xl"></div>
+            <div class="absolute -bottom-12 -right-5 w-60 h-60 bg-emerald-500/10 rounded-full blur-2xl"></div>
+        </div>
+        <div class="max-w-md mx-auto px-4 py-4 text-center relative z-10">
+            <!-- 상단 뱃지 -->
+            <div class="inline-flex items-center gap-1.5 bg-yellow-500/15 border border-yellow-500/35 rounded-full px-3 py-1 mb-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-ping"></span>
+                <span class="text-[10px] font-bold text-yellow-300 tracking-wider">온실 추모 지원 프로그램</span>
+            </div>
+            
+            <!-- 메인 카피 -->
+            <p class="text-sm font-bold text-gray-100 leading-snug mb-1 font-serif">
+                사랑하는 아이에게 줄 수 있는 마지막 배려, <span class="text-yellow-300 font-extrabold">‘장례’</span>.
+            </p>
+            <!-- 서브 카피 -->
+            <p class="text-[11px] text-gray-300/90 leading-normal mb-3">
+                준비된 바우처와 함께 가장 깊은 애도의 시간을 마주하세요.
+            </p>
+            
+            <!-- 바우처 박스 -->
+            <div class="bg-gradient-to-r from-yellow-500/20 to-yellow-500/5 border border-yellow-500/40 rounded-xl px-4 py-2.5 mb-3 inline-flex items-center gap-2">
+                <span class="text-lg">🎫</span>
+                <span class="text-xs font-black text-yellow-200 tracking-tight text-left">
+                    마음 편한 이별을 위한 <span class="text-sm text-yellow-400 font-black underline">총 10만 원</span> 추모 지원 바우처 증정
+                </span>
+            </div>
+            
+            <!-- 버튼 -->
+            <div class="flex items-center justify-center gap-2">
+                <a href="search.html" class="flex items-center gap-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 text-xs font-extrabold px-4 py-2 rounded-lg shadow-lg shadow-yellow-500/20 active:scale-95 transition-transform">
+                    <i class="fas fa-gift text-[10px]"></i> 바우처 받기
+                </a>
+                <a href="tel:1551-5052" class="flex items-center gap-1 bg-white/10 hover:bg-white/15 text-gray-200 text-xs font-bold px-3 py-2 rounded-lg">
+                    <i class="fas fa-phone-alt text-[10px]"></i> 1551-5052
+                </a>
+            </div>
+            
+            <!-- 닫기 버튼 -->
+            <button onclick="document.getElementById('voucher-banner').style.display='none'; document.getElementById('main-header').style.top='0px'; document.querySelector('section.relative').style.paddingTop='64px';" class="absolute top-3 right-3 text-gray-400/80 hover:text-white text-sm p-1">
+                ✕
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        // 배너 높이만큼 헤더와 첫 섹션의 위치를 동적으로 조절합니다.
+        window.addEventListener('DOMContentLoaded', () => {
+            const banner = document.getElementById('voucher-banner');
+            const header = document.getElementById('main-header');
+            const hero = document.querySelector('section.relative');
+            
+            if (banner && header) {
+                const bannerHeight = banner.offsetHeight;
+                header.style.top = bannerHeight + 'px';
+                if (hero) {
+                    hero.style.paddingTop = (bannerHeight + 64) + 'px';
+                }
+            }
+        });
+    </script>
+
 
         <!-- Mobile Navigation Overlay -->
     <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
@@ -358,6 +366,17 @@
                 </div>
             </div>
         </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[90vh] sm:min-h-screen flex items-center overflow-hidden pt-16">
+        <div class="absolute inset-0 bg-brand-cream z-0"></div>
+        <img src="images/hero_poodle.png"
+            class="absolute inset-0 w-full h-full object-cover opacity-20 sm:opacity-10 mix-blend-multiply z-0"
+            alt="Hero Background" />
+
         <!-- Decorative elements -->
         <div class="absolute top-20 right-10 w-72 h-72 bg-brand-sage/10 rounded-full blur-3xl z-0"></div>
         <div class="absolute bottom-20 left-10 w-96 h-96 bg-brand-warm/8 rounded-full blur-3xl z-0"></div>
