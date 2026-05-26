@@ -206,14 +206,27 @@
                 const sb = getSupabase();
                 if (!sb) throw new Error('인증 서비스를 연결할 수 없습니다.');
 
+                const isCapacitor = !!window.Capacitor;
+                const redirectTo = isCapacitor ? 'onsilapp://index.html' : window.location.origin + '/index.html';
+
                 const { data, error } = await sb.auth.signInWithOAuth({
                     provider: 'apple',
                     options: {
-                        redirectTo: window.location.origin + '/index.html'
+                        redirectTo: redirectTo,
+                        skipBrowserRedirect: isCapacitor
                     }
                 });
 
                 if (error) throw error;
+
+                if (isCapacitor && data?.url) {
+                    const Browser = window.Capacitor.Plugins.Browser;
+                    if (Browser) {
+                        await Browser.open({ url: data.url });
+                    } else {
+                        window.location.href = data.url;
+                    }
+                }
             } catch (error) {
                 console.error('Apple Login Error:', error);
                 alert('Apple 로그인 중 오류가 발생했습니다: ' + error.message);
@@ -225,14 +238,27 @@
                 const sb = getSupabase();
                 if (!sb) throw new Error('인증 서비스를 연결할 수 없습니다.');
 
+                const isCapacitor = !!window.Capacitor;
+                const redirectTo = isCapacitor ? 'onsilapp://index.html' : window.location.origin + '/index.html';
+
                 const { data, error } = await sb.auth.signInWithOAuth({
                     provider: 'kakao',
                     options: {
-                        redirectTo: window.location.origin + '/index.html'
+                        redirectTo: redirectTo,
+                        skipBrowserRedirect: isCapacitor
                     }
                 });
 
                 if (error) throw error;
+
+                if (isCapacitor && data?.url) {
+                    const Browser = window.Capacitor.Plugins.Browser;
+                    if (Browser) {
+                        await Browser.open({ url: data.url });
+                    } else {
+                        window.location.href = data.url;
+                    }
+                }
             } catch (error) {
                 console.error('Kakao Login Error:', error);
                 alert('카카오 로그인 중 오류가 발생했습니다: ' + error.message);

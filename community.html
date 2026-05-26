@@ -376,7 +376,12 @@
         let uploadedImageBase64 = null; // For Preview
         let uploadedImageFile = null;   // For Upload
         let editPostId = null; 
-        let blockedUsers = JSON.parse(localStorage.getItem('onsil_blocked_users') || '[]');
+        let blockedUsers = [];
+        try {
+            blockedUsers = JSON.parse(localStorage.getItem('onsil_blocked_users') || '[]');
+        } catch (e) {
+            console.warn('localStorage is not available:', e);
+        }
 
         // ADMIN_EMAILS hardcoded list removed for security
         // 욕설 필터링 키워드
@@ -923,7 +928,12 @@
 
         // --- App Store Guideline 1.2 (UGC Safety) Features ---
         function checkEULA() {
-            const agreed = localStorage.getItem('onsil_eula_agreed');
+            let agreed = null;
+            try {
+                agreed = localStorage.getItem('onsil_eula_agreed');
+            } catch (e) {
+                console.warn('localStorage is not available:', e);
+            }
             if (!agreed) {
                 document.getElementById('eula-modal').classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
@@ -931,7 +941,11 @@
         }
 
         function agreeEULA() {
-            localStorage.setItem('onsil_eula_agreed', 'true');
+            try {
+                localStorage.setItem('onsil_eula_agreed', 'true');
+            } catch (e) {
+                console.warn('localStorage is not available:', e);
+            }
             document.getElementById('eula-modal').classList.add('hidden');
             document.body.style.overflow = '';
         }
@@ -967,7 +981,11 @@
             if (confirm(`${name}님을 차단하시겠습니까?\n차단하시면 앞으로 이 사용자의 모든 글과 댓글이 내 화면에서 보이지 않으며, 관리자에게 해당 내역이 전송됩니다.`)) {
                 if (!blockedUsers.includes(email)) {
                     blockedUsers.push(email);
-                    localStorage.setItem('onsil_blocked_users', JSON.stringify(blockedUsers));
+                    try {
+                        localStorage.setItem('onsil_blocked_users', JSON.stringify(blockedUsers));
+                    } catch (e) {
+                        console.warn('localStorage is not available:', e);
+                    }
                     
                     // DB 연동 가정 (실제로는 supabase.from('user_blocks').insert({...}))
                     console.log(`[Block Action] ${currentUser.email} blocked ${email}`);

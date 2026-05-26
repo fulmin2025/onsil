@@ -579,6 +579,74 @@ const Auth = {
         }
     },
 
+    updateProfile: async (updates) => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('인증 서비스 연결 실패');
+
+            const { data: { user } } = await client.auth.getUser();
+            if (!user) throw new Error('로그인이 필요합니다.');
+
+            const profileUpdates = {
+                id: user.id,
+                name: updates.name,
+                phone: updates.phone,
+                birth_year: updates.birth_year,
+                gender: updates.gender
+            };
+
+            const { error: profileError } = await client
+                .from('profiles')
+                .upsert(profileUpdates);
+
+            if (profileError) throw profileError;
+
+            if (updates.password) {
+                const { error: passwordError } = await client.auth.updateUser({
+                    password: updates.password
+                });
+                if (passwordError) throw passwordError;
+            }
+
+            return { success: true };
+        } catch (error) {
+            console.error('updateProfile error:', error);
+            return { success: false, message: error.message };
+        }
+    },
+
+    withdrawAccount: async () => {
+        try {
+            const client = getSupabase();
+            if (!client) throw new Error('인증 서비스 연결 실패');
+
+            const { data: { user } } = await client.auth.getUser();
+            if (!user) throw new Error('로그인이 필요합니다.');
+
+            const { error: profileError } = await client
+                .from('profiles')
+                .delete()
+                .eq('id', user.id);
+
+            if (profileError) {
+                console.warn('Profile deletion during withdrawal failed:', profileError);
+            }
+
+            try {
+                await client.rpc('delete_user');
+            } catch (rpcErr) {
+                console.log('No delete_user RPC found, proceeding with client-side signout.');
+            }
+
+            await client.auth.signOut();
+
+            return { success: true, message: '회원 탈퇴가 성공적으로 처리되었습니다.' };
+        } catch (error) {
+            console.error('withdrawAccount error:', error);
+            return { success: false, message: error.message };
+        }
+    }
+
 };
 
 // Make Auth globally available
@@ -602,6 +670,44 @@ document.addEventListener('DOMContentLoaded', () => {
                     Auth.updateHeaderUI();
                 } else if (event === 'SIGNED_OUT') {
                     Auth.updateHeaderUI();
+                }
+            });
+        }
+
+        // Capacitor 딥링크 수신 처리 (소셜 로그인 완료 후 앱 복귀)
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+            const App = window.Capacitor.Plugins.App;
+            const Browser = window.Capacitor.Plugins.Browser;
+            
+            App.addListener('appUrlOpen', async (data) => {
+                console.log('App opened with URL:', data.url);
+                
+                if (data.url && (data.url.includes('access_token=') || data.url.includes('refresh_token='))) {
+                    try {
+                        const urlObj = new URL(data.url.replace('onsilapp://', 'http://localhost/'));
+                        const params = new URLSearchParams(urlObj.hash.substring(1) || urlObj.search);
+                        const accessToken = params.get('access_token');
+                        const refreshToken = params.get('refresh_token');
+                        
+                        if (accessToken && refreshToken && client) {
+                            const { error: sessionError } = await client.auth.setSession({
+                                access_token: accessToken,
+                                refresh_token: refreshToken
+                            });
+                            
+                            if (sessionError) throw sessionError;
+                            
+                            console.log('Supabase session set successfully via deep link!');
+                            
+                            if (Browser) {
+                                await Browser.close();
+                            }
+                            
+                            location.href = 'index.html';
+                        }
+                    } catch (err) {
+                        console.error('Failed to restore Supabase session from deep link:', err);
+                    }
                 }
             });
         }
