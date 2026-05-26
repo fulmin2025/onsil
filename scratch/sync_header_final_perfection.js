@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 const path = require('path');
 
@@ -19,6 +18,8 @@ const headerTemplate = `    <!-- Header -->
             <nav class="hidden lg:flex items-center gap-1">
                 <a href="search.html"
                     class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">장례식장 찾기</a>
+                <a href="services.html"
+                    class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">장례 서비스</a>
                 <a href="guide.html"
                     class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">이별 가이드</a>
                 <a href="self-diagnosis.html"
@@ -54,6 +55,82 @@ const headerTemplate = `    <!-- Header -->
             </button>
         </div>
     </header>`;
+
+const mobileNavTemplate = `    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
+            id="mobile-nav-panel">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <span class="font-bold text-lg text-brand">메뉴</span>
+                    <button onclick="toggleMobileNav()"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+                <nav class="space-y-1">
+                    <a href="search.html?quote=true"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors bg-brand-cream/50">
+                        <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
+                        <span class="font-bold text-brand">바로 견적받기</span>
+                    </a>
+                    <a href="search.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-search text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">장례식장 찾기</span>
+                    </a>
+                    <a href="services.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-scroll text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">장례 서비스</span>
+                    </a>
+                    <a href="guide.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-book-open text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">이별 가이드</span>
+                    </a>
+                    <a href="self-diagnosis.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-stethoscope text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">건강자가진단</span>
+                    </a>
+                    <a href="memory.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-heart text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">추억 가이드</span>
+                    </a>
+                    <a href="community.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-comments text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">커뮤니티</span>
+                    </a>
+                    <a href="contact.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-envelope text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">문의하기</span>
+                    </a>
+                </nav>
+                <div class="mt-8 pt-6 border-t">
+                    <button
+                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                        class="w-full flex items-center justify-center gap-2 bg-brand-sage text-white py-3.5 rounded-xl font-bold shadow-lg mb-3 hover:bg-[#87A08B]/90 transition-colors">
+                        <i class="fas fa-calendar-check"></i> 예약하기
+                    </button>
+                    <a href="tel:1551-5052"
+                        class="flex items-center justify-center gap-2 bg-brand-warm text-white py-3.5 rounded-xl font-bold shadow-lg">
+                        <i class="fas fa-phone-alt"></i> 상담전화 1551-5052
+                    </a>
+                    <div class="flex gap-2 mt-3">
+                        <a href="login.html"
+                            class="flex-1 text-center py-3 border border-brand/20 rounded-xl text-sm font-medium text-brand hover:bg-brand/5 transition-colors">로그인</a>
+                        <a href="signup.html"
+                            class="flex-1 text-center py-3 bg-brand text-white rounded-xl text-sm font-bold hover:bg-brand-light transition-colors">회원가입</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>`;
 
 const baseHead = `
     <meta charset="UTF-8">
@@ -121,8 +198,7 @@ targetFiles.forEach(fpath => {
         content = content.replace(/<head>.*?<\/head>/gs, `<head>${baseHead}\n    ${title}\n</head>`);
         content = content.replace(/<body.*?>/i, `<body class="bg-brand-cream font-sans text-brand antialiased">`);
     } else {
-        // For index.html, just force the header to be white by default and remove the scroll script part if it makes it transparent
-        content = content.replace(/bg-white\/95/g, 'bg-white'); // Ensure solid white classes are used
+        content = content.replace(/bg-white\/95/g, 'bg-white');
     }
     
     // 2. Header replacement (Exact same HTML for everyone)
@@ -131,8 +207,15 @@ targetFiles.forEach(fpath => {
     } else {
         content = content.replace(/<header.*?>.*?.*?<\/header>/gs, headerTemplate);
     }
+
+    // 3. Mobile Navigation Overlay replacement
+    if (content.includes('<!-- Mobile Navigation Overlay -->')) {
+        content = content.replace(/<!-- Mobile Navigation Overlay -->\s*<div id="mobile-nav".*?>.*?<\/div>\s*<\/div>\s*<\/div>/gs, mobileNavTemplate);
+    } else {
+        content = content.replace(/<div id="mobile-nav".*?>.*?<\/div>\s*<\/div>\s*<\/div>/gs, mobileNavTemplate);
+    }
     
-    // 3. Fix index.html scroll script to not remove white background
+    // 4. Fix index.html scroll script to not remove white background
     if (fpath === 'index.html') {
         content = content.replace(/header\.classList\.remove\('bg-white\/95', 'backdrop-blur-lg', 'shadow-sm', 'border-b', 'border-brand\/5'\);/g, '');
     }
