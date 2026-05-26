@@ -722,7 +722,6 @@
                     mapDataControl: false,
                     logoControl: true, 
                 };
-                
                 naverMap = new naver.maps.Map('map', mapOptions);
 
                 if (!naverMap) {
@@ -735,7 +734,6 @@
 
                 console.log('INIT: Map Success');
 
-                // Render markers immediately if data is ready
                 if (enrichedHomesData) {
                     renderMapPins(enrichedHomesData);
                 } else {
@@ -751,14 +749,14 @@
                 console.warn('MAP: Map not initialized');
                 return;
             }
-            
             naverMarkers.forEach(m => m.setMap(null));
             naverMarkers = [];
 
             const currentZoom = naverMap.getZoom();
-            if (currentZoom < 9) return; // 줌이 9 미만일 때는 개별 마커를 표시하지 않음
+            if (currentZoom < 9) return;
+            const showLabel = currentZoom >= 12;
 
-            console.log(`MAP: Rendering ${items.length} items`);
+            console.log(`MAP: Rendering ${items.length} items (showLabel: ${showLabel})`);
 
             items.forEach(item => {
                 const lat = parseFloat(item.latitude);
@@ -767,11 +765,20 @@
 
                 const isAlliance = item.is_alliance || item.isAlliance;
                 const fillColor = (ON_CONFIG.showPartnership && isAlliance) ? '#C5A065' : '#8D7B68';
-                
-                const iconHtml = `<div class="relative group cursor-pointer map-pulse-wrapper">
-                    <div class="map-pulse" style="width:16px;height:16px;border-radius:50%;background-color:${fillColor};border:2px solid #fff;box-shadow:0 0 10px rgba(0,0,0,0.3)"></div>
-                    <div class="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 hidden group-hover:block bg-white text-gray-800 text-xs px-2 py-1 rounded shadow-md whitespace-nowrap z-50">${item.name}</div>
-                </div>`;
+
+                const labelDisplay = showLabel ? 'block' : 'none';
+                const labelBorder = showLabel ? 'border:1.5px solid ' + fillColor + ';' : '';
+                const labelStyle = 'position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.95);color:#3b2a0e;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;' + labelBorder + 'box-shadow:0 2px 8px rgba(0,0,0,0.15);white-space:nowrap;pointer-events:none;letter-spacing:-0.3px;display:' + labelDisplay + ';';
+
+                const iconHtml = [
+                    '<div style="position:relative;cursor:pointer;"',
+                    ' onmouseenter="this.querySelector(\'.nl\').style.display=\'block\'"',
+                    ' onmouseleave="this.querySelector(\'.nl\').style.display=\'' + labelDisplay + '\'"',
+                    '>',
+                    '<div style="width:16px;height:16px;border-radius:50%;background-color:' + fillColor + ';border:2px solid #fff;box-shadow:0 0 10px rgba(0,0,0,0.3);"></div>',
+                    '<div class="nl" style="' + labelStyle + '">' + item.name + '</div>',
+                    '</div>'
+                ].join('');
 
                 const marker = new naver.maps.Marker({
                     position: new naver.maps.LatLng(lat, lng),
