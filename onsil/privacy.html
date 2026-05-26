@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>개인정보처리방침 - The 온실</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { DEFAULT: "#1B2B48" },
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* 헤더 고정으로 인한 본문 가림 방지 */
+        body {
+            padding-top: 64px; /* h-16 */
+        }
+        @media (min-width: 640px) {
+            body {
+                padding-top: 72px; /* h-18 */
+            }
+        }
+        /* 기존에 추가된 padding-top과 충돌 방지 */
+        main {
+            padding-top: 2rem !important; /* 기본 여백 확보 */
+        }
+    </style>
+
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+    <header id="main-header" class="fixed top-0 z-50 w-full bg-white border-b border-brand/5 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 group shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
+                    <span class="text-white text-xs font-bold">온</span>
+                </div>
+                <span class="font-bold text-lg text-brand tracking-tight whitespace-nowrap">온실(Onsil)</span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden lg:flex items-center gap-1">
+                <a href="search.html"
+                    class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">장례식장 찾기</a>
+                <a href="guide.html"
+                    class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">이별 가이드</a>
+                <a href="self-diagnosis.html"
+                    class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">건강자가진단</a>
+                <a href="memory.html"
+                    class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">추억 가이드</a>
+                <a href="community.html"
+                    class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">커뮤니티</a>
+            </nav>
+
+            <div class="hidden xl:flex items-center gap-1.5 flex-nowrap shrink-0">
+                <div id="auth-container"></div>
+                <a href="search.html?quote=true"
+                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">
+                    <i class="fas fa-calculator"></i> 바로 견적받기
+                </a>
+                <button
+                    onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                    class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">
+                    <i class="fas fa-calendar-check"></i> 예약하기
+                </button>
+                <a href="tel:1551-5052"
+                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-brand-warm/20 flex items-center gap-1.5 whitespace-nowrap">
+                    <i class="fas fa-phone-alt text-xs"></i> 1551-5052
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn"
+                class="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors"
+                onclick="toggleMobileNav()">
+                <i class="fas fa-bars text-brand text-lg" id="menu-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    
+    <!-- Mobile Navigation Overlay -->
+html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>온실(Onsil) | 반려동물 안심 장례, 비교부터 예약까지</title>
+    <meta name="description" content="반려동물 장례식장 비교, 투명한 가격, 안심 인증까지. 온실이 어려운 결정에 함께합니다.">
+    <meta property="og:title" content="온실(Onsil) | 반려동물 안심 장례">
+    <meta property="og:description" content="장례식장 비교부터 예약까지, 온실과 함께하세요.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#2C3E50">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script>
+        const HOMES_DATA = [
+            { name: "스냅플러그", lat: 37.518174, lng: 126.779774, region: "경기 부천", price: "20만원~", isAlliance: true },
+            { name: "펫포레스트 남양주점", lat: 37.619511, lng: 127.276363, region: "경기 남양주", price: "25만원~", isAlliance: false },
+        ];
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#2C3E50',
+                            light: '#34495E',
+                            dark: '#1A252F',
+                            cream: '#F8F6F3',
+                            warm: '#D4A574',
+                            warmDark: '#B8894E',
+                            sage: '#87A08B',
+                            mist: '#E8ECE9'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', 'system-ui', 'sans-serif'],
+                        serif: ['Nanum Myeongjo', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(180deg,
+                    rgba(44, 62, 80, 0.1) 0%,
+                    rgba(44, 62, 80, 0.05) 30%,
+                    rgba(248, 246, 243, 0.6) 70%,
+                    rgba(248, 246, 243, 1) 100%);
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(44, 62, 80, 0.12);
+        }
+
+        .stat-number {
+            background: linear-gradient(135deg, #2C3E50, #D4A574);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mobile-nav-open {
+            transform: translateX(0) !important;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .float-anim {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .process-line {
+            background: linear-gradient(180deg, #D4A574 0%, #87A08B 100%);
+            width: 2px;
+        }
+
+        .compare-badge {
+            background: linear-gradient(135deg, #D4A574, #B8894E);
+        }
+
+        .floating-bar {
+            background: rgba(44, 62, 80, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .floating-bar.active {
+            transform: translateY(0);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 2.25rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .floating-bar {
+                padding: 1rem !important;
+            }
+
+            .floating-bar a {
+                padding: 0.85rem 1rem !important;
+                font-size: 0.875rem !important;
+            }
+
+            .floating-bar i {
+                font-size: 0.9rem !important;
+            }
+
+            .floating-bar .w-10 {
+                width: 2rem !important;
+                height: 2rem !important;
+            }
+        }
+    
+        /* Large Screen Optimizations (iPad/Pro Max) */
+        @media (min-width: 1024px) {
+            .hero-title { font-size: 4.5rem !important; letter-spacing: -0.02em; }
+            section { padding-left: 2rem !important; padding-right: 2rem !important; }
+        }
+    </style>
+</head>
+
+<body class="bg-brand-cream font-sans text-brand antialiased">
+
+            <!-- Header -->
+    <header id="main-header" class="fixed top-0 z-50 w-full bg-white border-b border-brand/5 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 group shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
+                    <span class="text-white text-xs font-bold">온</span>
+                </div>
+                <span class="font-bold text-lg text-brand tracking-tight whitespace-nowrap">온실(Onsil)</span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden lg:flex items-center gap-1">
+                <a href="search.html"
+                    class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">장례식장 찾기</a>
+                <a href="guide.html"
+                    class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">이별 가이드</a>
+                <a href="self-diagnosis.html"
+                    class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">건강자가진단</a>
+                <a href="memory.html"
+                    class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">추억 가이드</a>
+                <a href="community.html"
+                    class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">커뮤니티</a>
+            </nav>
+
+            <div class="hidden xl:flex items-center gap-1.5 flex-nowrap shrink-0">
+                <div id="auth-container"></div>
+                <a href="search.html?quote=true"
+                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">
+                    <i class="fas fa-calculator"></i> 바로 견적받기
+                </a>
+                <button
+                    onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                    class="bg-brand-sage hover:bg-[#87A08B]/90 text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-md flex items-center gap-1.5 whitespace-nowrap">
+                    <i class="fas fa-calendar-check"></i> 예약하기
+                </button>
+                <a href="tel:1551-5052"
+                    class="bg-brand-warm hover:bg-brand-warmDark text-white px-3 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-brand-warm/20 flex items-center gap-1.5 whitespace-nowrap">
+                    <i class="fas fa-phone-alt text-xs"></i> 1551-5052
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn"
+                class="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-brand/5 transition-colors"
+                onclick="toggleMobileNav()">
+                <i class="fas fa-bars text-brand text-lg" id="menu-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    
+<main class="max-w-4xl mx-auto px-4 py-12">
+        <h1 class="text-3xl font-bold mb-8 text-[#1B2B48]">개인정보처리방침</h1>
+        <div class="bg-white p-8 rounded-xl shadow-sm space-y-8 text-gray-600 leading-relaxed border">
+            <div>
+                <h2 class="text-xl font-bold text-gray-900 mb-3">1. 개인정보처리방침의 의의</h2>
+                <p>The 온실(이하 "회사")이 운영하는 The 온실 웹사이트 및 앱 서비스(이하 "서비스")는 「개인정보 보호법」 등 관련 법령을 준수하며, 이용자의 개인정보를 안전하게 보호하기 위해 최선을 다하고 있습니다.</p>
+            </div>
+            
+            <div>
+                <h2 class="text-xl font-bold text-gray-900 mb-3">2. 개인정보의 수집 및 이용 목적</h2>
+                <p>회사는 다음의 목적을 위하여 개인정보를 처리하며, 목적 이외의 용도로는 이용하지 않습니다.</p>
+                <ul class="list-disc pl-5 mt-2 space-y-1">
+                    <li>서비스 제공 및 계약의 이행 (장례 상담, 예약 중개 등)</li>
+                    <li>회원 가입 및 관리 (본인 식별, 가입 의사 확인, 불만 처리 등)</li>
+                    <li>신규 서비스 개발 및 마케팅 활용 (통계 분석, 이벤트 안내 등)</li>
+                </ul>
+            </div>
+            
+            <div>
+                <h2 class="text-xl font-bold text-gray-900 mb-3">3. 개인정보 수집 항목 및 보유 기간</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left border-collapse border border-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="border border-gray-200 p-2 text-gray-800 w-1/4">구분</th>
+                                <th class="border border-gray-200 p-2 text-gray-800 w-1/4">이용 목적</th>
+                                <th class="border border-gray-200 p-2 text-gray-800 w-1/4">수집 항목</th>
+                                <th class="border border-gray-200 p-2 text-gray-800 w-1/4">보유 및 이용기간</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-gray-200 p-2 font-medium">회원 가입 및 관리<br>(카카오 로그인)</td>
+                                <td class="border border-gray-200 p-2">회원 식별 및 인증, 서비스 부정 이용 방지</td>
+                                <td class="border border-gray-200 p-2">이름, 이메일, 비밀번호, 성별, 출생년도, 전화번호</td>
+                                <td class="border border-gray-200 p-2">회원 탈퇴 시까지</td>
+                            </tr>
+                            <tr class="bg-blue-50/30">
+                                <td class="border border-gray-200 p-2 font-bold text-blue-900">서비스 예약</td>
+                                <td class="border border-gray-200 p-2">예약 접수 및 상담, 서비스 제공</td>
+                                <td class="border border-gray-200 p-2 font-medium">이름, 전화번호, 반려동물이름, 나이, 무게</td>
+                                <td class="border border-gray-200 p-2">이용 목적 달성 시까지</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-200 p-2 font-medium">고객 상담 및 민원 처리</td>
+                                <td class="border border-gray-200 p-2">고객 문의 응대, 불만 처리, 공지사항 전달</td>
+                                <td class="border border-gray-200 p-2">이름, 연락처, 문의 내용</td>
+                                <td class="border border-gray-200 p-2">민원 처리 완료 시까지</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-200 p-2 font-medium">자동 수집</td>
+                                <td class="border border-gray-200 p-2">서비스 개선 및 통계 분석, 보안 강화</td>
+                                <td class="border border-gray-200 p-2">접속 IP, 쿠키, 서비스 이용 기록</td>
+                                <td class="border border-gray-200 p-2">이용 목적 달성 시까지</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="mt-2 text-xs text-gray-500">* 단, 관계 법령(전자상거래법 등)에 의해 보존할 필요가 있는 경우 해당 법령에서 정한 보존 기간 동안 보관합니다.</p>
+            </div>
+            
+            <div>
+                <h2 class="text-xl font-bold text-gray-900 mb-2">4. 개인정보의 제3자 제공</h2>
+                <p>회사는 원칙적으로 이용자의 개인정보를 외부에 제공하지 않습니다. 단, 예약 서비스 제공을 위해 제휴 장례식장에 최소한의 필수 정보(동물 정보 및 연락처 등)를 제공합니다.</p>
+            </div>
+            
+            <div>
+                <h2 class="text-xl font-bold text-gray-900 mb-2">5. 개인정보의 처리 위탁</h2>
+                <p>회사는 원활한 서비스 제공을 위하여 다음과 같이 개인정보 처리 업무를 위탁하고 있습니다.</p>
+                <table class="w-full text-sm text-left border-collapse mt-3 border border-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="border border-gray-200 p-2 text-gray-800">수탁업체</th>
+                            <th class="border border-gray-200 p-2 text-gray-800">위탁 업무 내용</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-200 p-2">VERCEL</td>
+                            <td class="border border-gray-200 p-2">클라우드 인프라 제공</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 p-2">Supabase</td>
+                            <td class="border border-gray-200 p-2">데이터베이스 및 회원 인증 관리</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 p-2">Google Analytics 4</td>
+                            <td class="border border-gray-200 p-2">서비스 이용 데이터 분석</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div>
+                <h2 class="text-xl font-bold text-gray-900 mb-2">6. 개인정보 자동 수집 장치의 설치·운영 및 거부</h2>
+                <p>서비스는 웹사이트 기반으로 제공되며, 쿠키(Cookie) 등 자동 수집 장치를 사용하여 서비스 품질 개선 빛 부정 이용 방지 등의 통계를 분석합니다. 이용자는 웹 브라우저 설정을 통해 쿠키 저장을 거부할 수 있습니다.</p>
+            </div>
+
+            <div>
+                <h2 class="text-xl font-bold text-gray-900 mb-2">7. 이용자 권리 및 행사 방법</h2>
+                <p>정보주체는 언제든지 개인정보 열람, 정정·삭제, 처리정지 등 권리를 행사할 수 있으며 고객센터, 웹사이트 문의 기능을 통해 관리 관련 조치를 요청할 수 있습니다.</p>
+            </div>
+            
+            <div>
+                <h2 class="text-xl font-bold text-gray-900 mb-2">8. 개인정보 보호책임자</h2>
+                <p>회사는 개인정보 처리에 관한 업무를 총괄하여 책임지고, 개인정보 관련 문의처리를 위하여 보호책임자를 지정하고 있습니다.<br>
+                성명: 조영호<br>
+                전화번호: 1551-5052</p>
+            </div>
+            
+            <div class="pt-6 mt-8 border-t border-gray-100 text-gray-500 font-medium">
+                <p><strong>- 시행일자 : 2026년 4월 1일</strong></p>
+            </div>
+        </div>
+    </main>
+    <footer class="bg-gray-50 border-t py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4 grid gap-8 md:grid-cols-4">
+            <div class="col-span-1 md:col-span-2">
+                <span class="font-bold text-xl text-[#1B2B48] mb-4 block">The 온실</span>
+                <p class="text-sm text-gray-500 mb-4">The 온실 | 대표 조영호 | 문의 1551-5052<br>사업자등록번호 : 181-18-02826<br>주소 : 부천시 삼작로 280번길 53-9 행우라폴리움 502호<br>해당 사이트에서 판매되는 모든 상품에 환불 및 모든 민원의 책임은 더온실에 있습니다. | 민원담당자 : 조영호 010-2292-1918</p>
+            </div>
+            <div>
+                <h3 class="font-semibold mb-4 text-sm">서비스</h3>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="search.html">장례식장 찾기</a></li>
+                    <li><a href="guide.html">가이드</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-semibold mb-4 text-sm">고객지원</h3>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="contact.html">문의하기</a></li>
+                    <li><a href="terms.html">이용약관</a></li>
+                    <li><a href="privacy.html">개인정보처리방침</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+
+        // Mobile Nav
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            const panel = document.getElementById('mobile-nav-panel');
+            if (nav.classList.contains('hidden')) {
+                nav.classList.remove('hidden');
+                requestAnimationFrame(() => panel.classList.add('mobile-nav-open'));
+                document.body.style.overflow = 'hidden';
+            } else {
+                panel.classList.remove('mobile-nav-open');
+                document.body.style.overflow = '';
+                setTimeout(() => nav.classList.add('hidden'), 300);
+            }
+        }
+
+    </script>
+
+    <script src="js/channel-talk.js"></script>
+</body>
+
+</html>
