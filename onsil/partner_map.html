@@ -427,23 +427,12 @@
             
             <div class="partner-list" id="partner-list-container">
                 <!-- Dynamic Partner Cards Render Here -->
-            </div>
-        </div>
-
-        <!-- Map -->
-        <div class="map-container">
-            <div id="map"></div>
-        </div>
-
-    </div>
-
-    <!-- Kakao Map SDK -->
-    <script type="text/javascript" src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
-    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=aa635a27c17074525c539e994883ac45&libraries=services&autoload=false"></script>
+           <!-- Naver Map SDK (with Geocoder submodule) -->
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=5tiwbscjvi&submodules=geocoder"></script>
     <!-- Firebase/Supabase Auth sync -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="js/auth.js"></script>
-
+ 
     <script>
         // 15개 제휴 장례식장 데이터 셋
         const partnersData = [
@@ -473,86 +462,97 @@
         function initMap() {
             const mapContainer = document.getElementById('map');
 
-            // 카카오 지도 SDK 실패 대비 방어 코드
-            if (typeof kakao === 'undefined' || !kakao.maps || !kakao.maps.Map) {
-                console.warn("⚠️ 카카오 지도 SDK를 불러오지 못했거나 유효하지 않은 앱키입니다. 식장 리스트를 먼저 렌더링합니다.");
+            // 네이버 지도 SDK 실패 대비 방어 코드 (Geocoder 서비스 존재 여부까지 체크)
+            if (typeof naver === 'undefined' || !naver.maps || !naver.maps.Map || !naver.maps.Service || !naver.maps.Service.geocode) {
+                console.warn("⚠️ 네이버 지도 SDK를 불러오지 못했거나 유효하지 않은 앱키입니다. 식장 리스트를 먼저 렌더링합니다.");
                 mapContainer.innerHTML = `
                     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 20px; text-align: center; color: var(--text-color); opacity: 0.8; background: #f0f2f5;">
                         <i class="fas fa-map-marked-alt" style="font-size: 40px; color: var(--primary-color); margin-bottom: 15px;"></i>
                         <p style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">지도 서비스를 준비 중입니다.</p>
-                        <p style="font-size: 12px; opacity: 0.8; max-width: 280px; margin: 0 auto; line-height: 1.5;">카카오 개발자 콘솔 도메인 등록이 완료되면 지도가 정상 활성화됩니다. 현재는 왼쪽 리스트를 통해 식장 상세 정보를 확인하실 수 있습니다.</p>
+                        <p style="font-size: 12px; opacity: 0.8; max-width: 280px; margin: 0 auto; line-height: 1.5;">네이버 지도 API 연동 상태를 확인해 주세요. 현재는 왼쪽 리스트를 통해 식장 상세 정보를 확인하실 수 있습니다.</p>
                     </div>
                 `;
                 renderList(partnersData);
                 return;
             }
 
-            const mapOption = {
-                center: new kakao.maps.LatLng(36.5, 127.8), // Center of South Korea
-                level: 11
-            };
+            try {
+                // 지도 생성
+                map = new naver.maps.Map(mapContainer, {
+                    center: new naver.maps.LatLng(36.5, 127.8),
+                    zoom: 7,
+                    mapTypeControl: true,
+                    zoomControl: true
+                });
 
-            map = new kakao.maps.Map(mapContainer, mapOption);
-            
-            // Add zoom & map type controller
-            const mapTypeControl = new kakao.maps.MapTypeControl();
-            map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-            const zoomControl = new kakao.maps.ZoomControl();
-            map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+                // Geocode and Place Markers
+                partnersData.forEach((partner) => {
+                    try {
+                        naver.maps.Service.geocode({ query: partner.address }, function(status, response) {
+                            if (status !== naver.maps.Service.Status.OK) {
+                                console.warn("Geocoding failed for: " + partner.address);
+                                return;
+                            }
 
-            // Geocode and Place Markers
-            const geocoder = new kakao.maps.services.Geocoder();
+                            const result = response.v2;
+                            if (!result || result.addresses.length === 0) return;
 
-            partnersData.forEach((partner) => {
-                geocoder.addressSearch(partner.address, function(result, status) {
-                    if (status === kakao.maps.services.Status.OK) {
-                        const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                        partner.latlng = coords; // Save coordinates in dataset
+                            const item = result.addresses[0];
+                            const coords = new naver.maps.LatLng(item.y, item.x);
+                            partner.latlng = coords; // Save coordinates in dataset
 
-                        // Create custom marker image
-                        const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png'; // Custom gold star marker
-                        const imageSize = new kakao.maps.Size(24, 35);
-                        const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+                            // Create custom marker (Gold Star Marker)
+                            const marker = new naver.maps.Marker({
+                                position: coords,
+                                map: map,
+                                title: partner.name,
+                                icon: {
+                                    url: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
+                                    size: new naver.maps.Size(24, 35),
+                                    origin: new naver.maps.Point(0, 0),
+                                    anchor: new naver.maps.Point(12, 35)
+                                }
+                            });
 
-                        const marker = new kakao.maps.Marker({
-                            map: map,
-                            position: coords,
-                            title: partner.name,
-                            image: markerImage
-                        });
+                            markers.push({ id: partner.id, marker: marker });
 
-                        markers.push({ id: partner.id, marker: marker });
-
-                        // Create Custom Overlay Content
-                        const content = `
-                            <div class="custom-overlay">
-                                <div class="overlay-header">
-                                    <span class="overlay-title">${partner.name}</span>
-                                    <span class="overlay-badge">제휴 파트너</span>
+                            // Create Custom InfoWindow Content
+                            const content = `
+                                <div class="custom-overlay" style="margin:0; padding:15px; background:#fff; border-radius:12px; border:1px solid rgba(0,0,0,0.05); box-shadow:0 10px 30px rgba(0,0,0,0.15); min-width:250px;">
+                                    <div class="overlay-header" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #edf2f7; padding-bottom:8px; margin-bottom:10px;">
+                                        <span class="overlay-title" style="font-size:15px; font-weight:700; color:#2d3748;">${partner.name}</span>
+                                        <span class="overlay-badge" style="background:linear-gradient(135deg, #d4af37 0%, #b8972c 100%); color:#fff; font-size:10px; font-weight:700; padding:2px 6px; border-radius:10px;">제휴 파트너</span>
+                                    </div>
+                                    <div class="overlay-body" style="font-size:12px; color:#4a5568;">
+                                        <p style="margin-bottom:4px; display:flex; align-items:center; gap:6px;"><i class="fas fa-map-marker-alt" style="color:#6b8e23;"></i> ${partner.address}</p>
+                                        <p style="margin-bottom:4px; display:flex; align-items:center; gap:6px;"><i class="fas fa-phone-alt" style="color:#6b8e23;"></i> ${partner.phone}</p>
+                                    </div>
                                 </div>
-                                <div class="overlay-body">
-                                    <p><i class="fas fa-map-marker-alt"></i> ${partner.address}</p>
-                                    <p><i class="fas fa-phone-alt"></i> ${partner.phone}</p>
-                                </div>
-                            </div>
-                        `;
+                            `;
 
-                        // Custom Overlay Positioned slightly above the marker
-                        const customOverlay = new kakao.maps.CustomOverlay({
-                            content: content,
-                            position: coords,
-                            yAnchor: 1.15
+                            // InfoWindow
+                            const infowindow = new naver.maps.InfoWindow({
+                                content: content,
+                                borderWidth: 0,
+                                backgroundColor: "transparent",
+                                disableAnchor: true,
+                                pixelOffset: new naver.maps.Point(0, -10)
+                            });
+
+                            customOverlays.push({ id: partner.id, overlay: infowindow });
+
+                            // Add click listener to marker
+                            naver.maps.Event.addListener(marker, 'click', function() {
+                                selectPartner(partner.id, true);
+                            });
                         });
-
-                        customOverlays.push({ id: partner.id, overlay: customOverlay });
-
-                        // Add click listener to marker
-                        kakao.maps.event.addListener(marker, 'click', function() {
-                            selectPartner(partner.id, true);
-                        });
+                    } catch (err) {
+                        console.error("Geocoding/Marker initialization failed for: " + partner.name, err);
                     }
                 });
-            });
+            } catch (e) {
+                console.error("Naver Maps initialization failed.", e);
+            }
 
             // Render List initially
             renderList(partnersData);
@@ -604,8 +604,8 @@
 
             // Close all custom overlays first
             customOverlays.forEach(item => {
-                if (item.overlay && typeof item.overlay.setMap === 'function') {
-                    item.overlay.setMap(null);
+                if (item.overlay && typeof item.overlay.close === 'function') {
+                    item.overlay.close();
                 }
             });
 
@@ -622,16 +622,17 @@
                 selectedCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
 
-            // Find target partner coordinates
+            // Find target partner coordinates & overlay
             const partner = partnersData.find(p => p.id === id);
             const overlayItem = customOverlays.find(o => o.id === id);
+            const markerItem = markers.find(m => m.id === id);
 
-            if (overlayItem && overlayItem.overlay && map && typeof overlayItem.overlay.setMap === 'function') {
-                overlayItem.overlay.setMap(map);
+            if (overlayItem && overlayItem.overlay && markerItem && markerItem.marker && map) {
+                overlayItem.overlay.open(map, markerItem.marker);
             }
 
-            if (moveMap && partner && partner.latlng && map && typeof map.setLevel === 'function') {
-                map.setLevel(5); // Zoom close
+            if (moveMap && partner && partner.latlng && map && typeof map.setZoom === 'function') {
+                map.setZoom(12); // Zoom close
                 map.panTo(partner.latlng); // Pan smooth
             }
         }
@@ -649,17 +650,17 @@
 
         // Initialize Map on load
         window.addEventListener('load', () => {
-            if (window.kakao && window.kakao.maps) {
-                kakao.maps.load(initMap);
+            if (typeof naver !== 'undefined' && naver.maps) {
+                initMap();
             } else {
-                console.error("Kakao Maps SDK failed to load.");
+                console.error("Naver Maps SDK failed to load.");
                 const mapContainer = document.getElementById('map');
                 if (mapContainer) {
                     mapContainer.innerHTML = `
                         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 20px; text-align: center; color: var(--text-color); opacity: 0.8; background: #f0f2f5;">
                             <i class="fas fa-map-marked-alt" style="font-size: 40px; color: var(--primary-color); margin-bottom: 15px;"></i>
                             <p style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">지도 서비스를 준비 중입니다.</p>
-                            <p style="font-size: 12px; opacity: 0.8; max-width: 280px; margin: 0 auto; line-height: 1.5;">카카오 개발자 콘솔 도메인 등록이 완료되면 지도가 정상 활성화됩니다. 현재는 왼쪽 리스트를 통해 식장 상세 정보를 확인하실 수 있습니다.</p>
+                            <p style="font-size: 12px; opacity: 0.8; max-width: 280px; margin: 0 auto; line-height: 1.5;">네이버 지도 API 연동 상태를 확인해 주세요. 현재는 왼쪽 리스트를 통해 식장 상세 정보를 확인하실 수 있습니다.</p>
                         </div>
                     `;
                 }
