@@ -526,6 +526,36 @@
 
                             markers.push({ id: partner.id, marker: marker });
 
+                            // ✅ 이름 레이블 CustomOverlay (확대 시 자동 표시)
+                            const labelContent = [
+                                '<div style="',
+                                'background:rgba(255,255,255,0.96);',
+                                'border:1.5px solid #d4af37;',
+                                'border-radius:8px;',
+                                'padding:4px 10px;',
+                                'font-size:12px;',
+                                'font-weight:700;',
+                                'color:#3b2a0e;',
+                                'white-space:nowrap;',
+                                'box-shadow:0 3px 10px rgba(0,0,0,0.18);',
+                                'transform:translateX(-50%);',
+                                'cursor:pointer;',
+                                'letter-spacing:-0.3px;',
+                                'pointer-events:auto;',
+                                'font-family:Noto Sans KR,sans-serif;',
+                                '" onclick="selectPartner(' + partner.id + ', true)">',
+                                '<span style="color:#c8960c;margin-right:4px;">\u2605</span>' + partner.name,
+                                '</div>'
+                            ].join('');
+
+                            const nameLabel = new naver.maps.CustomOverlay({
+                                position: coords,
+                                content: labelContent,
+                                anchor: new naver.maps.Point(0, 48),
+                                map: null
+                            });
+                            partner._nameLabel = nameLabel;
+
                             // Create Custom InfoWindow Content
                             const content = `
                                 <div class="custom-overlay" style="margin:0; padding:15px; background:#fff; border-radius:12px; border:1px solid rgba(0,0,0,0.05); box-shadow:0 10px 30px rgba(0,0,0,0.15); min-width:250px;">
@@ -560,6 +590,18 @@
                         console.error("Geocoding/Marker initialization failed for: " + partner.name, err);
                     }
                 });
+                // ✅ 줄 레벨 10 이상 시 이름 레이블 자동 표시/숨김
+                const LABEL_SHOW_ZOOM = 10;
+                function updateNameLabels() {
+                    const z = map.getZoom();
+                    partnersData.forEach(function(p) {
+                        if (p._nameLabel) {
+                            p._nameLabel.setMap(z >= LABEL_SHOW_ZOOM ? map : null);
+                        }
+                    });
+                }
+                naver.maps.Event.addListener(map, 'zoom_changed', updateNameLabels);
+
             } catch (e) {
                 console.error("Naver Maps initialization failed.", e);
             }
