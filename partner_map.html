@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제휴 장례식장 지도 - The 온실</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #6b8e23;
+            --primary-hover: #55721c;
+            --bg-color: #f7f6f2;
+            --text-color: #2c3e50;
+            --text-muted: #7f8c8d;
+            --gold-color: #d4af37;
+            --gold-hover: #aa8c2c;
+            --white: #ffffff;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Golden Header Template */
+        header {
+            background-color: var(--white);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo i {
+            font-size: 20px;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 15px;
+            transition: var(--transition);
+            position: relative;
+            padding: 5px 0;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-color);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-outline {
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-warm {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+        }
+
+        .btn-warm:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Layout Container */
+        .main-container {
+            display: flex;
+            flex: 1;
+            position: relative;
+            height: calc(100vh - 74px);
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 420px;
+            background-color: var(--white);
+            box-shadow: 5px 0 25px rgba(0,0,0,0.05);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .sidebar-header {
+            padding: 25px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            background: linear-gradient(135deg, #fafbf9 0%, #f5f7f2 100%);
+        }
+
+        .sidebar-header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid #e2e8f0;
+            border-radius: 30px;
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition);
+            background-color: var(--white);
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(107, 142, 35, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        /* Partner List */
+        .partner-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        /* Scrollbar customizing */
+        .partner-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .partner-list::-webkit-scrollbar-thumb {
+            background-color: rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        .partner-card {
+            background-color: var(--white);
+            border: 1px solid #edf2f7;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        .partner-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 25px rgba(107, 142, 35, 0.06);
+        }
+
+        .partner-card.active {
+            border-color: var(--primary-color);
+            background-color: rgba(107, 142, 35, 0.02);
+            box-shadow: 0 8px 20px rgba(107, 142, 35, 0.08);
+        }
+
+        /* Premium Tag Style */
+        .badge-partner {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--gold-color) 0%, #b8972c 100%);
+            color: var(--white);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .partner-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+            padding-right: 80px; /* Leave space for badge */
+        }
+
+        .partner-info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 13px;
+            color: #4a5568;
+            margin-bottom: 6px;
+        }
+
+        .partner-info-row i {
+            margin-top: 3px;
+            color: var(--primary-color);
+            width: 14px;
+            text-align: center;
+        }
+
+        .partner-info-row.address {
+            color: #718096;
+        }
+
+        /* Map Container */
+        .map-container {
+            flex: 1;
+            position: relative;
+            background-color: #e5e5e5;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Info Window Design Custom */
+        .custom-overlay {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.05);
+            min-width: 250px;
+            position: relative;
+            transform: translateY(-10px);
+        }
+
+        .custom-overlay::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 16px;
+            height: 16px;
+            background-color: var(--white);
+            border-right: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .overlay-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #edf2f7;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+
+        .overlay-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .overlay-badge {
+            background: linear-gradient(135deg, var(--gold-color) 0%, #b8972c 100%);
+            color: var(--white);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .overlay-body {
+            font-size: 12px;
+            color: #4a5568;
+        }
+
+        .overlay-body p {
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .overlay-body i {
+            color: var(--primary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: 40vh;
+                border-right: none;
+                border-bottom: 1px solid rgba(0,0,0,0.05);
+            }
+
+            .map-container {
+                height: 60vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Golden Header -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-seedling"></i>
+                <span>The 온실</span>
+            </a>
+            <nav>
+                <a href="search.html">장례식장 찾기</a>
+                <a href="partner_map.html" class="active">제휴 장례식장</a>
+                <a href="services.html">장례 서비스</a>
+                <a href="guide.html">이별 가이드</a>
+                <a href="self-diagnosis.html">건강자가진단</a>
+                <a href="community.html">커뮤니티</a>
+            </nav>
+            <div class="auth-buttons" id="auth-buttons">
+                <!-- Loaded Dynamically by auth.js -->
+                <a href="login.html" class="btn btn-outline">로그인</a>
+                <a href="signup.html" class="btn btn-warm">회원가입</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1><i class="fas fa-map-marked-alt"></i> 온실 제휴 장례식장</h1>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="partner-search" placeholder="제휴 장례식장 이름 또는 주소 검색...">
+                </div>
+            </div>
+            
+            <div class="partner-list" id="partner-list-container">
+                <!-- Dynamic Partner Cards Render Here -->
+            </div>
+        </div>
+
+        <!-- Map -->
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+
+    </div>
+
+    <!-- Kakao Map SDK -->
+    <script type="text/javascript" src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=aa635a27c17074525c539e994883ac45&libraries=services&autoload=false"></script>
+    <!-- Firebase/Supabase Auth sync -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/auth.js"></script>
+
+    <script>
+        // 15개 제휴 장례식장 데이터 셋
+        const partnersData = [
+            { id: 1, name: "좋은친구들", address: "경기 김포시 대곶면 대명항로 274", phone: "031-987-1234", description: "아름답고 쾌적한 숲속 힐링 추모 환경 제공" },
+            { id: 2, name: "스마일어게인", address: "경기 일산동구 설문동 543", phone: "031-901-5678", description: "가족 같은 마음으로 정성을 다하는 명품 장례식장" },
+            { id: 3, name: "대전이별공간", address: "대전 중구 대사동 221", phone: "042-252-9900", description: "대전 중심에 위치하여 편리한 접근성과 정중한 의전" },
+            { id: 4, name: "굿바이펫", address: "충북 청주시 서원구 남이면 석판리 34", phone: "043-269-4400", description: "품격 있고 차별화된 첨단 친환경 메모리얼 서비스" },
+            { id: 5, name: "러블리엔젤", address: "경기 포천시 군내면 하성북리 12", phone: "031-536-1004", description: "조용하고 경건한 단독 추모 공간에서 치러지는 마지막 배웅" },
+            { id: 6, name: "경북반려동물장례식장", address: "경북 영천시 금호읍 대미리 89", phone: "054-331-7788", description: "영남권 최고의 시설과 넉넉한 헌화 공간 확보" },
+            { id: 7, name: "강아지펫헤븐", address: "전북 전주시 덕진구 고랑동 45", phone: "063-211-1002", description: "정중하고 품위 있는 전주 대표 안심 반려동물장례식장" },
+            { id: 8, name: "하늘소풍", address: "충남 천안시 동남구 광덕면 광덕리 78", phone: "041-555-4422", description: "아름다운 광덕산 자연 속에 안치된 최고급 납골 안식처" },
+            { id: 9, name: "별이되다", address: "경기 광주시 오포읍 신현리 12", phone: "031-718-0909", description: "분당·판교 인접, 우아하고 미니멀한 명품 추모 공간" },
+            { id: 10, name: "이별공간", address: "부산 기장군 장안읍 오리 56", phone: "051-727-4499", description: "부산·경남권 최다 제휴 및 투명한 정찰제 안심 예식장" },
+            { id: 11, name: "스타티스", address: "경남 김해시 한림면 병동리 34", phone: "055-343-0909", description: "아름다운 디자인의 단독 장례실과 최고급 용품 구비" },
+            { id: 12, name: "펫바라기 남원점", address: "전북 남원시 이백면 초촌리 12", phone: "063-631-0104", description: "호남권 전역에서 안심하고 예약할 수 있는 정품 보증 식장" },
+            { id: 13, name: "푸른솔", address: "전남 담양군 무정면 동산리 67", phone: "061-382-7700", description: "대나무 숲 정기와 맑은 공기가 감도는 쾌적한 안식처" },
+            { id: 14, name: "타임투", address: "경기 파주시 조리읍 능안리 98", phone: "031-944-9988", description: "감성적인 카페형 공간과 정중한 지도가 결합된 힐링 식장" },
+            { id: 15, name: "순천 반려동물장례식장 하늘별", address: "전남 순천시 서면 구상리 43", phone: "061-755-4488", description: "순천·광양권 최초 설립, 철저한 개별 화장 원칙 준수" }
+        ];
+
+        let map;
+        let markers = [];
+        let customOverlays = [];
+        let activeCardId = null;
+
+        // Initialize Map
+        function initMap() {
+            const mapContainer = document.getElementById('map');
+
+            // 카카오 지도 SDK 실패 대비 방어 코드
+            if (typeof kakao === 'undefined' || !kakao.maps || !kakao.maps.Map) {
+                console.warn("⚠️ 카카오 지도 SDK를 불러오지 못했거나 유효하지 않은 앱키입니다. 식장 리스트를 먼저 렌더링합니다.");
+                mapContainer.innerHTML = `
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 20px; text-align: center; color: var(--text-color); opacity: 0.8; background: #f0f2f5;">
+                        <i class="fas fa-map-marked-alt" style="font-size: 40px; color: var(--primary-color); margin-bottom: 15px;"></i>
+                        <p style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">지도 서비스를 준비 중입니다.</p>
+                        <p style="font-size: 12px; opacity: 0.8; max-width: 280px; margin: 0 auto; line-height: 1.5;">카카오 개발자 콘솔 도메인 등록이 완료되면 지도가 정상 활성화됩니다. 현재는 왼쪽 리스트를 통해 식장 상세 정보를 확인하실 수 있습니다.</p>
+                    </div>
+                `;
+                renderList(partnersData);
+                return;
+            }
+
+            const mapOption = {
+                center: new kakao.maps.LatLng(36.5, 127.8), // Center of South Korea
+                level: 11
+            };
+
+            map = new kakao.maps.Map(mapContainer, mapOption);
+            
+            // Add zoom & map type controller
+            const mapTypeControl = new kakao.maps.MapTypeControl();
+            map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+            const zoomControl = new kakao.maps.ZoomControl();
+            map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+            // Geocode and Place Markers
+            const geocoder = new kakao.maps.services.Geocoder();
+
+            partnersData.forEach((partner) => {
+                geocoder.addressSearch(partner.address, function(result, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                        partner.latlng = coords; // Save coordinates in dataset
+
+                        // Create custom marker image
+                        const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png'; // Custom gold star marker
+                        const imageSize = new kakao.maps.Size(24, 35);
+                        const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+                        const marker = new kakao.maps.Marker({
+                            map: map,
+                            position: coords,
+                            title: partner.name,
+                            image: markerImage
+                        });
+
+                        markers.push({ id: partner.id, marker: marker });
+
+                        // Create Custom Overlay Content
+                        const content = `
+                            <div class="custom-overlay">
+                                <div class="overlay-header">
+                                    <span class="overlay-title">${partner.name}</span>
+                                    <span class="overlay-badge">제휴 파트너</span>
+                                </div>
+                                <div class="overlay-body">
+                                    <p><i class="fas fa-map-marker-alt"></i> ${partner.address}</p>
+                                    <p><i class="fas fa-phone-alt"></i> ${partner.phone}</p>
+                                </div>
+                            </div>
+                        `;
+
+                        // Custom Overlay Positioned slightly above the marker
+                        const customOverlay = new kakao.maps.CustomOverlay({
+                            content: content,
+                            position: coords,
+                            yAnchor: 1.15
+                        });
+
+                        customOverlays.push({ id: partner.id, overlay: customOverlay });
+
+                        // Add click listener to marker
+                        kakao.maps.event.addListener(marker, 'click', function() {
+                            selectPartner(partner.id, true);
+                        });
+                    }
+                });
+            });
+
+            // Render List initially
+            renderList(partnersData);
+        }
+
+        // Render Sidebar List
+        function renderList(data) {
+            const listContainer = document.getElementById('partner-list-container');
+            listContainer.innerHTML = '';
+
+            if (data.length === 0) {
+                listContainer.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                        <i class="fas fa-search-minus" style="font-size: 30px; margin-bottom: 10px; color: #cbd5e0;"></i>
+                        <p>검색 결과와 일치하는 제휴 식장이 없습니다.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            data.forEach((partner) => {
+                const card = document.createElement('div');
+                card.className = `partner-card ${activeCardId === partner.id ? 'active' : ''}`;
+                card.id = `partner-card-${partner.id}`;
+                card.onclick = () => selectPartner(partner.id, true);
+
+                card.innerHTML = `
+                    <span class="badge-partner"><i class="fas fa-shield-alt"></i> 제휴 파트너</span>
+                    <h3>${partner.name}</h3>
+                    <div class="partner-info-row address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${partner.address}</span>
+                    </div>
+                    <div class="partner-info-row">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>${partner.phone}</span>
+                    </div>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px; font-style: italic;">
+                        "${partner.description}"
+                    </p>
+                `;
+                listContainer.appendChild(card);
+            });
+        }
+
+        // Select and Focus Partner
+        function selectPartner(id, moveMap = true) {
+            activeCardId = id;
+
+            // Close all custom overlays first
+            customOverlays.forEach(item => {
+                if (item.overlay && typeof item.overlay.setMap === 'function') {
+                    item.overlay.setMap(null);
+                }
+            });
+
+            // Remove active classes
+            document.querySelectorAll('.partner-card').forEach(card => {
+                card.classList.remove('active');
+            });
+
+            // Highlight selected card
+            const selectedCard = document.getElementById(`partner-card-${id}`);
+            if (selectedCard) {
+                selectedCard.classList.add('active');
+                // Scroll card into view
+                selectedCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            // Find target partner coordinates
+            const partner = partnersData.find(p => p.id === id);
+            const overlayItem = customOverlays.find(o => o.id === id);
+
+            if (overlayItem && overlayItem.overlay && map && typeof overlayItem.overlay.setMap === 'function') {
+                overlayItem.overlay.setMap(map);
+            }
+
+            if (moveMap && partner && partner.latlng && map && typeof map.setLevel === 'function') {
+                map.setLevel(5); // Zoom close
+                map.panTo(partner.latlng); // Pan smooth
+            }
+        }
+
+        // Search logic
+        const searchInput = document.getElementById('partner-search');
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase().trim();
+            const filtered = partnersData.filter(partner => 
+                partner.name.toLowerCase().includes(query) || 
+                partner.address.toLowerCase().includes(query)
+            );
+            renderList(filtered);
+        });
+
+        // Initialize Map on load
+        window.addEventListener('load', () => {
+            if (window.kakao && window.kakao.maps) {
+                kakao.maps.load(initMap);
+            } else {
+                console.error("Kakao Maps SDK failed to load.");
+                const mapContainer = document.getElementById('map');
+                if (mapContainer) {
+                    mapContainer.innerHTML = `
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 20px; text-align: center; color: var(--text-color); opacity: 0.8; background: #f0f2f5;">
+                            <i class="fas fa-map-marked-alt" style="font-size: 40px; color: var(--primary-color); margin-bottom: 15px;"></i>
+                            <p style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">지도 서비스를 준비 중입니다.</p>
+                            <p style="font-size: 12px; opacity: 0.8; max-width: 280px; margin: 0 auto; line-height: 1.5;">카카오 개발자 콘솔 도메인 등록이 완료되면 지도가 정상 활성화됩니다. 현재는 왼쪽 리스트를 통해 식장 상세 정보를 확인하실 수 있습니다.</p>
+                        </div>
+                    `;
+                }
+                renderList(partnersData);
+            }
+        });
+    </script>
+</body>
+</html>
