@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장례 서비스 및 용품 소개 - The 온실</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+        /* CSS Reset & Variable Tokens */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-brand: #2C3E50;
+            --color-primary: #1B2B48;
+            --color-cream: #F8F6F3;
+            --color-white: #FFFFFF;
+            --color-warm: #D4A574;
+            --color-warm-dark: #B8894E;
+            --color-sage: #87A08B;
+            --color-text-dark: #2C3E50;
+            --color-text-muted: rgba(44, 62, 80, 0.6);
+            --color-border: rgba(44, 62, 80, 0.08);
+            --font-sans: 'Pretendard', system-ui, -apple-system, sans-serif;
+            --font-serif: 'Nanum Myeongjo', Georgia, serif;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-cream);
+            color: var(--color-text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-top: 64px;
+        }
+
+        /* Header Style (Match Golden Header) */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 64px;
+            background-color: var(--color-white);
+            border-bottom: 1px solid var(--color-border);
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--color-text-dark);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .logo-box {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background-color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-white);
+            font-size: 0.8rem;
+        }
+
+        nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--color-text-dark);
+            background-color: rgba(44, 62, 80, 0.05);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 12px;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-warm {
+            background-color: var(--color-warm);
+            color: var(--color-white);
+        }
+
+        .btn-warm:hover {
+            background-color: var(--color-warm-dark);
+        }
+
+        .btn-sage {
+            background-color: var(--color-sage);
+            color: var(--color-white);
+        }
+
+        .btn-sage:hover {
+            background-color: rgba(135, 160, 139, 0.9);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--color-border);
+            color: var(--color-text-dark);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(44, 62, 80, 0.05);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 20px 60px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--color-warm-dark);
+            background-color: rgba(212, 165, 116, 0.12);
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            letter-spacing: 0.05em;
+        }
+
+        .hero h1 {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: var(--color-text-muted);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        /* Service Cards Grid */
+        .services-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 80px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background-color: var(--color-white);
+            border-radius: 24px;
+            border: 1px solid var(--color-border);
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(44, 62, 80, 0.02);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(44, 62, 80, 0.08);
+            border-color: rgba(212, 165, 116, 0.4);
+        }
+
+        .card-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 20px;
+            background-color: rgba(27, 43, 72, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-primary);
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        .service-card:hover .card-icon {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .card-body h3 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 12px;
+        }
+
+        .card-body p {
+            font-size: 0.92rem;
+            color: var(--color-text-muted);
+            margin-bottom: 24px;
+            min-height: 70px;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--color-warm-dark);
+            margin-top: auto;
+        }
+
+        .card-footer i {
+            transition: var(--transition);
+        }
+
+        .service-card:hover .card-footer i {
+            transform: translateX(6px);
+        }
+
+        /* Banner Section */
+        .banner {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 80% 20%, rgba(212, 165, 116, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .banner-content {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .banner h2 {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .banner p {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 35px;
+        }
+
+        .banner-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* Modal Overlay & Container */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(27, 43, 72, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-container {
+            background-color: var(--color-white);
+            width: 100%;
+            max-width: 680px;
+            border-radius: 32px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(27, 43, 72, 0.15);
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--color-text-dark);
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .modal-header-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            background-color: rgba(212, 165, 116, 0.1);
+            color: var(--color-warm-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .modal-header-text h2 {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: var(--color-primary);
+            font-weight: 700;
+        }
+
+        .modal-header-text span {
+            font-size: 0.85rem;
+            color: var(--color-warm-dark);
+            font-weight: 700;
+        }
+
+        .modal-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .modal-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .modal-section h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-section h4 i {
+            color: var(--color-warm);
+        }
+
+        .modal-section p {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            line-height: 1.6;
+        }
+
+        .spec-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .spec-list li {
+            font-size: 0.9rem;
+            color: var(--color-text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .spec-list li i {
+            color: var(--color-sage);
+            font-size: 0.85rem;
+        }
+
+        .process-flow {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .process-flow::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 5px;
+            width: 2px;
+            height: calc(100% - 16px);
+            background-color: var(--color-border);
+        }
+
+        .process-step {
+            position: relative;
+        }
+
+        .process-step::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: -19px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--color-warm);
+            border: 2px solid var(--color-white);
+        }
+
+        .process-step strong {
+            font-size: 0.9rem;
+            color: var(--color-primary);
+            display: block;
+        }
+
+        .process-step span {
+            font-size: 0.82rem;
+            color: var(--color-text-muted);
+        }
+
+        .price-tag-box {
+            background-color: var(--color-cream);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 12px;
+        }
+
+        .price-title {
+            font-size: 0.9rem;
+            color: var(--color-text-dark);
+            font-weight: 700;
+        }
+
+        .price-value {
+            font-size: 1.3rem;
+            color: var(--color-warm-dark);
+            font-weight: 800;
+            font-family: var(--font-serif);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .banner h2 {
+                font-size: 1.6rem;
+            }
+            .modal-container {
+                padding: 30px 20px;
+            }
+            .header-actions {
+                display: none; /* Simplification for mobile header actions */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <div class="logo-box">온</div>
+                <span>온실(Onsil)</span>
+            </a>
+            <nav>
+                <a href="search.html">장례식장 찾기</a>
+                <a href="services.html" class="active">장례 서비스</a>
+                <a href="guide.html">이별 가이드</a>
+                <a href="self-diagnosis.html">건강자가진단</a>
+                <a href="community.html">커뮤니티</a>
+            </nav>
+            <div class="header-actions" id="auth-container">
+                <!-- Injected dynamically via auth.js -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <span class="hero-tag">The 온실 프리미엄 서비스</span>
+        <h1>마지막 이별의 예를<br>정성과 품격을 다해 모십니다.</h1>
+        <p>반려동물과의 소중했던 기억을 가장 아름답고 고결하게 간직할 수 있도록, 온실이 약속하는 최고 수준의 장례 용품과 추모 서비스를 소개해 드립니다.</p>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="services-grid">
+        <!-- 1. 수의 -->
+        <div class="service-card" onclick="openServiceModal('shroud')">
+            <div class="card-icon">
+                <i class="fas fa-scroll"></i>
+            </div>
+            <div class="card-body">
+                <h3>고결한 마지막 옷, 수의</h3>
+                <p>자연으로 아름답게 돌아갈 수 있도록 한 올 한 올 정성을 담아 지은 친환경 한지 및 오가닉 수의입니다.</p>
+            </div>
+            <div class="card-footer">
+                <span>자세히 보기</span>
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </div>
+
+        <!-- 2. 관 -->
+        <div class="service-card" onclick="openServiceModal('casket')">
+            <div class="card-icon">
+                <i class="fas fa-box-open"></i>
+            </div>
+            <div class="card-body">
+                <h3>안락한 안식처, 관</h3>
+                <p>마지막 휴식이 가장 평온할 수 있도록 단단하고 정결하게 감싸주는 천연 오동나무 및 친환경 보호관입니다.</p>
+            </div>
+            <div class="card-footer">
+                <span>자세히 보기</span>
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </div>
+
+        <!-- 3. 메모리얼 스톤 -->
+        <div class="service-card" onclick="openServiceModal('stone')">
+            <div class="card-icon">
+                <i class="fas fa-gem"></i>
+            </div>
+            <div class="card-body">
+                <h3>정결한 동행, 메모리얼 스톤</h3>
+                <p>부패와 변형 없이 아이의 유골을 백색의 아름다운 결정체로 가공하여 영구 보존하는 고순도 스톤 서비스입니다.</p>
+            </div>
+            <div class="card-footer">
+                <span>자세히 보기</span>
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </div>
+
+        <!-- 4. 루쎄떼 -->
+        <div class="service-card" onclick="openServiceModal('lucete')">
+            <div class="card-icon">
+                <i class="fas fa-ring"></i>
+            </div>
+            <div class="card-body">
+                <h3>영원히 빛나는 별, 루쎄떼</h3>
+                <p>특허 기술을 통해 유골을 맑고 견고한 보석 형태로 재탄생시켜 늘 곁에서 품을 수 있는 최고급 주얼리 가공입니다.</p>
+            </div>
+            <div class="card-footer">
+                <span>자세히 보기</span>
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Banner -->
+    <section class="banner">
+        <div class="banner-content">
+            <h2>반려동물 안심 장례 서비스 예약</h2>
+            <p>온실의 파트너 장례식장에서는 검증된 정품 용품만을 사용하며, 과잉 청구 없는 투명한 정찰제 장례를 제공합니다. 지금 가까운 검증 장례식장을 찾아보세요.</p>
+            <div class="banner-buttons">
+                <a href="search.html" class="btn btn-warm"><i class="fas fa-search"></i> 장례식장 찾기</a>
+                <a href="search.html?quote=true" class="btn btn-outline" style="color: white; border-color: rgba(255,255,255,0.3);"><i class="fas fa-calculator"></i> 맞춤 견적 확인</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Layer -->
+    <div class="modal-overlay" id="service-modal-overlay" onclick="closeServiceModalOnOverlay(event)">
+        <div class="modal-container" id="modal-container">
+            <button class="modal-close" onclick="closeServiceModal()"><i class="fas fa-times"></i></button>
+            <div id="modal-content-target">
+                <!-- Content injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        const SERVICE_DATA = {
+            shroud: {
+                title: '고결한 마지막 옷, 수의 (Shroud)',
+                sub: '자연 친화적인 고급 수제 수의',
+                icon: 'fa-scroll',
+                meaning: '수의는 사랑하는 반려동물이 차가운 세상의 끈을 풀고 평온하게 자연으로 돌아가도록 덮어주는 정성의 옷입니다. 온실은 화장 시에도 어떠한 유해 물질이나 잔여재가 남지 않는 100% 무해 천연 소재만을 엄선하여 짓습니다.',
+                specs: [
+                    '친환경 수제 한지 수의 (화장 시 잔여물 제로)',
+                    '유기농 오가닉 코튼 수의 (부드럽고 무해한 고급 면)',
+                    '크기별 맞춤 제작 (소형견부터 대형묘까지 완벽 피팅)',
+                    '전통 예법을 준수한 정갈한 마감 처리'
+                ],
+                process: [
+                    { title: '원단 선택', desc: '아이의 크기와 보호자님의 요청에 따른 최상급 한지 또는 유기농 면 원단 검수' },
+                    { title: '정밀 재단 및 봉제', desc: '금속성 바늘이나 접착제 없이 순수 실과 친환경 접착제만을 사용해 정성껏 바느질' },
+                    { title: '정결 염습 및 입습', desc: '장례 지도사의 정갈한 염습 과정 중 아이에게 부드럽게 수의를 입힘' }
+                ],
+                price: '50,000원 ~ 150,000원 (크기별 상이)'
+            },
+            casket: {
+                title: '안락한 마지막 안식처, 관 (Casket)',
+                sub: '편안한 휴식을 돕는 단단한 안식처',
+                icon: 'fa-box-open',
+                meaning: '관은 아이의 신체를 흙과 습기로부터 안전하게 지켜주고, 화장장으로 가기 전 마지막 이동 중 외부의 압력이나 충격으로부터 보호하여 기품 있게 안치해주는 공간입니다.',
+                specs: [
+                    '100% 천연 고급 오동나무 조립형 관',
+                    '포름알데히드 등 유해 접착제 배제 안전 가공',
+                    '친환경 종이 보호관 (경제적이면서 격식 있는 안치 가능)',
+                    '오염 및 결로 방지를 위한 내측 특수 한지 이중 마감'
+                ],
+                process: [
+                    { title: '안치 준비', desc: '아이의 신체 길이에 맞는 관 사이즈 측정 및 내부 한지/초목 쿠션 세팅' },
+                    { title: '정중 입관', desc: '수의를 입은 아이를 정중하고 편안한 자세로 관 내부에 안치' },
+                    { title: '헌화 및 덮개 밀봉', desc: '보호자님의 마지막 국화 헌화 후 정결하게 덮개를 결합하고 리본 장식' }
+                ],
+                price: '80,000원 ~ 250,000원 (소재 및 크기별 상이)'
+            },
+            stone: {
+                title: '정결한 추모 동행, 메모리얼 스톤',
+                sub: '깨끗하고 아름답게 유골을 간직하는 방법',
+                icon: 'fa-gem',
+                meaning: '메모리얼 스톤은 화장 후 남은 골분을 습기, 악취, 부패로부터 안전하게 영구 보존할 수 있도록 초고온 용융 기법을 통해 둥근 조약돌 형태의 깨끗한 유골 결정체로 제작해드리는 정성스러운 보존 서비스입니다.',
+                specs: [
+                    '색소나 접착 화학 물질이 전혀 가미되지 않은 100% 유골 순수 스톤',
+                    '영구적인 보존력 (곰팡이, 변색, 냄새 완벽 차단)',
+                    '아름다운 백색 및 은은한 아이보리 결정 형태',
+                    '가정 내 어디서든 깨끗하고 정감 있게 추모 가능'
+                ],
+                process: [
+                    { title: '골분 검수', desc: '개별 화장이 끝난 유체 유골의 순수 잔여물을 정밀 여과 및 분쇄' },
+                    { title: '초고온 용융 가공', desc: '약 1,600도 이상의 무기물 초고온 용융 전용 장비로 안전하게 가공' },
+                    { title: '냉각 및 성형', desc: '부드러운 구형 결정으로 성형 후 완만하게 냉각하여 깨끗하게 보호자님께 인도' }
+                ],
+                price: '200,000원 ~ 350,000원 (몸무게별 상이)'
+            },
+            lucete: {
+                title: '영원히 빛나는 별, 루쎄떼 (Lucete)',
+                sub: '특허 기술로 피워내는 최고급 유골 보석',
+                icon: 'fa-ring',
+                meaning: '루쎄떼는 스톤을 넘어 최고급 주얼리 수준의 투명도와 강도를 자랑하는 특허 가공 기술입니다. 맑고 빛나는 보석 형태로 변환하여 팬던트, 반지, 주얼리 등으로 평생 몸에 지니며 함께 숨 쉴 수 있는 가장 프리미엄한 추모 방식입니다.',
+                specs: [
+                    '유리알처럼 영롱하고 빛나는 에메랄드/사파이어 톤 투명 결정',
+                    '다이아몬드 바로 아래 단계인 높은 경도로 긁힘 및 파손 차단',
+                    '주얼리(반지, 목걸이) 세팅용 파츠로 정밀 가공 가능',
+                    '국내 유일 특허 인증 전문 장비 사용 및 추적 투명성 보장'
+                ],
+                process: [
+                    { title: '특허 장비 결합 및 예열', desc: '보석 변환 전용 특허 가공 챔버에 순수 유골 분말 안치' },
+                    { title: '정밀 결정화 공정', desc: '진공 고온 압착 및 결정 핵 주입 기술을 통해 투명한 주얼리 형태로 변환' },
+                    { title: '스톤 커팅 및 감정', desc: '보석 보증서 발행 및 주얼리 팬던트 세팅을 위한 최종 정밀 세공' }
+                ],
+                process_timeline: true,
+                price: '400,000원 ~ 700,000원 (옵션 및 중량별 상이)'
+            }
+        };
+
+        function openServiceModal(type) {
+            const data = SERVICE_DATA[type];
+            if (!data) return;
+
+            const target = document.getElementById('modal-content-target');
+            
+            let specsHtml = data.specs.map(spec => `<li><i class="fas fa-check-circle"></i> ${spec}</li>`).join('');
+            
+            let processHtml = data.process.map((step, idx) => `
+                <div class="process-step">
+                    <strong>${idx + 1}. ${step.title}</strong>
+                    <span>${step.desc}</span>
+                </div>
+            `).join('');
+
+            target.innerHTML = `
+                <div class="modal-header">
+                    <div class="modal-header-icon">
+                        <i class="fas ${data.icon}"></i>
+                    </div>
+                    <div class="modal-header-text">
+                        <h2>${data.title}</h2>
+                        <span>${data.sub}</span>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h4><i class="fas fa-heart"></i> 용품/서비스의 의미</h4>
+                    <p>${data.meaning}</p>
+                </div>
+
+                <div class="modal-section">
+                    <h4><i class="fas fa-layer-group"></i> 주요 특징 및 품질 스펙</h4>
+                    <ul class="spec-list">
+                        ${specsHtml}
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h4><i class="fas fa-tasks"></i> 제작 및 진행 공정</h4>
+                    <div class="process-flow">
+                        ${processHtml}
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h4><i class="fas fa-tags"></i> 비용 안내</h4>
+                    <div class="price-tag-box">
+                        <span class="price-title">The 온실 정찰제 제공가</span>
+                        <span class="price-value">${data.price}</span>
+                    </div>
+                </div>
+            `;
+
+            const overlay = document.getElementById('service-modal-overlay');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeServiceModal() {
+            const overlay = document.getElementById('service-modal-overlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeServiceModalOnOverlay(event) {
+            if (event.target.id === 'service-modal-overlay') {
+                closeServiceModal();
+            }
+        }
+    </script>
+</body>
+
+</html>

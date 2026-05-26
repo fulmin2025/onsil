@@ -37,45 +37,20 @@
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
         @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
 
+        /* 헤더 고정으로 인한 본문 가림 방지 */
         body {
-            padding-top: 64px;
+            padding-top: 64px; /* h-16 */
         }
         @media (min-width: 640px) {
             body {
-                padding-top: 72px;
+                padding-top: 72px; /* h-18 */
             }
         }
-        .fade-up {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease-out;
+        main {
+            padding-top: 2rem !important;
         }
-        .fade-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .quiz-step {
-            display: none;
-        }
-        .quiz-step.active {
-            display: block;
-            animation: fadeIn 0.5s ease-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .quiz-option.selected {
-            border-color: #D4A574 !important;
-            background-color: rgba(212, 165, 116, 0.05) !important;
-        }
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-        .accordion-active .accordion-content {
-            max-height: 200px;
+        .mobile-nav-open {
+            transform: translateX(0) !important;
         }
     </style>
 
@@ -84,7 +59,7 @@
 
 <body class="bg-brand-cream font-sans text-brand antialiased">
 
-    <!-- Header -->
+        <!-- Header -->
     <header id="main-header" class="fixed top-0 z-50 w-full bg-white border-b border-brand/5 transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2 group shrink-0">
@@ -98,6 +73,8 @@
             <nav class="hidden lg:flex items-center gap-1">
                 <a href="search.html"
                     class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">장례식장 찾기</a>
+                <a href="services.html"
+                    class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">장례 서비스</a>
                 <a href="guide.html"
                     class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">이별 가이드</a>
                 <a href="self-diagnosis.html"
@@ -498,52 +475,81 @@
     </footer>
 
     <!-- Mobile Navigation -->
+        <!-- Mobile Navigation Overlay -->
     <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
-        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300" id="mobile-nav-panel">
-            <div class="p-6 h-full flex flex-col pt-safe">
+        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
+            id="mobile-nav-panel">
+            <div class="p-6">
                 <div class="flex justify-between items-center mb-8">
                     <span class="font-bold text-lg text-brand">메뉴</span>
-                    <button onclick="toggleMobileNav()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
+                    <button onclick="toggleMobileNav()"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
                         <i class="fas fa-times text-gray-500"></i>
                     </button>
                 </div>
-                <nav class="space-y-1 flex-1">
-                    <a href="search.html?quote=true" class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-brand-cream text-brand font-bold mb-4">
+                <nav class="space-y-1">
+                    <a href="search.html?quote=true"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors bg-brand-cream/50">
                         <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
-                        <span>바로 견적받기</span>
+                        <span class="font-bold text-brand">바로 견적받기</span>
                     </a>
-                    <a href="search.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-search w-5 text-center"></i>
-                        <span>장례식장 찾기</span>
+                    <a href="search.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-search text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">장례식장 찾기</span>
                     </a>
-                    <a href="guide.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl bg-brand/5 text-brand font-bold transition-colors">
-                        <i class="fas fa-book-open w-5 text-center"></i>
-                        <span>이별 가이드</span>
+                    <a href="services.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-scroll text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">장례 서비스</span>
                     </a>
-                    <a href="self-diagnosis.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-stethoscope w-5 text-center"></i>
-                        <span>건강자가진단</span>
+                    <a href="guide.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-book-open text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">이별 가이드</span>
                     </a>
-                    <a href="memory.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-heart w-5 text-center"></i>
-                        <span>추억 가이드</span>
+                    <a href="self-diagnosis.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-stethoscope text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">건강자가진단</span>
                     </a>
-                    <a href="community.html" class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors text-brand/70 hover:text-brand font-medium">
-                        <i class="fas fa-comments w-5 text-center"></i>
-                        <span>커뮤니티</span>
+                    <a href="memory.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-heart text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">추억 가이드</span>
+                    </a>
+                    <a href="community.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-comments text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">커뮤니티</span>
+                    </a>
+                    <a href="contact.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-envelope text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">문의하기</span>
                     </a>
                 </nav>
-                <div class="pt-6 border-t border-brand/5 space-y-3">
-                    <button onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })" class="w-full bg-brand-sage text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2">
-                        <i class="fas fa-calendar-check text-sm"></i> 예약하기
+                <div class="mt-8 pt-6 border-t">
+                    <button
+                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                        class="w-full flex items-center justify-center gap-2 bg-brand-sage text-white py-3.5 rounded-xl font-bold shadow-lg mb-3 hover:bg-[#87A08B]/90 transition-colors">
+                        <i class="fas fa-calendar-check"></i> 예약하기
                     </button>
-                    <a href="tel:1551-5052" class="w-full bg-brand-warm text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-md flex items-center justify-center gap-2">
-                        <i class="fas fa-phone-alt text-sm"></i> 1551-5052 상담원 연결
+                    <a href="tel:1551-5052"
+                        class="flex items-center justify-center gap-2 bg-brand-warm text-white py-3.5 rounded-xl font-bold shadow-lg">
+                        <i class="fas fa-phone-alt"></i> 상담전화 1551-5052
                     </a>
+                    <div class="flex gap-2 mt-3">
+                        <a href="login.html"
+                            class="flex-1 text-center py-3 border border-brand/20 rounded-xl text-sm font-medium text-brand hover:bg-brand/5 transition-colors">로그인</a>
+                        <a href="signup.html"
+                            class="flex-1 text-center py-3 bg-brand text-white rounded-xl text-sm font-bold hover:bg-brand-light transition-colors">회원가입</a>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
         <!-- Insurance Floating Button -->

@@ -9,3 +9,6 @@ Thumbs.db
 onsil_backup*
 
 onsil_mess*
+
+node_modules/
+scratch/
