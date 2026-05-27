@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 export function Footer() {
     return (
@@ -15,7 +15,7 @@ export function Footer() {
                     <div className="text-xs text-gray-400">
                         <p>(주)언박싱드림즈 | 대표자: 최성호, 박준성</p>
                         <p>서울특별시 성북구 개운사길 83-13, 3층 303호</p>
-                        <p>문의: 1668-5165 | contact@petnight.co.kr</p>
+                        <p>문의: 1668-5165 | theonsilofficial@gmail.com</p>
                     </div>
                 </div>
 
@@ -44,3 +44,4 @@ export function Footer() {
         </footer>
     );
 }
+
