@@ -204,27 +204,58 @@
         async function handleAppleLogin() {
             try {
                 const sb = getSupabase();
-                if (!sb) throw new Error('인증 서비스를 연결할 수 없습니다.');
+                if (!sb) throw new Error('인증 서비스 연결 실패');
 
                 const isCapacitor = !!window.Capacitor;
-                const redirectTo = isCapacitor ? 'onsilapp://index.html' : window.location.origin + '/index.html';
 
-                const { data, error } = await sb.auth.signInWithOAuth({
-                    provider: 'apple',
-                    options: {
-                        redirectTo: redirectTo,
-                        skipBrowserRedirect: isCapacitor
-                    }
-                });
+                // Capacitor 환경이며 Native Apple Sign-In 플러그인이 로드되어 있는 경우
+                if (isCapacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SignInWithApple) {
+                    console.log('App: Launching native Sign in with Apple...');
+                    const SignInWithApple = window.Capacitor.Plugins.SignInWithApple;
+                    
+                    const result = await SignInWithApple.authorize({
+                        clientId: 'com.theonsil.onsil',
+                        redirectUri: 'https://fkmcanwlcigofjhbfkzs.supabase.co/auth/v1/callback',
+                        scopes: 'email name',
+                    });
 
-                if (error) throw error;
+                    if (result && result.response && result.response.identityToken) {
+                        const { data, error } = await sb.auth.signInWithIdToken({
+                            provider: 'apple',
+                            token: result.response.identityToken,
+                        });
 
-                if (isCapacitor && data?.url) {
-                    const Browser = window.Capacitor.Plugins.Browser;
-                    if (Browser) {
-                        await Browser.open({ url: data.url });
+                        if (error) throw error;
+
+                        if (data?.session) {
+                            window.location.href = 'index.html';
+                            return;
+                        }
                     } else {
-                        window.location.href = data.url;
+                        throw new Error('Apple 로그인 토큰을 가져올 수 없습니다.');
+                    }
+                } else {
+                    // 웹 브라우저 환경 또는 플러그인이 없을 때의 Fallback
+                    console.log('Web: Launching OAuth Apple Login...');
+                    const redirectTo = isCapacitor ? 'onsilapp://index.html' : window.location.origin + '/index.html';
+
+                    const { data, error } = await sb.auth.signInWithOAuth({
+                        provider: 'apple',
+                        options: {
+                            redirectTo: redirectTo,
+                            skipBrowserRedirect: isCapacitor
+                        }
+                    });
+
+                    if (error) throw error;
+
+                    if (isCapacitor && data?.url) {
+                        const Browser = window.Capacitor.Plugins.Browser;
+                        if (Browser) {
+                            await Browser.open({ url: data.url });
+                        } else {
+                            window.location.href = data.url;
+                        }
                     }
                 }
             } catch (error) {

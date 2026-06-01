@@ -116,7 +116,7 @@
             <button onclick="switchTab('reservations')" id="tab-reservations" class="tab-btn active px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">내 예약 내역</button>
             <button onclick="switchTab('wishlist')" id="tab-wishlist" class="tab-btn px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">찜한 장례식장</button>
             <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">내 정보 수정</button>
-            <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">계정 설정</button>
+            <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn px-6 py-4 text-sm font-bold text-brand/40 whitespace-nowrap transition-all">계정 설정 / 회원 탈퇴</button>
         </div>
 
         <!-- Section: Reservations -->
@@ -196,6 +196,10 @@
                         </button>
                     </div>
                 </form>
+                <div class="mt-6 pt-4 border-t border-brand/5 text-center">
+                    <span class="text-xs text-brand/40 font-medium">온실 서비스를 더 이상 이용하지 않으시나요?</span>
+                    <button onclick="switchTab('settings')" class="text-xs text-red-500 font-bold ml-1 hover:underline">회원 탈퇴 바로가기</button>
+                </div>
             </div>
         </section>
 

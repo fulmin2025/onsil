@@ -7,8 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "cap:sync": "npx cap copy && npx cap sync",
     "cap:open:android": "npx cap open android",
-    "cap:open:ios": "npx cap open ios",
-    "postinstall": "chmod +x node_modules/.bin/cap || true"
+    "cap:open:ios": "npx cap open ios"
   },
   "keywords": [
     "capacitor",
@@ -21,6 +20,7 @@
     "@capacitor/android": "^5.0.0",
     "@capacitor/app": "^5.0.8",
     "@capacitor/browser": "^5.2.1",
+    "@capacitor-community/apple-sign-in": "^5.0.0",
     "@capacitor/cli": "^5.0.0",
     "@capacitor/core": "^5.0.0",
     "@capacitor/ios": "^5.0.0",
