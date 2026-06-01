@@ -474,42 +474,42 @@
                         "price": "350,000원",
                         "desc": "기본 유골함, 고급 보자기 등",
                         "longDesc": "가장 기본적인 장례 서비스로, 개별 화장과 함께 정갈하게 준비된 기본 유골함 및 고급 보자기 포장이 제공됩니다. 합리적인 비용으로 아이의 마지막을 정성스럽게 배웅할 수 있습니다.",
-                        "imageUrl": "images/funeral_homes/펫포레스트_경기광주점/main.webp"
+                        "imageUrl": "images/funeral_homes/petforest_gwangju/main.webp"
                     },
                     {
                         "name": "포레스트 장례",
                         "price": "700,000원",
                         "desc": "고급 수의, 고급 오동나무관, 포레스트 유골함 등",
                         "longDesc": "자연을 닮은 포레스트 유골함과 고급 오동나무관, 최고급 수의가 포함된 패키지입니다. 특히 아이의 마지막 모습을 간직할 수 있는 액자와 발도장 클레이 제작이 포함되어 있어 더욱 특별한 추억을 선사합니다.",
-                        "imageUrl": "images/funeral_homes/펫포레스트_경기광주점/main.webp"
+                        "imageUrl": "images/funeral_homes/petforest_gwangju/main.webp"
                     },
                     {
                         "name": "프리미엄 장례",
                         "price": "1,400,000원",
                         "desc": "최고급 수의, 최고급 오동나무관, 기능성 유골함 등",
                         "longDesc": "펫포레스트의 모든 노하우가 담긴 최상위 패키지입니다. 최고급 오동나무관과 수의는 물론, 아이의 유골을 안전하게 보관할 수 있는 기능성 유골함, 풍성한 꽃다발 장식, 그리고 전용 포레스트 하우징까지 제공되어 가장 영광스러운 이별을 준비해 드립니다.",
-                        "imageUrl": "images/funeral_homes/펫포레스트_경기광주점/main.webp"
+                        "imageUrl": "images/funeral_homes/petforest_gwangju/main.webp"
                     },
                     {
                         "name": "스탠다드 루세떼 장례",
                         "price": "1,000,000원",
                         "desc": "스탠다드 장례 + 루세떼 제작 + 유리병 + 보증서",
                         "longDesc": "스탠다드 장례 서비스에 '루세떼(메모리얼 스톤)' 제작이 포함된 실속형 패키지입니다. 고온 용융 공법으로 영롱하게 제작된 루세떼를 전용 유리병에 담아 평생 곁에 두고 기억하실 수 있습니다.",
-                        "imageUrl": "images/funeral_homes/펫포레스트_경기광주점/main.webp"
+                        "imageUrl": "images/funeral_homes/petforest_gwangju/main.webp"
                     },
                     {
                         "name": "포레스트 루세떼 장례",
                         "price": "1,350,000원",
                         "desc": "포레스트 장례 + 루세떼 제작 + 유리병 + 보증서",
                         "longDesc": "포레스트 장례의 풍성한 구성에 루세떼 제작을 더했습니다. 정성스러운 입관과 화장 후, 아이를 보석과 같은 루세떼로 다시 만나보실 수 있는 가장 인기 있는 패키지입니다.",
-                        "imageUrl": "images/funeral_homes/펫포레스트_경기광주점/main.webp"
+                        "imageUrl": "images/funeral_homes/petforest_gwangju/main.webp"
                     },
                     {
                         "name": "프리미엄 루세떼 장례",
                         "price": "1,750,000원",
                         "desc": "프리미엄 장례 + 루세떼 제작 + 유리병 + 보증서",
                         "longDesc": "숭고한 이별의 모든 예우를 갖춘 프리미엄 장례 후, 루세떼 제작까지 이어지는 펫포레스트 상징적인 최고가 패키지입니다. 아이에게 줄 수 있는 최고의 선물과도 같은 영원한 이별의 방법입니다.",
-                        "imageUrl": "images/funeral_homes/펫포레스트_경기광주점/main.webp"
+                        "imageUrl": "images/funeral_homes/petforest_gwangju/main.webp"
                     }
                 ]
             }
@@ -527,42 +527,42 @@
                         "price": "350,000원",
                         "desc": "기본 유골함, 고급 보자기 등",
                         "longDesc": "가장 기본적인 장례 서비스로, 개별 화장과 함께 정갈하게 준비된 기본 유골함 및 고급 보자기 포장이 제공됩니다. 합리적인 비용으로 아이의 마지막을 정성스럽게 배웅할 수 있습니다.",
-                        "imageUrl": "images/funeral_homes/펫포레스트_김포점/main.webp"
+                        "imageUrl": "images/funeral_homes/petforest_gimpo/main.webp"
                     },
                     {
                         "name": "포레스트 장례",
                         "price": "700,000원",
                         "desc": "고급 수의, 고급 오동나무관, 포레스트 유골함, 액자, 발도장 클레이 등",
                         "longDesc": "자연을 닮은 포레스트 유골함과 고급 오동나무관, 최고급 수의가 포함된 패키지입니다. 특히 아이의 마지막 모습을 간직할 수 있는 액자와 발도장 클레이 제작이 포함되어 있어 더욱 특별한 추억을 선사합니다.",
-                        "imageUrl": "images/funeral_homes/펫포레스트_김포점/main.webp"
+                        "imageUrl": "images/funeral_homes/petforest_gimpo/main.webp"
                     },
                     {
                         "name": "프리미엄 장례",
                         "price": "1,400,000원",
                         "desc": "최고급 수의, 최고급 오동나무관, 기능성 유골함, 꽃다발, 포레스트 하우징, 액자 등",
                         "longDesc": "펫포레스트의 모든 노하우가 담긴 최상위 패키지입니다. 최고급 오동나무관과 수의는 물론, 아이의 유골을 안전하게 보관할 수 있는 기능성 유골함, 풍성한 꽃다발 장식, 그리고 전용 포레스트 하우징까지 제공되어 가장 영광스러운 이별을 준비해 드립니다.",
-                        "imageUrl": "images/funeral_homes/펫포레스트_김포점/main.webp"
+                        "imageUrl": "images/funeral_homes/petforest_gimpo/main.webp"
                     },
                     {
                         "name": "스탠다드 루세떼 장례",
                         "price": "1,000,000원",
                         "desc": "스탠다드 장례 + 루세떼 제작 + 유리병 + 보증서",
                         "longDesc": "스탠다드 장례 서비스에 '루세떼(메모리얼 스톤)' 제작이 포함된 실속형 패키지입니다. 고온 용융 공법으로 영롱하게 제작된 루세떼를 전용 유리병에 담아 평생 곁에 두고 기억하실 수 있습니다.",
-                        "imageUrl": "images/funeral_homes/펫포레스트_김포점/main.webp"
+                        "imageUrl": "images/funeral_homes/petforest_gimpo/main.webp"
                     },
                     {
                         "name": "포레스트 루세떼 장례",
                         "price": "1,350,000원",
                         "desc": "포레스트 장례 + 루세떼 제작 + 유리병 + 보증서",
                         "longDesc": "포레스트 장례의 풍성한 구성에 루세떼 제작을 더했습니다. 정성스러운 입관과 화장 후, 아이를 보석과 같은 루세떼로 다시 만나보실 수 있는 가장 인기 있는 패키지입니다.",
-                        "imageUrl": "images/funeral_homes/펫포레스트_김포점/main.webp"
+                        "imageUrl": "images/funeral_homes/petforest_gimpo/main.webp"
                     },
                     {
                         "name": "프리미엄 루세떼 장례",
                         "price": "1,750,000원",
                         "desc": "프리미엄 장례 + 루세떼 제작 + 유리병 + 보증서",
                         "longDesc": "숭고한 이별의 모든 예우를 갖춘 프리미엄 장례 후, 루세떼 제작까지 이어지는 펫포레스트 상징적인 최고가 패키지입니다. 아이에게 줄 수 있는 최고의 선물과도 같은 영원한 이별의 방법입니다.",
-                        "imageUrl": "images/funeral_homes/펫포레스트_김포점/main.webp"
+                        "imageUrl": "images/funeral_homes/petforest_gimpo/main.webp"
                     }
                 ]
             }
@@ -950,35 +950,35 @@
                         "price": "300,000원",
                         "desc": "염습, 추모실, 단독화장, 목관함, 액자 제공",
                         "longDesc": "모든 장례는 5kg 기준 초과 시 추가요금이 발생합니다. 포함 내역: 염습 + 단독 추모실 사용 + 단독화장 + 목관함 제공 + 액자 제공",
-                        "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_1.png"
+                        "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_1.png"
                     },
                     {
                         "name": "펫사랑 예식",
                         "price": "350,000원",
                         "desc": "기본 예식 + 오동나무관, 삼베이불, 생화 소량",
                         "longDesc": "보호자의 필요와 상황에 맞춘 펫사랑의 기본 패키지 장례 서비스입니다. (공통예식 포함)",
-                        "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_2.png"
+                        "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_2.png"
                     },
                     {
                         "name": "품격 예식",
                         "price": "450,000원",
                         "desc": "기본 예식 + 오동나무관, 인견수의보/삼베수의 중 택 1, 생화",
                         "longDesc": "반려동물의 품격을 더 높여드리기 위한 고급 수의 옵션이 포함된 품격 있는 장례 예식입니다.",
-                        "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_3.png"
+                        "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_3.png"
                     },
                     {
                         "name": "고급 예식",
                         "price": "550,000원",
                         "desc": "기본 예식 + 오동나무관, 삼베수의, 고급 린넨수의보 등",
                         "longDesc": "최고급 린넨 수의보 등을 구성한 고급 예식 패키지입니다.",
-                        "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_4.png"
+                        "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_4.png"
                     },
                     {
                         "name": "최고급 예식",
                         "price": "650,000원",
                         "desc": "기본 예식 + 요람관, 최고급 목화솜수의보, 생화 등",
                         "longDesc": "안락한 요람관과 최고급 목화솜 소재의 수의보를 제공하는 프리미엄 최고급 예식입니다.",
-                        "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_5.png"
+                        "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_5.png"
                     }
                 ]
             },
@@ -990,21 +990,21 @@
                         "price": "650,000원",
                         "desc": "펫사랑예식 + 기본 스톤함",
                         "longDesc": "장례와 스톤 제작을 함께 이용하시는 분들을 위해 경제적으로 제공되는 패키지입니다. (초과 시 추가요금 발생)",
-                        "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_stone_1.png"
+                        "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_stone_1.png"
                     },
                     {
                         "name": "품격 스톤 장례",
                         "price": "1,000,000원",
                         "desc": "품격예식 + 호두나무 액자 스톤함",
                         "longDesc": "품격예식에 고급 호두나무 재질의 액자 스톤함이 포함된 패키지입니다.",
-                        "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_stone_2.png"
+                        "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_stone_2.png"
                     },
                     {
                         "name": "고급 스톤 장례",
                         "price": "1,200,000원",
                         "desc": "고급예식 + 고급 원목 홈세트",
                         "longDesc": "최상단 고급 예식과 원목 스톤함, 원목 액자, 플레이트가 결합된 원목 홈세트 장례입니다.",
-                        "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_stone_3.png"
+                        "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_stone_3.png"
                     }
                 ]
             },
@@ -1016,14 +1016,14 @@
                         "price": "700,000원",
                         "desc": "품격예식 + 기능성 유골함 + 납골당(전층) 1년",
                         "longDesc": "가장 품격 있는 장례 후 기능성 유골함에 담아 납골당에 최초 1년 안치하는 패키지입니다. (기간 연장 시 비용 발생)",
-                        "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_columbarium_1.png"
+                        "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_columbarium_1.png"
                     },
                     {
                         "name": "고급 납골당 장례",
                         "price": "900,000원",
                         "desc": "고급예식 + 호두나무 액자 안치함 + 납골당 1년",
                         "longDesc": "고급 호두나무 액자가 결합된 안치함에 담아 납골당(전층)에 1년간 안치합니다.",
-                        "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_columbarium_2.png"
+                        "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_columbarium_2.png"
                     }
                 ]
             }
@@ -1031,7 +1031,7 @@
     },
     "패투헤븐": {
         "address": "강원 원주시 소초면 현촌길 90-3",
-        "imageUrl": "images/funeral_homes/패투헤븐/pettoheaven_main.jpg",
+        "imageUrl": "images/funeral_homes/pettoheaven/pettoheaven_main.jpg",
         "pricingType": "categorized",
         "prices": [
             {
@@ -1096,7 +1096,7 @@
     },
     "별이되다": {
         "address": "경남 김해시 생림면 나전로 137번길 31",
-        "imageUrl": "images/funeral_homes/별이되다/becomestars_main.jpg",
+        "imageUrl": "images/funeral_homes/becomestars/becomestars_main.jpg",
         "pricingType": "categorized",
         "prices": [
             {
@@ -1107,35 +1107,35 @@
                         "price": "250,000원",
                         "desc": "장례 한지이불 국화 나무유골함 보자기",
                         "longDesc": "장례를 위한 꼭 필요한 기본 장례 서비스로, 화장 이후 나무유골함과 보자기가 제공됩니다.",
-                        "imageUrl": "images/funeral_homes/별이되다/becomestars_1.jpg"
+                        "imageUrl": "images/funeral_homes/becomestars/becomestars_1.jpg"
                     },
                     {
                         "name": "별장례",
                         "price": "500,000원",
                         "desc": "베이직장례 인견덮는형 고급면수의 고급오동나무관 국화 나무유골함 보자기 사진액자 꽃장식",
                         "longDesc": "반려동물 맞춤 화장용 관과 이불 / 덮는용 수의로 마지막 길을 따뜻하고 편안하게 보내줄 수 있는 장례서비스. 별장례의 경우 아이가 옷을 입히는 경우해서 총 2가지가 가능합니다.",
-                        "imageUrl": "images/funeral_homes/별이되다/becomestars_3.jpg"
+                        "imageUrl": "images/funeral_homes/becomestars/becomestars_3.jpg"
                     },
                     {
                         "name": "요람장례",
                         "price": "600,000원",
                         "desc": "장례 별이되다요람 국화 나무유골함 보자기 사진액자 꽃장식",
                         "longDesc": "편안하게, 마치 신생아가 태어났을 때처럼, 포근하게 있을 수 있도록 자작나무로 자체개발한 요람 장례서비스",
-                        "imageUrl": "images/funeral_homes/별이되다/becomestars_4.jpg"
+                        "imageUrl": "images/funeral_homes/becomestars/becomestars_4.jpg"
                     },
                     {
                         "name": "천사장례",
                         "price": "800,000원",
                         "desc": "장례 최고급오동나무관 최고급린넨수의 국화 나무유골함 보자기 사진액자 꽃장식",
                         "longDesc": "반려동물 맞춤 화장용 관과 이불 / 수의로 마지막 길을 따뜻하고 편안하게 보내줄 수 있는 장례서비스. 수의의 경우 흰색, 파랑색, 분홍색이 있습니다.",
-                        "imageUrl": "images/funeral_homes/별이되다/becomestars_5.jpg"
+                        "imageUrl": "images/funeral_homes/becomestars/becomestars_5.jpg"
                     },
                     {
                         "name": "꽃장식",
                         "price": "80,000원",
                         "desc": "베이직장례, 간소화장례 적용 가능",
                         "longDesc": "아이의 마지막을 장식해주는 꽃 (베이직장례, 간소화장례 - 80,000원 추가)",
-                        "imageUrl": "images/funeral_homes/별이되다/becomestars_6.jpg"
+                        "imageUrl": "images/funeral_homes/becomestars/becomestars_6.jpg"
                     }
                 ]
             }
@@ -1143,7 +1143,7 @@
     },
     "좋은친구들": {
         "address": "충청남도 공주시 우성면 보흥2길 36-61",
-        "imageUrl": "images/funeral_homes/좋은친구들/goodfriends_main.jpg",
+        "imageUrl": "images/funeral_homes/goodfriends/goodfriends_main.jpg",
         "pricingType": "categorized",
         "prices": [
             {
@@ -1167,7 +1167,7 @@
     },
     "위드엔젤": {
         "address": "전북특별자치도 전주시 덕진구 쪽구름로 179-11",
-        "imageUrl": "images/funeral_homes/위드엔젤/withangel_main.png",
+        "imageUrl": "images/funeral_homes/withangel/withangel_main.png",
         "pricingType": "categorized",
         "prices": [
             {
@@ -1191,7 +1191,7 @@
     },
     "더포에버": {
         "address": "인천 서구 설원로 79",
-        "imageUrl": "images/funeral_homes/더포에버/theforever_main.png",
+        "imageUrl": "images/funeral_homes/theforever/theforever_main.png",
         "pricingType": "categorized",
         "prices": [
             {
@@ -1429,7 +1429,7 @@
         ]
     },
     "아이별": {
-        "imageUrl": "images/funeral_homes/아이별/sub3_backs_mos.jpg",
+        "imageUrl": "images/funeral_homes/ibyeol/sub3_backs_mos.jpg",
         "address": "부산 기장군 장안읍 기룡리 240",
         "pricingType": "categorized",
         "prices": [
@@ -1555,7 +1555,7 @@
     "하늘소풍": {
         "address": "경남 고성군 회화면 봉동리 608-3",
         "pricingType": "categorized",
-        "imageUrl": "images/funeral_homes/하늘소풍/haneulsopoong_list_v2.png",
+        "imageUrl": "images/funeral_homes/haneulsopoong/haneulsopoong_list_v2.png",
         "prices": [
             {
                 "category": "장례 서비스 패키지 (10kg 미만 기준)",
@@ -1565,49 +1565,49 @@
                         "price": "250,000원",
                         "desc": "염습, 단독 추모실, 종교용품, 국화 헌화, 개별 화장, 단독 참관실, 기본 유골함",
                         "longDesc": "가장 기본을 지키는 장례 절차입니다. 장례를 진행하기 위한 최소한의 형식을 갖취 격식 있고 안전하게 진행됩니다. (부가세 별도)",
-                        "imageUrl": "images/funeral_homes/하늘소풍/haneulsopoong_basic.png"
+                        "imageUrl": "images/funeral_homes/haneulsopoong/haneulsopoong_basic.png"
                     },
                     {
                         "name": "하늘 장례",
                         "price": "450,000원",
                         "desc": "염습, 고급 수의, 고급 오동나무 관, 단독 추모실, 종교용품, 국화 헌화, 개별 화장, 단독 참관실, 기본 유골함",
                         "longDesc": "하늘소풍과 함께하여 주신 많은 분들께서 주로 선택하셨던 구성으로 마련되어 있는 장례입니다. 고급 오동나무 관과 수의가 포함되어 있습니다. (부가세 별도)",
-                        "imageUrl": "images/funeral_homes/하늘소풍/haneulsopoong_basic.png"
+                        "imageUrl": "images/funeral_homes/haneulsopoong/haneulsopoong_basic.png"
                     },
                     {
                         "name": "소풍 장례",
                         "price": "750,000원",
                         "desc": "염습, 최고급 수의, 최고급 오동나무 관, 단독 추모실, 종교용품, 국화 헌화, 개별 화장, 단독 참관실, 최고급 보존 유골함",
                         "longDesc": "최고급 장례용품으로 각 절차를 진행하실 수 있도록 마련되어 있는 프리미엄 장례입니다. 최고급 오동나무 관과 수의, 보존 유골함이 포함되어 있습니다. (부가세 별도)",
-                        "imageUrl": "images/funeral_homes/하늘소풍/haneulsopoong_basic.png"
+                        "imageUrl": "images/funeral_homes/haneulsopoong/haneulsopoong_basic.png"
                     },
                     {
                         "name": "하늘 에퀴녹스 수목 장례",
                         "price": "650,000원",
                         "desc": "기본 장례 절차 + 하늘 에퀴녹스 수목장 1년 안장 비용 + 수목 전용 목함",
                         "longDesc": "기본 장례의 절차를 진행하신 후 에퀴녹스 수목장 하늘구역에 안장하실 수 있는 장례입니다. (부가세 별도)",
-                        "imageUrl": "images/funeral_homes/하늘소풍/haneulsopoong_basic.png"
+                        "imageUrl": "images/funeral_homes/haneulsopoong/haneulsopoong_basic.png"
                     },
                     {
                         "name": "소풍 에퀴녹스 수목 장례",
                         "price": "950,000원",
                         "desc": "하늘 장례 절차 + 수목 전용 목함 + 소풍 에퀴녹스 수목장 1년 안장 비용",
                         "longDesc": "고급 장례용품이 포함된 하늘 장례의 절차를 진행하신 후 에퀴녹스 수목장 소풍구역에 안장하실 수 있는 장례입니다. (부가세 별도)",
-                        "imageUrl": "images/funeral_homes/하늘소풍/haneulsopoong_basic.png"
+                        "imageUrl": "images/funeral_homes/haneulsopoong/haneulsopoong_basic.png"
                     },
                     {
                         "name": "프리미엄 에퀴녹스 수목 장례",
                         "price": "1,350,000원",
                         "desc": "하늘 장례 절차 + 최고급 매장 유골함 + 수목장 안장 + 맞춤 추모비",
                         "longDesc": "최고급 매장 유골함에 유골을 봉안하여 에퀴녹스 수목장 소풍구역에 안장하며, 사진과 문구를 새긴 추모비가 포함된 최상위 패키지입니다. (부가세 별도)",
-                        "imageUrl": "images/funeral_homes/하늘소풍/haneulsopoong_basic.png"
+                        "imageUrl": "images/funeral_homes/haneulsopoong/haneulsopoong_basic.png"
                     },
                     {
                         "name": "리본 스톤 단독 제작",
                         "price": "350,000원",
                         "desc": "순수 유골만으로 제작되는 추모 보석",
                         "longDesc": "아이의 유골을 아름다운 보석의 형태로 온전하게 보관할 수 있는 하늘소풍만의 리본 스톤 제작 절차입니다. (부가세 별도)",
-                        "imageUrl": "images/funeral_homes/하늘소풍/haneulsopoong_basic.png"
+                        "imageUrl": "images/funeral_homes/haneulsopoong/haneulsopoong_basic.png"
                     }
                 ]
             },
@@ -1619,14 +1619,14 @@
                         "price": "별도 문의",
                         "desc": "에퀴녹스 수목장 안치 시설",
                         "longDesc": "에퀴녹스 수목장에 대한 자세한 안내는 별도 문의 바랍니다.",
-                        "imageUrl": "images/funeral_homes/하늘소풍/haneulsopoong_basic.png"
+                        "imageUrl": "images/funeral_homes/haneulsopoong/haneulsopoong_basic.png"
                     },
                     {
                         "name": "빌리지 봉안당",
                         "price": "별도 문의",
                         "desc": "고요하고 평온한 무지개다리 너머의 작은 마을, 빌리지 봉안당입니다.",
                         "longDesc": "고요하고 평온한 무지개다리 너머의 작은 마을, 빌리지 봉안당입니다. 자세한 안내는 별도 문의 바랍니다.",
-                        "imageUrl": "images/funeral_homes/하늘소풍/haneulsopoong_basic.png"
+                        "imageUrl": "images/funeral_homes/haneulsopoong/haneulsopoong_basic.png"
                     }
                 ]
             }
@@ -1759,42 +1759,42 @@
                         "price": "250,000원",
                         "desc": "염습, 단독 추모, 개별화장, 기본함 등",
                         "longDesc": "염습, 단독 추모, 개별화장, 한지 포장, 기본 유골함 및 화장 증명서 발급 포함",
-                        "imageUrl": "images/funeral_homes/이별공간/main.webp"
+                        "imageUrl": "images/funeral_homes/ebyulplace/main.webp"
                     },
                     {
                         "name": "구름장례",
                         "price": "350,000원",
                         "desc": "공통 + 수제 이불수의 + 구름관",
                         "longDesc": "공통장례 구성에 정성스럽게 수제작된 이불수의와 구름관이 포함된 패키지입니다.",
-                        "imageUrl": "images/funeral_homes/이별공간/main.webp"
+                        "imageUrl": "images/funeral_homes/ebyulplace/main.webp"
                     },
                     {
                         "name": "이별장례",
                         "price": "450,000원",
                         "desc": "공통 + 수제 이불수의 + 오픈관 + 사진액자",
                         "longDesc": "아이와의 마지막 이별을 따뜻하게 장식할 오픈관과 이불수의, 사진액자가 포함된 패키지입니다.",
-                        "imageUrl": "images/funeral_homes/이별공간/main.webp"
+                        "imageUrl": "images/funeral_homes/ebyulplace/main.webp"
                     },
                     {
                         "name": "이별고급장례",
                         "price": "650,000원",
                         "desc": "공통 + 고급 삼베수의 + 백자 유골함 + 뚜껑관",
                         "longDesc": "고급 삼베수의와 백자 유골함, 뚜껑관으로 격식을 갖춰 아이를 배웅하는 프리미엄 패키지입니다.",
-                        "imageUrl": "images/funeral_homes/이별공간/main.webp"
+                        "imageUrl": "images/funeral_homes/ebyulplace/main.webp"
                     },
                     {
                         "name": "무지개장례",
                         "price": "850,000원",
                         "desc": "공통 + 고급 이불수의 + 기능성 유골함 + 하우징 + 액자",
                         "longDesc": "고급 이불수의와 기능성 유골함, 보존력을 높이는 하우징과 액자가 포함된 고품격 패키지입니다.",
-                        "imageUrl": "images/funeral_homes/이별공간/main.webp"
+                        "imageUrl": "images/funeral_homes/ebyulplace/main.webp"
                     },
                     {
                         "name": "프리미엄장례",
                         "price": "1,300,000원",
                         "desc": "공통 + 명주수의 + 뚜껑관 + 호두나무함 + 하우징 + 액자",
                         "longDesc": "최고급 명주수의와 호두나무 유골함 등 이별공간 최고의 예우를 담은 최상위 패키지입니다.",
-                        "imageUrl": "images/funeral_homes/이별공간/main.webp"
+                        "imageUrl": "images/funeral_homes/ebyulplace/main.webp"
                     }
                 ]
             },
@@ -1806,28 +1806,28 @@
                         "price": "950,000원",
                         "desc": "이별장례 + 납골당(상하층) + 기능성함 + 액자 등",
                         "longDesc": "이별장례에 납골당 안치와 기능성 유골함, 액자가 결합된 실용적인 안치 결합 패키지입니다.",
-                        "imageUrl": "images/funeral_homes/이별공간/main.webp"
+                        "imageUrl": "images/funeral_homes/ebyulplace/main.webp"
                     },
                     {
                         "name": "스톤 패키지",
                         "price": "950,000원",
                         "desc": "이별장례 + M스톤 + 고급 스톤함 + 액자",
                         "longDesc": "이별장례와 영구 보존 가능한 메모리얼 스톤 제작 및 고급 스톤함이 결합된 패키지입니다.",
-                        "imageUrl": "images/funeral_homes/이별공간/main.webp"
+                        "imageUrl": "images/funeral_homes/ebyulplace/main.webp"
                     },
                     {
                         "name": "납골당 프리미엄",
                         "price": "1,500,000원",
                         "desc": "공통장례 + 납골당(전층) + 명주수의 + 뚜껑관 + 호두나무함 + 액자",
                         "longDesc": "공통장례에 납골당(전층 선택 가능) 안치와 명주수의 등 최고급 용품이 결합된 패키지입니다.",
-                        "imageUrl": "images/funeral_homes/이별공간/main.webp"
+                        "imageUrl": "images/funeral_homes/ebyulplace/main.webp"
                     },
                     {
                         "name": "스톤 프리미엄",
                         "price": "1,500,000원",
                         "desc": "공통장례 + M스톤 + 최고급함 + 명주수의 + 뚜껑관 + 하우징 + 액자",
                         "longDesc": "메모리얼 스톤 제작과 함께 최고급 장례 용품 및 예우가 모두 포함된 최상급 결합 패키지입니다.",
-                        "imageUrl": "images/funeral_homes/이별공간/main.webp"
+                        "imageUrl": "images/funeral_homes/ebyulplace/main.webp"
                     }
                 ]
             },
@@ -2059,7 +2059,7 @@
         ]
     },
     "하얀민들레": {
-        "imageUrl": "images/funeral_homes/하얀민들레/hayanmindeulle_main.jpg",
+        "imageUrl": "images/funeral_homes/hayanmindeulle/hayanmindeulle_main.jpg",
         "address": "경북 청도군 화양읍 남성현로 852",
         "pricingType": "categorized",
         "prices": [
@@ -2456,14 +2456,14 @@
                         "price": "200,000원",
                         "desc": "영정사진, 추모실, 개별화장, 기본유골함",
                         "longDesc": "염습, 단독 추모실, 개별화장, 기본 유골함, 고급 보자기, 장례 확인서가 포함됩니다.",
-                        "imageUrl": "images/funeral_homes/강아지펫헤븐/petheaven_exterior.png"
+                        "imageUrl": "images/funeral_homes/dogpetheaven/petheaven_exterior.png"
                     },
                     {
                         "name": "기본 화장 (5~15kg)",
                         "price": "250,000원",
                         "desc": "영정사진, 추모실, 개별화장, 기본유골함",
                         "longDesc": "염습, 단독 추모실, 개별화장, 기본 유골함, 고급 보자기, 장례 확인서가 포함됩니다.",
-                        "imageUrl": "images/funeral_homes/강아지펫헤븐/petheaven_exterior.png"
+                        "imageUrl": "images/funeral_homes/dogpetheaven/petheaven_exterior.png"
                     }
                 ]
             },
@@ -2479,7 +2479,7 @@
                 ]
             }
         ],
-        "imageUrl": "images/funeral_homes/강아지펫헤븐/petheaven_exterior.png"
+        "imageUrl": "images/funeral_homes/dogpetheaven/petheaven_exterior.png"
     },
     "리틀포즈": {
         "address": "대구 군위군 부계면 창평리 812",

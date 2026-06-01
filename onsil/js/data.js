@@ -385,7 +385,7 @@
                 "address": "경북 칠곡군 가산면 다부리 651",
                 "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/sweetdreampet.webp"
             },
-            "스타티스": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "부산 기장군 일광읍 동백리 383-2", "imageUrl": "images/funeral_homes/스타티스/img_company02.jpg" },
+            "스타티스": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "부산 기장군 일광읍 동백리 383-2", "imageUrl": "images/funeral_homes/statice/img_company02.jpg" },
             "씨엘로펫": {
                 "address": "경기 용인시 처인구 백암면 죽양대로 1206",
                 "pricingType": "categorized",
@@ -481,7 +481,7 @@
             },
 
             "젠틀펫스타": { "pricingType": "categorized", "prices": GENTLEPET_PRICES, "address": "경북 문경시 문경읍 진안리 350-4", "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/gentlepetstar.webp" },
-            "위드엔젤": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "충남 예산군 대술면 화산리 465-1", "imageUrl": "images/funeral_homes/위드엔젤/main.webp" },
+            "위드엔젤": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "충남 예산군 대술면 화산리 465-1", "imageUrl": "images/funeral_homes/withangel/main.webp" },
             "아이헤븐": {
                 "pricingType": "categorized",
                 "prices": [
@@ -541,18 +541,18 @@
                     {
                         "category": "기본 장례 및 화장",
                         "items": [
-                            { "name": "소형동물 기본장례 (1kg 미만)", "price": "200,000원", "desc": "염/습, 추모예식, 특수 개별화장", "longDesc": "새, 햄스터 등 1kg 미만 소형동물을 위한 장례 서비스" , "imageUrl": "images/funeral_homes/한별리멤버파크/hanbyul_basic_custom.jpg"},
+                            { "name": "소형동물 기본장례 (1kg 미만)", "price": "200,000원", "desc": "염/습, 추모예식, 특수 개별화장", "longDesc": "새, 햄스터 등 1kg 미만 소형동물을 위한 장례 서비스" , "imageUrl": "images/funeral_homes/hanbyul_remember/hanbyul_basic_custom.jpg"},
                             { "name": "기본장례 (5kg 미만)", "price": "250,000원", "desc": "염/습, 추모예식, 화장, 기본 목함", "longDesc": "5kg 미만 반려동물 기준. 5kg 초과 시 1kg당 10,000원의 무게 할증이 부과됩니다." }
                         ]
                     },
                     {
                         "category": "장례 패키지",
                         "items": [
-                            { "name": "기본장례 45 (5kg 미만)", "price": "450,000원", "desc": "입관, 개방관, 삼베 이불, 꽃장식 등", "longDesc": "염/습, 추모식, 입관, 개방관, 삼베 이불 덮기, 입관 꽃장식, 화장, 기본 목함", "imageUrl": "images/funeral_homes/한별리멤버파크/hanbyul_basic_custom.jpg" },
-                            { "name": "장례A 55 (5kg 미만)", "price": "550,000원", "desc": "오동나무관, 삼베 수의, 수국 장식", "longDesc": "개방관 대비 오동나무관과 삼베 수의, 수국 덮기가 곁들여지는 패키지", "imageUrl": "images/funeral_homes/한별리멤버파크/hanbyul_basic_custom.jpg" },
-                            { "name": "라탄꽃 장례 60 (5kg 미만)", "price": "600,000원", "desc": "라탄관 덮기, 삼베, 수국 장식", "longDesc": "라탄관과 삼베, 수국으로 아름답게 꾸며지는 꽃 장례 패키지", "imageUrl": "images/funeral_homes/한별리멤버파크/hanbyul_package_60_rattan.jpg" },
-                            { "name": "장례B 65 (5kg 미만)", "price": "650,000원", "desc": "천사관, 삼베 수의, 꽃장식", "longDesc": "천사관이 적용된 고급 장례 패키지", "imageUrl": "images/funeral_homes/한별리멤버파크/hanbyul_package_65_angel.jpg" },
-                            { "name": "장례C 95 (5kg 미만)", "price": "950,000원", "desc": "최고급관, 최고급 수의, 고급 꽃장식", "longDesc": "최고급 관과 최고급 수의가 적용된 VVIP 패키지", "imageUrl": "images/funeral_homes/한별리멤버파크/hanbyul_package_95_premium.jpg" }
+                            { "name": "기본장례 45 (5kg 미만)", "price": "450,000원", "desc": "입관, 개방관, 삼베 이불, 꽃장식 등", "longDesc": "염/습, 추모식, 입관, 개방관, 삼베 이불 덮기, 입관 꽃장식, 화장, 기본 목함", "imageUrl": "images/funeral_homes/hanbyul_remember/hanbyul_basic_custom.jpg" },
+                            { "name": "장례A 55 (5kg 미만)", "price": "550,000원", "desc": "오동나무관, 삼베 수의, 수국 장식", "longDesc": "개방관 대비 오동나무관과 삼베 수의, 수국 덮기가 곁들여지는 패키지", "imageUrl": "images/funeral_homes/hanbyul_remember/hanbyul_basic_custom.jpg" },
+                            { "name": "라탄꽃 장례 60 (5kg 미만)", "price": "600,000원", "desc": "라탄관 덮기, 삼베, 수국 장식", "longDesc": "라탄관과 삼베, 수국으로 아름답게 꾸며지는 꽃 장례 패키지", "imageUrl": "images/funeral_homes/hanbyul_remember/hanbyul_package_60_rattan.jpg" },
+                            { "name": "장례B 65 (5kg 미만)", "price": "650,000원", "desc": "천사관, 삼베 수의, 꽃장식", "longDesc": "천사관이 적용된 고급 장례 패키지", "imageUrl": "images/funeral_homes/hanbyul_remember/hanbyul_package_65_angel.jpg" },
+                            { "name": "장례C 95 (5kg 미만)", "price": "950,000원", "desc": "최고급관, 최고급 수의, 고급 꽃장식", "longDesc": "최고급 관과 최고급 수의가 적용된 VVIP 패키지", "imageUrl": "images/funeral_homes/hanbyul_remember/hanbyul_package_95_premium.jpg" }
                         ]
                     },
                     {
@@ -564,7 +564,7 @@
                     }
                 ],
                 "address": "경남 함안군 산인면 송산로 441",
-                "imageUrl": "images/funeral_homes/한별리멤버파크/hanbyul_basic_custom.jpg"
+                "imageUrl": "images/funeral_homes/hanbyul_remember/hanbyul_basic_custom.jpg"
             },
             "별다만": {
                 "pricingType": "categorized",
@@ -612,7 +612,7 @@
                     {
                         "category": "기본 화장 서비스",
                         "items": [
-                            { "name": "소동물 화장비", "price": "150,000원", "desc": "햄스터, 새 등", "longDesc": "염습, 장례식장 이용, 도자기 유골함이 포함된 소동물 화장비용" , "imageUrl": "images/funeral_homes/펫바라기_남원점/petbaragi_gukhwa.png"},
+                            { "name": "소동물 화장비", "price": "150,000원", "desc": "햄스터, 새 등", "longDesc": "염습, 장례식장 이용, 도자기 유골함이 포함된 소동물 화장비용" , "imageUrl": "images/funeral_homes/petbaragi_namwon/petbaragi_gukhwa.png"},
                             { "name": "기본 화장비 (10kg 미만)", "price": "220,000원", "desc": "염습, 단독추모실, 개별화장, 유골함", "longDesc": "염습, 장례식장 이용, 및 도자기 유골함 제공이 포함된 기본 화장 서비스 안내 사항" }
                         ]
                     },
@@ -627,11 +627,11 @@
                     }
                 ],
                 "address": "전북 남원시 보절면 신파리 403",
-                "imageUrl": "images/funeral_homes/펫바라기_남원점/petbaragi_gukhwa.png"
+                "imageUrl": "images/funeral_homes/petbaragi_namwon/petbaragi_gukhwa.png"
             },
-            "푸른솔": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "전남 여수시 율촌면 취적리 964-3", "imageUrl": "images/funeral_homes/푸른솔/main.webp" },
+            "푸른솔": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "전남 여수시 율촌면 취적리 964-3", "imageUrl": "images/funeral_homes/pureunsol/main.webp" },
 
-            "러블리엔젤": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "충북 청주시 서원구 남이면 구미리 233-1", "imageUrl": "images/funeral_homes/러블리엔젤/af1f69dd3885b.jpg" },
+            "러블리엔젤": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "충북 청주시 서원구 남이면 구미리 233-1", "imageUrl": "images/funeral_homes/lovelyangel/af1f69dd3885b.jpg" },
             "펫바라기 일산점": {
                 "pricingType": "categorized",
                 "prices": [
@@ -693,7 +693,7 @@
                     {
                         "category": "기본 장례 비용 (소형 반려동물 기준)",
                         "items": [
-                            { "name": "기본 장례", "price": "350,000원", "desc": "염습+수의+오동나무관+백자단지+수목장 유골함", "longDesc": "염습, 한지 수의보, 오동나무관(소형), 백자 유골 단지, 수목장용 오동나무 유골함 두 종류 모두가 기본으로 제공되는 서비스입니다." , "imageUrl": "images/funeral_homes/굿바이펫/main.webp"},
+                            { "name": "기본 장례", "price": "350,000원", "desc": "염습+수의+오동나무관+백자단지+수목장 유골함", "longDesc": "염습, 한지 수의보, 오동나무관(소형), 백자 유골 단지, 수목장용 오동나무 유골함 두 종류 모두가 기본으로 제공되는 서비스입니다." , "imageUrl": "images/funeral_homes/goodbyepet/main.webp"},
                             { "name": "특수동물 및 6개월 미만", "price": "300,000원", "desc": "기본 장례 비용에서 50,000원 차감", "longDesc": "햄스터, 고슴도치 등의 특수동물이나 6개월 미만의 어린 동물을 위한 장례 시 기본 비용에서 50,000원이 차감되어 진행됩니다." },
                             { "name": "셀프 장례", "price": "300,000원", "desc": "기본 장례 비용에서 50,000원 차감", "longDesc": "보호자가 직접 염습과 입관을 준비해오시는 경우 50,000원이 할인됩니다." }
                         ]
@@ -717,7 +717,7 @@
                     }
                 ],
                 "address": "충북 제천시 봉양읍 장평리 37-1",
-                "imageUrl": "images/funeral_homes/굿바이펫/main.webp"
+                "imageUrl": "images/funeral_homes/goodbyepet/main.webp"
             },
             "스마일어게인": {
                 "pricingType": "categorized",
@@ -725,7 +725,7 @@
                     {
                         "category": "기본 장례 비용 (소형 반려동물 기준)",
                         "items": [
-                            { "name": "기본 장례", "price": "350,000원", "desc": "염습+수의+오동나무관+백자단지+수목장 유골함", "longDesc": "염습, 한지 수의보, 오동나무관(소형), 백자 유골 단지, 수목장용 오동나무 유골함 두 종류 모두가 기본으로 제공되는 서비스입니다." , "imageUrl": "images/funeral_homes/스마일어게인/main.webp"},
+                            { "name": "기본 장례", "price": "350,000원", "desc": "염습+수의+오동나무관+백자단지+수목장 유골함", "longDesc": "염습, 한지 수의보, 오동나무관(소형), 백자 유골 단지, 수목장용 오동나무 유골함 두 종류 모두가 기본으로 제공되는 서비스입니다." , "imageUrl": "images/funeral_homes/smileagain/main.webp"},
                             { "name": "특수동물 및 6개월 미만", "price": "300,000원", "desc": "기본 장례 비용에서 50,000원 차감", "longDesc": "햄스터, 고슴도치 등의 특수동물이나 6개월 미만의 어린 동물을 위한 장례 시 기본 비용에서 50,000원이 차감되어 진행됩니다." },
                             { "name": "셀프 장례", "price": "300,000원", "desc": "기본 장례 비용에서 50,000원 차감", "longDesc": "보호자가 직접 염습과 입관을 준비해오시는 경우 50,000원이 할인됩니다." }
                         ]
@@ -749,7 +749,7 @@
                     }
                 ],
                 "address": "충북 영동군 추풍령면 작점리 148",
-                "imageUrl": "images/funeral_homes/스마일어게인/main.webp"
+                "imageUrl": "images/funeral_homes/smileagain/main.webp"
             },
             "스토리펫": {
                 "pricingType": "categorized",
@@ -838,22 +838,22 @@
                 "address": "경북 김천시 봉산면 신암리 396",
                 "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/kyungbook.webp"
             },
-            "러브펫 경기광주점": { "pricingType": "categorized", "prices": LOVEPET_PRICES, "address": "경기 광주시 초월읍 지월리 712-10", "imageUrl": "images/funeral_homes/러브펫_경기광주점/main.webp" },
+            "러브펫 경기광주점": { "pricingType": "categorized", "prices": LOVEPET_PRICES, "address": "경기 광주시 초월읍 지월리 712-10", "imageUrl": "images/funeral_homes/lovepet_gwangju/main.webp" },
             "해피펫": {
                 "pricingType": "categorized",
                 "prices": [
                     {
                         "category": "기본 장례 및 화장",
                         "items": [
-                            { "name": "반려동물 장례비용", "price": "110,000원", "desc": "장례, 화장, 유골수습 포함", "longDesc": "해피펫의 기본 장례 서비스로 장례 예식, 화장 진행 및 유골 수습 과정이 모두 포함된 통합 비용입니다." , "imageUrl": "images/funeral_homes/해피펫/main.webp"}
+                            { "name": "반려동물 장례비용", "price": "110,000원", "desc": "장례, 화장, 유골수습 포함", "longDesc": "해피펫의 기본 장례 서비스로 장례 예식, 화장 진행 및 유골 수습 과정이 모두 포함된 통합 비용입니다." , "imageUrl": "images/funeral_homes/happypet/main.webp"}
                         ]
                     }
                 ],
                 "address": "전북 완주군 이서면 은교리 508",
-                "imageUrl": "images/funeral_homes/해피펫/main.webp"
+                "imageUrl": "images/funeral_homes/happypet/main.webp"
             },
-            "펫로스케어": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경남 김해시 상동면 우계리 112-1" , "imageUrl": "images/funeral_homes/펫로스케어/main.webp"},
-            "좋은친구들": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "충남 공주시 우성면 보흥리 759", "imageUrl": "images/funeral_homes/좋은친구들/main.webp" },
+            "펫로스케어": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경남 김해시 상동면 우계리 112-1" , "imageUrl": "images/funeral_homes/petlosscare/main.webp"},
+            "좋은친구들": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "충남 공주시 우성면 보흥리 759", "imageUrl": "images/funeral_homes/goodfriends/main.webp" },
             "펫포레스트 김포점": {
                 "address": "경기 김포시 통진읍 고정로 308",
                 "pricingType": "categorized",
@@ -861,7 +861,7 @@
                     {
                         "category": "장례 패키지",
                         "items": [
-                            { "name": "스탠다드 장례", "price": "350,000원", "desc": "기본 유골함, 고급 보자기 등" , "imageUrl": "images/funeral_homes/펫포레스트_김포점/main.webp"},
+                            { "name": "스탠다드 장례", "price": "350,000원", "desc": "기본 유골함, 고급 보자기 등" , "imageUrl": "images/funeral_homes/petforest_gimpo/main.webp"},
                             { "name": "포레스트 장례", "price": "700,000원", "desc": "고급 수의, 고급 오동나무관, 포레스트 유골함, 액자, 발도장 클레이 등" },
                             { "name": "프리미엄 장례", "price": "1,400,000원", "desc": "최고급 수의, 최고급 오동나무관, 기능성 유골함, 꽃다발, 포레스트 하우징, 액자 등" },
                             { "name": "스탠다드 루세떼 장례", "price": "1,000,000원", "desc": "스탠다드 장례 + 루세떼 제작 + 유리병 + 보증서" },
@@ -870,18 +870,18 @@
                         ]
                     }
                 ],
-                "imageUrl": "images/funeral_homes/펫포레스트_김포점/main.webp"
+                "imageUrl": "images/funeral_homes/petforest_gimpo/main.webp"
             },
-            "더포에버": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "인천 서구 대곡동 361-2", "imageUrl": "images/funeral_homes/더포에버/main.webp" },
+            "더포에버": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "인천 서구 대곡동 361-2", "imageUrl": "images/funeral_homes/theforever/main.webp" },
             "한별": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경남 창원시 성산구 창원대로 11" , "imageUrl": "https://d21ntoj848ohi.cloudfront.net/business-main-img/mongmongiempark.webp"},
-            "몽몽이엠파크": { "pricingType": "categorized", "prices": MONGMONG_PRICES, "address": "경기 남양주시 화도읍 구암리 305", "imageUrl": "images/funeral_homes/몽몽이엠파크/main.webp" },
+            "몽몽이엠파크": { "pricingType": "categorized", "prices": MONGMONG_PRICES, "address": "경기 남양주시 화도읍 구암리 305", "imageUrl": "images/funeral_homes/mongmongempark/main.webp" },
             "백꽃사랑하이빛": {
                 "pricingType": "categorized",
                 "prices": [
                     {
                         "category": "장례 패키지 (10kg 미만 기준)",
                         "items": [
-                            { "name": "01 기본장례", "price": "250,000원", "desc": "염습, 화장, 한지수의, 추모실, 보자기, 기본유골함", "longDesc": "염습, 화장, 한지수의, 국화 헌화, 기본 유골함, 단독추모실, 고급보자기, 고급액자 포함 (10kg 초과 시 추가 비용 문의)" , "imageUrl": "images/funeral_homes/백꽃사랑하이빛/main.webp"},
+                            { "name": "01 기본장례", "price": "250,000원", "desc": "염습, 화장, 한지수의, 추모실, 보자기, 기본유골함", "longDesc": "염습, 화장, 한지수의, 국화 헌화, 기본 유골함, 단독추모실, 고급보자기, 고급액자 포함 (10kg 초과 시 추가 비용 문의)" , "imageUrl": "images/funeral_homes/baekkkot/main.webp"},
                             { "name": "02 포에버장례", "price": "500,000원", "desc": "기본장례 + 오동나무관/요람장, 인견수의, 백자유골함", "longDesc": "기본장례 항목 포함 + 꽃다발, 인견 수의, 고급 오동나무관 또는 요람장 세트, 백자 유골함" },
                             { "name": "03 VIP장례", "price": "900,000원", "desc": "포에버장례 + 생화장식, 수의/수의보 세트, 기능성유골함", "longDesc": "포에버장례 항목 포함 + 생화장식, 고급 수의와 수의보 세트, 고급 오동나무관, 기능성 유골함" }
                         ]
@@ -894,11 +894,11 @@
                     }
                 ],
                 "address": "경기 광주시 곤지암읍 부항리 236",
-                "imageUrl": "images/funeral_homes/백꽃사랑하이빛/main.webp"
+                "imageUrl": "images/funeral_homes/baekkkot/main.webp"
             },
             "어게인": {
                 "address": "충북 옥천군 동이면 옥천동이로 439",
-                "imageUrl": "images/funeral_homes/어게인/main.webp",
+                "imageUrl": "images/funeral_homes/again/main.webp",
                 "pricingType": "categorized",
                 "prices": [
                     { "category": "기본 장례 비용", "items": [{ "name": "1kg 미만 (소동물)", "price": "180,000원", "desc": "염습, 단독 추모실, 개별 화장, 기본 유골함 등 포함" }, { "name": "5kg 미만", "price": "200,000원", "desc": "염습, 단독 추모실, 개별 화장, 기본 유골함 등 포함" }, { "name": "5kg ~ 10kg", "price": "230,000원", "desc": "염습, 단독 추모실, 개별 화장, 기본 유골함 등 포함" }, { "name": "10kg ~ 15kg", "price": "280,000원", "desc": "염습, 단독 추모실, 개별 화장, 기본 유골함 등 포함" }, { "name": "15kg ~ 20kg", "price": "350,000원", "desc": "염습, 단독 추모실, 개별 화장, 기본 유골함 등 포함" }] },
@@ -906,14 +906,14 @@
                 ]
             },
             "하늘강아지": { "pricingType": "categorized", "prices": HANEUL_PRICES, "address": "경기 광주시 초월읍 선동리 386-5", "imageUrl": "https://cdn.imweb.me/thumbnail/20250810/14567aedad916.jpg" },
-            "아이별": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "부산 기장군 장안읍 기룡리 240" , "imageUrl": "images/funeral_homes/아이별/sub3_backs_mos.jpg"},
-            "하얀민들레": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경북 청도군 화양읍 남성현로 852" , "imageUrl": "images/funeral_homes/하얀민들레/hayanmindeulle_main.jpg"},
-            "아이드림펫": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경기 김포시 하성면 양택리 161-1" , "imageUrl": "images/funeral_homes/아이드림펫/ibyeol_main.png"},
-            "펫노블레스": { "pricingType": "categorized", "prices": PETNOBLESSE_PRICES, "address": "경남 양산시 상북면 상삼리 807", "imageUrl": "images/funeral_homes/펫노블레스/petnoblesse_main.png" },
-            "서래안펫타운": { "pricingType": "categorized", "prices": SEORAEAN_PRICES, "address": "전북 군산시 경암동 570-39" , "imageUrl": "images/funeral_homes/서래안펫타운/main.webp"},
-            "하늘소풍": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경남 고성군 회화면 봉동리 608-3" , "imageUrl": "images/funeral_homes/하늘소풍/haneulsopoong_list_v2.png"},
+            "아이별": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "부산 기장군 장안읍 기룡리 240" , "imageUrl": "images/funeral_homes/ibyeol/sub3_backs_mos.jpg"},
+            "하얀민들레": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경북 청도군 화양읍 남성현로 852" , "imageUrl": "images/funeral_homes/hayanmindeulle/hayanmindeulle_main.jpg"},
+            "아이드림펫": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경기 김포시 하성면 양택리 161-1" , "imageUrl": "images/funeral_homes/idreampet/ibyeol_main.png"},
+            "펫노블레스": { "pricingType": "categorized", "prices": PETNOBLESSE_PRICES, "address": "경남 양산시 상북면 상삼리 807", "imageUrl": "images/funeral_homes/petnoblesse/petnoblesse_main.png" },
+            "서래안펫타운": { "pricingType": "categorized", "prices": SEORAEAN_PRICES, "address": "전북 군산시 경암동 570-39" , "imageUrl": "images/funeral_homes/seoraean/main.webp"},
+            "하늘소풍": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경남 고성군 회화면 봉동리 608-3" , "imageUrl": "images/funeral_homes/haneulsopoong/haneulsopoong_list_v2.png"},
             "리멤버": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경기 용인시 처인구 남사읍 방아리 883-3" },
-            "강아지펫헤븐": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경북 성주군 선남면 오도리 91" , "imageUrl": "images/funeral_homes/강아지펫헤븐/petheaven_exterior.png"},
+            "강아지펫헤븐": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경북 성주군 선남면 오도리 91" , "imageUrl": "images/funeral_homes/dogpetheaven/petheaven_exterior.png"},
             "오수펫추모공원": {
                 "address": "전북 임실군 오수면 춘향로 1554-95",
                 "pricingType": "categorized",
@@ -930,7 +930,7 @@
                     {
                         "category": "장례 패키지",
                         "items": [
-                            { "name": "스탠다드 장례", "price": "350,000원", "desc": "기본 유골함, 고급 보자기 등" , "imageUrl": "images/funeral_homes/펫포레스트_경기광주점/main.webp"},
+                            { "name": "스탠다드 장례", "price": "350,000원", "desc": "기본 유골함, 고급 보자기 등" , "imageUrl": "images/funeral_homes/petforest_gwangju/main.webp"},
                             { "name": "포레스트 장례", "price": "700,000원", "desc": "고급 수의, 고급 오동나무관, 포레스트 유골함, 액자, 발도장 클레이 등" },
                             { "name": "프리미엄 장례", "price": "1,400,000원", "desc": "최고급 수의, 최고급 오동나무관, 기능성 유골함, 꽃다발, 포레스트 하우징, 액자 등" },
                             { "name": "스탠다드 루세떼 장례", "price": "1,000,000원", "desc": "스탠다드 장례 + 루세떼 제작 + 유리병 + 보증서" },
@@ -939,42 +939,42 @@
                         ]
                     }
                 ],
-                "imageUrl": "images/funeral_homes/펫포레스트_경기광주점/main.webp"
+                "imageUrl": "images/funeral_homes/petforest_gwangju/main.webp"
             },
-            "로이힐즈": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경기 양평군 양동면 삼산리 18" , "imageUrl": "images/funeral_homes/로이힐즈/petsalang_1.png"},
+            "로이힐즈": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경기 양평군 양동면 삼산리 18" , "imageUrl": "images/funeral_homes/royhills/petsalang_1.png"},
             "강릉펫사랑": {
                 "pricingType": "categorized",
                 "prices": [
                     {
                         "category": "장례 예식 안내 (5kg 기준)",
                         "items": [
-                            { "name": "기본 예식", "price": "300,000원", "desc": "염습, 추모실, 단독화장, 목관함, 액자 제공", "longDesc": "모든 장례는 5kg 기준 초과 시 추가요금이 발생합니다. 포함 내역: 염습 + 단독 추모실 사용 + 단독화장 + 목관함 제공 + 액자 제공", "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_1.png" },
-                            { "name": "펫사랑 예식", "price": "350,000원", "desc": "기본 예식 + 오동나무관, 삼베이불, 생화 소량", "longDesc": "보호자의 필요와 상황에 맞춘 펫사랑의 기본 패키지 장례 서비스입니다. (공통예식 포함)", "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_2.png" },
-                            { "name": "품격 예식", "price": "450,000원", "desc": "기본 예식 + 오동나무관, 인견수의보/삼베수의 중 택 1, 생화", "longDesc": "반려동물의 품격을 더 높여드리기 위한 고급 수의 옵션이 포함된 품격 있는 장례 예식입니다.", "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_3.png" },
-                            { "name": "고급 예식", "price": "550,000원", "desc": "기본 예식 + 오동나무관, 삼베수의, 고급 린넨수의보 등", "longDesc": "최고급 린넨 수의보 등을 구성한 고급 예식 패키지입니다.", "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_4.png" },
-                            { "name": "최고급 예식", "price": "650,000원", "desc": "기본 예식 + 요람관, 최고급 목화솜수의보, 생화 등", "longDesc": "안락한 요람관과 최고급 목화솜 소재의 수의보를 제공하는 프리미엄 최고급 예식입니다.", "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_5.png" }
+                            { "name": "기본 예식", "price": "300,000원", "desc": "염습, 추모실, 단독화장, 목관함, 액자 제공", "longDesc": "모든 장례는 5kg 기준 초과 시 추가요금이 발생합니다. 포함 내역: 염습 + 단독 추모실 사용 + 단독화장 + 목관함 제공 + 액자 제공", "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_1.png" },
+                            { "name": "펫사랑 예식", "price": "350,000원", "desc": "기본 예식 + 오동나무관, 삼베이불, 생화 소량", "longDesc": "보호자의 필요와 상황에 맞춘 펫사랑의 기본 패키지 장례 서비스입니다. (공통예식 포함)", "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_2.png" },
+                            { "name": "품격 예식", "price": "450,000원", "desc": "기본 예식 + 오동나무관, 인견수의보/삼베수의 중 택 1, 생화", "longDesc": "반려동물의 품격을 더 높여드리기 위한 고급 수의 옵션이 포함된 품격 있는 장례 예식입니다.", "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_3.png" },
+                            { "name": "고급 예식", "price": "550,000원", "desc": "기본 예식 + 오동나무관, 삼베수의, 고급 린넨수의보 등", "longDesc": "최고급 린넨 수의보 등을 구성한 고급 예식 패키지입니다.", "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_4.png" },
+                            { "name": "최고급 예식", "price": "650,000원", "desc": "기본 예식 + 요람관, 최고급 목화솜수의보, 생화 등", "longDesc": "안락한 요람관과 최고급 목화솜 소재의 수의보를 제공하는 프리미엄 최고급 예식입니다.", "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_5.png" }
                         ]
                     },
                     {
                         "category": "스톤 패키지 장례 (5kg 기준)",
                         "items": [
-                            { "name": "기본 스톤 장례", "price": "650,000원", "desc": "펫사랑예식 + 기본 스톤함", "longDesc": "장례와 스톤 제작을 함께 이용하시는 분들을 위해 경제적으로 제공되는 패키지입니다. (초과 시 추가요금 발생)", "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_stone_1.png" },
-                            { "name": "품격 스톤 장례", "price": "1,000,000원", "desc": "품격예식 + 호두나무 액자 스톤함", "longDesc": "품격예식에 고급 호두나무 재질의 액자 스톤함이 포함된 패키지입니다.", "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_stone_2.png" },
-                            { "name": "고급 스톤 장례", "price": "1,200,000원", "desc": "고급예식 + 고급 원목 홈세트", "longDesc": "최상단 고급 예식과 원목 스톤함, 원목 액자, 플레이트가 결합된 원목 홈세트 장례입니다.", "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_stone_3.png" }
+                            { "name": "기본 스톤 장례", "price": "650,000원", "desc": "펫사랑예식 + 기본 스톤함", "longDesc": "장례와 스톤 제작을 함께 이용하시는 분들을 위해 경제적으로 제공되는 패키지입니다. (초과 시 추가요금 발생)", "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_stone_1.png" },
+                            { "name": "품격 스톤 장례", "price": "1,000,000원", "desc": "품격예식 + 호두나무 액자 스톤함", "longDesc": "품격예식에 고급 호두나무 재질의 액자 스톤함이 포함된 패키지입니다.", "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_stone_2.png" },
+                            { "name": "고급 스톤 장례", "price": "1,200,000원", "desc": "고급예식 + 고급 원목 홈세트", "longDesc": "최상단 고급 예식과 원목 스톤함, 원목 액자, 플레이트가 결합된 원목 홈세트 장례입니다.", "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_stone_3.png" }
                         ]
                     },
                     {
                         "category": "납골당 패키지 장례",
                         "items": [
-                            { "name": "품격 납골당 장례", "price": "700,000원", "desc": "품격예식 + 기능성 유골함 + 납골당(전층) 1년", "longDesc": "가장 품격 있는 장례 후 기능성 유골함에 담아 납골당에 최초 1년 안치하는 패키지입니다. (기간 연장 시 비용 발생)", "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_columbarium_1.png" },
-                            { "name": "고급 납골당 장례", "price": "900,000원", "desc": "고급예식 + 호두나무 액자 안치함 + 납골당 1년", "longDesc": "고급 호두나무 액자가 결합된 안치함에 담아 납골당(전층)에 1년간 안치합니다.", "imageUrl": "images/funeral_homes/강릉펫사랑/petsalang_columbarium_2.png" }
+                            { "name": "품격 납골당 장례", "price": "700,000원", "desc": "품격예식 + 기능성 유골함 + 납골당(전층) 1년", "longDesc": "가장 품격 있는 장례 후 기능성 유골함에 담아 납골당에 최초 1년 안치하는 패키지입니다. (기간 연장 시 비용 발생)", "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_columbarium_1.png" },
+                            { "name": "고급 납골당 장례", "price": "900,000원", "desc": "고급예식 + 호두나무 액자 안치함 + 납골당 1년", "longDesc": "고급 호두나무 액자가 결합된 안치함에 담아 납골당(전층)에 1년간 안치합니다.", "imageUrl": "images/funeral_homes/gangneungpetsarang/petsalang_columbarium_2.png" }
                         ]
                     }
                 ],
                 "address": "강원 강릉시 사천면 석교리 779",
-                "imageUrl": "images/funeral_homes/강릉펫사랑/main.webp"
+                "imageUrl": "images/funeral_homes/gangneungpetsarang/main.webp"
             },
-            "우바스": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "충북 청주시 상당구 남일면 가중리 309-1", "imageUrl": "images/funeral_homes/우바스/main.webp" },
+            "우바스": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "충북 청주시 상당구 남일면 가중리 309-1", "imageUrl": "images/funeral_homes/ubas/main.webp" },
             "패투헤븐": {
                 "pricingType": "categorized",
                 "prices": [
@@ -1000,12 +1000,12 @@
                 "address": "강원 원주시 소초면 현촌길 90-3",
                 "imageUrl": "./images/pettoheaven_main.jpg"
             },
-            "아리아펫": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경기 이천시 마장면 장암리 525-1", "imageUrl": "images/funeral_homes/아리아펫/main.webp" },
-            "아이들랜드": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경북 경산시 와촌면 신한리 570-2" , "imageUrl": "images/funeral_homes/아이들랜드/main.webp"},
-            "이별공간": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "울산 울주군 삼동면 조일리 906-4" , "imageUrl": "images/funeral_homes/이별공간/main.webp"},
-            "리멤버파크": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "충남 논산시 연산면 청동리 16", "imageUrl": "images/funeral_homes/리멤버파크/main.webp" },
-            "펫콤": { "pricingType": "categorized", "prices": PETCOM_PRICES, "address": "경기 안산시 단원구 목내동 517-9", "imageUrl": "images/funeral_homes/펫콤/main.webp" },
-            "스타펫": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경기 포천시 내촌면 진목리 225" , "imageUrl": "images/funeral_homes/스타펫/becomestars_1.jpg"},
+            "아리아펫": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경기 이천시 마장면 장암리 525-1", "imageUrl": "images/funeral_homes/ariapet/main.webp" },
+            "아이들랜드": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경북 경산시 와촌면 신한리 570-2" , "imageUrl": "images/funeral_homes/idland/main.webp"},
+            "이별공간": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "울산 울주군 삼동면 조일리 906-4" , "imageUrl": "images/funeral_homes/ebyulplace/main.webp"},
+            "리멤버파크": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "충남 논산시 연산면 청동리 16", "imageUrl": "images/funeral_homes/rememberpark/main.webp" },
+            "펫콤": { "pricingType": "categorized", "prices": PETCOM_PRICES, "address": "경기 안산시 단원구 목내동 517-9", "imageUrl": "images/funeral_homes/petcom/main.webp" },
+            "스타펫": { "pricingType": "categorized", "prices": STANDARD_PRICES, "address": "경기 포천시 내촌면 진목리 225" , "imageUrl": "images/funeral_homes/starpet/becomestars_1.jpg"},
             "별이되다": {
                 "pricingType": "categorized",
                 "prices": [
