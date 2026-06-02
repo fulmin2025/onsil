@@ -261,6 +261,6 @@ homesList.forEach((home, index) => {
 });
 
 // 문서 저장
-const artifactPath = 'C:\\Users\\Administrator\\.gemini\\antigravity\\brain\\5eec7a70-ac5f-42dd-bb56-1ba77f6ae18d\\전체_장례식장_요금_소개_도감.md';
+const artifactPath = 'C:\\Users\\Administrator\\.gemini\\antigravity\\brain\\5eec7a70-ac5f-42dd-bb56-1ba77f6ae18d\\funeral_homes_guide.md';
 fs.writeFileSync(artifactPath, md, 'utf8');
 console.log('성공적으로 전체 장례식장 도감 문서를 생성하였습니다:', artifactPath);

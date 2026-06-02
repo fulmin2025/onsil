@@ -218,9 +218,9 @@ homesList.forEach(home => {
 });
 
 // 파일 작성
-fs.writeFileSync('전체_장례식장_요약_목록.csv', summaryCsv, 'utf8');
-fs.writeFileSync('전체_장례식장_상세_요금표.csv', detailsCsv, 'utf8');
+fs.writeFileSync('funeral_homes_summary.csv', summaryCsv, 'utf8');
+fs.writeFileSync('funeral_homes_prices.csv', detailsCsv, 'utf8');
 
 console.log('CSV 파일들이 성공적으로 생성되었습니다!');
-console.log('1. 전체_장례식장_요약_목록.csv');
-console.log('2. 전체_장례식장_상세_요금표.csv');
+console.log('1. funeral_homes_summary.csv');
+console.log('2. funeral_homes_prices.csv');
