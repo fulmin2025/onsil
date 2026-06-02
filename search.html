@@ -37,14 +37,18 @@
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
         @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
 
-        /* 헤더 고정으로 인한 본문 가림 방지 */
+        /* 헤더 고정으로 인한 본문 가림 방지 및 Safe Area 대응 */
         body {
-            padding-top: 64px; /* h-16 */
+            padding-top: calc(64px + env(safe-area-inset-top));
+            padding-bottom: calc(16px + env(safe-area-inset-bottom));
         }
         @media (min-width: 640px) {
             body {
-                padding-top: 72px; /* h-18 */
+                padding-top: calc(72px + env(safe-area-inset-top));
             }
+        }
+        #main-header {
+            padding-top: env(safe-area-inset-top);
         }
         main {
             padding-top: 2rem !important;

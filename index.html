@@ -158,6 +158,23 @@
             }
         }
     
+        /* Safe Area & Mobile Layout Improvements */
+        body {
+            padding-top: calc(64px + env(safe-area-inset-top));
+            padding-bottom: calc(16px + env(safe-area-inset-bottom));
+        }
+        @media (min-width: 640px) {
+            body {
+                padding-top: calc(72px + env(safe-area-inset-top));
+            }
+        }
+        #main-header {
+            padding-top: env(safe-area-inset-top);
+        }
+        .floating-bar {
+            padding-bottom: calc(1rem + env(safe-area-inset-bottom)) !important;
+        }
+    
         /* Large Screen Optimizations (iPad/Pro Max) */
         @media (min-width: 1024px) {
             .hero-title { font-size: 4.5rem !important; letter-spacing: -0.02em; }

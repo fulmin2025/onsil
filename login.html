@@ -213,9 +213,8 @@
                     console.log('App: Launching native Sign in with Apple...');
                     const SignInWithApple = window.Capacitor.Plugins.SignInWithApple;
                     
+                    // iOS 네이티브 환경에서는 clientId와 redirectUri가 불필요하며, 설정 시 오동작할 수 있으므로 scopes만 지정합니다.
                     const result = await SignInWithApple.authorize({
-                        clientId: 'com.theonsil.onsil',
-                        redirectUri: 'https://fkmcanwlcigofjhbfkzs.supabase.co/auth/v1/callback',
                         scopes: 'email name',
                     });
 
@@ -232,7 +231,7 @@
                             return;
                         }
                     } else {
-                        throw new Error('Apple 로그인 토큰을 가져올 수 없습니다.');
+                        throw new Error('Apple 로그인 토큰을 가져올 수 없습니다. 응답 구조: ' + JSON.stringify(result));
                     }
                 } else {
                     // 웹 브라우저 환경 또는 플러그인이 없을 때의 Fallback
@@ -260,7 +259,7 @@
                 }
             } catch (error) {
                 console.error('Apple Login Error:', error);
-                alert('Apple 로그인 중 오류가 발생했습니다: ' + error.message);
+                alert('Apple 로그인 중 오류가 발생했습니다: ' + error.message + '\n상세: ' + JSON.stringify(error));
             }
         }
 
