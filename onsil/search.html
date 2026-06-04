@@ -37,20 +37,45 @@
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
         @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
 
-        /* 헤더 고정으로 인한 본문 가림 방지 */
+        /* 헤더 고정으로 인한 본문 가림 방지 및 Safe Area 대응 */
         body {
-            padding-top: 64px; /* h-16 */
+            padding-top: calc(64px + env(safe-area-inset-top));
+            padding-bottom: calc(16px + env(safe-area-inset-bottom));
         }
         @media (min-width: 640px) {
             body {
-                padding-top: 72px; /* h-18 */
+                padding-top: calc(72px + env(safe-area-inset-top));
             }
+        }
+        #main-header {
+            padding-top: env(safe-area-inset-top);
         }
         main {
             padding-top: 2rem !important;
         }
         .mobile-nav-open {
             transform: translateX(0) !important;
+        }
+        /* iPad 및 태블릿 해상도 가독성/밀집도 최적화 */
+        @media (min-width: 768px) {
+            .max-w-7xl {
+                max-width: 960px !important;
+            }
+        }
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .max-w-7xl {
+                max-width: 720px !important;
+            }
+            main {
+                padding-left: 1.5rem !important;
+                padding-right: 1.5rem !important;
+            }
+            .flex-col.md\:flex-row {
+                gap: 1.5rem !important;
+            }
+            aside {
+                width: 28% !important;
+            }
         }
     </style>
 
@@ -72,8 +97,6 @@
             <nav class="hidden lg:flex items-center gap-1">
                 <a href="search.html"
                     class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">장례식장 찾기</a>
-                <a href="partner_map.html"
-                    class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">제휴 장례식장</a>
                 <a href="services.html"
                     class="px-4 py-2 text-sm text-brand/70 font-medium hover:text-brand hover:bg-brand/5 rounded-lg transition-all whitespace-nowrap">장례 서비스</a>
                 <a href="guide.html"
@@ -1810,11 +1833,6 @@
                         class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
                         <i class="fas fa-search text-brand-warm w-5 text-center"></i>
                         <span class="font-medium text-brand">장례식장 찾기</span>
-                    </a>
-                    <a href="partner_map.html"
-                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
-                        <i class="fas fa-map-marked-alt text-brand-warm w-5 text-center"></i>
-                        <span class="font-medium text-brand">제휴 장례식장</span>
                     </a>
                     <a href="services.html"
                         class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">

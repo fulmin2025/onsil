@@ -56,18 +56,34 @@
     <script src="js/wishlist.js"></script>
 
     <style>
-        /* 헤더 고정으로 인한 본문 가림 방지 */
+        /* 헤더 고정으로 인한 본문 가림 방지 및 Safe Area 대응 */
         body {
-            padding-top: 64px; /* h-16 */
+            padding-top: calc(64px + env(safe-area-inset-top));
+            padding-bottom: calc(32px + env(safe-area-inset-bottom));
         }
         @media (min-width: 640px) {
             body {
-                padding-top: 72px; /* h-18 */
+                padding-top: calc(72px + env(safe-area-inset-top));
             }
         }
         /* 기존에 추가된 padding-top과 충돌 방지 */
         main {
             padding-top: 2rem !important; /* 기본 여백 확보 */
+        }
+        .mobile-nav-open {
+            transform: translateX(0) !important;
+        }
+        /* 마이페이지 가독성 개선 */
+        .tab-btn {
+            letter-spacing: -0.01em;
+        }
+        .gender-btn {
+            font-size: 14px;
+        }
+        @media (min-width: 768px) {
+            main {
+                max-width: 680px !important;
+            }
         }
     </style>
 
@@ -104,6 +120,79 @@
             </div>
         </div>
     </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleMobileNav()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300"
+            id="mobile-nav-panel">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <span class="font-bold text-lg text-brand">메뉴</span>
+                    <button onclick="toggleMobileNav()"
+                        class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+                <nav class="space-y-1">
+                    <a href="search.html?quote=true"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors bg-brand-cream/50">
+                        <i class="fas fa-calculator text-brand-warm w-5 text-center"></i>
+                        <span class="font-bold text-brand">바로 견적받기</span>
+                    </a>
+                    <a href="search.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-search text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">장례식장 찾기</span>
+                    </a>
+                    <a href="services.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-scroll text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">장례 서비스</span>
+                    </a>
+                    <a href="guide.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-book-open text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">이별 가이드</span>
+                    </a>
+                    <a href="self-diagnosis.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-stethoscope text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">건강자가진단</span>
+                    </a>
+                    <a href="memory.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-heart text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">추억 가이드</span>
+                    </a>
+                    <a href="community.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-comments text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">커뮤니티</span>
+                    </a>
+                    <a href="contact.html"
+                        class="flex items-center gap-4 px-4 py-3.5 rounded-xl hover:bg-brand-cream transition-colors">
+                        <i class="fas fa-envelope text-brand-warm w-5 text-center"></i>
+                        <span class="font-medium text-brand">문의하기</span>
+                    </a>
+                </nav>
+                <div class="mt-8 pt-6 border-t">
+                    <button
+                        onclick="window.Auth && window.Auth.getCurrentUser().then(user => { if(user) location.href='search.html'; else { alert('예약은 로그인 후 이용 가능합니다.'); location.href='login.html'; } }).catch(() => { location.href='login.html'; })"
+                        class="w-full flex items-center justify-center gap-2 bg-brand-sage text-white py-3.5 rounded-xl font-bold shadow-lg mb-3 hover:bg-[#87A08B]/90 transition-colors">
+                        <i class="fas fa-calendar-check"></i> 예약하기
+                    </button>
+                    <a href="tel:1551-5052"
+                        class="flex items-center justify-center gap-2 bg-brand-warm text-white py-3.5 rounded-xl font-bold shadow-lg">
+                        <i class="fas fa-phone-alt"></i> 상담전화 1551-5052
+                    </a>
+                    <div class="flex gap-2 mt-3" id="mobile-auth-container">
+                        <!-- 로그인/회원가입/마이페이지 버튼 등이 동적으로 들어갈 자리 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <main class="max-w-4xl mx-auto px-4  pb-12">
         <div class="mb-8">
@@ -493,6 +582,59 @@
             } else {
                 loadReservations();
             }
+        });
+
+        // Mobile Nav Toggle Function
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            const panel = document.getElementById('mobile-nav-panel');
+            if (nav.classList.contains('hidden')) {
+                nav.classList.remove('hidden');
+                requestAnimationFrame(() => panel.classList.add('mobile-nav-open'));
+                document.body.style.overflow = 'hidden';
+            } else {
+                panel.classList.remove('mobile-nav-open');
+                document.body.style.overflow = '';
+                setTimeout(() => nav.classList.add('hidden'), 300);
+            }
+        }
+
+        // Header scroll effect
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('bg-white', 'backdrop-blur-lg', 'shadow-sm', 'border-b', 'border-brand/5');
+            } else {
+                header.classList.remove('bg-white', 'backdrop-blur-lg', 'shadow-sm', 'border-b', 'border-brand/5');
+            }
+        });
+
+        // Sync Mobile Auth UI
+        async function syncMobileAuthUI() {
+            const mobileAuthContainer = document.getElementById('mobile-auth-container');
+            if (!mobileAuthContainer) return;
+            
+            try {
+                const user = await window.Auth.getCurrentUser();
+                if (user) {
+                    mobileAuthContainer.innerHTML = `
+                        <a href="mypage.html" class="flex-1 text-center py-3 border border-brand/20 rounded-xl text-sm font-medium text-brand hover:bg-brand/5 transition-colors">마이페이지</a>
+                        <button onclick="window.Auth.logout().then(() => location.reload())" class="flex-1 text-center py-3 bg-brand text-white rounded-xl text-sm font-bold hover:bg-brand-light transition-colors">로그아웃</button>
+                    `;
+                } else {
+                    mobileAuthContainer.innerHTML = `
+                        <a href="login.html" class="flex-1 text-center py-3 border border-brand/20 rounded-xl text-sm font-medium text-brand hover:bg-brand/5 transition-colors">로그인</a>
+                        <a href="signup.html" class="flex-1 text-center py-3 bg-brand text-white rounded-xl text-sm font-bold hover:bg-brand-light transition-colors">회원가입</a>
+                    `;
+                }
+            } catch (err) {
+                console.error("Mobile auth sync error:", err);
+            }
+        }
+        
+        // Init Mobile Auth UI
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(syncMobileAuthUI, 500);
         });
     </script>
     <script src="js/channel-talk.js"></script>
