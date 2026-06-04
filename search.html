@@ -56,6 +56,27 @@
         .mobile-nav-open {
             transform: translateX(0) !important;
         }
+        /* iPad 및 태블릿 해상도 가독성/밀집도 최적화 */
+        @media (min-width: 768px) {
+            .max-w-7xl {
+                max-width: 960px !important;
+            }
+        }
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .max-w-7xl {
+                max-width: 720px !important;
+            }
+            main {
+                padding-left: 1.5rem !important;
+                padding-right: 1.5rem !important;
+            }
+            .flex-col.md\:flex-row {
+                gap: 1.5rem !important;
+            }
+            aside {
+                width: 28% !important;
+            }
+        }
     </style>
 
     <title>장례식장 찾기 - The 온실</title>

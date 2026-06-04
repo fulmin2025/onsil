@@ -684,60 +684,59 @@ window.Auth = Auth;
 document.addEventListener('DOMContentLoaded', () => {
     Auth.updateHeaderUI();
 
-    setTimeout(async () => {
-        const client = getSupabase();
-        if (client) {
-            const { data: { user } } = await client.auth.getUser();
+    const client = getSupabase();
+    if (client) {
+        client.auth.getUser().then(({ data: { user } }) => {
             if (user) {
                 Auth.syncProfile(user);
             }
+        });
 
-            client.auth.onAuthStateChange((event, session) => {
-                if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
-                    if (session?.user) Auth.syncProfile(session.user);
-                    Auth.updateHeaderUI();
-                } else if (event === 'SIGNED_OUT') {
-                    Auth.updateHeaderUI();
-                }
-            });
-        }
+        client.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
+                if (session?.user) Auth.syncProfile(session.user);
+                Auth.updateHeaderUI();
+            } else if (event === 'SIGNED_OUT') {
+                Auth.updateHeaderUI();
+            }
+        });
+    }
 
-        // Capacitor 딥링크 수신 처리 (소셜 로그인 완료 후 앱 복귀)
-        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
-            const App = window.Capacitor.Plugins.App;
-            const Browser = window.Capacitor.Plugins.Browser;
+    // Capacitor 딥링크 수신 처리 (소셜 로그인 완료 후 앱 복귀)
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+        const App = window.Capacitor.Plugins.App;
+        const Browser = window.Capacitor.Plugins.Browser;
+        
+        App.addListener('appUrlOpen', async (data) => {
+            console.log('App opened with URL:', data.url);
             
-            App.addListener('appUrlOpen', async (data) => {
-                console.log('App opened with URL:', data.url);
-                
-                if (data.url && (data.url.includes('access_token=') || data.url.includes('refresh_token='))) {
-                    try {
-                        const urlObj = new URL(data.url.replace('onsilapp://', 'http://localhost/'));
-                        const params = new URLSearchParams(urlObj.hash.substring(1) || urlObj.search);
-                        const accessToken = params.get('access_token');
-                        const refreshToken = params.get('refresh_token');
+            if (data.url && (data.url.includes('access_token=') || data.url.includes('refresh_token='))) {
+                try {
+                    const urlObj = new URL(data.url.replace('onsilapp://', 'http://localhost/'));
+                    const params = new URLSearchParams(urlObj.hash.substring(1) || urlObj.search);
+                    const accessToken = params.get('access_token');
+                    const refreshToken = params.get('refresh_token');
+                    
+                    if (accessToken && refreshToken && client) {
+                        const { error: sessionError } = await client.auth.setSession({
+                            access_token: accessToken,
+                            refresh_token: refreshToken
+                        });
                         
-                        if (accessToken && refreshToken && client) {
-                            const { error: sessionError } = await client.auth.setSession({
-                                access_token: accessToken,
-                                refresh_token: refreshToken
-                            });
-                            
-                            if (sessionError) throw sessionError;
-                            
-                            console.log('Supabase session set successfully via deep link!');
-                            
-                            if (Browser) {
-                                await Browser.close();
-                            }
-                            
-                            location.href = 'index.html';
+                        if (sessionError) throw sessionError;
+                        
+                        console.log('Supabase session set successfully via deep link!');
+                        
+                        if (Browser) {
+                            await Browser.close();
                         }
-                    } catch (err) {
-                        console.error('Failed to restore Supabase session from deep link:', err);
+                        
+                        location.href = 'index.html';
                     }
+                } catch (err) {
+                    console.error('Failed to restore Supabase session from deep link:', err);
                 }
-            });
-        }
-    }, 1000);
+            }
+        });
+    }
 });

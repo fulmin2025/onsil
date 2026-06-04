@@ -180,6 +180,30 @@
             .hero-title { font-size: 4.5rem !important; letter-spacing: -0.02em; }
             section { padding-left: 2rem !important; padding-right: 2rem !important; }
         }
+        /* iPad 및 태블릿 해상도 가독성/밀집도 최적화 */
+        @media (min-width: 768px) {
+            .max-w-7xl {
+                max-width: 960px !important;
+            }
+        }
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .max-w-7xl {
+                max-width: 720px !important;
+            }
+            .hero-title {
+                font-size: 2.75rem !important;
+                line-height: 1.25 !important;
+            }
+            section {
+                padding-top: 4rem !important;
+                padding-bottom: 4rem !important;
+                padding-left: 1.5rem !important;
+                padding-right: 1.5rem !important;
+            }
+            .grid {
+                gap: 1.5rem !important;
+            }
+        }
     </style>
 </head>
 
